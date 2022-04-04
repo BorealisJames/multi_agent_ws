@@ -82,7 +82,7 @@ find_package(eigen-cdd REQUIRED)
 # find_package(GTest REQUIRED)
 
 catkin_package(INCLUDE_DIRS
-        	include
+        	#include
 		${DECOMP_UTIL_INCLUDE_DIRS}
         	LIBRARIES
         	${PROJECT_NAME}_core
