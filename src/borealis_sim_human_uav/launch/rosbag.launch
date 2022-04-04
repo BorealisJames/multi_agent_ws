@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+    <param name="sim_state" type="string" value="rosbag_follow" />
+    <arg name="path" default="/home/apex-15/Projects/borealis_demo4/rosbag/" />
+    <arg name="file_1" default="2022_01_24_walk1_fuse" />
+    <node pkg="rosbag" type="play" name="player" output="screen" args="$(arg path)$(arg file_1).bag"/>
+</launch>

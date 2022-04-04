@@ -1,0 +1,14 @@
+
+/visualisation/NumberOfUAV: 3
+
+/visualisation/UAVScaleX: 0.7
+/visualisation/UAVScaleY: 0.1
+/visualisation/UAVScaleZ: 0.1
+
+/visualisation/GoalScaleX: 0.7
+/visualisation/GoalScaleY: 0.1
+/visualisation/GoalScaleZ: 0.1
+
+/visualisation/PoseScaleX: 1.0
+/visualisation/PoseScaleY: 1.0
+/visualisation/PoseScaleZ: 1.0

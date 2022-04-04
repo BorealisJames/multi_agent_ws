@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="borealis_sim_human_uav" type="borealis_sim_human_uav_node" name="borealis_sim_human_uav" output="screen"/>
+    <node pkg="borealis_sim_human_uav" type="sim_movehuman.py" name="human_move" output="screen"/>
+    <param name="sim_state" type="string" value="rosbag_follow" />
+</launch>

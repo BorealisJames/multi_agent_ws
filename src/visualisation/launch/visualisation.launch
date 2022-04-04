@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="visualisation" pkg="visualisation" type="visualisation_node" output="screen" clear_params="true">
+
+    <rosparam command="load" file="$(find visualisation)/config/visualisation_config.yaml"/>
+    <remap from="iris0/setpoint_position" to="/iris0/mavros/setpoint_position/local"/>
+    <remap from="iris1/setpoint_position" to="/iris1/mavros/setpoint_position/local"/>
+    <remap from="iris2/setpoint_position" to="/iris2/mavros/setpoint_position/local"/>
+    <remap from="iris0/system_pose" to="/iris0/system_pose"/>
+    <remap from="iris1/system_pose" to="/iris1/system_pose"/>
+    <remap from="iris2/system_pose" to="/iris2/system_pose"/>
+    <remap from="human/system_pose" to="/human/system_pose"/>
+    </node>
+
+</launch>

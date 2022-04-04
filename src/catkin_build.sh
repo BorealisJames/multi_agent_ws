@@ -1,0 +1,1 @@
+catkin build borealis_teaming_planner borealis_hri_interface borealis_position_setpoint_controller

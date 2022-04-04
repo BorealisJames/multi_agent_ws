@@ -1,0 +1,30 @@
+# - Find eigen-cdd
+# Find the native eigen-cdd includes and library
+#
+#  EIGEN_CDD_INCLUDE_DIR - where to find eigen-cdd/api.h, etc.
+#  EIGEN_CDD_LIBRARIES   - List of libraries when using eigen-cdd.
+#  EIGEN_CDD_FOUND       - True if eigen-cdd found.
+
+
+IF (EIGEN_CDD_INCLUDE_DIRS)
+  # Already in cache, be silent
+  SET(EIGEN_CDD_FIND_QUIETLY TRUE)
+ENDIF (EIGEN_CDD_INCLUDE_DIRS)
+
+FIND_PATH(EIGEN_CDD_INCLUDE_DIRS eigen-cdd/api.h)
+
+SET(EIGEN_CDD_NAMES eigen-cdd)
+FIND_LIBRARY(EIGEN_CDD_LIBRARY NAMES ${EIGEN_CDD_NAMES} )
+
+# handle the QUIETLY and REQUIRED arguments and set EIGEN_CDD_FOUND to TRUE if 
+# all listed variables are TRUE
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(EIGEN_CDD DEFAULT_MSG EIGEN_CDD_LIBRARY EIGEN_CDD_INCLUDE_DIRS)
+
+IF(EIGEN_CDD_FOUND)
+  SET( EIGEN_CDD_LIBRARIES ${EIGEN_CDD_LIBRARY} )
+ELSE(EIGEN_CDD_FOUND)
+  SET( EIGEN_CDD_LIBRARIES )
+ENDIF(EIGEN_CDD_FOUND)
+
+MARK_AS_ADVANCED( EIGEN_CDD_LIBRARIES EIGEN_CDD_INCLUDE_DIRS )

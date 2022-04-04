@@ -1,0 +1,27 @@
+digraph G {
+"iris0/body" -> "iris0/LOCAL/map"[label="Broadcaster: /iris0/tf_broadcaster\nAverage rate: 30.235 Hz\nMost recent transform: 4240.232 ( 0.036 sec old)\nBuffer length: 4.928 sec\n"];
+"map" -> "iris0/body"[label="Broadcaster: /iris0/tf_broadcaster\nAverage rate: 246.944 Hz\nMost recent transform: 4240.248 ( 0.020 sec old)\nBuffer length: 4.908 sec\n"];
+"iris0/body" -> "ousterlidar0_link"[label="Broadcaster: /iris0/tf_broadcaster\nAverage rate: 30.235 Hz\nMost recent transform: 4240.232 ( 0.036 sec old)\nBuffer length: 4.928 sec\n"];
+"iris0/body" -> "iris0/camera_link"[label="Broadcaster: /iris0/tf_broadcaster\nAverage rate: 30.235 Hz\nMost recent transform: 4240.232 ( 0.036 sec old)\nBuffer length: 4.928 sec\n"];
+"map" -> "map_ned"[label="Broadcaster: /iris1/mavros\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 4240.268 sec old)\nBuffer length: 0.000 sec\n"];
+"odom" -> "odom_ned"[label="Broadcaster: /iris1/mavros\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 4240.268 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "base_link_frd"[label="Broadcaster: /iris1/mavros\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 4240.268 sec old)\nBuffer length: 0.000 sec\n"];
+"map" -> "iris1/body"[label="Broadcaster: /iris1/tf_broadcaster\nAverage rate: 244.106 Hz\nMost recent transform: 4240.232 ( 0.036 sec old)\nBuffer length: 4.920 sec\n"];
+"human/body" -> "human/LOCAL/map"[label="Broadcaster: /human/tf_broadcaster\nAverage rate: 30.235 Hz\nMost recent transform: 4240.248 ( 0.020 sec old)\nBuffer length: 4.928 sec\n"];
+"map" -> "human/body"[label="Broadcaster: /human/tf_broadcaster\nAverage rate: 246.954 Hz\nMost recent transform: 4240.248 ( 0.020 sec old)\nBuffer length: 4.924 sec\n"];
+"iris1/body" -> "iris1/LOCAL/map"[label="Broadcaster: /iris1/tf_broadcaster\nAverage rate: 30.236 Hz\nMost recent transform: 4240.252 ( 0.016 sec old)\nBuffer length: 4.928 sec\n"];
+"iris1/body" -> "ousterlidar1_link"[label="Broadcaster: /iris1/tf_broadcaster\nAverage rate: 30.236 Hz\nMost recent transform: 4240.252 ( 0.016 sec old)\nBuffer length: 4.928 sec\n"];
+"iris1/body" -> "iris1/camera_link"[label="Broadcaster: /iris1/tf_broadcaster\nAverage rate: 30.236 Hz\nMost recent transform: 4240.252 ( 0.016 sec old)\nBuffer length: 4.928 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 4240.268"[ shape=plaintext ] ;
+ }->"map";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 4240.268"[ shape=plaintext ] ;
+ }->"odom";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 4240.268"[ shape=plaintext ] ;
+ }->"base_link";
+}

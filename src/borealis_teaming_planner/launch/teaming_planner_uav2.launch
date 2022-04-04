@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+   
+  <arg name="uav_name_2" default="uav2"/>
+  <group ns="$(arg uav_name_2)">
+    <node name="borealis_teaming_planner" pkg="borealis_teaming_planner" type="borealis_teaming_planner_node" output="screen" clear_params="true">
+
+      <rosparam command="load" file="$(find borealis_teaming_planner)/config/teaming_planner_config_uav2.yaml"/>
+      <remap from="/assigned_virtual_position" to="teaming_planner/assigned_virtual_position"/>
+      <remap from="/assigned_virtual_pose_map" to="teaming_planner/assigned_virtual_pose_map"/>
+      <remap from="/convex_region_2D" to="teaming_planner/convex_region_2D"/>
+      <remap from="/convex_region_3D" to="teaming_planner/convex_region_3D"/>
+      <remap from="/direction_utility" to="teaming_planner/direction_utility"/>
+      <remap from="/ground_truth/state" to="ground_truth/state"/>
+      <remap from="/phase_and_time" to="teaming_planner/phase_and_time"/>
+      
+      <remap from="/pointcloud" to="os_cloud_node/points"/>
+
+      <remap from="/depth_camera" to="depth/points"/>
+      <remap from="/system_pose" to="system_pose"/>
+      <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
+      <remap from="/task" to="/task"/>
+      <remap from="/control_state" to="control/state"/>
+    </node>
+  </group>
+
+</launch>
