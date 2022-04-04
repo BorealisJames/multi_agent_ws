@@ -1,0 +1,12 @@
+<!--Launch DSO follow me simulation setup-->
+<launch>
+    <include file="$(find borealis_tf_broadcaster)/launch/tf_broadcaster_uav1.launch"/>
+    <include file="$(find borealis_tf_broadcaster)/launch/tf_broadcaster_uav2.launch"/>
+    <!-- <include file="$(find borealis_visualisation)/launch/visualisation.launch"/> -->
+
+    <include file="$(find borealis_state_manager)/launch/state_manager_uav1.launch"/>
+    <include file="$(find borealis_state_manager)/launch/state_manager_uav2.launch"/>
+
+    <include file="$(find borealis_position_setpoint_controller)/launch/position_setpoint_controller_uav1.launch"/>
+    <include file="$(find borealis_position_setpoint_controller)/launch/position_setpoint_controller_uav2.launch"/>
+ </launch>

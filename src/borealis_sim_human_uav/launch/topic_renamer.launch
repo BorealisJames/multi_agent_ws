@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+    <group ns="uav1">
+        <node pkg="borealis_sim_human_uav" type="topic_renamer_script_uav1.py" name="topic_renamer" output="screen"/>
+    </group>
+    <group ns="uav2">
+        <node pkg="borealis_sim_human_uav" type="topic_renamer_script_uav2.py" name="topic_renamer" output="screen"/>
+    </group> -->
+</launch>

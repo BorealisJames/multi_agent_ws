@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <node name="position_setpoint_controller" pkg="position_setpoint_controller" type="position_setpoint_controller" output="screen">
-    <rosparam command="load" file="$(find position_setpoint_controller)/config/uav_0.yaml"/>
-  </node>
-</launch>

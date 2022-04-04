@@ -20,7 +20,10 @@ def pcl2_cb(msg):
     pointcloud2_renamed_pub.publish(msg)
     
 def t265_odom_cb(msg):
-    t265_odom_sample_renamed_pub.publish(msg)
+    tmp_odom = Odometry()
+    tmp_odom.pose.pose.position = msg.pose.position
+    tmp_odom.pose.pose.orientation = msg.pose.orientation
+    t265_odom_sample_renamed_pub.publish(tmp_odom)
 
 if __name__ == "__main__":
 
@@ -29,19 +32,19 @@ if __name__ == "__main__":
     ## boralis_tf_broadcaster rebroadcaster
     # rebroadcast the topics
     pointcloud2_topic = "/iris1/ouster/pointcloud2"
-    t265_odom_sample_topic = "/uav2/mavros/local_position/odom"
+    local_position_topic = "/uav2/mavros/local_position/pose"
 
     # to the following topics
-    pointcloud2_topic_rebroadcast = "/os_cloud_node2/points"
+    pointcloud2_topic_rebroadcast = "/uav2/os_cloud_node/points"
     t265_odom_sample_rebroadcast = "/uav2/t265/odom/sample" # nav_msgs::Odometry
 
     # subscribers
     pointcloud2_sub = rospy.Subscriber(pointcloud2_topic, PointCloud2, pcl2_cb)
-    t265_odom_sample_sub = rospy.Subscriber(t265_odom_sample_topic, Odometry, t265_odom_cb)
+    local_pose_sub = rospy.Subscriber(local_position_topic, PoseStamped, t265_odom_cb)
 
     # publishers
-    pointcloud2_renamed_pub = rospy.Publisher(pointcloud2_topic_rebroadcast, PoseStamped, queue_size=10)
-    t265_odom_sample_renamed_pub = rospy.Publisher(t265_odom_sample_rebroadcast, PoseStamped, queue_size=10)
+    pointcloud2_renamed_pub = rospy.Publisher(pointcloud2_topic_rebroadcast, PointCloud2, queue_size=10)
+    t265_odom_sample_renamed_pub = rospy.Publisher(t265_odom_sample_rebroadcast, Odometry, queue_size=10)
 
     rospy.loginfo("Topic Renamer Script Begin")
     rospy.spin()

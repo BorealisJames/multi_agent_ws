@@ -1,9 +1,9 @@
 #subscriber
-sub_desired_setpoint_topic: /iris1/teaming_planner/assigned_virtual_position
-sub_current_position_topic: /iris1/mavros/local_position/pose
+sub_desired_setpoint_topic: /uav1/teaming_planner/assigned_virtual_position
+sub_current_position_topic: /uav1/mavros/local_position/pose
 
 #publisher
-pub_setpoint_position_topic: /iris1/mavros/setpoint_position/local
+pub_setpoint_position_topic: /uav1/mavros/setpoint_position/local
 
 setpoint_z: 2.0
 

@@ -47,8 +47,8 @@ yawBindings={
           }
 
 
-publisher_topic = "/human/mavros/setpoint_position/local"
-
+human_publisher_topic = "/human/mavros/setpoint_position/local"
+uav_all_publisher_topic = "/uav_all/follow_me_target_pose"
 
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -68,8 +68,8 @@ def print_pos_speed(speed, x, y, z, yaw):
 if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
     rospy.init_node('borealis_teleop')
-    pub = rospy.Publisher(publisher_topic, PoseStamped, queue_size=5)
-
+    human_pub = rospy.Publisher(human_publisher_topic, PoseStamped, queue_size=5)
+    uav_all_pub = rospy.Publisher(uav_all_publisher_topic, PoseStamped, queue_size=5)
     rate = rospy.Rate(20) # 10hz
     try:
         x = 0
@@ -101,24 +101,22 @@ if __name__=="__main__":
                 y += speed * direction_y
                 z += speed * direction_z
                 print_pos_speed(speed, x, y, z, yaw)
+                print("pose orientation w = ", pose_stamped.pose.orientation.w)
 
             elif key in speedBindings.keys():
                 speed_increment = speedBindings[key]
                 speed += speed_increment
                 print_pos_speed(speed, x, y, z, yaw)
+                print("pose orientation w = ", pose_stamped.pose.orientation.w)
 
             elif key in yawBindings.keys():
                 yaw_direciton = yawBindings[key]
                 yaw += speed * yaw_direciton * speed_scale_factor
-                quaternion = tf.transformations.quaternion_from_euler(roll, pitch, np.deg2rad(yaw))
-                #type(pose) = geometry_msgs.msg.Pose
-
-                pose_stamped.pose.orientation.x = quaternion[0]
-                pose_stamped.pose.orientation.y = quaternion[1]
-                pose_stamped.pose.orientation.z = quaternion[2]
-                pose_stamped.pose.orientation.w = quaternion[3]
+                if yaw == 0:
+                    yaw = 360
 
                 print_pos_speed(speed, x, y, z,yaw)
+                print("pose orientation w = ", pose_stamped.pose.orientation.w)
 
             else:
                 if (key == '\x03'):
@@ -128,7 +126,17 @@ if __name__=="__main__":
             pose_stamped.pose.position.x = x
             pose_stamped.pose.position.y = y
             pose_stamped.pose.position.z = z
-            pub.publish(pose_stamped)
+            
+            quaternion = tf.transformations.quaternion_from_euler(roll, pitch, np.deg2rad(yaw))
+            #type(pose) = geometry_msgs.msg.Pose
+
+            pose_stamped.pose.orientation.x = quaternion[0]
+            pose_stamped.pose.orientation.y = quaternion[1]
+            pose_stamped.pose.orientation.z = quaternion[2]
+            pose_stamped.pose.orientation.w = quaternion[3]
+
+            human_pub.publish(pose_stamped)
+            uav_all_pub.publish(pose_stamped)
             rate.sleep()
 
     except Exception as e:
