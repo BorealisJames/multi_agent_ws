@@ -321,8 +321,9 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::C
     mHumanSystemPose.position.y = tmp.position.y;
     mHumanSystemPose.position.z = tmp.position.z;
     mHumanSystemPose.headingRad = tmp.yaw;
-    ROS_INFO("Human system pose quat is x:%f, y:%f, z:%f, w:%f. ", aHumanSystemPose->pose.orientation.x, aHumanSystemPose->pose.orientation.y, aHumanSystemPose->pose.orientation.z, aHumanSystemPose->pose.orientation.w) ;
-    ROS_INFO("tmp yaw is %f", tmp.yaw);
+    // ROS_INFO("aHuman system quat is x:%f, y:%f, z:%f, w:%f. ", aHumanSystemPose->pose.orientation.x, aHumanSystemPose->pose.orientation.y, aHumanSystemPose->pose.orientation.z, aHumanSystemPose->pose.orientation.w) ;
+    // ROS_INFO("mHuman system pose heading is x:%f, y:%f, z:%f, heading:%f. ", mHumanSystemPose.position.x, mHumanSystemPose.position.y, mHumanSystemPose.position.z, mHumanSystemPose.headingRad);
+    // ROS_INFO("tmp yaw is %f", tmp.yaw);
 
     while(mHistoryOfHumanPoses.size() > (mPlanningHorizon/mIntervalDistance) - 1)
     {

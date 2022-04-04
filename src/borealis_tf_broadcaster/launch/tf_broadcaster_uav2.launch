@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <group ns="uav2">
-        <node name="uav2_tf_broadcaster" pkg="borealis_tf_broadcaster" type="borealis_tf_broadcaster_node" output="screen">
+        <node name="tf_broadcaster" pkg="borealis_tf_broadcaster" type="borealis_tf_broadcaster_node" output="screen">
             <!-- <remap from="system_map2local_odom_topic" to ="/gazebo/model_states"/> -->
             <!-- <remap from="system_map2body_topic" to ="ground_truth/state"/>  -->
 
