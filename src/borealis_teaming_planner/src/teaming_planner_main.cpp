@@ -31,12 +31,10 @@ void TeamingPlanner::teamingPlannerMain()
             mHandlerPtr->m_pubOwnDirectionUtility = std::bind(&TeamingPlanner::pubDirectionUtility, this, std::placeholders::_1, std::placeholders::_2);
             mHandlerPtr->m_getAgentsDirectionUtility = std::bind(&TeamingPlanner::getDirectionUtilityMap, this, std::placeholders::_1);
 
-            // pointcloud1 is unused
             mHandlerPtr->m_getOwnAgentLidarPointCloud = std::bind(&TeamingPlanner::getOwnAgentLidarPointCloud, this, std::placeholders::_1);
             
-            // mHandlerPtr->m_getOwnAgentLidarPointCloud2 = std::bind(&TeamingPlanner::getOwnAgentLidarPointCloud2, this, std::placeholders::_1);
-
-            mHandlerPtr->m_getOwnAgentCameraPointCloud = std::bind(&TeamingPlanner::getOwnAgentDepthCamera, this, std::placeholders::_1);
+            // Unused
+            // mHandlerPtr->m_getOwnAgentCameraPointCloud = std::bind(&TeamingPlanner::getOwnAgentDepthCamera, this, std::placeholders::_1);
 
             mHandlerPtr->m_clearAgentsConvexRegion2DBuffer = std::bind(&TeamingPlanner::clearConvexRegion2DMap, this);
             mHandlerPtr->m_pubOwnConvex2DRegion = std::bind(&TeamingPlanner::pubConvexRegion2D, this, std::placeholders::_1, std::placeholders::_2);

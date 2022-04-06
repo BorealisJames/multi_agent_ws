@@ -14,23 +14,23 @@ namespace DistributedFormation
 
         // Adapted from https://dabit-industries.github.io/turtlebot2-tutorials/13-ROSPCL.html for the voxel filter
 
-        // // Container for original & filtered data
-        // pcl::PCLPointCloud2* cloud = new pcl::PCLPointCloud2;
-        // pcl::PCLPointCloud2ConstPtr cloudPtr(cloud);
-        // pcl::PCLPointCloud2 cloud_filtered;
+        // Container for original & filtered data
+        pcl::PCLPointCloud2* cloud = new pcl::PCLPointCloud2;
+        pcl::PCLPointCloud2ConstPtr cloudPtr(cloud);
+        pcl::PCLPointCloud2 cloud_filtered;
 
-        // // Convert to PCL data type from ROS sensor_msgs::PointCloud2
-        // pcl_conversions::toPCL(pointCloud2input, *cloud);
+        // Convert to PCL data type from ROS sensor_msgs::PointCloud2
+        pcl_conversions::toPCL(pointCloud2input, *cloud);
 
-        // // Perform the actual filtering
-        // pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
-        // sor.setInputCloud (cloudPtr);
-        // sor.setLeafSize (m_leaf_size_x, m_leaf_size_y, m_leaf_size_z);
-        // sor.filter (cloud_filtered);
+        // Perform the actual filtering
+        pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
+        sor.setInputCloud (cloudPtr);
+        sor.setLeafSize (m_leaf_size_x, m_leaf_size_y, m_leaf_size_z);
+        sor.filter (cloud_filtered);
 
-        // // Convert back to ROS data type
-        // sensor_msgs::PointCloud2 output;
-        // pcl_conversions::moveFromPCL(cloud_filtered, output);
+        // Convert back to ROS data type
+        sensor_msgs::PointCloud2 output;
+        pcl_conversions::moveFromPCL(cloud_filtered, output);
 
         if (sensor_msgs::convertPointCloud2ToPointCloud(pointCloud2input, pointCloud1output))
         {

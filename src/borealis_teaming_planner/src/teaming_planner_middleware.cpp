@@ -349,7 +349,6 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::C
     {
         ROS_INFO("[Teaming Planner %d]: Human System Pose Received\n", mSourceSegmentId);
     }
-    
 }
 
 void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose)
@@ -372,9 +371,9 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::Co
 
 void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
 {
-    std::string sourceFrame = "ousterlidar" + std::to_string(mSourceSegmentId) + "_link";
-
-    try 
+    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "os_lidar";
+    
+    try
     {
         mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, ros::Time::now(), ros::Duration(0.7));
         mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, *aSystemPointCloud, mSystemPointCloud);
@@ -393,11 +392,13 @@ void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::Con
 void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::ConstPtr& aSystemPointCloud2)
 {
 
-    std::string sourceFrame = "ousterlidar";
-    DistributedFormation::ProcessPointCloud test;
+    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "os_lidar";
+    
+    DistributedFormation::ProcessPointCloud tmpProcessPointCloud;
     sensor_msgs::PointCloud tmp;
-    test.ApplyVoxelFilterAndConvertToPointCloud(*aSystemPointCloud2, tmp);
-    tmp.header.frame_id = "ousterlidar";
+    tmpProcessPointCloud.ApplyVoxelFilterAndConvertToPointCloud(*aSystemPointCloud2, tmp);
+    mVoxel_filter_cloudPublisher.publish(tmp);
+    tmp.header.frame_id = sourceFrame;
     tmp.header.stamp = ros::Time::now();
 
     try 
@@ -416,12 +417,10 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
 }
 
 
-
 void TeamingPlanner::systemDepthCameraCallback(const sensor_msgs::PointCloud2::ConstPtr& aSystemDepthCamera)
 {
     sensor_msgs::PointCloud tmp;
     sensor_msgs::convertPointCloud2ToPointCloud(*aSystemDepthCamera, tmp);
-
     std::string sourceFrame=  "uav" + std::to_string(mSourceSegmentId) + "/camera_link";
 
     try 

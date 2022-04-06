@@ -42,6 +42,8 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAssignedVirtualPoseMapPublisher = mNh.advertise<mt_msgs::posevector>("/assigned_virtual_pose_map", 10);
         mControlStatePublisher = mNh.advertise<std_msgs::Int8>("/control_state",10);
 
+        mVoxel_filter_cloudPublisher = mNh.advertise<sensor_msgs::PointCloud>("/voxel_filter_cloud",10);
+
         // Subscribers 
         mGoalSubscriber = mNh.subscribe<mt_msgs::pose>("/goal", 10, &TeamingPlanner::goalCallback, this);
         mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>(mInputPosetopic, 10, &TeamingPlanner::humanSystemPoseCallback, this);

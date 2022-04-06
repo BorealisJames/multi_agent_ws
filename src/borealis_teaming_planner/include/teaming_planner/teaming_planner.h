@@ -100,6 +100,8 @@ class TeamingPlanner
         ros::Publisher mAssignedVirtualPoseMapPublisher;
         ros::Publisher mControlStatePublisher;
 
+        ros::Publisher mVoxel_filter_cloudPublisher;
+
         // Subscribers 
         ros::Subscriber mGoalSubscriber;
         ros::Subscriber mTaskSubscriber;

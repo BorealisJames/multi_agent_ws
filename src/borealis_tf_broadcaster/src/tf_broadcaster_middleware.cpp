@@ -46,7 +46,7 @@ namespace TF
         if (mBroadcast_lidar)
         {
             pubBody2LidarTransform(msg->header.stamp);
-            pubBody2CameraTransform(msg->header.stamp);
+            // pubBody2CameraTransform(msg->header.stamp);
         }
 
 	// Publish system pose
@@ -215,23 +215,33 @@ namespace TF
 
     void TfBroadcaster::lidar2Callback(const sensor_msgs::PointCloud2::ConstPtr &msg)
     {
+        // Hard name space fix. header.frame_id pulls from the gazebo model name
+        if (mNamespace == "uav1")
+        {
+
+        }
+        if (mNamespace == "uav1")
+        {
+            mNamespace = "iris1"; // gazebo model name
+        }
+
         if (mLidarFrame.empty())
         {
-            mLidarFrame = "ousterlidar";
+            mLidarFrame = msg->header.frame_id;
             ROS_INFO("%s", ("Lidar frame set: " + mLidarFrame).c_str());
             mLidarSub.shutdown();
         }
     }
 
-    void TfBroadcaster::cameraCallback(const nav_msgs::Odometry::ConstPtr &msg)
-    {
-        if (mCameraFrame.empty())
-        {
-            mCameraFrame = "cameralink";
-            ROS_INFO("%s", ("Camera frame set: " + mCameraFrame).c_str());
-            mCameraSub.shutdown();
-        }
-    }
+    // void TfBroadcaster::cameraCallback(const nav_msgs::Odometry::ConstPtr &msg)
+    // {
+    //     if (mCameraFrame.empty())
+    //     {
+    //         mCameraFrame = msg->header.frame_id;
+    //         ROS_INFO("%s", ("Camera frame set: " + mCameraFrame).c_str());
+    //         mCameraSub.shutdown();
+    //     }
+    // }
 
 } // TF
 

@@ -656,8 +656,7 @@ namespace DistributedFormation
         }
 
         // Apply Voxel filter and Convert to pointcloud2
-        // ROS_INFO("Phase cppPoint cloud size is %i",lidarPointCloud2.fields.size());
-        // m_processPointCloud.ApplyVoxelFilterAndConvertToPointCloud(lidarPointCloud2, lidarPointCloud);
+        ROS_INFO("Phase cppPoint cloud size is %i",lidarPointCloud2.fields.size());
 
         //Note only using lidar and not depth camera
         //m_processPointCloud.AppendPointClouds(lidarPointCloud, cameraPointCloud, m_ownPointCloud);

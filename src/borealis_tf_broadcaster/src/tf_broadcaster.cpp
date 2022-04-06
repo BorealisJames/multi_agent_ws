@@ -20,17 +20,16 @@ TfBroadcaster::TfBroadcaster(const ros::NodeHandlePtr& nh, const ros::NodeHandle
     mNhPrivate->param<float>("y_offset",mY_offset,-2);
     mNhPrivate->param<float>("z_offset",mZ_offset,0);
 
-    // mSystemOdomSub = mNh->subscribe<gazebo_msgs::ModelStates>("system_map2local_odom_topic", 10, &TfBroadcaster::systemOdomCallback, this);  
-    // mSystemPoseSub = mNh->subscribe<nav_msgs::Odometry>("system_map2body_topic", 10, &TfBroadcaster::systemPoseCallback, this);  
-    // mLocalPoseSub = mNh->subscribe<nav_msgs::Odometry>("local_map2body_topic", 10, &TfBroadcaster::localOdomCallbackBorealis, this); // Get local odom position 
+    // mSystemOdomSub = mNh->subscribe<gazebo_msgs::ModelStates>("system_map2local_odom_topic", 10, &TfBroadcaster::systemOdomCallback, this);
+    // mSystemPoseSub = mNh->subscribe<nav_msgs::Odometry>("system_map2body_topic", 10, &TfBroadcaster::systemPoseCallback, this);
+    // mLocalPoseSub = mNh->subscribe<nav_msgs::Odometry>("local_map2body_topic", 10, &TfBroadcaster::localOdomCallbackBorealis, this); // Get local odom position
 
     mLocalOdomSub = mNh->subscribe<geometry_msgs::PoseStamped>("local_odom_topic", 10, &TfBroadcaster::localOdomCallbackBorealis, this); // Get local odom position 
 
-    // Local to camera
+    // Broadcast local to lidar frame
     if (mBroadcast_lidar)
     {
         mLidarSub = mNh->subscribe<sensor_msgs::PointCloud2>("body2lidar_topic", 10, &TfBroadcaster::lidar2Callback, this); 
-        mCameraSub = mNh->subscribe<nav_msgs::Odometry>("body2camera_topic", 10, &TfBroadcaster::cameraCallback, this);
     }
     mSystemPosePub = mNh->advertise<geometry_msgs::PoseStamped>("systempose_topic", 10);
 }
