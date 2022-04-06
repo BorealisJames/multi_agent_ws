@@ -54,8 +54,6 @@ class TeamingPlanner
         double mIntervalDistance;
         double mPlanningHorizon;
 
-        std::string mInputPosetopic;
-
         // Variables
         TeamingPlannerConstants::ModuleState mModuleState;
         std::vector<DistributedFormation::Common::Pose> mHistoryOfHumanPoses;
@@ -186,9 +184,6 @@ class TeamingPlanner
         bool getPoseMap(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap);
         bool getDirectionUtilityMap(std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility>& directionUtilityMap);
         bool getOwnAgentLidarPointCloud(sensor_msgs::PointCloud& cloud);
-
-        bool getOwnAgentLidarPointCloud2(sensor_msgs::PointCloud2& cloud);
-
         bool getOwnAgentDepthCamera(sensor_msgs::PointCloud& depthCamera);
         bool getConvexRegion2DMap(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D>& convexRegion2DMap);
         bool getConvexRegion3DMap(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D>& convexRegion3DMap);

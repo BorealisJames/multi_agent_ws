@@ -16,9 +16,6 @@ TfBroadcaster::TfBroadcaster(const ros::NodeHandlePtr& nh, const ros::NodeHandle
     mSystemOdomPose.header.frame_id = Common::Entity::SYSTEM_FRAME;
 
     mNhPrivate->param<bool>("broadcast_lidar",mBroadcast_lidar,true);
-    mNhPrivate->param<float>("x_offset",mX_offset,-2.5);
-    mNhPrivate->param<float>("y_offset",mY_offset,-2);
-    mNhPrivate->param<float>("z_offset",mZ_offset,0);
 
     // mSystemOdomSub = mNh->subscribe<gazebo_msgs::ModelStates>("system_map2local_odom_topic", 10, &TfBroadcaster::systemOdomCallback, this);
     // mSystemPoseSub = mNh->subscribe<nav_msgs::Odometry>("system_map2body_topic", 10, &TfBroadcaster::systemPoseCallback, this);

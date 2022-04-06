@@ -28,7 +28,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConfigFileReader.getParam(nhPrivate, "debugVerbose", mDebugVerbose, false);
         mConfigFileReader.getParam(nhPrivate, "intervalDistance", mIntervalDistance, 0.5);
         mConfigFileReader.getParam(nhPrivate, "planningHorizon", mPlanningHorizon, 25);
-        mConfigFileReader.getParam(nhPrivate, "inputPose", mInputPosetopic, "inputPose");
 
         mgunTargetPoseRecieved = false;
 
@@ -41,20 +40,15 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAssignedVirtualPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/assigned_virtual_position", 10);
         mAssignedVirtualPoseMapPublisher = mNh.advertise<mt_msgs::posevector>("/assigned_virtual_pose_map", 10);
         mControlStatePublisher = mNh.advertise<std_msgs::Int8>("/control_state",10);
-
         mVoxel_filter_cloudPublisher = mNh.advertise<sensor_msgs::PointCloud>("/voxel_filter_cloud",10);
 
         // Subscribers 
         mGoalSubscriber = mNh.subscribe<mt_msgs::pose>("/goal", 10, &TeamingPlanner::goalCallback, this);
-        mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>(mInputPosetopic, 10, &TeamingPlanner::humanSystemPoseCallback, this);
+        mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/human_input_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
         mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
 
-        // change to point cloud 2
-        // mSystemPointCloudSubscriber = mNh.subscribe<sensor_msgs::PointCloud>("/pointcloud", 10, &TeamingPlanner::systemPointCloudCallback, this);
+        // Changed to point cloud 2
         mSystemPointCloud2Subscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/pointcloud", 10, &TeamingPlanner::systemPointCloud2Callback, this);
-
-        // Since its not used
-        // mSystemDepthCameraSubscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/depth_camera", 10, &TeamingPlanner::systemDepthCameraCallback, this);
         
         mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::taskCallback, this);
 

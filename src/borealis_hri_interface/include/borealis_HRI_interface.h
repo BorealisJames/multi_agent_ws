@@ -7,6 +7,8 @@
 
 #include "../../distributed_multi_robot_formation/src/Common/Common.h"
 #include "../../Common/ConstantsEnum.h"
+#include "../../Common/Config/ConfigFileReader.h"
+
 
 #include <mt_msgs/pose.h>
 #include <mt_msgs/mtTask.h>
@@ -22,11 +24,14 @@ class BorealisHRIInterface
     private:
         ros::NodeHandle mNh;
         ros::NodeHandle mNhPrivate;
-        
+        Common::Utils::ConfigFileReader mConfigFileReader;
+
         Common::Entity::MTTaskBundle mTask;
         DistributedFormation::Common::Pose mGoal;
 
         double mModulePeriod;
+        uint32_t mSourceSegmentId;
+
 
         // Publisher
         ros::Publisher mTaskPublisher;

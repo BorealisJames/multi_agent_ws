@@ -213,7 +213,8 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         tmp.pose.orientation.z = tQuat.getZ();
 
         std::string systemFrame = "/odom";
-        std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/LOCAL/map";
+        // uav2/t265_odom_frame
+        std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_odom_frame";
 
         if(!mPoseTransformListener.waitForTransform(targetFrame,systemFrame,refTime ,ros::Duration(0.7)))
         {
@@ -707,27 +708,6 @@ bool TeamingPlanner::getOwnAgentLidarPointCloud(sensor_msgs::PointCloud& cloud)
     
     return status;
 }
-
-bool TeamingPlanner::getOwnAgentLidarPointCloud2(sensor_msgs::PointCloud2& cloud)
-{
-
-    bool status = false;
-    ROS_INFO("Middlewaer Point cloud mSystemPointCloud2 size is %i",mSystemPointCloud2.fields.size());
-    ROS_INFO("Middlewaer Point cloud cloud size is %i",cloud.fields.size());
-    if (!mSystemPointCloud2.fields.empty()) // hmm ?
-    {
-        cloud = mSystemPointCloud2;
-        status = true;
-    }
-    else
-    {
-        ROS_WARN("[Teaming Planner %d]: Agents Point Cloud empty", mSourceSegmentId);
-        status = false;
-    }
-    
-    return status;
-}
-
 
 bool TeamingPlanner::getOwnAgentDepthCamera(sensor_msgs::PointCloud& depthCamera)
 {

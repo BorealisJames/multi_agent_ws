@@ -2,5 +2,6 @@
 <launch>
     <group ns="uav1"> -->
         <node pkg="borealis_hri_interface" type="borealis_hri_interface_node" name="borealis_hri_interface" output="screen"/>
+        <rosparam command="load" file="$(find borealis_hri_interface)/config/hri_interface_config_uav1.yaml"/>
     </group>
 </launch>

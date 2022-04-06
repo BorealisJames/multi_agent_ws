@@ -4,4 +4,3 @@
 /uav2/borealis_teaming_planner/intervalDistance: 0.5
 /uav2/borealis_teaming_planner/planningHorizon: 25
 /uav2/borealis_teaming_planner/debugVerbose: false
-/uav2/borealis_teaming_planner/inputPose: "/uav_all/follow_me_target_pose"

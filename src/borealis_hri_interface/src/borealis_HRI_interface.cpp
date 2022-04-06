@@ -5,15 +5,19 @@ BorealisHRIInterface::BorealisHRIInterface(const ros::NodeHandle& nh, const ros:
     mNhPrivate(nhPrivate)
 {
     // Configurable Variables
-    mModulePeriod = 1;
+    mConfigFileReader.getParam(nhPrivate, "sourceSegmentId", mSourceSegmentId, static_cast<uint32_t>(0));
+    mConfigFileReader.getParam(nhPrivate, "modulePeriod", mModulePeriod, 1);
+
     mTask.type = Common::Entity::MTTaskEnum::UNDEFINED;
+    ROS_INFO("Module period is %f", mModulePeriod);
     //Subscriber
     mHumanTaskSubscriber = mNh.subscribe("/hri_mode",10, &BorealisHRIInterface::HRITaskCallback, this);
 
     // Publisher
-    mTaskPublisher = mNh.advertise<mt_msgs::mtTask>("/task", 10);
-    // Might not be needed see pubGoal comments bellow 
-    // mGoalPublisher = mNh.advertise<mt_msgs::pose>("/goal", 10);
+    mTaskPublisher = mNh.advertise<mt_msgs::mtTask>("/task", 10); // Need 2 look onto the case of different agent diff task. 2 follow 1 go there
+    // mGoalPublisher = mNh.advertise<mt_msgs::pose>("/goal", 10); // Might not be needed see pubGoal comments bellow 
+
+    // Create ROS timer that publishes the tasks
     mModuleLoopTimer = mNh.createTimer(ros::Duration(1/mModulePeriod), &BorealisHRIInterface::moduleLoopCallback, this);
 }
 
@@ -35,17 +39,13 @@ void BorealisHRIInterface::HRITaskCallback(const std_msgs::String::ConstPtr& msg
     }
 }
 
-
 void BorealisHRIInterface::moduleLoopCallback(const ros::TimerEvent& aEvent)
 {
-    // pubGoal(mGoal);
     // mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
     // UNDEFINED = 0,
     // GO_THERE = 1,
     // FOLLOW_ME = 2,
     // DISTRACT_TARGET = 3
-
-    // Whatever lmao
     std::string task_string;
     switch (mTask.type) {
         case (Common::Entity::MTTaskEnum::UNDEFINED):
@@ -55,13 +55,13 @@ void BorealisHRIInterface::moduleLoopCallback(const ros::TimerEvent& aEvent)
             task_string = "GO_THERE";
             break;
         case (Common::Entity::MTTaskEnum::FOLLOW_ME):
-            task_string = "Follow_Me";
+            task_string = "FOLLOW_ME";
             break;
         case (Common::Entity::MTTaskEnum::DISTRACT_TARGET):
             task_string = "DISTRACT_TARGET";
             break;
     }
-    ROS_INFO("Agent %i: Publishing task %s", 1,task_string.c_str());
+    ROS_INFO("Agent %i: Publishing task %s", mSourceSegmentId,task_string.c_str());
     
     pubTask(mTask);
 }

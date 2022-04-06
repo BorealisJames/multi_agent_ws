@@ -130,6 +130,8 @@ include_directories(
 # Declare a C++ library
 add_library(${PROJECT_NAME}
   include/borealis_HRI_interface.h
+  ../Common/Config/ConfigFileReader.h
+  ../Common/Config/ConfigFileReader.cpp
   src/borealis_HRI_interface.cpp
 
 )

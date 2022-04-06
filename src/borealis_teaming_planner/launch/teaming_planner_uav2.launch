@@ -19,6 +19,7 @@
       <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
       <remap from="/task" to="/task"/>
       <remap from="/control_state" to="control/state"/>
+      <remap from= "/human_input_pose" to="/uav_all/follow_me_target_pose"/>?
       <remap from="/voxel_filter_cloud" to="teaming_planner/voxel_filter_cloud"/>
 
     </node>
