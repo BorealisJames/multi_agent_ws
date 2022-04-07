@@ -366,8 +366,9 @@ void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::Co
     }
     mPoseTransformListener.transformPose(targetFrame,*aSelfLocalPose,tmpSelfSystemPose);
 
-    Common::Entity::Pose tmp(tmpSelfSystemPose);
+    mSelfSystemPosePublisher.publish(tmpSelfSystemPose); // Publish own pose in ROS format
 
+    Common::Entity::Pose tmp(tmpSelfSystemPose);
     mSelfSystemPose.position.x = tmp.position.x;
     mSelfSystemPose.position.y = tmp.position.y;
     mSelfSystemPose.position.z = tmp.position.z;

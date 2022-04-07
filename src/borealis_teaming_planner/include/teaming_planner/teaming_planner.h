@@ -93,6 +93,7 @@ class TeamingPlanner
 
         // Publisher
         ros::Publisher mPhaseAndTimePublisher;
+        ros::Publisher mSelfSystemPosePublisher;
         ros::Publisher mPosePublisher;
         ros::Publisher mDirectionUtilityPublisher;
         ros::Publisher mConvexRegion2DPublisher;
