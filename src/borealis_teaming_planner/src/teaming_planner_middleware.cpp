@@ -355,6 +355,8 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::C
 void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose)
 {
     Common::Entity::Pose tmp(*aSelfSystemPose);
+
+    
     mSelfSystemPose.position.x = tmp.position.x;
     mSelfSystemPose.position.y = tmp.position.y;
     mSelfSystemPose.position.z = tmp.position.z;
