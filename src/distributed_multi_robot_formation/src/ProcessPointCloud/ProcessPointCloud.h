@@ -52,9 +52,9 @@ public:
     bool ApplyVoxelFilterAndConvertToPointCloud(const sensor_msgs::PointCloud2& pointCloud2input, sensor_msgs::PointCloud& pointCloud1output);
 
 private:
-    float m_leaf_size_x = 0.8; // 0.7 to 0.8 seems good
-    float m_leaf_size_y = 0.8; 
-    float m_leaf_size_z = 0.8;
+    float m_leaf_size_x = 0.4; //
+    float m_leaf_size_y = 0.4; 
+    float m_leaf_size_z = 0.4;
 };
 
 }   // namespace DistributedFormation
