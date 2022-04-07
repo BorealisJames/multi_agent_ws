@@ -214,7 +214,7 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
 
         std::string systemFrame = "/odom";
         // uav2/t265_odom_frame
-        std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_odom_frame";
+        std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
 
         if(!mPoseTransformListener.waitForTransform(targetFrame,systemFrame,refTime ,ros::Duration(0.7)))
         {
