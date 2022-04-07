@@ -200,7 +200,8 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
 
         tmp.header.frame_id = "/odom";
         tmp.header.stamp = refTime;
-        
+        tmp_local.header.frame_id = "/odom";
+
         tmp.pose.position.x = aAssignedVirtualPose.position.x;
         tmp.pose.position.y = aAssignedVirtualPose.position.y;
         tmp.pose.position.z = aAssignedVirtualPose.position.z;
@@ -220,9 +221,9 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         {
             ROS_WARN("Wait for transform timed out, using last available transform instead.");
         }
+
         mPoseTransformListener.transformPose(targetFrame,tmp,tmp_local);
         // need to do a transform from system to local frame. 
-
         tmp_local.header.frame_id = targetFrame;
         tmp_local.header.stamp = refTime;
         mAssignedVirtualPosePublisher.publish(tmp_local);
@@ -356,16 +357,20 @@ void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::Co
 {
 
     geometry_msgs::PoseStamped tmpSelfSystemPose; 
+    geometry_msgs::PoseStamped tmpSelfLocalPose = *aSelfLocalPose; 
+
     std::string systemFrame = "/odom";
     // uav2/t265_odom_frame
     std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
+
+    tmpSelfLocalPose.header.frame_id = systemFrame;
 
     if(!mPoseTransformListener.waitForTransform(targetFrame,systemFrame, aSelfLocalPose->header.stamp ,ros::Duration(0.7)))
     {
         ROS_WARN("Wait for transform timed out, using last available transform instead.");
     }
-    mPoseTransformListener.transformPose(targetFrame,*aSelfLocalPose,tmpSelfSystemPose);
 
+    mPoseTransformListener.transformPose(targetFrame,tmpSelfLocalPose,tmpSelfSystemPose);
     mSelfSystemPosePublisher.publish(tmpSelfSystemPose); // Publish own pose in ROS format
 
     Common::Entity::Pose tmp(tmpSelfSystemPose);
@@ -386,7 +391,7 @@ void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::Co
 
 void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
 {
-    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "os_lidar";
+    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_lidar";
     
     try
     {
@@ -407,7 +412,7 @@ void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::Con
 void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::ConstPtr& aSystemPointCloud2)
 {
 
-    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "os_lidar";
+    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_lidar";
     
     DistributedFormation::ProcessPointCloud tmpProcessPointCloud;
     sensor_msgs::PointCloud tmp;
