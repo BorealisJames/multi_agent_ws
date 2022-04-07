@@ -35,6 +35,9 @@
 #include <mt_msgs/posevector.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
+
+// main changes -> depth camera ignored/deleted , system pose cb changed to local pose cb then localpose cb will transform to systempose and pub it, pointcloud 2
+
 class TeamingPlanner
 {
     private:
@@ -104,7 +107,7 @@ class TeamingPlanner
         ros::Subscriber mGoalSubscriber;
         ros::Subscriber mTaskSubscriber;
         ros::Subscriber mHumanSystemPoseSubscriber;
-        ros::Subscriber mSelfSystemPoseSubscriber;
+        ros::Subscriber mSelfLocalPoseSubscriber;
         ros::Subscriber mSystemPointCloudSubscriber;
 
         ros::Subscriber mSystemPointCloud2Subscriber;
@@ -159,7 +162,7 @@ class TeamingPlanner
         void goalCallback(const mt_msgs::pose::ConstPtr& aGoal);
         void taskCallback(const mt_msgs::mtTask::ConstPtr& aTask);
         void humanSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aHumanSystemPose);
-        void selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose);
+        void mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfLocalPose);
         void systemPoseCallback(const mt_msgs::pose::ConstPtr& aSystemPose);
         void systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud);
 

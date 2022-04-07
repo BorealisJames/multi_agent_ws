@@ -45,7 +45,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         // Subscribers 
         mGoalSubscriber = mNh.subscribe<mt_msgs::pose>("/goal", 10, &TeamingPlanner::goalCallback, this);
         mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/human_input_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
-        mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
+        mSelfLocalPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::mSelfLocalPoseCallback, this);
 
         // Changed to point cloud 2
         mSystemPointCloud2Subscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/pointcloud", 10, &TeamingPlanner::systemPointCloud2Callback, this);

@@ -352,11 +352,22 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::C
     }
 }
 
-void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose)
+void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfLocalPose)
 {
-    Common::Entity::Pose tmp(*aSelfSystemPose);
 
-    
+    geometry_msgs::PoseStamped tmpSelfSystemPose; 
+    std::string systemFrame = "/odom";
+    // uav2/t265_odom_frame
+    std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
+
+    if(!mPoseTransformListener.waitForTransform(targetFrame,systemFrame, aSelfLocalPose->header.stamp ,ros::Duration(0.7)))
+    {
+        ROS_WARN("Wait for transform timed out, using last available transform instead.");
+    }
+    mPoseTransformListener.transformPose(targetFrame,*aSelfLocalPose,tmpSelfSystemPose);
+
+    Common::Entity::Pose tmp(tmpSelfSystemPose);
+
     mSelfSystemPose.position.x = tmp.position.x;
     mSelfSystemPose.position.y = tmp.position.y;
     mSelfSystemPose.position.z = tmp.position.z;
