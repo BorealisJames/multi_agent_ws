@@ -32,7 +32,7 @@ namespace DistributedFormation
         sensor_msgs::PointCloud2 output;
         pcl_conversions::moveFromPCL(cloud_filtered, output);
 
-        if (sensor_msgs::convertPointCloud2ToPointCloud(pointCloud2input, pointCloud1output))
+        if (sensor_msgs::convertPointCloud2ToPointCloud(output, pointCloud1output))
         {
             success = true;
         }
