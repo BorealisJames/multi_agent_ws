@@ -217,9 +217,10 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         // uav2/t265_odom_frame
         std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
 
-        if(!mPoseTransformListener.waitForTransform(targetFrame,systemFrame,refTime ,ros::Duration(0.7)))
+        if(!mPoseTransformListener.waitForTransform(targetFrame,systemFrame,refTime ,ros::Duration(0.3)))
         {
             ROS_WARN("Wait for transform timed out, using last available transform instead.");
+            ROS_INFO("Pub assigned pose failed");
         }
 
         mPoseTransformListener.transformPose(targetFrame,tmp,tmp_local);
@@ -361,16 +362,20 @@ void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::Co
 
     std::string systemFrame = "/odom";
     // uav2/t265_odom_frame
-    std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
+    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
+    // const ros::Time refTime = ros::Time::now(); // Sometimes there is a desync in time. This is a quick fix
 
-    tmpSelfLocalPose.header.frame_id = systemFrame;
+    tmpSelfLocalPose.header.frame_id = sourceFrame;
+    tmpSelfLocalPose.header.stamp = ros::now(); // "The latest available" transform in the buffer
 
-    if(!mPoseTransformListener.waitForTransform(targetFrame,systemFrame, aSelfLocalPose->header.stamp ,ros::Duration(0.7)))
+    if(!mPoseTransformListener.waitForTransform(systemFrame,sourceFrame, tmpSelfLocalPose.header.stamp ,ros::Duration(0.3)))
     {
         ROS_WARN("Wait for transform timed out, using last available transform instead.");
+        ROS_WARN("LocalPose callback failed.");
     }
 
-    mPoseTransformListener.transformPose(targetFrame,tmpSelfLocalPose,tmpSelfSystemPose);
+    mPoseTransformListener.transformPose(systemFrame,tmpSelfLocalPose,tmpSelfSystemPose);
+
     mSelfSystemPosePublisher.publish(tmpSelfSystemPose); // Publish own pose in ROS format
 
     Common::Entity::Pose tmp(tmpSelfSystemPose);
@@ -395,7 +400,7 @@ void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::Con
     
     try
     {
-        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, ros::Time::now(), ros::Duration(0.7));
+        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, ros::Time::now(), ros::Duration(0.3));
         mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, *aSystemPointCloud, mSystemPointCloud);
     }
     catch (tf::TransformException ex)
@@ -423,7 +428,7 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
 
     try 
     {
-        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(0.7));
+        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(0.3));
         mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemPointCloud);
     }
     catch (tf::TransformException ex)
@@ -445,7 +450,7 @@ void TeamingPlanner::systemDepthCameraCallback(const sensor_msgs::PointCloud2::C
 
     try 
     {
-        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, ros::Time::now(), ros::Duration(0.7));
+        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, ros::Time::now(), ros::Duration(0.3));
         mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemDepthCamera);
     }
     catch (tf::TransformException ex)
