@@ -366,7 +366,7 @@ void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::Co
     // const ros::Time refTime = ros::Time::now(); // Sometimes there is a desync in time. This is a quick fix
 
     tmpSelfLocalPose.header.frame_id = sourceFrame;
-    tmpSelfLocalPose.header.stamp = ros::now(); // "The latest available" transform in the buffer
+    tmpSelfLocalPose.header.stamp = ros::Time::now(); // "The latest available" transform in the buffer
 
     if(!mPoseTransformListener.waitForTransform(systemFrame,sourceFrame, tmpSelfLocalPose.header.stamp ,ros::Duration(0.3)))
     {
