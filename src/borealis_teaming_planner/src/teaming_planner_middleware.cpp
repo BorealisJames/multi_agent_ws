@@ -338,6 +338,7 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::C
     ROS_INFO("mHuman system pose heading is x:%f, y:%f, z:%f, heading:%f. ", mHumanSystemPose.position.x, mHumanSystemPose.position.y, mHumanSystemPose.position.z, mHumanSystemPose.headingRad);
     ROS_INFO("tmp yaw is %f", tmp.yaw);
 
+    // comment this guy out
     while(mHistoryOfHumanPoses.size() > (mPlanningHorizon/mIntervalDistance) - 1)
     {
         mHistoryOfHumanPoses.erase(mHistoryOfHumanPoses.begin());    
@@ -362,7 +363,11 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::C
     {
         ROS_INFO("[Teaming Planner %d]: Human System Pose Received\n", mSourceSegmentId);
     }
+    // comment this guy out
 }
+
+// human array systempose callback input-> pose array stamped vector, convert to std::vector<DistributedFormation::Common::Pose> and assign it to mHistoryOfHumanPoses; 
+// mHistoryOfHumanPoses
 
 void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfLocalPose)
 {
@@ -427,14 +432,14 @@ void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::Con
 void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::ConstPtr& aSystemPointCloud2)
 {
 
-    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_lidar";
+    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_sensor";
     
     DistributedFormation::ProcessPointCloud tmpProcessPointCloud;
     sensor_msgs::PointCloud tmp;
     tmpProcessPointCloud.ApplyVoxelFilterAndConvertToPointCloud(*aSystemPointCloud2, tmp);
-    mVoxel_filter_cloudPublisher.publish(tmp);
     tmp.header.frame_id = sourceFrame;
     tmp.header.stamp = ros::Time::now();
+    mVoxel_filter_cloudPublisher.publish(tmp);
     // tmp.header.stamp = aSystemPointCloud2->header.stamp; // The correct way
 
     try 
