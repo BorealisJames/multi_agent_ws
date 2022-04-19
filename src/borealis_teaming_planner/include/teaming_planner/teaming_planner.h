@@ -125,26 +125,6 @@ class TeamingPlanner
         std::vector<ros::Subscriber> mUAVConvexRegion3DSubscriberVector;
         std::vector<ros::Subscriber> mUAVAssignedVirtualPoseMapSubscriberVector;
 
-        // Hardcoded for now
-        ros::Subscriber mUAV1SystemPoseSubscriber;
-        ros::Subscriber mUAV2SystemPoseSubscriber;
-        ros::Subscriber mUAV3SystemPoseSubscriber;
-        ros::Subscriber mUAV1PhaseAndTimeSubscriber;
-        ros::Subscriber mUAV2PhaseAndTimeSubscriber;
-        ros::Subscriber mUAV3PhaseAndTimeSubscriber;
-        ros::Subscriber mUAV1DirectionUtilitySubscriber;
-        ros::Subscriber mUAV2DirectionUtilitySubscriber;
-        ros::Subscriber mUAV3DirectionUtilitySubscriber;
-        ros::Subscriber mUAV1ConvexRegion2DSubscriber;
-        ros::Subscriber mUAV2ConvexRegion2DSubscriber;
-        ros::Subscriber mUAV3ConvexRegion2DSubscriber;
-        ros::Subscriber mUAV1ConvexRegion3DSubscriber;
-        ros::Subscriber mUAV2ConvexRegion3DSubscriber;
-        ros::Subscriber mUAV3ConvexRegion3DSubscriber;
-        ros::Subscriber mUAV1AssignedVirtualPoseMapSubscriber;
-        ros::Subscriber mUAV2AssignedVirtualPoseMapSubscriber;
-        ros::Subscriber mUAV3AssignedVirtualPoseMapSubscriber;
-
         // Timers
         ros::Timer mModuleLoopTimer;
 

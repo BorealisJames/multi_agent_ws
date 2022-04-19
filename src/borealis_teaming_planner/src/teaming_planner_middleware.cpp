@@ -186,22 +186,19 @@ bool TeamingPlanner::pubConvexRegion3D(const int32_t aAgentId, const Distributed
     return status;
 }
 
+// Published Assigned Pose of the Agent into the /t265_pose_frame
 bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFormation::Common::Pose aAssignedVirtualPose)
 {
     bool status = true;
 
-    status = status && aAgentId == mSourceSegmentId;
+    status = (status && aAgentId == mSourceSegmentId);
     if (status)
     {
         geometry_msgs::PoseStamped tmp;
         geometry_msgs::PoseStamped tmp_local;
-
-        const ros::Time refTime = ros::Time::now();
-
+        
         tmp.header.frame_id = "/odom";
-        tmp.header.stamp = refTime;
-        tmp_local.header.frame_id = "/odom";
-
+        
         tmp.pose.position.x = aAssignedVirtualPose.position.x;
         tmp.pose.position.y = aAssignedVirtualPose.position.y;
         tmp.pose.position.z = aAssignedVirtualPose.position.z;
@@ -214,20 +211,33 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         tmp.pose.orientation.z = tQuat.getZ();
 
         std::string systemFrame = "/odom";
-        // uav2/t265_odom_frame
         std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
 
-        if(!mPoseTransformListener.waitForTransform(targetFrame,systemFrame,refTime ,ros::Duration(0.3)))
+        ros::Time tm;
+        std::string err_string;
+        if (mPoseTransformListener.getLatestCommonTime(targetFrame, systemFrame, tm, &err_string) == tf::NO_ERROR)
         {
-            ROS_WARN("Wait for transform timed out, using last available transform instead.");
-            ROS_INFO("Pub assigned pose failed");
-        }
+            tmp.header.stamp = tm;
 
-        mPoseTransformListener.transformPose(targetFrame,tmp,tmp_local);
-        // need to do a transform from system to local frame. 
-        tmp_local.header.frame_id = targetFrame;
-        tmp_local.header.stamp = refTime;
-        mAssignedVirtualPosePublisher.publish(tmp_local);
+            try
+            {
+                mPoseTransformListener.transformPose(targetFrame,tmp,tmp_local);
+
+                tmp_local.header.frame_id = targetFrame;
+                tmp_local.header.stamp = tm;
+                mAssignedVirtualPosePublisher.publish(tmp_local);
+            }
+            catch (tf::TransformException ex)
+            {
+                ROS_ERROR("%s", ex.what());
+                status = false;
+            }
+        }
+        else
+        {
+            ROS_ERROR("[Teaming Planner %d]: Unable to transform object from frame %s to %s \n", mSourceSegmentId, systemFrame.c_str(), targetFrame.c_str());
+            status = false;
+        }
     }
     else
     {
@@ -425,9 +435,10 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     mVoxel_filter_cloudPublisher.publish(tmp);
     tmp.header.frame_id = sourceFrame;
     tmp.header.stamp = ros::Time::now();
+    // tmp.header.stamp = aSystemPointCloud2->header.stamp; // The correct way
 
     try 
-    {
+    {        
         mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(0.3));
         mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemPointCloud);
     }
@@ -441,7 +452,7 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     }
 }
 
-
+// Unused
 void TeamingPlanner::systemDepthCameraCallback(const sensor_msgs::PointCloud2::ConstPtr& aSystemDepthCamera)
 {
     sensor_msgs::PointCloud tmp;
