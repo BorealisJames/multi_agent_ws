@@ -132,7 +132,8 @@ add_library(${PROJECT_NAME}_core
 			src/ProcessPointCloud/ProcessPointCloud.h
 			src/ProcessPointCloud/ProcessPointCloud.cpp
         	src/FollowMeGoalGenerator/FollowMeGoalGenerator.h
-        	src/FollowMeGoalGenerator/FollowMeGoalGenerator.cpp)
+        	src/FollowMeGoalGenerator/FollowMeGoalGenerator.cpp
+			../Common/Config/ConfigFileReader.h)
 
 # Each node in the package must be declared like this
 add_executable(${PROJECT_NAME} src/main.cpp)

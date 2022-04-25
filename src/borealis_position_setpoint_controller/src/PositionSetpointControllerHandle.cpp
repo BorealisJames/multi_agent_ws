@@ -3,24 +3,16 @@
 PositionSetpointControllerHandle::PositionSetpointControllerHandle(ros::NodeHandle &node_handle)
     : node_handle_(node_handle)
     , use_current_pose_(true)
-    , setpoint_x_(0)
-    , setpoint_y_(0)
-    , setpoint_z_(0)
-    , setquat_x_(0)
-    , setquat_y_(0)
-    , setquat_z_(0)
-    , setquat_w_(1)
+    , sense_avoid_z(0)
 {
     LoadParameters();
 
     // Create subscriber
-    sub_desired_setpoint_ = node_handle_.subscribe(sub_desired_setpoint_topic_, 1,
-                                                   &PositionSetpointControllerHandle::DesiredPoseCallback, this);
-    sub_current_position_ = node_handle_.subscribe(sub_current_position_topic_, 1,
-                                                   &PositionSetpointControllerHandle::CurrentPoseCallback, this);
+    sub_assigned_virtual_pose = node_handle_.subscribe(sub_assigned_virtual_pose_topic, 1,
+                                                   &PositionSetpointControllerHandle::AssignedVirtualPoseCallback, this);
 
     // Create publisher
-    pub_setpoint_position_ = node_handle_.advertise<geometry_msgs::PoseStamped> (pub_setpoint_position_topic_, 1, false);
+    pub_to_sense_avoid = node_handle_.advertise<geometry_msgs::PoseStamped> (pub_to_sense_avoid_topic, 1, false);
 }
 
 double
@@ -34,61 +26,38 @@ PositionSetpointControllerHandle::LoadParameters()
 {
     ROS_INFO("Loading Topic Names and Flags");
 
-    sub_desired_setpoint_topic_ = getParam<std::string>("sub_desired_setpoint_topic");
-    sub_current_position_topic_ = getParam<std::string>("sub_current_position_topic");
-    pub_setpoint_position_topic_ = getParam<std::string>("pub_setpoint_position_topic");
+    sub_assigned_virtual_pose_topic = getParam<std::string>("sub_assigned_virtual_position_topic");
+    pub_to_sense_avoid_topic = getParam<std::string>("pub_to_sense_avoid_topic");
+    source_frame = getParam<std::string>("source_frame");
+    target_frame = getParam<std::string>("target_frame");
     rate_ = getParam<double>("rate");
-    setpoint_z_ = getParam<double>("setpoint_z");
+    sense_avoid_z = getParam<double>("setpoint_z");
 }
 
 void
 PositionSetpointControllerHandle::PublishPose()
 {
-
-    geometry_msgs::PoseStamped pose;
-    pose.header.stamp = ros::Time::now();
-
-    pose.pose.orientation.x = setquat_x_;
-    pose.pose.orientation.y = setquat_y_;
-    pose.pose.orientation.z = setquat_z_;
-    pose.pose.orientation.w = setquat_w_;
-
-    pose.pose.position.x = setpoint_x_;
-    pose.pose.position.y = setpoint_y_;
-    pose.pose.position.z = setpoint_z_;
-
-    pub_setpoint_position_.publish(pose);
+    sense_avoid_pose.header.stamp = ros::Time::now();
+    sense_avoid_pose.pose.position.z = sense_avoid_z;
+    pub_to_sense_avoid.publish(sense_avoid_pose);
 }
 
 void
-PositionSetpointControllerHandle::DesiredPoseCallback(geometry_msgs::PoseStamped::ConstPtr pose)
-{
-
-    setpoint_x_ = pose->pose.position.x;
-    setpoint_y_ = pose->pose.position.y;
-    // setpoint_z_ = pose->pose.position.z; Quick fix for gun command pose as gun command pose does not give Z value
-
-    setquat_x_ = pose->pose.orientation.x;
-    setquat_y_ = pose->pose.orientation.y;
-    setquat_z_ = pose->pose.orientation.z;
-    setquat_w_ = pose->pose.orientation.w;
-
-    use_current_pose_ = false;
-}
-
-void
-PositionSetpointControllerHandle::CurrentPoseCallback(geometry_msgs::PoseStamped::ConstPtr pose)
+PositionSetpointControllerHandle::AssignedVirtualPoseCallback(geometry_msgs::PoseStamped::ConstPtr pose)
 {
     if (use_current_pose_)
     {
-        setpoint_x_ = pose->pose.position.x;
-        setpoint_y_ = pose->pose.position.y;
-//        setpoint_z_ = pose->pose.position.z;
+    geometry_msgs::PoseStamped tmp;
+    tmp.pose = pose->pose;
+    tmp.header = pose->header;
 
-        setquat_x_ = pose->pose.orientation.x;
-        setquat_y_ = pose->pose.orientation.y;
-        setquat_z_ = pose->pose.orientation.z;
-        setquat_w_ = pose->pose.orientation.w;
+    if(!mPoseTransformListener.waitForTransform(target_frame, source_frame, tmp.header.stamp ,ros::Duration(0.3)))
+    {
+        std::string str_tmp;
+        ROS_WARN("Wait for transform timed out, using last available transform instead.");
+    }
+    
+    mPoseTransformListener.transformPose(target_frame, tmp, sense_avoid_pose);
     }
 
     use_current_pose_ = false;

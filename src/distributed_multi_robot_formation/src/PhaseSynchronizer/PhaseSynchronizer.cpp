@@ -35,6 +35,22 @@ namespace DistributedFormation
     , m_priorityPenalty(1.0)
     , m_expectedNumberOfAgents(2)
     {
+        // Workaround should use config file reader instead 
+        double tmp_distance;
+        double tmp_agentradius;
+        double desiredDistanceinTri;
+        double desiredDistanceinLine;
+        m_handlerPtr->m_nh.getParam("/follow_distance", tmp_distance);
+        m_handlerPtr->m_nh.getParam("/agent_radius", tmp_agentradius);
+        m_handlerPtr->m_nh.getParam("/desired_tri_length", desiredDistanceinTri);
+        m_handlerPtr->m_nh.getParam("/desired_line_length", desiredDistanceinLine);
+
+        m_distanceToFollowBehind = tmp_distance;
+        m_agentRadius = tmp_agentradius;
+        m_desiredDistanceInTriFormation = desiredDistanceinTri;
+        m_desiredDistanceInLineFormation = desiredDistanceinLine;
+        std::cout << "agentradius init to be " << m_agentRadius << std::endl;
+
         if (m_workspace == Common::WORKSPACE::DIM_2_WITH_YAW ||
             m_workspace == Common::WORKSPACE::DIM_2_WITHOUT_YAW)
         {

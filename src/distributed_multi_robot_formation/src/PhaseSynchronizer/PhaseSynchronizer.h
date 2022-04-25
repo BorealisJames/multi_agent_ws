@@ -14,6 +14,10 @@
 #include <sensor_msgs/PointCloud2.h>
 
 #include "../Common/Common.h"
+// Could not find path?
+#include "../../../Common/ConstantsEnum.h"
+#include "../../../Common/Config/ConfigFileReader.h"
+
 #include "../ConvexHullOfRobotPosition/ConvexHullOfRobotPosition.h"
 #include "../DirectionOfMotion/DirectionOfMotion.h"
 #include "../VirtualPositionAssignment/VirtualPositionAssignment.h"
@@ -23,8 +27,6 @@
 #include "../Formation3D/Formation3D.h"
 #include "../ProcessPointCloud/ProcessPointCloud.h"
 #include "../FollowMeGoalGenerator/FollowMeGoalGenerator.h"
-
-
 
 namespace DistributedFormation
 {
@@ -49,6 +51,9 @@ public:
 private:
     DistributedMultiRobotFormationHandler::Ptr m_handlerPtr;
 
+    // Namespace not found 
+    // Common::Utils::ConfigFileReader mConfigFileReader;
+ 
     void OnEnterPhase1();
     void OnEnterPhase2();
     void OnEnterPhase3();

@@ -1,12 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- <group ns="uav1"> -->
-        <node pkg="borealis_sim_human_uav" type="borealis_sim_human_uav_node" name="borealis_sim_human_uav" output="screen"/>
-    <!-- </group> -->
-    <!-- <group ns="uav2"> -->
-        <node pkg="borealis_follow_me" type="borealis_follow_me_node" name="borealis_follow_me" output="screen"/>
-    <!-- </group> --> -->
-
+    <node pkg="borealis_sim_human_uav" type="borealis_sim_human_uav_node" name="borealis_sim_human_uav" output="screen"/>
     <node pkg="borealis_sim_human_uav" type="sim_teleop_position.py" name="borealis_sim_human_uav_teleop" output="screen"/>
-
 </launch>

@@ -386,7 +386,6 @@ void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::Co
     if(!mPoseTransformListener.waitForTransform(systemFrame,sourceFrame, tmpSelfLocalPose.header.stamp ,ros::Duration(0.3)))
     {
         ROS_WARN("Wait for transform timed out, using last available transform instead.");
-        ROS_WARN("LocalPose callback failed.");
     }
 
     mPoseTransformListener.transformPose(systemFrame,tmpSelfLocalPose,tmpSelfSystemPose);

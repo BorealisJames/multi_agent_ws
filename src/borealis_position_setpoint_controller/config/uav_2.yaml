@@ -1,9 +1,11 @@
 #subscriber
-sub_desired_setpoint_topic: /uav2/teaming_planner/assigned_virtual_position
-sub_current_position_topic: /uav2/mavros/local_position/pose
+sub_assigned_virtual_position_topic: /uav2/teaming_planner/assigned_virtual_position
 
 #publisher
-pub_setpoint_position_topic: /uav2/mavros/setpoint_position/local
+pub_to_sense_avoid_topic: /uav2/sense_avoid/setpoint_position
+
+source_frame: /odom
+target_frame: /uav2
 
 setpoint_z: 2.0
 

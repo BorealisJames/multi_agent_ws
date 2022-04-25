@@ -3,6 +3,7 @@
 #include <math.h>
 #include <ros/node_handle.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <tf/transform_listener.h>
 
 class PositionSetpointControllerHandle
 {
@@ -21,26 +22,26 @@ private:
 
     void DesiredPoseCallback(geometry_msgs::PoseStamped::ConstPtr pose);
 
-    void CurrentPoseCallback(geometry_msgs::PoseStamped::ConstPtr pose);
+    void AssignedVirtualPoseCallback(geometry_msgs::PoseStamped::ConstPtr pose);
 
     ros::NodeHandle node_handle_;
 
-    std::string sub_desired_setpoint_topic_;
-    std::string sub_current_position_topic_;
-    std::string pub_setpoint_position_topic_;
+    tf::TransformListener mPoseTransformListener;
+
+    std::string sub_assigned_virtual_pose_topic;
+    std::string pub_to_sense_avoid_topic;
+    std::string source_frame;
+    std::string target_frame;
+
     double rate_;
-    double setpoint_x_;
-    double setpoint_y_;
-    double setpoint_z_;
-    double setquat_x_;
-    double setquat_y_;
-    double setquat_z_;
-    double setquat_w_;
+    geometry_msgs::PoseStamped sense_avoid_pose;
+        
+    double sense_avoid_z;
+
     bool use_current_pose_;
 
-    ros::Publisher pub_setpoint_position_;
-    ros::Subscriber sub_desired_setpoint_;
-    ros::Subscriber sub_current_position_;
+    ros::Publisher pub_to_sense_avoid;
+    ros::Subscriber sub_assigned_virtual_pose;
 };
 
 template <class Type>

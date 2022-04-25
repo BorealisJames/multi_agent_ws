@@ -22,6 +22,7 @@ namespace DistributedFormation
 class DistributedMultiRobotFormationHandler
 {
 public:
+    ros::NodeHandle m_nh;
     typedef std::shared_ptr<DistributedMultiRobotFormationHandler> Ptr;
 
     DistributedMultiRobotFormationHandler()
@@ -84,7 +85,6 @@ public:
     }
 
 private:
-    ros::NodeHandle m_nh;
     ros::Publisher m_polyPubUAV;
     ros::Publisher m_processedPointCloud;
 };

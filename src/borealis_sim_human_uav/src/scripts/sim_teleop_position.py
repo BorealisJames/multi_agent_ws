@@ -101,13 +101,13 @@ if __name__=="__main__":
                 y += speed * direction_y
                 z += speed * direction_z
                 print_pos_speed(speed, x, y, z, yaw)
-                print("pose orientation w = ", pose_stamped.pose.orientation.w)
+                # print("pose orientation w = {}".format(pose_stamped.pose.orientation.w))
 
             elif key in speedBindings.keys():
                 speed_increment = speedBindings[key]
                 speed += speed_increment
                 print_pos_speed(speed, x, y, z, yaw)
-                print("pose orientation w = ", pose_stamped.pose.orientation.w)
+                # print("pose orientation w = {}".format(pose_stamped.pose.orientation.w))
 
             elif key in yawBindings.keys():
                 yaw_direciton = yawBindings[key]
@@ -116,7 +116,7 @@ if __name__=="__main__":
                     yaw = 360
 
                 print_pos_speed(speed, x, y, z,yaw)
-                print("pose orientation w = ", pose_stamped.pose.orientation.w)
+                # print("pose orientation w = {}".format(pose_stamped.pose.orientation.w))
 
             else:
                 if (key == '\x03'):
@@ -134,6 +134,7 @@ if __name__=="__main__":
             pose_stamped.pose.orientation.y = quaternion[1]
             pose_stamped.pose.orientation.z = quaternion[2]
             pose_stamped.pose.orientation.w = quaternion[3]
+            pose_stamped.header.frame_id = "odom"
 
             human_pub.publish(pose_stamped)
             uav_all_pub.publish(pose_stamped)

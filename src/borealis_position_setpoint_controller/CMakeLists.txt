@@ -7,6 +7,7 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED
         COMPONENTS
         roscpp
+        tf
         geometry_msgs)
 
 catkin_package(INCLUDE_DIRS
@@ -15,6 +16,7 @@ catkin_package(INCLUDE_DIRS
         ${PROJECT_NAME}_core
         CATKIN_DEPENDS
         roscpp
+        tf
         geometry_msgs)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
