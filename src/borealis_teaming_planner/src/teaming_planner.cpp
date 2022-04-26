@@ -33,8 +33,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
 
         // Publishers
         mPhaseAndTimePublisher = mNh.advertise<mt_msgs::phaseAndTime>("/phase_and_time", 10);
-
-        mSelfSystemPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/system_pose", 10);
+        // mSelfSystemPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/system_pose", 10);
 
         mPosePublisher = mNh.advertise<mt_msgs::pose>("/system_pose_from_formation", 10);
         mDirectionUtilityPublisher = mNh.advertise<mt_msgs::angleIndexAndUtility>("/direction_utility", 10);
@@ -48,11 +47,12 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         // Subscribers 
         mGoalSubscriber = mNh.subscribe<mt_msgs::pose>("/goal", 10, &TeamingPlanner::goalCallback, this);
         mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/human_input_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
-        mSelfLocalPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/local_pose", 10, &TeamingPlanner::mSelfLocalPoseCallback, this);
+        mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
 
-        // Changed to point cloud 2
+        // Changed to point cloud 
         mSystemPointCloud2Subscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/pointcloud", 10, &TeamingPlanner::systemPointCloud2Callback, this);
-        
+        mSystemPointCloudSubscriber = mNh.subscribe<sensor_msgs::PointCloud>("/pointcloud", 10, &TeamingPlanner::systemPointCloudCallback, this);
+
         mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::taskCallback, this);
 
         for (int i = 1; i <= mNumOfAgents; i++)
@@ -65,7 +65,9 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
                 continue;
             }
 
-            std::string systemPoseTopic = "/uav" + std::to_string(i) + "/teaming_planner/system_pose";
+            // std::string systemPoseTopic = "/uav" + std::to_string(i) + "/teaming_planner/system_pose";
+            std::string systemPoseTopic = "/UAV" + std::to_string(i) + "Pose";
+
             std::string phaseAndTimeTopic = "/uav" + std::to_string(i) + "/teaming_planner/phase_and_time";
             std::string directionUtilityTopic = "/uav" + std::to_string(i) + "/teaming_planner/direction_utility";
             std::string convexRegion2DTopic = "/uav" + std::to_string(i) + "/teaming_planner/convex_region_2D";

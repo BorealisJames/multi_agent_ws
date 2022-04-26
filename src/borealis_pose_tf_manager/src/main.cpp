@@ -11,10 +11,6 @@ int main(int argc, char **argv)
 
     PositionSetpointControllerHandle PSC_handle(nh);
 
-    ros::Timer timerPublishPositionSetpoint =
-            nh.createTimer(ros::Duration(1.0 / PSC_handle.getRate()),
-                           std::bind(&PositionSetpointControllerHandle::PublishPose, &PSC_handle));
-
     ros::spin();
     return 0;
 }

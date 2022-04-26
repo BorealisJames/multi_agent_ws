@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <group ns="uav2">
-  <node name="position_setpoint_controller2" pkg="borealis_position_setpoint_controller" type="borealis_position_setpoint_controller" output="screen">
-    <rosparam command="load" file="$(find borealis_position_setpoint_controller)/config/uav_2.yaml"/>
-  </node>
-</group>
-</launch>

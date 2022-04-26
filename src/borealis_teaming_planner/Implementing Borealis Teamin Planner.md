@@ -13,7 +13,7 @@ mControlStatePublisher = mNh.advertise<std_msgs::Int8>("/control_state",10);
 // Subscribers 
 mGoalSubscriber = mNh.subscribe<mt_msgs::pose>("/goal", 10, &TeamingPlanner::goalCallback, this);
 mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/human/system_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
-mSelfLocalPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::mSelfLocalPoseCallback, this);
+mSelfLocalPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::mSelfSystemPoseCallback, this);
 mSystemPointCloudSubscriber = mNh.subscribe<sensor_msgs::PointCloud>("/pointcloud", 10, &TeamingPlanner::systemPointCloudCallback, this);
 mSystemDepthCameraSubscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/depth_camera", 10, &TeamingPlanner::systemDepthCameraCallback, this);
 mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::taskCallback, this);
@@ -21,7 +21,7 @@ mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::t
 Adjusting for subscriber adjust 
 
 mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/human/system_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
-mSelfLocalPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::mSelfLocalPoseCallback, this);
+mSelfLocalPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::mSelfSystemPoseCallback, this);
 
 mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::taskCallback, this); <-- Change msg type to string type so its easier
 

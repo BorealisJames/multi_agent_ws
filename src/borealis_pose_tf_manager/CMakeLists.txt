@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(borealis_position_setpoint_controller)
+project(borealis_pose_tf_manager)
 
 add_compile_options(-std=c++11)
 

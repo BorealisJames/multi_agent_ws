@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+
 <launch>
    
   <arg name="uav_name_2" default="uav2"/>
@@ -18,7 +19,7 @@
       <remap from="/pointcloud" to="/uav2_os_cloud_node/points"/>
       <remap from="/local_pose" to="mavros/local_position/pose"/>
 
-      <remap from="/system_pose" to="system_pose"/>
+      <remap from="/system_pose" to="/UAV2Pose"/>
       <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
       <remap from="/task" to="/task"/>
       <remap from="/control_state" to="control/state"/>
@@ -27,5 +28,11 @@
 
     </node>
   </group>
+
+  <param name="/follow_distance" type="double" value="1" />
+  <param name="/agent_radius" type="double" value="0.5" />
+  <param name="/desired_tri_length" type="double" value="2.5" />
+  <param name="/desired_line_length" type="double" value="2" />
+
 
 </launch>

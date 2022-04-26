@@ -10,8 +10,6 @@ class PositionSetpointControllerHandle
 public:
     PositionSetpointControllerHandle(ros::NodeHandle &nodeHandle);
 
-    double getRate();
-
     void PublishPose();
 
 private:
@@ -33,7 +31,6 @@ private:
     std::string source_frame;
     std::string target_frame;
 
-    double rate_;
     geometry_msgs::PoseStamped sense_avoid_pose;
         
     double sense_avoid_z;

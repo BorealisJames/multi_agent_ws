@@ -93,7 +93,6 @@ class TeamingPlanner
 
         // Publisher
         ros::Publisher mPhaseAndTimePublisher;
-        ros::Publisher mSelfSystemPosePublisher;
         ros::Publisher mPosePublisher;
         ros::Publisher mDirectionUtilityPublisher;
         ros::Publisher mConvexRegion2DPublisher;
@@ -108,11 +107,9 @@ class TeamingPlanner
         ros::Subscriber mGoalSubscriber;
         ros::Subscriber mTaskSubscriber;
         ros::Subscriber mHumanSystemPoseSubscriber;
-        ros::Subscriber mSelfLocalPoseSubscriber;
+        ros::Subscriber mSelfSystemPoseSubscriber;
         ros::Subscriber mSystemPointCloudSubscriber;
-
         ros::Subscriber mSystemPointCloud2Subscriber;
-        
         ros::Subscriber mSystemDepthCameraSubscriber;
 
         ros::Subscriber mGunTargetPoseSubscriber;
@@ -143,7 +140,7 @@ class TeamingPlanner
         void goalCallback(const mt_msgs::pose::ConstPtr& aGoal);
         void taskCallback(const mt_msgs::mtTask::ConstPtr& aTask);
         void humanSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aHumanSystemPose);
-        void mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfLocalPose);
+        void selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose);
         void systemPoseCallback(const mt_msgs::pose::ConstPtr& aSystemPose);
         void systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud);
 

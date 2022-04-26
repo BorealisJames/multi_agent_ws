@@ -40,6 +40,7 @@ namespace DistributedFormation
         double tmp_agentradius;
         double desiredDistanceinTri;
         double desiredDistanceinLine;
+        
         m_handlerPtr->m_nh.getParam("/follow_distance", tmp_distance);
         m_handlerPtr->m_nh.getParam("/agent_radius", tmp_agentradius);
         m_handlerPtr->m_nh.getParam("/desired_tri_length", desiredDistanceinTri);
@@ -673,7 +674,7 @@ namespace DistributedFormation
         }
 
         // Apply Voxel filter and Convert to pointcloud2
-        ROS_INFO("Phase cppPoint cloud size is %i",lidarPointCloud2.fields.size());
+        // ROS_INFO("Phase cppPoint cloud size is %i",lidarPointCloud2.fields.size());
 
         //Note only using lidar and not depth camera
         //m_processPointCloud.AppendPointClouds(lidarPointCloud, cameraPointCloud, m_ownPointCloud);

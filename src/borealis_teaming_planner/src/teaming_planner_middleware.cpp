@@ -327,6 +327,8 @@ void TeamingPlanner::taskCallback(const mt_msgs::mtTask::ConstPtr& aTask)
     //ROS_INFO("[Teaming Planner %d]: Task Message Received\n", mSourceSegmentId);
 }
 
+// human array systempose callback input-> pose array stamped vector, convert to std::vector<DistributedFormation::Common::Pose> and assign it to mHistoryOfHumanPoses; 
+// mHistoryOfHumanPoses
 void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aHumanSystemPose)
 {
     Common::Entity::Pose tmp(*aHumanSystemPose);
@@ -334,9 +336,6 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::C
     mHumanSystemPose.position.y = tmp.position.y;
     mHumanSystemPose.position.z = tmp.position.z;
     mHumanSystemPose.headingRad = tmp.yaw;
-    ROS_INFO("aHuman system quat is x:%f, y:%f, z:%f, w:%f. ", aHumanSystemPose->pose.orientation.x, aHumanSystemPose->pose.orientation.y, aHumanSystemPose->pose.orientation.z, aHumanSystemPose->pose.orientation.w) ;
-    ROS_INFO("mHuman system pose heading is x:%f, y:%f, z:%f, heading:%f. ", mHumanSystemPose.position.x, mHumanSystemPose.position.y, mHumanSystemPose.position.z, mHumanSystemPose.headingRad);
-    ROS_INFO("tmp yaw is %f", tmp.yaw);
 
     // comment this guy out
     while(mHistoryOfHumanPoses.size() > (mPlanningHorizon/mIntervalDistance) - 1)
@@ -366,33 +365,10 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::C
     // comment this guy out
 }
 
-// human array systempose callback input-> pose array stamped vector, convert to std::vector<DistributedFormation::Common::Pose> and assign it to mHistoryOfHumanPoses; 
-// mHistoryOfHumanPoses
-
-void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfLocalPose)
+void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose)
 {
 
-    geometry_msgs::PoseStamped tmpSelfSystemPose; 
-    geometry_msgs::PoseStamped tmpSelfLocalPose = *aSelfLocalPose; 
-
-    std::string systemFrame = "/odom";
-    // uav2/t265_odom_frame
-    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
-    // const ros::Time refTime = ros::Time::now(); // Sometimes there is a desync in time. This is a quick fix
-
-    tmpSelfLocalPose.header.frame_id = sourceFrame;
-    tmpSelfLocalPose.header.stamp = ros::Time::now(); // "The latest available" transform in the buffer
-
-    if(!mPoseTransformListener.waitForTransform(systemFrame,sourceFrame, tmpSelfLocalPose.header.stamp ,ros::Duration(0.3)))
-    {
-        ROS_WARN("Wait for transform timed out, using last available transform instead.");
-    }
-
-    mPoseTransformListener.transformPose(systemFrame,tmpSelfLocalPose,tmpSelfSystemPose);
-
-    mSelfSystemPosePublisher.publish(tmpSelfSystemPose); // Publish own pose in ROS format
-
-    Common::Entity::Pose tmp(tmpSelfSystemPose);
+    Common::Entity::Pose tmp(*aSelfSystemPose);
     mSelfSystemPose.position.x = tmp.position.x;
     mSelfSystemPose.position.y = tmp.position.y;
     mSelfSystemPose.position.z = tmp.position.z;
@@ -400,21 +376,23 @@ void TeamingPlanner::mSelfLocalPoseCallback(const geometry_msgs::PoseStamped::Co
 
     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
 
-    pubPose(mSourceSegmentId, mSelfSystemPose);
+    // pubPose(mSourceSegmentId, mSelfSystemPose);
 
-    if (mDebugVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: Self System Pose Received\n", mSourceSegmentId);
-    }    
+    // if (mDebugVerbose)
+    // {
+    //     ROS_INFO("[Teaming Planner %d]: Self System Pose Received\n", mSourceSegmentId);
+    // } 
 }
 
 void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
 {
-    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_lidar";
-    
+    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_sensor";
+    // sensor_msgs::PointCloud tmpPointClud;
+    // tmpPointClud = *aSystemPointCloud;
+    // tmpPointClud->header.frame_id = "pseudo_lidar_local"; // change this
     try
     {
-        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, ros::Time::now(), ros::Duration(0.3));
+        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, aSystemPointCloud->header.stamp, ros::Duration(0.3));
         mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, *aSystemPointCloud, mSystemPointCloud);
     }
     catch (tf::TransformException ex)
@@ -428,6 +406,7 @@ void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::Con
     }
 }
 
+// This will not be needed once grid map is published in pc1
 void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::ConstPtr& aSystemPointCloud2)
 {
 

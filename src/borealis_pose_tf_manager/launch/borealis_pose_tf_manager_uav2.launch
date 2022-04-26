@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <group ns="uav2">
+  <node name="borealis_pose_tf_manager2" pkg="borealis_pose_tf_manager" type="borealis_pose_tf_manager" output="screen">
+    <rosparam command="load" file="$(find borealis_pose_tf_manager)/config/uav_2.yaml"/>
+  </node>
+</group>
+</launch>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>borealis_position_setpoint_controller</name>
+  <name>borealis_pose_tf_manager</name>
   <version>1.0.0</version>
   <description>publish position to offboard mode</description>
   <maintainer email="bensonkuan1990@gmail.com">Benson Kuan</maintainer>
