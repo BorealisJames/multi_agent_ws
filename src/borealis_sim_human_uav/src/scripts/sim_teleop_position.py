@@ -69,7 +69,7 @@ if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
     rospy.init_node('borealis_teleop')
     human_pub = rospy.Publisher(human_publisher_topic, PoseStamped, queue_size=5)
-    uav_all_pub = rospy.Publisher(uav_all_publisher_topic, PoseStamped, queue_size=5)
+    uav_all_pub = rospy.Publisher(uav_all_publisher_topic, PoseWithCovarianceStamped, queue_size=5)
     rate = rospy.Rate(20) # 10hz
     try:
         x = 0
@@ -136,8 +136,12 @@ if __name__=="__main__":
             pose_stamped.pose.orientation.w = quaternion[3]
             pose_stamped.header.frame_id = "odom"
 
+            tmp_pose_stamped_covariance = PoseWithCovarianceStamped()
+            tmp_pose_stamped_covariance.pose.pose = pose_stamped.pose
+            tmp_pose_stamped_covariance.header = pose_stamped.header
+
             human_pub.publish(pose_stamped)
-            uav_all_pub.publish(pose_stamped)
+            uav_all_pub.publish(tmp_pose_stamped_covariance)
             rate.sleep()
 
     except Exception as e:

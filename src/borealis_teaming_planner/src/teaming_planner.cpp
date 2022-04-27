@@ -65,8 +65,8 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
                 continue;
             }
 
-            // std::string systemPoseTopic = "/uav" + std::to_string(i) + "/teaming_planner/system_pose";
-            std::string systemPoseTopic = "/UAV" + std::to_string(i) + "Pose";
+            std::string systemPoseTopic = "/uav" + std::to_string(i) + "/teaming_planner/system_pose";
+            // std::string systemPoseTopic = "/UAV" + std::to_string(i) + "Pose";
 
             std::string phaseAndTimeTopic = "/uav" + std::to_string(i) + "/teaming_planner/phase_and_time";
             std::string directionUtilityTopic = "/uav" + std::to_string(i) + "/teaming_planner/direction_utility";
