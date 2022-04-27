@@ -329,9 +329,13 @@ void TeamingPlanner::taskCallback(const mt_msgs::mtTask::ConstPtr& aTask)
 
 // human array systempose callback input-> pose array stamped vector, convert to std::vector<DistributedFormation::Common::Pose> and assign it to mHistoryOfHumanPoses; 
 // mHistoryOfHumanPoses
-void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aHumanSystemPose)
+void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aHumanSystemPose)
 {
-    Common::Entity::Pose tmp(*aHumanSystemPose);
+    geometry_msgs::PoseStamped tmp_pose; 
+    tmp_pose.header =  aHumanSystemPose->header;
+    tmp_pose.pose =  aHumanSystemPose->pose.pose;
+
+    Common::Entity::Pose tmp(tmp_pose);
     mHumanSystemPose.position.x = tmp.position.x;
     mHumanSystemPose.position.y = tmp.position.y;
     mHumanSystemPose.position.z = tmp.position.z;
