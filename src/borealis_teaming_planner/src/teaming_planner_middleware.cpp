@@ -380,7 +380,7 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::Co
 
     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
 
-    // pubPose(mSourceSegmentId, mSelfSystemPose);
+    pubPose(mSourceSegmentId, mSelfSystemPose);
 
     // if (mDebugVerbose)
     // {
