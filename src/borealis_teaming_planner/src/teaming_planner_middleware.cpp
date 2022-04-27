@@ -369,10 +369,13 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseWithCovari
     // comment this guy out
 }
 
-void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose)
+void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseWithCovarianceStamped)
 {
+    geometry_msgs::PoseStamped tmp_pose;
+    tmp_pose.header = PoseWithCovarianceStamped->header;
+    tmp_pose.pose = PoseWithCovarianceStamped->pose.pose;
 
-    Common::Entity::Pose tmp(*aSelfSystemPose);
+    Common::Entity::Pose tmp(tmp_pose);
     mSelfSystemPose.position.x = tmp.position.x;
     mSelfSystemPose.position.y = tmp.position.y;
     mSelfSystemPose.position.z = tmp.position.z;
