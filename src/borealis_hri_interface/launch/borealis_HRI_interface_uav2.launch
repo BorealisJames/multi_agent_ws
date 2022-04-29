@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <group ns="uav2">
-        <node pkg="borealis_hri_interface" type="borealis_hri_interface_node" name="borealis_hri_interface" output="screen"/>
+        <node pkg="borealis_hri_interface" type="borealis_hri_formation_interface_node" name="borealis_hri_interface" output="screen"/>
         <rosparam command="load" file="$(find borealis_hri_interface)/config/hri_interface_config_uav2.yaml"/>
     </group>
 </launch>
