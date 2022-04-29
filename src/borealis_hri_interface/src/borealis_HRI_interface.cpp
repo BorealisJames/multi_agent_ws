@@ -35,8 +35,8 @@ void BorealisHRIInterface::HRITaskCallback(const std_msgs::String::ConstPtr& msg
     if (str2.compare(msg->data.c_str()) == 0)
     {
         mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
-
     }
+    pubTask(mTask);
 }
 
 void BorealisHRIInterface::moduleLoopCallback(const ros::TimerEvent& aEvent)
@@ -63,7 +63,6 @@ void BorealisHRIInterface::moduleLoopCallback(const ros::TimerEvent& aEvent)
     }
     ROS_INFO("Agent %i: Publishing task %s", mSourceSegmentId,task_string.c_str());
     
-    pubTask(mTask);
 }
 
 bool BorealisHRIInterface::pubTask(const Common::Entity::MTTaskBundle aTask)
