@@ -28,6 +28,8 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConfigFileReader.getParam(nhPrivate, "debugVerbose", mDebugVerbose, false);
         mConfigFileReader.getParam(nhPrivate, "intervalDistance", mIntervalDistance, 0.5);
         mConfigFileReader.getParam(nhPrivate, "planningHorizon", mPlanningHorizon, 25);
+        mConfigFileReader.getParam(nhPrivate, "desiredHeight", mDesiredHeight, 25);
+        
 
         mgunTargetPoseRecieved = false;
 

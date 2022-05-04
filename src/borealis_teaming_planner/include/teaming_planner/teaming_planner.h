@@ -56,6 +56,7 @@ class TeamingPlanner
         bool mDebugVerbose;
         double mIntervalDistance;
         double mPlanningHorizon;
+        double mDesiredHeight;
 
         // Variables
         TeamingPlannerConstants::ModuleState mModuleState;
