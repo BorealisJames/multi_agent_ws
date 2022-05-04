@@ -397,15 +397,16 @@ void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::Con
     // sensor_msgs::PointCloud tmpPointClud;
     // tmpPointClud = *aSystemPointCloud;
     // tmpPointClud->header.frame_id = "pseudo_lidar_local"; // change this
-    try
-    {
-        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, aSystemPointCloud->header.stamp, ros::Duration(0.3));
-        mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, *aSystemPointCloud, mSystemPointCloud);
-    }
-    catch (tf::TransformException ex)
-    {
-        ROS_ERROR("%s", ex.what());
-    }
+    mSystemPointCloud = *aSystemPointCloud;
+    // try
+    // {
+    //     mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, aSystemPointCloud->header.stamp, ros::Duration(0.3));
+    //     mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, *aSystemPointCloud, mSystemPointCloud);
+    // }
+    // catch (tf::TransformException ex)
+    // {
+    //     ROS_ERROR("%s", ex.what());
+    // }
 
     if (mDebugVerbose)
     {
@@ -906,7 +907,7 @@ bool TeamingPlanner::switchToGunTargetPose(const int32_t aAgentId)
             ROS_INFO("Publishing tmp pose: %i", tmp.pose.position.x);
             mAssignedVirtualPosePublisher.publish(tmp);
         }
-        
+
     }
     else
     {
