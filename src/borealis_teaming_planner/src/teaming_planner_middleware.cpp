@@ -904,6 +904,8 @@ bool TeamingPlanner::switchToGunTargetPose(const int32_t aAgentId)
             tmp.pose.orientation = mGunTargetPose.pose.pose.orientation;
             tmp.pose.position = mGunTargetPose.pose.pose.position;
             tmp.pose.position.z = mDesiredHeight;
+            tmp.header.frame_id = "/odom";
+
             ROS_INFO("Publishing tmp pose: %i", tmp.pose.position.x);
             mAssignedVirtualPosePublisher.publish(tmp);
         }
