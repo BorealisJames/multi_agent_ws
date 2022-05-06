@@ -4,4 +4,4 @@
 /uav2/borealis_teaming_planner/intervalDistance: 0.5
 /uav2/borealis_teaming_planner/planningHorizon: 25
 /uav2/borealis_teaming_planner/debugVerbose: false
-/uav1/borealis_teaming_planner/desiredHeight: 1.2
+/uav2/borealis_teaming_planner/desiredHeight: 1.2
