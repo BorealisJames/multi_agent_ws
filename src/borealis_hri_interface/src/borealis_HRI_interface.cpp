@@ -9,7 +9,7 @@ BorealisHRIInterface::BorealisHRIInterface(const ros::NodeHandle& nh, const ros:
     mConfigFileReader.getParam(nhPrivate, "modulePeriod", mModulePeriod, 1);
 
     mTask.type = Common::Entity::MTTaskEnum::UNDEFINED;
-    ROS_INFO("Module period is %f", mModulePeriod);
+
     //Subscriber
     mHumanTaskSubscriber = mNh.subscribe("/hri_mode",10, &BorealisHRIInterface::HRITaskCallback, this);
 

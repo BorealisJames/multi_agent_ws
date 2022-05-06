@@ -17,7 +17,9 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   # mavros_msgs
   visualization_msgs
-  tf
+  # tf
+  tf2
+  tf2_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -145,6 +147,7 @@ add_library(${PROJECT_NAME}
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/borealis_HRI_interface_node.cpp)
+add_executable(${PROJECT_NAME}_header_pseudo_script src/borealis_HRI_pose_tf_script.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -158,6 +161,11 @@ add_executable(${PROJECT_NAME}_node src/borealis_HRI_interface_node.cpp)
 
 # Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
+  ${catkin_LIBRARIES}
+  ${PROJECT_NAME}
+)
+
+target_link_libraries(${PROJECT_NAME}_header_pseudo_script
   ${catkin_LIBRARIES}
   ${PROJECT_NAME}
 )

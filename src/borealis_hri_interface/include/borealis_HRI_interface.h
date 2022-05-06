@@ -4,16 +4,18 @@
 #include <ros/ros.h>
 #include <ros/subscribe_options.h>
 #include <unordered_map>
+#include <string>
 
 #include "../../distributed_multi_robot_formation/src/Common/Common.h"
 #include "../../Common/ConstantsEnum.h"
 #include "../../Common/Config/ConfigFileReader.h"
 
-
 #include <mt_msgs/pose.h>
 #include <mt_msgs/mtTask.h>
 #include <std_msgs/String.h>
 
+#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/TransformStamped.h>
 /**
  * @brief Listens to HRI (Human Robot Interface) for Tasks or Goals and Publish it to the Teaming planner
  */
@@ -31,7 +33,6 @@ class BorealisHRIInterface
 
         double mModulePeriod;
         uint32_t mSourceSegmentId;
-
 
         // Publisher
         ros::Publisher mTaskPublisher;

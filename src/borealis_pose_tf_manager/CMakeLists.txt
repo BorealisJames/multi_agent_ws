@@ -22,7 +22,7 @@ catkin_package(INCLUDE_DIRS
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME}_core
-        src/PositionSetpointControllerHandle.cpp)
+        src/HRITfManager.cpp)
 
 # Each node in the package must be declared like this
 add_executable(${PROJECT_NAME} src/main.cpp)
