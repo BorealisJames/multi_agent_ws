@@ -70,13 +70,13 @@ public:
     void Pub2DPolyUAV (const vec_E<Polyhedron<2>>& polyhedron)
     {
         decomp_ros_msgs::PolyhedronArray poly_msg = DecompROS::polyhedron_array_to_ros(polyhedron);
-        poly_msg.header.frame_id = "map";
+        poly_msg.header.frame_id = "odom";
         m_polyPubUAV.publish(poly_msg);
     }
     void Pub3DPolyUAV (const vec_E<Polyhedron<3>>& polyhedron)
     {
         decomp_ros_msgs::PolyhedronArray poly_msg = DecompROS::polyhedron_array_to_ros(polyhedron);
-        poly_msg.header.frame_id = "map";
+        poly_msg.header.frame_id = "odom";
         m_polyPubUAV.publish(poly_msg);
     }
     void PubProcessedPointCloud (const sensor_msgs::PointCloud& pointCloud)

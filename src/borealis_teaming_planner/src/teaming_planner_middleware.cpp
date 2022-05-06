@@ -211,33 +211,39 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         tmp.pose.orientation.z = tQuat.getZ();
 
         std::string systemFrame = "/odom";
-        std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
+        // std::string targetFrame = "uav" + std::to_string(mSourceSegmentId) + "/t265_pose_frame";
 
         ros::Time tm;
         std::string err_string;
-        if (mPoseTransformListener.getLatestCommonTime(targetFrame, systemFrame, tm, &err_string) == tf::NO_ERROR)
-        {
-            tmp.header.stamp = tm;
 
-            try
-            {
-                mPoseTransformListener.transformPose(targetFrame,tmp,tmp_local);
+        tmp_local = tmp;
+        mAssignedVirtualPosePublisher.publish(tmp_local);
 
-                tmp_local.header.frame_id = targetFrame;
-                tmp_local.header.stamp = tm;
-                mAssignedVirtualPosePublisher.publish(tmp_local);
-            }
-            catch (tf::TransformException ex)
-            {
-                ROS_ERROR("%s", ex.what());
-                status = false;
-            }
-        }
-        else
-        {
-            ROS_ERROR("[Teaming Planner %d]: Unable to transform object from frame %s to %s \n", mSourceSegmentId, systemFrame.c_str(), targetFrame.c_str());
-            status = false;
-        }
+        // Do not transform to global frame
+
+        // if (mPoseTransformListener.getLatestCommonTime(targetFrame, systemFrame, tm, &err_string) == tf::NO_ERROR)
+        // {
+        //     tmp.header.stamp = tm;
+
+        //     try
+        //     {
+        //         mPoseTransformListener.transformPose(targetFrame,tmp,tmp_local);
+
+        //         tmp_local.header.frame_id = targetFrame;
+        //         tmp_local.header.stamp = tm;
+        //         mAssignedVirtualPosePublisher.publish(tmp_local);
+        //     }
+        //     catch (tf::TransformException ex)
+        //     {
+        //         ROS_ERROR("%s", ex.what());
+        //         status = false;
+        //     }
+        // }
+        // else
+        // {
+        //     ROS_ERROR("[Teaming Planner %d]: Unable to transform object from frame %s to %s \n", mSourceSegmentId, systemFrame.c_str(), targetFrame.c_str());
+        //     status = false;
+        // }
     }
     else
     {
