@@ -682,37 +682,37 @@ namespace DistributedFormation
 
         if (m_dimension == Common::DIMENSION::DIM_2)
         {
-            // sensor_msgs::PointCloud tmpOutputPointCloud;
-            // for(auto&& agentPose : m_poseOfAgentsInTeam)
-            // {
-            //     m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
-            //                                                                                    agentPose.second.position,
-            //                                                                                    m_pointRemovalRadius,
-            //                                                                                    tmpOutputPointCloud);
-            //     m_ownPointCloud = tmpOutputPointCloud;
-            // }
-            // m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
-            //                                                                                m_humanPose.position,
-            //                                                                                m_pointRemovalRadius,
-            //                                                                                tmpOutputPointCloud);
-            // m_ownPointCloud = tmpOutputPointCloud;
+            sensor_msgs::PointCloud tmpOutputPointCloud;
+            for(auto&& agentPose : m_poseOfAgentsInTeam)
+            {
+                m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
+                                                                                               agentPose.second.position,
+                                                                                               m_pointRemovalRadius,
+                                                                                               tmpOutputPointCloud);
+                m_ownPointCloud = tmpOutputPointCloud;
+            }
+            m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
+                                                                                           m_humanPose.position,
+                                                                                           m_pointRemovalRadius,
+                                                                                           tmpOutputPointCloud);
+            m_ownPointCloud = tmpOutputPointCloud;
         }
         else if (m_dimension == Common::DIMENSION::DIM_3)
         {
-            // sensor_msgs::PointCloud tmpOutputPointCloud;
-            // for(auto&& agentPose : m_poseOfAgentsInTeam)
-            // {
-            //     m_processPointCloud.RemovePointsWithinARadiusPointCloud3D(m_ownPointCloud,
-            //                                                                    agentPose.second.position,
-            //                                                                    m_pointRemovalRadius,
-            //                                                                    tmpOutputPointCloud);
-            //     m_ownPointCloud = tmpOutputPointCloud;
-            // }
-            // m_processPointCloud.RemovePointsWithinARadiusPointCloud3D(m_ownPointCloud,
-            //                                                                m_humanPose.position,
-            //                                                                m_pointRemovalRadius,
-            //                                                                tmpOutputPointCloud);
-            // m_ownPointCloud = tmpOutputPointCloud;
+            sensor_msgs::PointCloud tmpOutputPointCloud;
+            for(auto&& agentPose : m_poseOfAgentsInTeam)
+            {
+                m_processPointCloud.RemovePointsWithinARadiusPointCloud3D(m_ownPointCloud,
+                                                                               agentPose.second.position,
+                                                                               m_pointRemovalRadius,
+                                                                               tmpOutputPointCloud);
+                m_ownPointCloud = tmpOutputPointCloud;
+            }
+            m_processPointCloud.RemovePointsWithinARadiusPointCloud3D(m_ownPointCloud,
+                                                                           m_humanPose.position,
+                                                                           m_pointRemovalRadius,
+                                                                           tmpOutputPointCloud);
+            m_ownPointCloud = tmpOutputPointCloud;
         }
 
         //add back human position as a point
