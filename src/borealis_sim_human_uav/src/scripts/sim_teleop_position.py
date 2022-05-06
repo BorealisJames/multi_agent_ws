@@ -140,7 +140,7 @@ if __name__=="__main__":
             tmp_pose_stamped_covariance.pose.pose = pose_stamped.pose
             tmp_pose_stamped_covariance.header = pose_stamped.header
 
-            human_pub.publish(pose_stamped)
+            # human_pub.publish(pose_stamped)
             uav_all_pub.publish(tmp_pose_stamped_covariance)
             rate.sleep()
 

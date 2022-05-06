@@ -17,7 +17,7 @@
 
       <remap from="/pointcloud" to="/uav1_os_cloud_node/points"/>
       <remap from="/local_pose" to="mavros/local_position/pose"/>
-/uav1_os_cloud_node/points
+
       <remap from="/system_pose" to="/UAV1Pose"/>
       <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
       <remap from="/task" to="/task"/>
@@ -29,8 +29,8 @@
   </group>
 
   <param name="/follow_distance" type="double" value="1" />
-  <param name="/agent_radius" type="double" value="0.5" />
+  <param name="/agent_radius" type="double" value="1" />
   <param name="/desired_tri_length" type="double" value="2.5" />
-  <param name="/desired_line_length" type="double" value="2" />
+  <param name="/desired_line_length" type="double" value="2.5" />
 
 </launch>
