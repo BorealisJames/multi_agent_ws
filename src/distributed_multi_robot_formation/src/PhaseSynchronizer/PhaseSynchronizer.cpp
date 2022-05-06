@@ -21,7 +21,7 @@ namespace DistributedFormation
     , m_localBoundingBoxForPathAlongX(3.0)
     , m_localBoundingBoxForPathAlongY(3.0)
     , m_localBoundingBoxForPathAlongZ(2.0)
-    , m_pointRemovalRadius(0.45)
+    , m_pointRemovalRadius(0.55)
     , m_desiredDistanceInTriFormation(2.5)
     , m_desiredDistanceInLineFormation(2)
     , m_incrementOffsetToFormationYaw(0)
