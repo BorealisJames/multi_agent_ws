@@ -28,7 +28,7 @@
     </node>
   </group>
 
-  <param name="/follow_distance" type="double" value="1" />
+  <param name="/follow_distance" type="double" value="0.5" />
   <param name="/agent_radius" type="double" value="1" />
   <param name="/desired_tri_length" type="double" value="2.5" />
   <param name="/desired_line_length" type="double" value="3.8" />

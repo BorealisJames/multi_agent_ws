@@ -1,5 +1,9 @@
-/uav1/borealis_hri_header_tf/headerFrameId: "uav1/t265_pose_frame"
-/uav1/borealis_hri_header_tf/sourceSegmentId: 1
-/uav1/borealis_hri_header_tf/pseudoChildFrameId: "uav1/pseudo_uwb_t265_frame"
-/uav1/borealis_hri_header_tf/frameIdToCompare: "uav1"
+/uav1/borealis_hri_header_tf/headerFrameIdUAV1: "uav1/t265_pose_frame"
+/uav1/borealis_hri_header_tf/pseudoChildFrameIdUAV1: "uav1/pseudo_uwb_t265_frame"
+/uav1/borealis_hri_header_tf/frameIdToCompareUAV1: "uav1"
 
+/uav1/borealis_hri_header_tf/headerFrameIdUAV1: "uav2/t265_pose_frame"
+/uav1/borealis_hri_header_tf/pseudoChildFrameIdUAV1: "uav2/pseudo_uwb_t265_frame"
+/uav1borealis_hri_header_tf/frameIdToCompareUAV1: "uav2"
+
+/uav1/borealis_hri_header_tf/sourceSegmentId: 1

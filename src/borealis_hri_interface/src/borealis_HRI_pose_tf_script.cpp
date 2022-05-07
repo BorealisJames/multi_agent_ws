@@ -49,14 +49,30 @@ int main(int argc, char** argv){
     std::string mPseudoChildFrameId;
     std::string mFrameIdToCompare;
 
+    std::string mHeaderFrameI2;
+    std::string mPseudoChildFrameId2;
+    std::string mFrameIdToCompare2;
+
     ros::Subscriber mUwBsubscriber1;
     ros::Subscriber mUwBsubscriber2;
 
+    tf2_ros::TransformBroadcaster mPsuedotf_broadcaster;
+    tf2_ros::Buffer tf_buffer;
+    tf2_ros::TransformListener tf_listener(tf_buffer);
+
+    geometry_msgs::TransformStamped pseudo_broadcast_tf;
+    geometry_msgs::TransformStamped pseudo_broadcast_tf2;
+
     int mSourceSegmentId;
     
-    node.getParam("headerFrameId", mHeaderFrameId);
-    node.getParam("pseudoChildFrameId", mPseudoChildFrameId);
-    node.getParam("frameIdToCompare", mFrameIdToCompare);
+    node.getParam("headerFrameIdUAV1", mHeaderFrameId);
+    node.getParam("pseudoChildFrameIdUAV1", mPseudoChildFrameId);
+    node.getParam("frameIdToCompareUAV1", mFrameIdToCompare);
+
+    node.getParam("headerFrameIdUAV2", mHeaderFrameI2);
+    node.getParam("pseudoChildFrameIdUAV2", mPseudoChildFrameId2);
+    node.getParam("frameIdToCompareUAV2", mFrameIdToCompare2);
+
     node.getParam("sourceSegmentId", mSourceSegmentId);
 
     std::cout << "mHeaderFrameId is: " << mHeaderFrameId << std::endl;
@@ -66,12 +82,6 @@ int main(int argc, char** argv){
     mUwBsubscriber = node.subscribe("uwb_uav_frame1", geometry_msgs::PoseWithCovarianceStamped, UWBtfCallback);
     mUwBsubscriber2 = node.subscribe("uwb_uav_frame2", geometry_msgs::PoseWithCovarianceStamped, UWBtfCallback2);
 
-    tf2_ros::TransformBroadcaster mPsuedotf_broadcaster;
-    tf2_ros::Buffer tf_buffer;
-    tf2_ros::TransformListener tf_listener(tf_buffer);
-
-    geometry_msgs::TransformStamped pseudo_broadcast_tf;
-    geometry_msgs::TransformStamped uwb_broadcast_tf;
 
     pseudo_broadcast_tf.header.frame_id = mHeaderFrameId;
     pseudo_broadcast_tf.child_frame_id = mPseudoChildFrameId;
@@ -96,6 +106,26 @@ int main(int argc, char** argv){
         pseudo_broadcast_tf.transform = listen_tf.transform;
 
         mPsuedotf_broadcaster.sendTransform(pseudo_broadcast_tf);
+
+
+        geometry_msgs::TransformStamped listen_tf2;
+
+        try
+        {
+        listen_tf2 = tf_buffer.lookupTransform(mFrameIdToCompare2, mHeaderFrameId2, ros::Time(0.1));
+        }
+        catch(tf2::TransformException& ex)
+        {
+        ROS_WARN("%s",ex.what()); 
+        ros::Duration(1.0).sleep();
+        continue;
+        }
+        
+        pseudo_broadcast_tf.header.stamp = listen_tf2.header.stamp;
+        pseudo_broadcast_tf.transform = listen_tf2.transform;
+
+        mPsuedotf_broadcaster.sendTransform(pseudo_broadcast_tf);
+
 
         rate.sleep();
         
