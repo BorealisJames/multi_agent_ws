@@ -45,6 +45,7 @@ namespace DistributedFormation
         m_handlerPtr->m_nh.getParam("/agent_radius", tmp_agentradius);
         m_handlerPtr->m_nh.getParam("/desired_tri_length", desiredDistanceinTri);
         m_handlerPtr->m_nh.getParam("/desired_line_length", desiredDistanceinLine);
+        m_handlerPtr->m_nh.getParam("/point_removal_radius", m_pointRemovalRadius);
 
         m_distanceToFollowBehind = tmp_distance;
         m_agentRadius = tmp_agentradius;
