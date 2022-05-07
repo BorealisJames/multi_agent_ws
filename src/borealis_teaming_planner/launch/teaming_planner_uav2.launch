@@ -16,7 +16,7 @@
       <remap from="/phase_and_time" to="teaming_planner/phase_and_time"/>
       <remap from="/depth_camera" to="depth/points"/>
 
-      <remap from="/pointcloud" to="/uav2_os_cloud_node/points"/>
+      <remap from="/pointcloud" to="/uav2_object_filter/filtered_point_cloud"/>
       <remap from="/local_pose" to="mavros/local_position/pose"/>
 
       <remap from="/system_pose" to="/UAV2Pose"/>
