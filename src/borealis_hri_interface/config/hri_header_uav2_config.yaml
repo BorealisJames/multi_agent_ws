@@ -1,4 +1,0 @@
-/uav2/borealis_hri_header_tf/headerFrameId: "uav2/t265_pose_frame"
-/uav1/borealis_hri_header_tf/sourceSegmentId: 2
-/uav2/borealis_hri_header_tf/pseudoChildFrameId: "uav2/pseudo_uwb_t265_frame"
-/uav2/borealis_hri_header_tf/frameIdToCompare: "uav2"
