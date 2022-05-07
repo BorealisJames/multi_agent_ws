@@ -7,6 +7,38 @@
 
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
+
+
+// quick fix lmao
+
+void UWBtfCallback(geometry_msgs::PoseWithCovarianceStamped const &msg) {
+    tf2_ros::TransformBroadcaster muwbframe;
+    geometry_msgs::TransformStamped uwbtransform;
+    
+    uwbtransform.header.stamp = ros::Time::now();
+    uwbtransform.header.frame_id = "odom"; 
+    uwbtransform.child_frame_id = "UWB_uav1_body";
+    uwbtransform.transform.rotation = msg.pose.pose.orientation; 
+    uwbtransform.transform.translation = msg.pose.pose.position; 
+
+    muwbframe.sendTransform(uwbtransform);
+
+}
+
+void UWBtfCallback2(geometry_msgs::PoseWithCovarianceStamped const &msg) {
+    tf2_ros::TransformBroadcaster muwbframe;
+    geometry_msgs::TransformStamped uwbtransform;
+    
+    uwbtransform.header.stamp = ros::Time::now();
+    uwbtransform.header.frame_id = "odom"; 
+    uwbtransform.child_frame_id = "UWB_uav2_body";
+    uwbtransform.transform.rotation = msg.pose.pose.orientation; 
+    uwbtransform.transform.translation = msg.pose.pose.position; 
+
+    muwbframe.sendTransform(uwbtransform);
+
+}
 
 int main(int argc, char** argv){
 
@@ -16,6 +48,10 @@ int main(int argc, char** argv){
     std::string mHeaderFrameId;
     std::string mPseudoChildFrameId;
     std::string mFrameIdToCompare;
+
+    ros::Subscriber mUwBsubscriber1;
+    ros::Subscriber mUwBsubscriber2;
+
     int mSourceSegmentId;
     
     node.getParam("headerFrameId", mHeaderFrameId);
@@ -27,15 +63,18 @@ int main(int argc, char** argv){
     std::cout << "mFrameIdToCompare is: " << mFrameIdToCompare << std::endl;
     std::cout << "mPseudoChildFrameId is: " << mPseudoChildFrameId << std::endl;
 
-    tf2_ros::TransformBroadcaster tf_broadcaster;
+    mUwBsubscriber = node.subscribe("uwb_uav_frame1", geometry_msgs::PoseWithCovarianceStamped, UWBtfCallback);
+    mUwBsubscriber2 = node.subscribe("uwb_uav_frame2", geometry_msgs::PoseWithCovarianceStamped, UWBtfCallback2);
 
+    tf2_ros::TransformBroadcaster mPsuedotf_broadcaster;
     tf2_ros::Buffer tf_buffer;
     tf2_ros::TransformListener tf_listener(tf_buffer);
 
-    geometry_msgs::TransformStamped broadcast_tf;
+    geometry_msgs::TransformStamped pseudo_broadcast_tf;
+    geometry_msgs::TransformStamped uwb_broadcast_tf;
 
-    broadcast_tf.header.frame_id = mHeaderFrameId;
-    broadcast_tf.child_frame_id = mPseudoChildFrameId;
+    pseudo_broadcast_tf.header.frame_id = mHeaderFrameId;
+    pseudo_broadcast_tf.child_frame_id = mPseudoChildFrameId;
 
     ros::Rate rate(50.0);
     while (node.ok()){
@@ -44,7 +83,7 @@ int main(int argc, char** argv){
     
         try
         {
-        listen_tf = tf_buffer.lookupTransform(mFrameIdToCompare, mHeaderFrameId, ros::Time(0));
+        listen_tf = tf_buffer.lookupTransform(mFrameIdToCompare, mHeaderFrameId, ros::Time(0.1));
         }
         catch(tf2::TransformException& ex)
         {
@@ -53,10 +92,10 @@ int main(int argc, char** argv){
         continue;
         }
         
-        broadcast_tf.header.stamp = listen_tf.header.stamp;
-        broadcast_tf.transform = listen_tf.transform;
+        pseudo_broadcast_tf.header.stamp = listen_tf.header.stamp;
+        pseudo_broadcast_tf.transform = listen_tf.transform;
 
-        tf_broadcaster.sendTransform(broadcast_tf);
+        mPsuedotf_broadcaster.sendTransform(pseudo_broadcast_tf);
 
         rate.sleep();
         

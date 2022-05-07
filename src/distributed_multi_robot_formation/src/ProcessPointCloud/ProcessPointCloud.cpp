@@ -24,10 +24,20 @@ namespace DistributedFormation
 
         // Perform the actual filtering
         pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
+        pcl::CropBox<pcl::PCLPointCloud2> boxfilter;
+
+        Eigen::Vector4f min_pt (-0.5f, -0.5f, -0.5f, 1.0f);
+        Eigen::Vector4f max_pt (7.0f, 7.0f, 7.0f, 7.0f);
+
+        // boxfilter.setMax(min_pt);
+        // boxfilter.setMin(max_pt);
+        // boxfilter.filter()
+
         sor.setInputCloud (cloudPtr);
         sor.setLeafSize (m_leaf_size_x, m_leaf_size_y, m_leaf_size_z);
         sor.filter (cloud_filtered);
 
+    
         // Convert back to ROS data type
         sensor_msgs::PointCloud2 output;
         pcl_conversions::moveFromPCL(cloud_filtered, output);
