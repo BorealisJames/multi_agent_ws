@@ -21,8 +21,6 @@ namespace DistributedFormation
     , m_localBoundingBoxForPathAlongX(3.0)
     , m_localBoundingBoxForPathAlongY(3.0)
     , m_localBoundingBoxForPathAlongZ(2.0)
-    , m_pointsMinRange(0.5)
-    , m_pointsMaxRange (10.0)
     , m_pointRemovalRadius(0.85)
     , m_desiredDistanceInTriFormation(2.5)
     , m_desiredDistanceInLineFormation(2)
@@ -686,13 +684,6 @@ namespace DistributedFormation
         {
             sensor_msgs::PointCloud tmpOutputPointCloud;
 
-            // m_processPointCloud.RemovePointsOutsideOfRadiusRangeFromPointCloud2D(m_ownPointCloud,
-            //                                                                     m_ownAgentPose.position,
-            //                                                                     m_pointsMinRange,
-            //                                                                     m_pointsMaxRange,
-            //                                                                     tmpOutputPointCloud);
-            // m_ownPointCloud = tmpOutputPointCloud;
-
             for(auto&& agentPose : m_poseOfAgentsInTeam)
             {
                 m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
@@ -710,14 +701,6 @@ namespace DistributedFormation
         else if (m_dimension == Common::DIMENSION::DIM_3)
         {
             sensor_msgs::PointCloud tmpOutputPointCloud;
-
-            // m_processPointCloud.RemovePointsOutsideOfRadiusRangeFromPointCloud3D(m_ownPointCloud,
-            //                                                                     m_ownAgentPose.position,
-            //                                                                     m_pointsMinRange,
-            //                                                                     m_pointsMaxRange,
-            //                                                                     tmpOutputPointCloud);
-            // m_ownPointCloud = tmpOutputPointCloud;
-
             for(auto&& agentPose : m_poseOfAgentsInTeam)
             {
                 m_processPointCloud.RemovePointsWithinARadiusPointCloud3D(m_ownPointCloud,
