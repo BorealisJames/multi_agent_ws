@@ -27,10 +27,22 @@ public:
     void AppendPointClouds(const sensor_msgs::PointCloud& cloudInput1, const sensor_msgs::PointCloud& cloudInput2,
                            sensor_msgs::PointCloud& cloudOutput);
 
+    void RemovePointsOutsideOfRadiusRangeFromPointCloud2D(const sensor_msgs::PointCloud& cloudInput,
+                                                    const Common::Position& point,
+                                                    const double maxRadius,
+                                                    const double minRadius,
+                                                    sensor_msgs::PointCloud& cloudOutput);      
+
     void RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(const sensor_msgs::PointCloud& cloudInput,
                                                                 const Common::Position& point,
                                                                 const double removalRadius,
                                                                 sensor_msgs::PointCloud& cloudOutput);
+
+    void RemovePointsOutsideOfRadiusRangeFromPointCloud3D(const sensor_msgs::PointCloud& cloudInput,
+                                               const Common::Position& point,
+                                               const double maxRadius,
+                                               const double minRadius,
+                                               sensor_msgs::PointCloud& cloudOutput);                                                           
 
     void RemovePointsWithinARadiusPointCloud3D(const sensor_msgs::PointCloud& cloudInput,
                                                const Common::Position& point,
