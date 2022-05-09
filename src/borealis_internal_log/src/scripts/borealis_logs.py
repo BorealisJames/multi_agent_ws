@@ -4,8 +4,10 @@ import numpy as np
 import pandas as pd
 import rosnode
 import datetime
+import rosgraph
 
 from borealis_node_stats import BorealisNodeStats
+from borealis_node_resource import BorealisNodeResource
 
 # Use numpy structured arrays
 # Finish numpy node_stats
@@ -20,17 +22,10 @@ class BorealisLogs:
         rospy.loginfo("Slow loop rate is at  {}".format(slow_loop_rate))
 
         # is there a better way to do this? memory wise?
-        self.borealis_node_stats_list = BorealisNodeStats()
+        self.borealis_node_stats = BorealisNodeStats()
+        self.borealis_node_resource_list = []
         self.node_name_list = rosnode.get_node_names()
-
-        for node_name in self.node_name_list:
-            if node_name not in self.borealis_node_stats_list.node_name:
-                time_now = rospy.get_time()
-                utc_time_now = datetime.datetime.utcfromtimestamp(time_now)
-
-                self.borealis_node_stats_list.node_name.append(node_name)
-                self.borealis_node_stats_list.time_of_creation.append(time_now)
-                self.borealis_node_stats_list.utc_time_of_creation.append(utc_time_now)
+        self.master = rosgraph.Master("")
 
         # start the timers
         self.slow_timer = rospy.Timer(rospy.Duration(slow_loop_rate), self.slow_loop_cb)
@@ -41,22 +36,31 @@ class BorealisLogs:
         # is initialized. Shud have a better utc_time_now_format but this will do
         tmp_node_name_list = rosnode.get_node_names()
         for node_name in tmp_node_name_list:
-            if node_name not in self.borealis_node_stats_list.node_name:
+            if node_name not in self.borealis_node_stats.node_name:
                 time_now = rospy.get_time()
                 utc_time_now = datetime.datetime.utcfromtimestamp(time_now)
 
-                self.borealis_node_stats_list.node_name.append(node_name)
-                self.borealis_node_stats_list.time_of_creation.append(time_now)
-                self.borealis_node_stats_list.utc_time_of_creation.append(utc_time_now)
-        
+                self.borealis_node_stats.node_name.append(node_name)
+                self.borealis_node_stats.time_of_creation.append(time_now)
+                self.borealis_node_stats.utc_time_of_creation.append(utc_time_now)
+
+                new_node_resource = BorealisNodeResource(node_name, self.master.lookupNode(node_name))
+                self.borealis_node_resource_list.append(new_node_resource)
+
+
     def fast_loop_cb(self, timer):
-        pass
+        for node_resouce in self.borealis_node_resource_list:
+            pass
     
     def log_everything_to_csv(self):
         # can use numpy to join them up but documentation seems abit ?? due to array of element of diff type
-        data = {'Node Name':self.borealis_node_stats_list.node_name, 'Time of Creation':self.borealis_node_stats_list.time_of_creation, 'UTC time of creation':self.borealis_node_stats_list.utc_time_of_creation}
+        data = {'Node Name':self.borealis_node_stats.node_name, 'Time of Creation':self.borealis_node_stats.time_of_creation, 'UTC time of creation':self.borealis_node_stats.utc_time_of_creation}
         df = pd.DataFrame(data)
         df.to_csv(self.path_to_store_logs)
+
+        for node in self.borealis_node_resource_list:
+            print(node.node_name)
+            print(node.uri_address)
 
 
         rospy.loginfo("Shut down initiated logging everything to csv")
