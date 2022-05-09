@@ -30,10 +30,10 @@
   </group>
 
   <param name="/follow_distance" type="double" value="0.2" />
-  <param name="/point_removal_radius" type="double" value="1.4" />
-  <param name="/agent_radius" type="double" value="1.2" />
+  <param name="/point_removal_radius" type="double" value="0.85" />
+  <param name="/agent_radius" type="double" value="1" />
   <param name="/desired_tri_length" type="double" value="2.5" />
-  <param name="/desired_line_length" type="double" value="4" />
+  <param name="/desired_line_length" type="double" value="3.5" />
 
 
 </launch>
