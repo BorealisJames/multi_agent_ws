@@ -5,4 +5,4 @@ lol=$diagnostic_directory$path_file_name
 echo "Saving file to"
 echo $lol
 touch $lol
-ping 192.168.1.63 >> "$lol";
+ping -D 192.168.1.63 >> "$lol";
