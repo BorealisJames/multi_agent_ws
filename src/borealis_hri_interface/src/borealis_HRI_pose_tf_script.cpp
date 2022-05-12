@@ -51,7 +51,6 @@ void UWBtfCallback2(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& ms
     uwbtransform.transform.rotation.z = msg->pose.pose.orientation.z;
 
     uwbframe.sendTransform(uwbtransform);
-    uwbframe.sendTransform(uwbtransform);
 
 }
 
@@ -110,7 +109,7 @@ int main(int argc, char** argv){
     
         try
         {
-        listen_tf = tf_buffer.lookupTransform(mFrameIdToCompare, mHeaderFrameId, ros::Time(0));
+            listen_tf = tf_buffer.lookupTransform(mFrameIdToCompare, mHeaderFrameId, ros::Time(0));
         }
         catch(tf2::TransformException& ex)
         {

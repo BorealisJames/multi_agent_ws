@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+   
+  <arg name="uav_name_1" default="uav1"/>
+  <group ns="$(arg uav_name_1)">
+    <node name="borealis_teaming_planner_node3" pkg="borealis_teaming_planner" type="borealis_teaming_planner_node" output="screen" clear_params="true">
+
+      <rosparam command="load" file="$(find borealis_teaming_planner)/config/teaming_planner_config_uav1.yaml"/>
+      <remap from="/assigned_virtual_position" to="teaming_planner/assigned_virtual_position"/>
+      <remap from="/assigned_virtual_pose_map" to="teaming_planner/assigned_virtual_pose_map"/>
+      <remap from="/convex_region_2D" to="teaming_planner/convex_region_2D"/>
+      <remap from="/convex_region_3D" to="teaming_planner/convex_region_3D"/>
+      <remap from="/direction_utility" to="teaming_planner/direction_utility"/>
+      <remap from="/ground_truth/state" to="ground_truth/state"/>
+      <remap from="/phase_and_time" to="teaming_planner/phase_and_time"/>
+      <remap from="/depth_camera" to="depth/points"/>
+
+      <remap from="/pointcloud" to="/uav1_object_filter/filtered_point_cloud"/>
+      <remap from="/local_pose" to="mavros/local_position/pose"/>
+
+      <remap from="/system_pose" to="/UAV1Pose"/>
+      <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
+      <remap from="/task" to="/task"/>
+      <remap from="/control_state" to="control/state"/>
+      <remap from= "/human_input_pose" to="/uav_all/follow_me_target_pose"/>?
+      <remap from="/voxel_filter_cloud" to="teaming_planner/voxel_filter_cloud"/>
+
+    </node>
+  </group>
+
+  <param name="/follow_distance" type="double" value="0" />
+  <param name="/point_removal_radius" type="double" value="0.85" />
+  <param name="/agent_radius" type="double" value="1" />
+  <param name="/desired_tri_length" type="double" value="2.5" />
+  <param name="/desired_line_length" type="double" value="3.5" />
+
+</launch>
