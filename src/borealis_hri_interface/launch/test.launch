@@ -1,8 +1,9 @@
 <launch>
-    <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="1 0 0 0 0 0 1 /odom /uav1 50" />
+    <!-- <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="1 0 0 0 0 0 1 /odom /uav1 50" />
     <node pkg="tf" type="static_transform_publisher" name="link2_broadcaster" args="1 0 0 0 0 0 1 /odom /uav2 50" />
     <node pkg="tf" type="static_transform_publisher" name="link3_broadcaster" args="1.2 0 0 0 0 0 1 /odom /uav1/t265_pose_frame 50" />
-    <node pkg="tf" type="static_transform_publisher" name="link4_broadcaster" args="1.2 0 0 0 0 0 1 /odom /uav2/t265_pose_frame 50" />
+    <node pkg="tf" type="static_transform_publisher" name="link4_broadcaster" args="1.2 0 0 0 0 0 1 /odom /uav2/t265_pose_frame 50" /> -->
+    <node pkg="tf" type="static_transform_publisher" name="link4_broadcaster" args="1.2 0 0 0 0 0 1 /uav1/t265_odom_frame /uav1/t265_pose_frame 50" /> 
 
 </launch>
     

@@ -11,10 +11,6 @@ if __name__ == "__main__":
     additional_topics = []
 
     log_handle = BorealisLogs(fast_loop, slow_loop, path_to_store_logs)
-
-    def log_everything_to_csv():
-        BorealisLogs.log_everything_to_csv(log_handle)
-
-    rospy.on_shutdown(log_everything_to_csv)
+    rospy.on_shutdown(log_handle.log_everything_to_csv())
 
     rospy.spin()

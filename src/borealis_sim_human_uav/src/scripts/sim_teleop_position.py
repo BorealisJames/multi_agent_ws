@@ -135,6 +135,7 @@ if __name__=="__main__":
             pose_stamped.pose.orientation.z = quaternion[2]
             pose_stamped.pose.orientation.w = quaternion[3]
             pose_stamped.header.frame_id = "odom"
+            pose_stamped.header.stamp = rospy.get_rostime()
 
             tmp_pose_stamped_covariance = PoseWithCovarianceStamped()
             tmp_pose_stamped_covariance.pose.pose = pose_stamped.pose
