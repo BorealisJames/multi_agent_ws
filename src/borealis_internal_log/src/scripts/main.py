@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import rospy
 import os
 from borealis_logs import BorealisLogs
@@ -9,8 +11,9 @@ if __name__ == "__main__":
     slow_loop = 1 
     path_to_store_logs = os.path.expanduser('~/Diagnosis/')
     additional_topics = []
+    rospy.loginfo("Node logger not yet functional")
 
-    log_handle = BorealisLogs(fast_loop, slow_loop, path_to_store_logs)
-    rospy.on_shutdown(log_handle.log_everything_to_csv())
+    # log_handle = BorealisLogs(fast_loop, slow_loop, path_to_store_logs)
+    # rospy.on_shutdown(log_handle.log_everything_to_csv())
 
-    rospy.spin()
+    # rospy.spin()

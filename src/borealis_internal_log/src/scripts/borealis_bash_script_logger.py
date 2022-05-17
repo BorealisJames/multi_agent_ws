@@ -15,12 +15,10 @@ if __name__ == "__main__":
     # Get environment variables
     drone_number = os.getenv('DRONE_NUMBER')
     print(path + "monitor_wifi")
-    p1 = subprocess.Popen([path + "/monitor_wifi.sh"], stdout=subprocess.PIPE)
-    print(drone_number)
+    p1 = subprocess.Popen([path + "monitor_wifi.sh"], stdout=subprocess.PIPE)
     if drone_number == "1":
-        p2 = subprocess.Popen([path + "/ping_from_uav1_to_uav2.sh"], stdout=subprocess.PIPE)
-        print("lol")
+        p2 = subprocess.Popen([path + "ping_from_uav1_to_uav2.sh"], stdout=subprocess.PIPE)
     if drone_number == "2":
-        p2 = subprocess.Popen([path+ "/ping_from_uav2_to_uav1.sh"], stdout=subprocess.PIPE)
+        p2 = subprocess.Popen([path+ "ping_from_uav2_to_uav1.sh"], stdout=subprocess.PIPE)
 
     rospy.spin()
