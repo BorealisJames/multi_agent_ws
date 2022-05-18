@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
     <node pkg="borealis_internal_log" type="main.py" name="node_logger" output="screen"/>
-    <node pkg="borealis_internal_log" type="borealis_bash_script_logger.py" name="bash_script_logger" output="screen"/>
+    <node pkg="borealis_internal_log" type="borealis_logger_script.py" name="python_script_logger" output="screen"/>
 </launch>

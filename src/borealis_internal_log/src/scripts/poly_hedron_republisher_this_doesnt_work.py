@@ -14,6 +14,13 @@ class talker:
 
         pub = rospy.Publisher('Polyhedrone_Republisher', PolyhedronArray, queue_size=10)
         subscriber = rospy.Subscriber('/uav1/borealis_teaming_planner/polyhedron_array_uav', PolyhedronArray, self.cb)
+        rate = rospy.Rate(1) # 1hz
+        rospy.loginfo("Polyhedron republisher running!")
+        timer = rospy.timer
+        while not rospy.is_shutdown():
+            print(self.poly)
+            pub.publish(self.poly)
+            rate.sleep()
 
     def cb(self,msg):
         self.poly = msg
@@ -22,10 +29,7 @@ class talker:
 
 if __name__ == '__main__':
     rospy.init_node('talker', anonymous=True)
-    # Create a rate
-    talker_= talker()
-    rate = rospy.Rate(1)
-
-    while not rospy.is_shutdown():
-        talker_.publish_temperature()
-        rate.sleep()
+    try:
+        talker_ = talker()
+    except rospy.ROSInterruptException:
+        pass
