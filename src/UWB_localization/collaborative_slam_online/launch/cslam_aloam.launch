@@ -1,0 +1,102 @@
+<launch>
+ <node name="collaborative_slam_online" pkg="collaborative_slam_online" type="collaborative_slam_online">
+    <param name = "uwb_nodes_dog1" type ="string" value="2 3" />
+    <param name = "uwb_nodes_dog2" type ="string" value="5 6" />
+    <param name = "uwb_nodes_human" type ="string" value="7 8" />
+    <param name = "external_uwb_nodes" type ="string" value="100" />
+
+    <!-- the odometry estimated by ALOAM -->
+    <param name = "dog1_odom_topic" value = "/uav1/aft_mapped_to_init" />
+    <param name = "dog2_odom_topic" value = "/uav2/aft_mapped_to_init" />    
+
+
+    <param name = "human_odom_topic" value = "/imu_odometry" />
+    <param name = "human_published_topic" value = "/HumanPose" />
+    <param name = "dog1_published_topic" value = "/UAV1Pose" />
+    <param name = "dog2_published_topic" value = "/UAV2Pose" />    
+
+    <!-- estimated pose of human in human local frame-->
+    <param name = "human_in_human_localframe_published_topic" value = "/HumanInHumanLocalFrame" />
+    <!-- estimated pose of dog 1 in human local frame -->
+    <param name = "dog1_in_human_localframe_published_topic" value = "/UAV1InHumanLocalFrame" />
+     <!-- estimated pose of dog 2 in human local frame -->
+    <param name = "dog2_in_human_localframe_published_topic" value = "/UAV2InHumanLocalFrame" />
+
+    <!-- estimated pose of human in dog1 local frame -->
+    <param name = "human_in_dog1_localframe_published_topic" value = "/HumanInUAV1LocalFrame" />
+    <!-- estimated pose of dog1 in dog1 local frame -->
+    <param name = "dog1_in_dog1_localframe_published_topic" value = "/UAV1InUAV1LocalFrame" />
+     <!-- estimated pose of dog 2 in dog1 local frame -->
+    <param name = "dog2_in_dog1_localframe_published_topic" value = "/UAV2InUAV1LocalFrame" />
+
+    <!-- estimated pose of human in dog2 local frame -->
+    <param name = "human_in_dog2_localframe_published_topic" value = "/HumanInUAV2LocalFrame" />
+    <!-- estimated pose of dog 1 in dog2 local frame -->
+    <param name = "dog1_in_dog2_localframe_published_topic" value = "/UAV1InUAV2LocalFrame" />
+    <!-- estimated pose of dog 2 in dog2 local frame -->
+    <param name = "dog2_in_dog2_localframe_published_topic" value = "/UAV2InUAV2LocalFrame" />
+
+
+    <param name = "dog1_uwb_topic" value = "/drone1_uwb" />
+    <param name = "dog2_uwb_topic" value = "/drone2_uwb" />
+    <param name = "human_uwb_topic" value = "/human_uwb" />
+    <param name = "human_frame_id" value = "odom" />
+    <param name = "dog1_frame_id" value = "odom" />
+    <param name = "dog2_frame_id" value = "odom" />
+    <param name = "human_child_frame_id" value = "human" />
+    <param name = "dog1_child_frame_id" value = "uav1" />
+    <param name = "dog2_child_frame_id" value = "uav2" />
+    <param name = "incremental_iteration" type = "double" value="100" />
+    <param name = "gain" type = "double" value="1e-10" />
+    <param name = "optimization_interval" type = "int" value="5" />
+
+    <!-- range of close UWBs to trust more -->
+    <param name = "close_range" type = "double" value = "3.0" />
+    <!-- UWB noise for close range -->
+    <param name = "close_uwb_noise" type = "double" value = "0.1" />
+    <!-- UWB noise for the rest range -->
+    <param name = "far_uwb_noise" type = "double" value = "1.0" />
+
+    <param name = "initial_guess_information" type = "double" value = "10000" />
+    <param name = "peer_uwb_optimization" type = "int" value="1" />
+    <param name = "external_uwb_optimization" type = "int" value="1" />
+    <param name = "update_min_d" type = "double" value = "0.3" />
+    <param name = "update_min_a" type = "double" value = "0.3" />
+    <param name = "update_min_time" type = "double" value = "3.0" />
+    <!-- human odom translational noise -->
+    <param name = "human_odom_tran_noise" type = "double" value = "0.1" />
+    <!-- human odom rotational noise -->
+    <param name = "human_odom_rot_noise" type = "double" value = "0.01" />
+    <!-- dog odom translational noise -->
+    <param name = "dog_odom_tran_noise" type = "double" value = "0.05" />
+    <!-- dog odom rotational noise -->
+    <param name = "dog_odom_rot_noise" type = "double" value = "0.01" />
+    <param name = "max_peer_range" type = "double" value = "100" />
+    <param name = "max_external_range" type = "double" value = "100" />
+    <param name = "external_uwb_init_range" type = "double" value = "100" />	
+    <param name = "force_human_2d" type = "bool" value = "true" />
+    <param name = "force_robot_2d" type = "bool" value = "false" />
+    <param name = "enable_gnuplot" type = "bool" value = "true" />
+    <param name = "uwb_ranging_average_time_window" type = "double" value = "0.2" />
+    <!-- Set it to true to use mean ranging among all uwb nodes and set it to false to use minimum ranging -->
+    <param name = "use_mean_ranging" type = "bool" value = "false" />
+    <!-- Set it to true to use the closest ranging (in time) given two uwb nodes and set it to false to use average ranging-->
+    <param name = "use_closest_ranging" type = "bool" value = "true" />
+    <param name = "human_init_x" type = "double" value = "2" />
+    <param name = "human_init_y" type = "double" value = "0" />
+    <param name = "human_init_z" type = "double" value = "1.5" />
+    <param name = "human_init_theta" type = "double" value = "0" />
+    <param name = "dog1_init_x" type = "double" value = "0" />
+    <param name = "dog1_init_y" type = "double" value = "0" />
+    <param name = "dog1_init_z" type = "double" value = "0" />
+    <param name = "dog1_init_theta" type = "double" value = "0" />
+    <param name = "dog2_init_x" type = "double" value = "0" />
+    <param name = "dog2_init_y" type = "double" value = "-4" />
+    <param name = "dog2_init_z" type = "double" value = "0" />
+    <param name = "dog2_init_theta" type = "double" value = "0" />
+    <param name = "plot_min_x" type = "double" value = "-2" />
+    <param name = "plot_max_x" type = "double" value = "8" />
+    <param name = "plot_min_y" type = "double" value = "-7" />
+    <param name = "plot_max_y" type = "double" value = "4" />
+ </node>
+</launch>

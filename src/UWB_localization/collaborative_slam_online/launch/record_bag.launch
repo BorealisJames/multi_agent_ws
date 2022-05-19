@@ -1,0 +1,6 @@
+<launch>
+<arg name="record_sensors" default="true" />
+ <node pkg="rosbag" type="record" name="rosbag_record"
+        args="record -o /home/shalihan/borealis_SLAM/bag_files/ /drone1_uwb /drone2_uwb /human_uwb /uav1/t265/odom/sample /uav2/t265/odom/sample /imu_odometry /uav1/teaming_planner/assigned_virtual_position /uav2/teaming_planner/assigned_virtual_position /uav1/aft_mapped_to_init /uav2/aft_mapped_to_init"
+        if="$(arg record_sensors)"/>   
+</launch>
