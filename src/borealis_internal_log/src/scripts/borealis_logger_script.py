@@ -55,9 +55,9 @@ def ping_timer(hz):
     while True:
         time.sleep(hz)
         if drone_number == "1":
-            write_ping('192.168.1.62',ping_file)
-        if drone_number == "2":
             write_ping('192.168.1.63',ping_file)
+        if drone_number == "2":
+            write_ping('192.168.1.62',ping_file)
 
 def read_wifi_strength():
     p = subprocess.Popen("iwconfig", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
