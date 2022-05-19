@@ -30,6 +30,7 @@ def write_ping(ip_add, ping_file):
         f.write("Timeout,")
         f.write(now)
         f.write("\n")
+        print("Ping Timeout!")
     else:
         out = str(out).split('/') # ms
         avg = out[3]
@@ -38,6 +39,7 @@ def write_ping(ip_add, ping_file):
         f.write(str(now))
         f.write("\n")
         f.close()
+        print("Ping is {}".format(str(avg)))
 
 def ping_timer(hz):
     global drone_number, path_to_store_logs
@@ -88,6 +90,7 @@ def write_wifi_strength(wifi_file):
     f.write(str(now))
     f.write("\n")
     f.close()
+    print("Wifi bit rate is  {} Mb/s".format(str(bit_rate)))
 
 def wifi_timer(hz):
     global path_to_store_logs
@@ -114,6 +117,7 @@ def write_cpu_strength(cpu_file, hz):
     f.write(str(now))
     f.write("\n")
     f.close()
+    print("CPU usage is {} %".format(str(output)))
 
 def cpu_timer(hz):
     global path_to_store_logs
@@ -134,6 +138,8 @@ def write_ram_usage(ram_file):
     f.write(str(now))
     f.write("\n")
     f.close()
+    print("RAM usage is {} %".format(str(output)))
+
 
 def ram_timer(hz):
     global path_to_store_logs
@@ -158,7 +164,7 @@ if __name__ == "__main__":
     p3 = multiprocessing.Process(target=cpu_timer,args=[0.5]) # in percantage
     p4 = multiprocessing.Process(target=ram_timer,args=[0.5]) # in percantage
 
-    now = datetime.now().strftime("%d_%m_%Y_time_%H_%M_%S")
+    now = datetime.now().strftime("%d_%m_%Y_time:%H_%M_%S")
     path_to_store_logs = os.path.expanduser('~/Diagnosis/') + now
     # create the directory according to time stamp
 
