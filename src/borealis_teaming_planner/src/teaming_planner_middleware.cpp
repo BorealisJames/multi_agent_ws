@@ -219,7 +219,67 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         tmp_local = tmp;
         mAssignedVirtualPosePublisher.publish(tmp_local);
 
-        // Do not transform to global frame
+        // Transform from UWB to t265 frame manually
+        if (mTransformMethod == 1)
+        {
+            // find vector diff 
+            geometry_msgs::PoseStamped vector_diff;
+            geometry_msgs::PoseStamped t265Assignedpose;
+            vector_diff.pose.position.x = tmp_local.pose.position.x - mSelfSystemPose.position.x;
+            vector_diff.pose.position.y = tmp_local.pose.position.y - mSelfSystemPose.position.y;
+            vector_diff.pose.position.z = tmp_local.pose.position.z - mSelfSystemPose.position.z;
+
+            t265Assignedpose.pose.position.x = mSelft265SystemPose.pose.position.x  + vector_diff.pose.position.x;
+            t265Assignedpose.pose.position.y = mSelft265SystemPose.pose.position.y  + vector_diff.pose.position.y;
+            t265Assignedpose.pose.position.z = mSelft265SystemPose.pose.position.z  + vector_diff.pose.position.z;
+
+            mAssignedt265VirtualPosePublisher.publish(t265Assignedpose);
+        }
+            // // to find the relative rotation, q_r, to go from q_1 to q_2 -> q_2 = q_r*q_1 -> q_r = q_2*q_1_inverse 
+            // // lmfao in tf1 no tf ros quat multiplcation? wtf this is too long
+            // tf::Quaternion system_pose_quat = tf::createQuaternionFromYaw(mSelfSystemPose.headingRad);
+            // tf::Quaternion inverse_system_pose_quat = tf::inverse(system_pose_quat);
+
+            // tf2::Quaternion q_2, q_1_inverse, q_r;
+            // q_2.setX(system_pose_quat.getX());
+            // q_2.setY(system_pose_quat.getY());
+            // q_2.setZ(system_pose_quat.getZ());
+            // q_2.setW(system_pose_quat.getW());
+
+            // q_1_inverse.setX(inverse_system_pose_quat.getX());
+            // q_1_inverse.setY(inverse_system_pose_quat.getY());
+            // q_1_inverse.setZ(inverse_system_pose_quat.getZ());
+            // q_1_inverse.setW(inverse_system_pose_quat.getW());
+
+            // q_r = q_2 * q_1_inverse;
+            // vector_diff.pose.orientation.x = q_r.getX();
+            // vector_diff.pose.orientation.w = q_r.getY();
+            // vector_diff.pose.orientation.y = q_r.getZ();
+            // vector_diff.pose.orientation.z = q_r.getW();
+
+        // use tf lookup
+        if (mTransformMethod == 2)
+        {
+            tmp_local.header.frame_id = "uav" + std::to_string(mSourceSegmentId) + "/pseudo_uwb_to_t265_transform";
+            std::string targetFrame = "/odom";
+            geometry_msgs::PoseStamped assigned_pose_in_t265;
+            try
+            {
+                mPoseTransformListener.transformPose(targetFrame, tmp_local, assigned_pose_in_t265);
+
+                tmp_local.header.frame_id = targetFrame;
+                assigned_pose_in_t265.header.stamp = tmp_local.header.stamp;
+                mAssignedt265VirtualPosePublisher.publish(assigned_pose_in_t265);
+            }
+            catch (tf::TransformException ex)
+            {
+                ROS_ERROR("%s", ex.what());
+                status = false;
+            }
+
+        }
+
+        // transform to local frame
 
         // if (mPoseTransformListener.getLatestCommonTime(targetFrame, systemFrame, tm, &err_string) == tf::NO_ERROR)
         // {
@@ -245,6 +305,7 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         //     status = false;
         // }
     }
+
     else
     {
         ROS_ERROR("[Teaming Planner %d]: Agent ID %d and Source Segment ID %d mismatch\n", mSourceSegmentId, aAgentId, mSourceSegmentId);
@@ -396,6 +457,14 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseWithCovaria
     //     ROS_INFO("[Teaming Planner %d]: Self System Pose Received\n", mSourceSegmentId);
     // } 
 }
+
+void TeamingPlanner::selft265SystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseWithCovarianceStamped)
+{
+    geometry_msgs::PoseStamped tmp_pose;
+    mSelft265SystemPose.header = PoseWithCovarianceStamped->header;
+    mSelft265SystemPose.pose = PoseWithCovarianceStamped->pose.pose; 
+}
+
 
 void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
 {

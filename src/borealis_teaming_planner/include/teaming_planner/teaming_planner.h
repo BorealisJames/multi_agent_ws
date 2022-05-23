@@ -54,6 +54,7 @@ class TeamingPlanner
         double mModulePeriod;
         int mNumOfAgents;
         bool mDebugVerbose;
+        int mTransformMethod;
         double mIntervalDistance;
         double mPlanningHorizon;
         double mDesiredHeight;
@@ -65,7 +66,7 @@ class TeamingPlanner
         Common::Entity::MTTaskBundle mTask;
         DistributedFormation::Common::Pose mSelfSystemPose;
         sensor_msgs::PointCloud mSystemPointCloud;
-
+        geometry_msgs::PoseStamped mSelft265SystemPose;
         sensor_msgs::PointCloud2 mSystemPointCloud2;
 
         sensor_msgs::PointCloud mSystemDepthCamera;
@@ -78,7 +79,6 @@ class TeamingPlanner
         Common::Entity::ControlState mControlState;
         tf::TransformListener mPoseTransformListener;
         tf::TransformListener mPointCloudTransformListener;
-
         tf::TransformListener mPointCloud2TransformListener;
 
         bool mHistoryOfHumanPosesReceived;
@@ -99,6 +99,7 @@ class TeamingPlanner
         ros::Publisher mConvexRegion2DPublisher;
         ros::Publisher mConvexRegion3DPublisher;
         ros::Publisher mAssignedVirtualPosePublisher;
+        ros::Publisher mAssignedt265VirtualPosePublisher;
         ros::Publisher mAssignedVirtualPoseMapPublisher;
         ros::Publisher mControlStatePublisher;
 
@@ -109,6 +110,7 @@ class TeamingPlanner
         ros::Subscriber mTaskSubscriber;
         ros::Subscriber mHumanSystemPoseSubscriber;
         ros::Subscriber mSelfSystemPoseSubscriber;
+        ros::Subscriber mSelft265SystemPoseSubscriber;
         ros::Subscriber mSystemPointCloudSubscriber;
         ros::Subscriber mSystemPointCloud2Subscriber;
         ros::Subscriber mSystemDepthCameraSubscriber;
@@ -122,7 +124,7 @@ class TeamingPlanner
         std::vector<ros::Subscriber> mUAVConvexRegion2DSubscriberVector;
         std::vector<ros::Subscriber> mUAVConvexRegion3DSubscriberVector;
         std::vector<ros::Subscriber> mUAVAssignedVirtualPoseMapSubscriberVector;
-
+        
         // Timers
         ros::Timer mModuleLoopTimer;
 
@@ -142,6 +144,8 @@ class TeamingPlanner
         void taskCallback(const mt_msgs::mtTask::ConstPtr& aTask);
         void humanSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aHumanSystemPose);
         void selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aSelfSystemPose);
+        void selft265SystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aSelfSystemPose);
+
         void systemPoseCallback(const mt_msgs::pose::ConstPtr& aSystemPose);
         void systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud);
 

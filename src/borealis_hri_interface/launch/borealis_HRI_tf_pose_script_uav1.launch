@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <group ns="uav1">
+        <node pkg="borealis_hri_interface" type="borealis_hri_interface_header_pseudo_script" name="borealis_hri_header_tf" output="screen"/>
+    </group>
+</launch>

@@ -8,6 +8,8 @@
 
       <rosparam command="load" file="$(find borealis_teaming_planner)/config/teaming_planner_config_uav2.yaml"/>
       <remap from="/assigned_virtual_position" to="teaming_planner/assigned_virtual_position"/>
+      <remap from="/assignedt265_virtual_position" to="teaming_planner/assignedt265_virtual_position"/>
+
       <remap from="/assigned_virtual_pose_map" to="teaming_planner/assigned_virtual_pose_map"/>
       <remap from="/convex_region_2D" to="teaming_planner/convex_region_2D"/>
       <remap from="/convex_region_3D" to="teaming_planner/convex_region_3D"/>
@@ -20,12 +22,13 @@
       <remap from="/local_pose" to="mavros/local_position/pose"/>
 
       <remap from="/system_pose" to="/UAV2Pose"/>
+      <remap from="/uwb_system_pose" to="/UAV2Pose"/>
       <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
       <remap from="/task" to="/task"/>
       <remap from="/control_state" to="control/state"/>
       <remap from= "/human_input_pose" to="/uav_all/follow_me_target_pose"/>?
       <remap from="/voxel_filter_cloud" to="teaming_planner/voxel_filter_cloud"/>
-
+      
     </node>
   </group>
 
