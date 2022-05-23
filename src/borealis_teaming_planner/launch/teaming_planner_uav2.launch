@@ -8,7 +8,7 @@
 
       <rosparam command="load" file="$(find borealis_teaming_planner)/config/teaming_planner_config_uav2.yaml"/>
       <remap from="/assigned_virtual_position" to="teaming_planner/assigned_virtual_position"/>
-      <remap from="/assignedt265_virtual_position" to="teaming_planner/assignedt265_virtual_position"/>
+      <remap from="/assignedt265_virtual_position" to="teaming_planner/assignedt265_virtual_position_debug"/>
 
       <remap from="/assigned_virtual_pose_map" to="teaming_planner/assigned_virtual_pose_map"/>
       <remap from="/convex_region_2D" to="teaming_planner/convex_region_2D"/>
