@@ -16,18 +16,14 @@
       <remap from="/ground_truth/state" to="ground_truth/state"/>
       <remap from="/phase_and_time" to="teaming_planner/phase_and_time"/>
       <remap from="/depth_camera" to="depth/points"/>
-
       <remap from="/pointcloud" to="/uav1_object_filter/filtered_point_cloud"/>
-      <remap from="/local_pose" to="mavros/local_position/pose"/>
-
-      <remap from="/pointcloud" to="/uav1_object_filter/filtered_point_cloud"/>
-
-      <remap from="/system_pose" to="/UAV1Pose"/>
+      <!-- <remap from="/local_pose" to="mavros/local_position/pose"/> -->
+      <remap from="/system_pose" to="/mavros/local_position/pose"/>
       <remap from="/uwb_system_pose" to="/UAV1Pose123"/>
       <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
       <remap from="/task" to="/task"/>
       <remap from="/control_state" to="control/state"/>
-      <remap from= "/human_input_pose" to="/uav_all/follow_me_target_pose"/>?
+      <remap from= "/human_input_pose" to="/uav_all/follow_me_target_pose"/>
       <remap from="/voxel_filter_cloud" to="teaming_planner/voxel_filter_cloud"/>
 
     </node>
