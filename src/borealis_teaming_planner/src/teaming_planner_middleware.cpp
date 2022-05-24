@@ -436,11 +436,33 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseWithCovari
     // comment this guy out
 }
 
-void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseWithCovarianceStamped)
+// void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseWithCovarianceStamped)
+// {
+//     geometry_msgs::PoseStamped tmp_pose;
+//     tmp_pose.header = PoseWithCovarianceStamped->header;
+//     tmp_pose.pose = PoseWithCovarianceStamped->pose.pose;
+
+//     Common::Entity::Pose tmp(tmp_pose);
+//     mSelfSystemPose.position.x = tmp.position.x;
+//     mSelfSystemPose.position.y = tmp.position.y;
+//     mSelfSystemPose.position.z = tmp.position.z;
+//     mSelfSystemPose.headingRad = tmp.yaw;
+
+//     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
+
+//     pubPose(mSourceSegmentId, mSelfSystemPose);
+
+//     // if (mDebugVerbose)
+//     // {
+//     //     ROS_INFO("[Teaming Planner %d]: Self System Pose Received\n", mSourceSegmentId);
+//     // } 
+// }
+
+void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& PoseStamped)
 {
     geometry_msgs::PoseStamped tmp_pose;
-    tmp_pose.header = PoseWithCovarianceStamped->header;
-    tmp_pose.pose = PoseWithCovarianceStamped->pose.pose;
+    tmp_pose.header = PoseStamped->header;
+    tmp_pose.pose = PoseStamped->pose;
 
     Common::Entity::Pose tmp(tmp_pose);
     mSelfSystemPose.position.x = tmp.position.x;
