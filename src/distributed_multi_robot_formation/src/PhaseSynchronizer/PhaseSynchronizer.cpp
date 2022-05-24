@@ -46,12 +46,14 @@ namespace DistributedFormation
         m_handlerPtr->m_nh.getParam("/desired_tri_length", desiredDistanceinTri);
         m_handlerPtr->m_nh.getParam("/desired_line_length", desiredDistanceinLine);
         m_handlerPtr->m_nh.getParam("/point_removal_radius", m_pointRemovalRadius);
+        m_handlerPtr->m_nh.getParam("/increment_offset_yaw", m_incrementOffsetToFormationYaw);
 
         m_distanceToFollowBehind = tmp_distance;
         m_agentRadius = tmp_agentradius;
         m_desiredDistanceInTriFormation = desiredDistanceinTri;
         m_desiredDistanceInLineFormation = desiredDistanceinLine;
         std::cout << "agentradius init to be " << m_agentRadius << std::endl;
+        std::cout << "increment_offset_yaw to be " << m_agentRadius << std::endl;
 
         if (m_workspace == Common::WORKSPACE::DIM_2_WITH_YAW ||
             m_workspace == Common::WORKSPACE::DIM_2_WITHOUT_YAW)
