@@ -82,7 +82,8 @@ class TeamingPlanner
         tf::TransformListener mPointCloud2TransformListener;
 
         bool mHistoryOfHumanPosesReceived;
-        
+        bool useUWB;
+
         // There is a probably better way to implement this but htis should do
         // Whatever lmao
         geometry_msgs::PoseWithCovarianceStamped mGunTargetPose;
@@ -145,9 +146,8 @@ class TeamingPlanner
         void humanSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aHumanSystemPose);
         // void selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aSelfSystemPose);
         void selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose);
-
-        void selft265SystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aSelfSystemPose);
-
+        void selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aSelfSystemPose);
+        void selft265SystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose);
         void systemPoseCallback(const mt_msgs::pose::ConstPtr& aSystemPose);
         void systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud);
 

@@ -30,6 +30,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConfigFileReader.getParam(nhPrivate, "planningHorizon", mPlanningHorizon, 25);
         mConfigFileReader.getParam(nhPrivate, "desiredHeight", mDesiredHeight, 1.2);
         mConfigFileReader.getParam(nhPrivate, "method", mTransformMethod, 1);
+        mConfigFileReader.getParam(nhPrivate, "useUWB", useUWB, false);
 
 
         mgunTargetPoseRecieved = false;
@@ -53,9 +54,16 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/human_input_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
         // mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
 
-        mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
-
-        mSelft265SystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/t265_system_pose", 10, &TeamingPlanner::selft265SystemPoseCallback, this);
+        if (useUWB)
+        {
+            mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallbackUWB, this);
+        }
+        else
+        {
+            mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
+        }
+        
+        mSelft265SystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/t265_system_pose", 10, &TeamingPlanner::selft265SystemPoseCallback, this);
         
         // Changed to point cloud 
         mSystemPointCloud2Subscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/pointcloud", 10, &TeamingPlanner::systemPointCloud2Callback, this);
