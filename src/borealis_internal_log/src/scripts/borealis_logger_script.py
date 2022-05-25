@@ -165,11 +165,11 @@ if __name__ == "__main__":
     p4 = multiprocessing.Process(target=ram_timer,args=[0.5]) # in percantage
 
     now = datetime.now().strftime("%d_%m_%Y_time:%H_%M_%S")
-    path_to_store_logs = os.path.expanduser('~/Diagnosis/') + now
+    path_to_store_logs = os.path.expanduser('~/Diagnosis/Logs/') + now
     # create the directory according to time stamp
 
     os.mkdir(path_to_store_logs)
-    f = open(os.path.expanduser('~/Diagnosis/') + "last_run.csv"  , 'w')
+    f = open(os.path.expanduser('~/Diagnosis/Logs/') + "last_run.txt"  , 'w')
     f.write(now)
     f.close()
 
