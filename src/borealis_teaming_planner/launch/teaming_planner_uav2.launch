@@ -19,6 +19,7 @@
       <remap from="/pointcloud" to="/uav2_object_filter/filtered_point_cloud"/>
       <!-- <remap from="/local_pose" to="mavros/local_position/pose"/> -->
       <remap from="/system_pose" to="/UAV2PoseUWB"/>
+      <!-- <remap from="/system_pose" to="mavros/local_position/pose"/> -->
       <remap from="/t265_system_pose" to="mavros/local_position/pose"/>
       <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
       <remap from="/task" to="/task"/>
@@ -29,12 +30,12 @@
     </node>
   </group>
 
-  <param name="/follow_distance" type="double" value="2" />
+  <param name="/follow_distance" type="double" value="0" />
   <param name="/point_removal_radius" type="double" value="0.95" />
   <param name="/agent_radius" type="double" value="0.85" />
   <param name="/desired_tri_length" type="double" value="2.5" />
   <param name="/desired_line_length" type="double" value="2.5" />
-  <!-- <param name="/increment_offset_yaw" type="double" value="1.570" /> -->
+<!-- <param name="/increment_offset_yaw" type="double" value="1.570" /> -->
   <param name="/increment_offset_yaw" type="double" value="0.78539816339" />
   
 </launch>
