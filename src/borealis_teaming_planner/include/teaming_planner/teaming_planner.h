@@ -192,6 +192,9 @@ class TeamingPlanner
         bool checkAndAddHumanSystemPose(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses, const DistributedFormation::Common::Pose aPose);
         double euclideanDistance(const double x1, const double y1, const double x2, const double y2);
 
+        geometry_msgs::PoseStamped subtractPoseStamped(geometry_msgs::PoseStamped previous, geometry_msgs::PoseStamped current); // current - previous
+        geometry_msgs::PoseStamped addPoseStamped(geometry_msgs::PoseStamped vector_pose, geometry_msgs::PoseStamped current);
+
     public:
         TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle& nhPrivate);
         virtual ~TeamingPlanner();

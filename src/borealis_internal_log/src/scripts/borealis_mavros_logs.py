@@ -80,11 +80,10 @@ if __name__ == "__main__":
     assignedpose_flag = False
 
     loop_rate = 0.5 
-    path_to_store_logs = os.path.expanduser('~/Diagnosis/')
 
     drone_number = os.getenv('DRONE_NUMBER')
     now = datetime.now().strftime("%d_%m_%Y_time:%H_%M_%S")
-    path_to_store_logs = os.path.expanduser('~/Diagnosis/MavrosLogs') + now
+    path_to_store_logs = os.path.expanduser('~/Diagnosis/MavrosLogs/') + now
     os.mkdir(path_to_store_logs)
 
     localpose_file = path_to_store_logs + "/localpose_log.csv"
@@ -113,4 +112,5 @@ if __name__ == "__main__":
     setpoint_timer = rospy.Timer(rospy.Duration(loop_rate), record_localpose)
     localpose_timer = rospy.Timer(rospy.Duration(loop_rate), record_setpointpose)
     localpose_timer = rospy.Timer(rospy.Duration(loop_rate), record_assignedpose)
+    print("Mavros logs")
     rospy.spin()

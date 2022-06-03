@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <node pkg="borealis_internal_log" type="main.py" name="node_logger" output="screen"/>
-    <node pkg="borealis_internal_log" type="borealis_logger_script.py" name="python_script_logger" output="screen"/>
+    <group ns="$(env DRONE_NAME)">
+        <node pkg="borealis_internal_log" type="borealis_mavros_logs.py" name="borealis_mavros_logger" output="screen"/>
+    </group>
 </launch>

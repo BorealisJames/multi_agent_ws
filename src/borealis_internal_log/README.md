@@ -1,4 +1,11 @@
-# Wifi strength
-https://github.com/s7jones/Wifi-Signal-Plotter/blob/master/WifiSignalPlotter.py
+# System stats 
+- Independent of ROS 
+- Ping, wifi, CPU usage
 
-# Ping - latency
+# Mavros stats
+- Record assigned pose, setpoint pose, local position
+
+# Rosnode Stats
+- Checking up of ROSnodes might be computationally / networkly intensive
+- ROS nodes that is alive 
+- ROS nodes CPU usage

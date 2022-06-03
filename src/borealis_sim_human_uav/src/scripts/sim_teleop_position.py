@@ -70,7 +70,7 @@ if __name__=="__main__":
     rospy.init_node('borealis_teleop')
     human_pub = rospy.Publisher(human_publisher_topic, PoseStamped, queue_size=5)
     uav_all_pub = rospy.Publisher(uav_all_publisher_topic, PoseWithCovarianceStamped, queue_size=5)
-    rate = rospy.Rate(20) # 10hz
+    rate = rospy.Rate(20) 
     try:
         x = 0
         y = 0

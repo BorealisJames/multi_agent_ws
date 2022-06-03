@@ -195,8 +195,6 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
     if (status)
     {
         geometry_msgs::PoseStamped tmp;
-        geometry_msgs::PoseStamped tmp_local;
-        
         tmp.header.frame_id = "/odom";
         
         tmp.pose.position.x = aAssignedVirtualPose.position.x;
@@ -216,8 +214,7 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         ros::Time tm;
         std::string err_string;
 
-        tmp_local = tmp;
-        mAssignedVirtualPosePublisher.publish(tmp_local);
+        mAssignedVirtualPosePublisher.publish(tmp);
 
         // Transform from UWB to t265 frame manually
         if (mTransformMethod == 1)
@@ -225,85 +222,22 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
             // find vector diff 
             geometry_msgs::PoseStamped vector_diff;
             geometry_msgs::PoseStamped t265Assignedpose;
-            vector_diff.pose.position.x = tmp_local.pose.position.x - mSelfSystemPose.position.x;
-            vector_diff.pose.position.y = tmp_local.pose.position.y - mSelfSystemPose.position.y;
-            vector_diff.pose.position.z = tmp_local.pose.position.z - mSelfSystemPose.position.z;
+            geometry_msgs::PoseStamped uwbSystemPose;
 
-            t265Assignedpose.pose.position.x = mSelft265SystemPose.pose.position.x  + vector_diff.pose.position.x;
-            t265Assignedpose.pose.position.y = mSelft265SystemPose.pose.position.y  + vector_diff.pose.position.y;
-            t265Assignedpose.pose.position.z = mSelft265SystemPose.pose.position.z  + vector_diff.pose.position.z;
+            uwbSystemPose.pose.position.x = mSelfSystemPose.position.x;
+            uwbSystemPose.pose.position.y = mSelfSystemPose.position.y;
+            uwbSystemPose.pose.position.z = mSelfSystemPose.position.z;
 
+            tf::Quaternion tmpQuat = tf::createQuaternionFromYaw(mSelfSystemPose.headingRad);
+            uwbSystemPose.pose.orientation.w = tmpQuat.getW();
+            uwbSystemPose.pose.orientation.x = tmpQuat.getX();
+            uwbSystemPose.pose.orientation.y = tmpQuat.getY();
+            uwbSystemPose.pose.orientation.z = tmpQuat.getZ();
+
+            vector_diff = TeamingPlanner::subtractPoseStamped(uwbSystemPose, tmp);
+            t265Assignedpose = TeamingPlanner::addPoseStamped(vector_diff, mSelft265SystemPose);
             mAssignedt265VirtualPosePublisher.publish(t265Assignedpose);
         }
-            // // to find the relative rotation, q_r, to go from q_1 to q_2 -> q_2 = q_r*q_1 -> q_r = q_2*q_1_inverse 
-            // // lmfao in tf1 no tf ros quat multiplcation? wtf this is too long
-            // tf::Quaternion system_pose_quat = tf::createQuaternionFromYaw(mSelfSystemPose.headingRad);
-            // tf::Quaternion inverse_system_pose_quat = tf::inverse(system_pose_quat);
-
-            // tf2::Quaternion q_2, q_1_inverse, q_r;
-            // q_2.setX(system_pose_quat.getX());
-            // q_2.setY(system_pose_quat.getY());
-            // q_2.setZ(system_pose_quat.getZ());
-            // q_2.setW(system_pose_quat.getW());
-
-            // q_1_inverse.setX(inverse_system_pose_quat.getX());
-            // q_1_inverse.setY(inverse_system_pose_quat.getY());
-            // q_1_inverse.setZ(inverse_system_pose_quat.getZ());
-            // q_1_inverse.setW(inverse_system_pose_quat.getW());
-
-            // q_r = q_2 * q_1_inverse;
-            // vector_diff.pose.orientation.x = q_r.getX();
-            // vector_diff.pose.orientation.w = q_r.getY();
-            // vector_diff.pose.orientation.y = q_r.getZ();
-            // vector_diff.pose.orientation.z = q_r.getW();
-
-        // use tf lookup
-        if (mTransformMethod == 2)
-        {
-            tmp_local.header.frame_id = "uav" + std::to_string(mSourceSegmentId) + "/pseudo_uwb_to_t265_transform";
-            std::string targetFrame = "/odom";
-            geometry_msgs::PoseStamped assigned_pose_in_t265;
-            try
-            {
-                mPoseTransformListener.transformPose(targetFrame, tmp_local, assigned_pose_in_t265);
-
-                tmp_local.header.frame_id = targetFrame;
-                assigned_pose_in_t265.header.stamp = tmp_local.header.stamp;
-                mAssignedt265VirtualPosePublisher.publish(assigned_pose_in_t265);
-            }
-            catch (tf::TransformException ex)
-            {
-                ROS_ERROR("%s", ex.what());
-                status = false;
-            }
-
-        }
-
-        // transform to local frame
-
-        // if (mPoseTransformListener.getLatestCommonTime(targetFrame, systemFrame, tm, &err_string) == tf::NO_ERROR)
-        // {
-        //     tmp.header.stamp = tm;
-
-        //     try
-        //     {
-        //         mPoseTransformListener.transformPose(targetFrame,tmp,tmp_local);
-
-        //         tmp_local.header.frame_id = targetFrame;
-        //         tmp_local.header.stamp = tm;
-        //         mAssignedVirtualPosePublisher.publish(tmp_local);
-        //     }
-        //     catch (tf::TransformException ex)
-        //     {
-        //         ROS_ERROR("%s", ex.what());
-        //         status = false;
-        //     }
-        // }
-        // else
-        // {
-        //     ROS_ERROR("[Teaming Planner %d]: Unable to transform object from frame %s to %s \n", mSourceSegmentId, systemFrame.c_str(), targetFrame.c_str());
-        //     status = false;
-        // }
     }
 
     else
@@ -1026,7 +960,6 @@ bool TeamingPlanner::switchToGunTargetPose(const int32_t aAgentId)
             tmp.pose.position.z = mDesiredHeight;
             tmp.header.frame_id = "/odom";
 
-            ROS_INFO("Publishing tmp pose: %i", tmp.pose.position.x);
             mAssignedVirtualPosePublisher.publish(tmp);
         }
 
@@ -1036,5 +969,100 @@ bool TeamingPlanner::switchToGunTargetPose(const int32_t aAgentId)
         ROS_ERROR("[Teaming Planner %d]: Agent ID %d and Source Segment ID %d mismatch\n", mSourceSegmentId, aAgentId, mSourceSegmentId);
     }
     return status;
+}
+
+// def pose_diff(pose_stamped_previous, pose_staped_now):
+//     q1_inv = np.zeros(4)
+//     q2 = np.zeros(4)
+//     vector_diff = PoseStamped()
+
+//     # position vector diff 
+//     vector_diff.pose.position.x = pose_staped_now.pose.position.x - pose_stamped_previous.pose.position.x
+//     vector_diff.pose.position.y = pose_staped_now.pose.position.y - pose_stamped_previous.pose.position.y
+//     vector_diff.pose.position.z = pose_staped_now.pose.position.z - pose_stamped_previous.pose.position.z
+
+//     q1_inv[0] = pose_stamped_previous.pose.orientation.x
+//     q1_inv[1] = pose_stamped_previous.pose.orientation.y
+//     q1_inv[2] = pose_stamped_previous.pose.orientation.z
+//     q1_inv[3] = -pose_stamped_previous.pose.orientation.w # Negate for inverse
+
+//     q2[0] = pose_staped_now.pose.orientation.x
+//     q2[1] = pose_staped_now.pose.orientation.y
+//     q2[2] = pose_staped_now.pose.orientation.z
+//     q2[3] = pose_staped_now.pose.orientation.w
+
+//     qr = quaternion_multiply(q2, q1_inv)
+
+//     vector_diff.pose.orientation.x = qr[0]
+//     vector_diff.pose.orientation.y = qr[1]
+//     vector_diff.pose.orientation.z = qr[2]
+//     vector_diff.pose.orientation.w = qr[3]
+
+//     return vector_diff
+
+
+geometry_msgs::PoseStamped TeamingPlanner::subtractPoseStamped(geometry_msgs::PoseStamped previous, geometry_msgs::PoseStamped current)
+{
+    geometry_msgs::PoseStamped vector_diff;
+    tf2::Quaternion q1_inv;
+    tf2::Quaternion q2;
+    tf2::Quaternion qr;
+
+
+    vector_diff.pose.position.x = current.pose.position.x - previous.pose.position.x;
+    vector_diff.pose.position.y = current.pose.position.y - previous.pose.position.y;
+    vector_diff.pose.position.z = current.pose.position.z - previous.pose.position.z;
+
+    q1_inv.setX(previous.pose.orientation.x);
+    q1_inv.setY(previous.pose.orientation.y);
+    q1_inv.setZ(previous.pose.orientation.z);
+    q1_inv.setW(-previous.pose.orientation.w); // Negative to invert it
+
+    q2.setX(current.pose.orientation.x);
+    q2.setY(current.pose.orientation.y);
+    q2.setZ(current.pose.orientation.z);
+    q2.setW(current.pose.orientation.w); // Negative to invert it
+
+    qr = q2 * q1_inv;
+
+    vector_diff.pose.orientation.x = qr.getX();
+    vector_diff.pose.orientation.y = qr.getY();
+    vector_diff.pose.orientation.z = qr.getZ();
+    vector_diff.pose.orientation.w = qr.getW();
+
+    return vector_diff;
 
 }
+
+geometry_msgs::PoseStamped TeamingPlanner::addPoseStamped(geometry_msgs::PoseStamped vector_pose, geometry_msgs::PoseStamped current)
+{
+
+    geometry_msgs::PoseStamped new_pose_stamped;
+    tf2::Quaternion q1_rot;
+    tf2::Quaternion q2_origin;
+    tf2::Quaternion q_new;
+
+    new_pose_stamped.pose.position.x = vector_pose.pose.position.x + current.pose.position.x;
+    new_pose_stamped.pose.position.y = vector_pose.pose.position.y + current.pose.position.y;
+    new_pose_stamped.pose.position.z = vector_pose.pose.position.z + current.pose.position.z;
+
+    q2_origin.setX(current.pose.orientation.x);
+    q2_origin.setY(current.pose.orientation.y);
+    q2_origin.setZ(current.pose.orientation.z);
+    q2_origin.setW(current.pose.orientation.w);
+
+    q1_rot.setX(vector_pose.pose.orientation.x);
+    q1_rot.setY(vector_pose.pose.orientation.y);
+    q1_rot.setZ(vector_pose.pose.orientation.z);
+    q1_rot.setW(vector_pose.pose.orientation.w);
+
+    q_new = q1_rot * q2_origin;
+
+    new_pose_stamped.pose.orientation.x = q_new.getX();
+    new_pose_stamped.pose.orientation.y = q_new.getY();
+    new_pose_stamped.pose.orientation.z = q_new.getZ();
+    new_pose_stamped.pose.orientation.w = q_new.getW();
+
+    return new_pose_stamped;
+}
+

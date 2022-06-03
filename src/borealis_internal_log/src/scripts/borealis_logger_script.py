@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3.6
 
 from ast import arg
 import multiprocessing
@@ -152,7 +152,6 @@ def ram_timer(hz):
     while True:
         time.sleep(0.5)
         write_ram_usage(ram_file)
-
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, handler)

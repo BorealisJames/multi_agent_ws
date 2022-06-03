@@ -6,7 +6,7 @@
     <node name="borealis_teaming_planner" pkg="borealis_teaming_planner" type="borealis_teaming_planner_node" output="screen" clear_params="true">
 
       <rosparam command="load" file="$(find borealis_teaming_planner)/config/teaming_planner_config_uav2.yaml"/>
-      <remap from="/assigned_virtual_position" to="teaming_planner/assigned_virtual_position"/>
+      <remap from="/assigned_virtual_position" to="teaming_planner/uwb_assigned_virtual_position"/>
       <remap from="/assignedt265_virtual_position" to="teaming_planner/assignedt265_virtual_position"/>
 
       <remap from="/assigned_virtual_pose_map" to="teaming_planner/assigned_virtual_pose_map"/>
