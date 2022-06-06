@@ -84,7 +84,7 @@ class mainROS:
     self.node_map = {}
     self.ignored_nodes = set()
 
-    self.now = datetime.self.now().strftime("%d_%m_%Y_time:%H_%M_%S")
+    self.now = datetime.strftime("%d_%m_%Y_time:%H_%M_%S")
     self.path_to_store_logs = os.path.expanduser('~/Diagnosis/NodesLogs/') + self.now + "/"
     os.mkdir(self.path_to_store_logs)
 
