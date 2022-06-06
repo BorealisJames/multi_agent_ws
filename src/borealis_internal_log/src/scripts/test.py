@@ -102,9 +102,9 @@ if __name__ == "__main__":
     t265_pose.pose.orientation.w = q_t265[3]
 
     # drone pose in uwb
-    uwb_pose.pose.position.x = 0
-    uwb_pose.pose.position.y = 0
-    uwb_pose.pose.position.z = 0
+    uwb_pose.pose.position.x = 1.1
+    uwb_pose.pose.position.y = 1.1
+    uwb_pose.pose.position.z = 1.1
 
     q_uwb = quaternion_from_euler(0, 0, 0, axes='sxyz')
     uwb_pose.pose.orientation.x = q_uwb[0]
