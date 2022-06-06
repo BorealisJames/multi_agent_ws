@@ -39,11 +39,11 @@ class transform():
         rospy.Subscriber('/uav2/command/pose',  PoseWithCovarianceStamped, self.uav2_go_there_callback)
 
         # Publish topic for planner
-        # uav1_publish_topic = "/uav1/teaming_planner/assigned_virtual_position"
-        # uav2_publish_topic = "/uav2/teaming_planner/assigned_virtual_position"
+        uav1_publish_topic = "/uav1/teaming_planner/assigned_virtual_position"
+        uav2_publish_topic = "/uav2/teaming_planner/assigned_virtual_position"
 
-        uav1_publish_topic = "/uav1/mavros/setpoint_position/local"
-        uav2_publish_topic = "/uav2/mavros/setpoint_position/local"
+        # uav1_publish_topic = "/uav1/mavros/setpoint_position/local"
+        # uav2_publish_topic = "/uav2/mavros/setpoint_position/local"
 
         uav1_publisher = rospy.Publisher(uav1_publish_topic , PoseStamped,queue_size=1)
         uav2_publisher = rospy.Publisher(uav2_publish_topic , PoseStamped,queue_size=1)

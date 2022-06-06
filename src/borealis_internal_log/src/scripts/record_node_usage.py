@@ -75,7 +75,7 @@ class RecordNode:
 class mainROS:
   def __init__(self):
     rospy.init_node("local_ros_node_logger")
-    self.master = rospy.get_self.master()
+    self.master = rospy.get_master()
 
     self.fast_period = 0.5
     self.slow_period = 10
