@@ -58,11 +58,12 @@ class RecordNode:
         f.close()
 
     def record(self):
-        self.now = datetime.self.now()
+        self.now = datetime.now()
         cpu_usage = str(Float32(self.proc.cpu_percent()))
-        mem_usage = str(UInt64(self.proc.memory_percent().rss))
-        cpu_usage = cpu_usage[:5] # strip the "Data: " keyword
-        mem_usage = mem_usage[:5] # strip the "Data: " keyword
+        mem_usage = str(UInt64(self.proc.memory_percent()))
+        
+        cpu_usage = cpu_usage[5:] # strip the "Data: " keyword
+        mem_usage = mem_usage[5:] # strip the "Data: " keyword
         f = open(self.cpu_log_file, 'a')
         f.write("{},{}\n".format(cpu_usage, self.now))
         f.close()
@@ -93,7 +94,9 @@ class mainROS:
     self.update_nodes_dct_timer = rospy.Timer(rospy.Duration(self.slow_period), self.update_node_map)
     self.record_nodes_stats_timer = rospy.Timer(rospy.Duration(self.fast_period), self.record_nodes_stats)
 
-  def update_node_map(self):
+    rospy.spin()
+
+  def update_node_map(self, timer):
     for node in rosnode.get_node_names():
       if node in self.node_map or node in self.ignored_nodes:
         continue
@@ -126,7 +129,7 @@ class mainROS:
           self.node_map[node] = RecordNode(name=node, pid=pid, logs_path=self.path_to_store_logs)
           rospy.loginfo("[node cpu logger] adding new node %s" % node)
 
-  def record_nodes_stats(self):
+  def record_nodes_stats(self, timer):
     for node_name, node in list(self.node_map.items()):
       if node.alive():
         node.record()
