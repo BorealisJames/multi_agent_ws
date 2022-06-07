@@ -41,6 +41,9 @@ class Node:
 class RecordNode:
     def __init__(self, name, pid, logs_path):
         self._name = name[1:] # strip "/" infront of the name
+        
+        self._name = str(self._name.replace("_", ""))
+
         self._pid = pid
         path_to_store_node_logs = logs_path + self._name + "/"
         os.mkdir(path_to_store_node_logs)

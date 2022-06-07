@@ -127,8 +127,8 @@ class transform():
                 self.cmd1.pose = self.uav1_pose_uwb_covar.pose.pose
                 self.cmd2.pose = self.uav2_pose_uwb_covar.pose.pose
 
-            print("cmd1_ap:",[self.cmd1.pose.position.x,self.cmd1.pose.position.y,self.cmd1.pose.position.z, self.cmd1.pose.orientation.x, self.cmd1.pose.orientation.y, self.cmd1.pose.orientation.z, self.cmd1.pose.orientation.w])
-            print("cmd2_ap:",[self.cmd2.pose.position.x,self.cmd2.pose.position.y,self.cmd2.pose.position.z, self.cmd2.pose.orientation.x, self.cmd2.pose.orientation.y, self.cmd2.pose.orientation.z, self.cmd2.pose.orientation.w])
+            print("cmd1_ap:",[self.cmd1.pose.position.x,self.cmd1.pose.position.y,self.cmd1.pose.position.z])
+            print("cmd2_ap:",[self.cmd2.pose.position.x,self.cmd2.pose.position.y,self.cmd2.pose.position.z])
 
             self.cmd1.header.frame_id = '/odom'
             self.cmd2.header.frame_id = '/odom'

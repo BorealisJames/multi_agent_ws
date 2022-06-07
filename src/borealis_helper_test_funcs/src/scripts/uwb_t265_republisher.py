@@ -33,6 +33,12 @@ class Republish():
         self.uav_pos_uwb = PoseWithCovarianceStamped()
         rospy.Subscriber('UAVposeUWB',  PoseWithCovarianceStamped, self.uav_uwb_callback)
 
+        self.uav1_go_there_yaw = Float64()
+        rospy.Subscriber('/uav1/command/yaw',  Float64, self.uav1_go_there_yaw_callback)
+        self.uav2_go_there_yaw = Float64()
+        rospy.Subscriber('/uav2/command/yaw',  Float64, self.uav2_go_there_yaw_callback)
+        self.uav1_yaw_publisher = rospy.Publisher("/uav1/command/yaw/out" , Float64,queue_size=1)
+        self.uav2_yaw_publisher = rospy.Publisher("/uav2/command/yaw/out" , Float64,queue_size=1)
         rate = rospy.Rate(20.0)
 
         while not rospy.is_shutdown():
@@ -40,6 +46,12 @@ class Republish():
                 pass
             else:
                 uav_publisher.publish(self.t265_setpoint)
+
+            print("Yaw values 1: ", self.uav1_go_there_yaw)
+            print("Yaw values 2: ", self.uav2_go_there_yaw)
+
+            self.uav1_yaw_publisher.publish(self.uav1_go_there_yaw)
+            self.uav2_yaw_publisher.publish(self.uav2_go_there_yaw)
             rate.sleep()
 
     def setpoint_callback(self,data):
@@ -58,6 +70,13 @@ class Republish():
         self.uwb_pose.pose.orientation.y = data.pose.position.position.y
         self.uwb_pose.pose.orientation.z = data.pose.position.position.z
         self.uwb_pose.pose.orientation.w = data.pose.position.position.w
+
+    def uav1_go_there_yaw_callback(self,data):
+       self.uav1_go_there_yaw=data.data
+
+    def uav2_go_there_yaw_callback(self,data):
+       self.uav2_go_there_yaw=data.data
+    
 
     # rotation
     # Relative rotation q_r from q_1 to q_2

@@ -72,7 +72,7 @@ class transform():
             vector_diff_uav1 = PoseStamped()
             vector_diff_uav2 = PoseStamped()
 
-            print("1_diff:",[self.uav1_pose_uwb.pose.position.x,self.uav1_pose_uwb.pose.position.y,self.uav1_pose_uwb.pose.position.z])
+
             vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
             final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
             self.cmd1 = final_pose_uav1
@@ -81,15 +81,26 @@ class transform():
             final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
             self.cmd2 = final_pose_uav2
             
+            # diiff refers to uwb_pose and assigned_pose
             print("Mode: ", self.mode)
+            print("uav1_pose_uwb:",[self.uav1_pose_uwb.pose.position.x, self.uav1_pose_uwb.pose.position.y, self.uav1_pose_uwb.pose.position.z])
+            print("uav1_ap_pose_uwb:",[self.uav1_ap_uwb.pose.position.x, self.uav1_ap_uwb.pose.position.y, self.uav1_ap_uwb.pose.position.z])
             print("1_diff:",[vector_diff_uav1.pose.position.x,vector_diff_uav1.pose.position.y,self.cmd1.pose.position.z])
-            print("2_diff:",[vector_diff_uav2.pose.position.x,vector_diff_uav2.pose.position.y,vector_diff_uav2.pose.position.z])
 
-            print("uav1_t265:",[self.cmd1.pose.position.x,self.cmd1.pose.position.y,self.cmd1.pose.position.z])
-            print("uav2_t265:",[self.cmd2.pose.position.x,self.cmd2.pose.position.y,self.cmd2.pose.position.z])
+            print("uav2_pose_uwb:",[self.uav2_pose_uwb.pose.position.x, self.uav2_pose_uwb.pose.position.y, self.uav2_pose_uwb.pose.position.z])
+            print("uav2_ap_pose_uwb:",[self.uav2_ap_uwb.pose.position.x, self.uav2_ap_uwb.pose.position.y, self.uav2_ap_uwb.pose.position.z])
+            print("2_diff:",[vector_diff_uav2.pose.position.x, vector_diff_uav2.pose.position.y, self.cmd2.pose.position.z])
+
+            # print("2_diff:",[vector_diff_uav2.pose.position.x,vector_diff_uav2.pose.position.y,vector_diff_uav2.pose.position.z])
+
+            # print("uav1_output:",[self.cmd1.pose.position.x,self.cmd1.pose.position.y,self.cmd1.pose.position.z])
+            # print("uav2_output:",[self.cmd2.pose.position.x,self.cmd2.pose.position.y,self.cmd2.pose.position.z])
             self.cmd1.header.frame_id = '/odom'
             self.cmd2.header.frame_id = '/odom'
-
+            
+            self.cmd1.pose.position.z = 1
+            self.cmd2.pose.position.z = 1
+            
             if self.mode.data == "Go_There":
                 if self.recieved_new_callback_uav1:
                     uav1_publisher.publish(self.cmd1)
@@ -100,6 +111,9 @@ class transform():
             else:
                 uav1_publisher.publish(self.cmd1)
                 uav2_publisher.publish(self.cmd2)
+
+            print("cmd1:",[self.cmd1.pose.position.x, self.cmd1.pose.position.y, self.cmd1.pose.position.z])
+            print("cmd2:",[self.cmd2.pose.position.x, self.cmd2.pose.position.y, self.cmd2.pose.position.z])
 
             rate.sleep()
 
