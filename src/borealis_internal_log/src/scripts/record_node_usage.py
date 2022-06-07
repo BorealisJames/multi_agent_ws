@@ -4,6 +4,8 @@ import functools
 import os
 import subprocess
 
+from click import argument
+
 import rosnode
 import rospy
 
@@ -89,7 +91,7 @@ class mainROS:
     os.mkdir(self.path_to_store_logs)
 
     self.update_nodes_dct_timer = rospy.Timer(rospy.Duration(self.slow_period), self.update_node_map)
-    self.record_nodes_stats_timer = rospy.Timer(rospy.Duration(self.fast_period), self.record_nodes_stats_timer)
+    self.record_nodes_stats_timer = rospy.Timer(rospy.Duration(self.fast_period), self.record_nodes_stats)
 
   def update_node_map(self):
     for node in rosnode.get_node_names():
@@ -124,7 +126,7 @@ class mainROS:
           self.node_map[node] = RecordNode(name=node, pid=pid, logs_path=self.path_to_store_logs)
           rospy.loginfo("[node cpu logger] adding new node %s" % node)
 
-  def record_nodes_stats_timer(self):
+  def record_nodes_stats(self):
     for node_name, node in list(self.node_map.items()):
       if node.alive():
         node.record()
