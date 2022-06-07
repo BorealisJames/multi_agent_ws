@@ -5,6 +5,7 @@ from datetime import datetime
 import rospy
 import os
 from geometry_msgs.msg import PoseStamped 
+from std_msgs.msg import String
 
 def localpose_cb(msg):
     global localpose, localpose_flag
@@ -12,6 +13,13 @@ def localpose_cb(msg):
     localpose.pose.position.y = msg.pose.position.y
     localpose.pose.position.z = msg.pose.position.z
     localpose_flag = True
+
+def hri_mode_cb(msg):
+    global hri_mode_file
+    f = open(hri_mode_file, 'a')
+    now = datetime.now()
+    f.write("{},{}\n".format(msg.data,now))
+    f.close()
 
 def setpoint_cb(msg):
     global setpointpose, setpoint_flag
@@ -36,7 +44,7 @@ def record_localpose(event):
         y = str(localpose.pose.position.y)
         z = str(localpose.pose.position.z)
         now = datetime.now()
-        print("Recording mavros local position {}, {}, {}".format(x,y,z))
+        # print("Recording mavros local position {}, {}, {}".format(x,y,z))
         f.write("{},{},{},{}\n".format(x,y,z,now))
         f.close()
         
@@ -51,7 +59,7 @@ def record_setpointpose(event):
         z = str(setpointpose.pose.position.z)
         now = datetime.now()
         f.write("{},{},{},{}\n".format(x,y,z,now))
-        print("Recording mavros setpoint position {}, {}, {}".format(x,y,z))
+        # print("Recording mavros setpoint position {}, {}, {}".format(x,y,z))
         f.close()
 
 def record_assignedpose(event):
@@ -64,7 +72,7 @@ def record_assignedpose(event):
         z = str(assignedpose.pose.position.z)
         now = datetime.now()
         f.write("{},{},{},{}\n".format(x,y,z,now))
-        print("Recording assignedd pose position {}, {}, {}".format(x,y,z))
+        # print("Recording assignedd pose position {}, {}, {}".format(x,y,z))
         f.close()
 
 
@@ -86,6 +94,10 @@ if __name__ == "__main__":
     path_to_store_logs = os.path.expanduser('~/Diagnosis/MavrosLogs/') + now
     os.mkdir(path_to_store_logs)
 
+    f = open(os.path.expanduser('~/Diagnosis/MavrosLogs/') + "last_run.txt"  , 'w')
+    f.write(now)
+    f.close()
+
     localpose_file = path_to_store_logs + "/localpose_log.csv"
     f = open(localpose_file, 'a')
     f.write("X(m), Y(m), Z(m), time(24h)\n")
@@ -101,13 +113,20 @@ if __name__ == "__main__":
     f.write("X(m), Y(m), Z(m), time(24h)\n")
     f.close()
 
+    hri_mode_file = path_to_store_logs + "/hri_mode_log.csv"
+    f = open(hri_mode_file, 'a')
+    f.write("mode, time(24h)\n")
+    f.close()
+
     localposition_topic = "/uav" + str(drone_number) + "/mavros/local_position/pose"
     setpoint_topic = "/uav" + str(drone_number) + "/mavros/setpoint_position/local"
-    assignedpose_topic = "/uav" + str(drone_number) + "/teaming_planner/assigned_virtual_position"
+    assignedpose_topic = "/uav" + str(drone_number) + "/teaming_planner/t265assigned_virtual_position"
+    hri_mode_topic = "/hri_mode" 
 
     localposition_sub = rospy.Subscriber(localposition_topic, PoseStamped, localpose_cb)
     setpoint_sub = rospy.Subscriber(setpoint_topic, PoseStamped, setpoint_cb)
     assignedpose_sub = rospy.Subscriber(assignedpose_topic, PoseStamped, assignedpose_cb)
+    hri_mode_sub = rospy.Subscriber(assignedpose_topic, String, hri_mode_cb)
 
     setpoint_timer = rospy.Timer(rospy.Duration(loop_rate), record_localpose)
     localpose_timer = rospy.Timer(rospy.Duration(loop_rate), record_setpointpose)

@@ -42,7 +42,7 @@ class RecordNode:
     def __init__(self, name, pid, logs_path):
         self._name = name[1:] # strip "/" infront of the name
         
-        self._name = str(self._name.replace("_", ""))
+        self._name = str(self._name.replace("/", "_"))
 
         self._pid = pid
         path_to_store_node_logs = logs_path + self._name + "/"
@@ -84,7 +84,7 @@ class mainROS:
     self.master = rospy.get_master()
 
     self.fast_period = 0.5
-    self.slow_period = 10
+    self.slow_period = 5
 
     self.this_ip = os.environ.get("ROS_IP")
     self.node_map = {}
@@ -93,6 +93,10 @@ class mainROS:
     self.now = datetime.now().strftime("%d_%m_%Y_time:%H_%M_%S")
     self.path_to_store_logs = os.path.expanduser('~/Diagnosis/NodesLogs/') + self.now + "/"
     os.mkdir(self.path_to_store_logs)
+
+    f = open(os.path.expanduser('~/Diagnosis/MavrosLogs/') + "last_run.txt"  , 'w')
+    f.write(self.now)
+    f.close()
 
     self.update_nodes_dct_timer = rospy.Timer(rospy.Duration(self.slow_period), self.update_node_map)
     self.record_nodes_stats_timer = rospy.Timer(rospy.Duration(self.fast_period), self.record_nodes_stats)

@@ -2,5 +2,6 @@
 <launch>
     <group ns="$(env DRONE_NAME)">
         <node pkg="borealis_internal_log" type="borealis_mavros_logs.py" name="borealis_mavros_logger" output="screen"/>
+        <node pkg="borealis_internal_log" type="borealis_record_node_usage.py" name="borealis_node_info_logger" output="screen"/>
     </group>
 </launch>

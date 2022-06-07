@@ -59,6 +59,12 @@ class transform():
         uav1_publisher = rospy.Publisher(uav1_publish_topic , PoseStamped,queue_size=1)
         uav2_publisher = rospy.Publisher(uav2_publish_topic , PoseStamped,queue_size=1)
 
+        self.uav1_go_there_yaw = Float64()
+        rospy.Subscriber('/uav1/command/yaw',  Float64, self.uav1_go_there_yaw_callback)
+        self.uav2_go_there_yaw = Float64()
+        rospy.Subscriber('/uav2/command/yaw',  Float64, self.uav2_go_there_yaw_callback)
+        self.uav1_yaw_publisher = rospy.Publisher("/uav1/command/yaw/out" , Float64,queue_size=1)
+        self.uav2_yaw_publisher = rospy.Publisher("/uav2/command/yaw/out" , Float64,queue_size=1)
 
         rate = rospy.Rate(20)
 
@@ -72,7 +78,6 @@ class transform():
             vector_diff_uav1 = PoseStamped()
             vector_diff_uav2 = PoseStamped()
 
-
             vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
             final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
             self.cmd1 = final_pose_uav1
@@ -80,7 +85,7 @@ class transform():
             vector_diff_uav2 = self.pose_diff(self.uav2_pose_uwb, self.uav2_ap_uwb)
             final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
             self.cmd2 = final_pose_uav2
-            
+
             # diiff refers to uwb_pose and assigned_pose
             print("Mode: ", self.mode)
             print("uav1_pose_uwb:",[self.uav1_pose_uwb.pose.position.x, self.uav1_pose_uwb.pose.position.y, self.uav1_pose_uwb.pose.position.z])
@@ -114,6 +119,8 @@ class transform():
 
             print("cmd1:",[self.cmd1.pose.position.x, self.cmd1.pose.position.y, self.cmd1.pose.position.z])
             print("cmd2:",[self.cmd2.pose.position.x, self.cmd2.pose.position.y, self.cmd2.pose.position.z])
+            print("Yaw values 1: ", self.uav1_go_there_yaw)
+            print("Yaw values 2: ", self.uav2_go_there_yaw)
 
             rate.sleep()
 
@@ -149,6 +156,12 @@ class transform():
     def mode_callback(self,data):
         self.mode=data
 
+    def uav1_go_there_yaw_callback(self,data):
+       self.uav1_go_there_yaw=data.data
+
+    def uav2_go_there_yaw_callback(self,data):
+       self.uav2_go_there_yaw=data.data
+    
     # rotation
     # Relative rotation q_r from q_1 to q_2
     # q_2 = q_r*q_1
@@ -214,6 +227,7 @@ class transform():
         new_pose_stamped.pose.orientation.w = q_new[3]
 
         return new_pose_stamped
+
 
 
 if __name__ == '__main__':
