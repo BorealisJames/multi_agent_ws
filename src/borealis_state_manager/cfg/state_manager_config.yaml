@@ -1,3 +1,0 @@
-sim_mode: true
-cmdLoopPeriod: 0.05   # seconds
-max_speed: 2 # m/s

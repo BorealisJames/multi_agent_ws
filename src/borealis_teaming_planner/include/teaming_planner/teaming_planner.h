@@ -54,7 +54,6 @@ class TeamingPlanner
         double mModulePeriod;
         int mNumOfAgents;
         bool mDebugVerbose;
-        int mTransformMethod;
         double mIntervalDistance;
         double mPlanningHorizon;
         double mDesiredHeight;

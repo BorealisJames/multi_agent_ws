@@ -84,53 +84,53 @@ class mainROS:
     self.node_map = {}
     self.ignored_nodes = set()
 
-    self.now = datetime.strftime("%d_%m_%Y_time:%H_%M_%S")
+    self.now = datetime.now().strftime("%d_%m_%Y_time:%H_%M_%S")
     self.path_to_store_logs = os.path.expanduser('~/Diagnosis/NodesLogs/') + self.now + "/"
     os.mkdir(self.path_to_store_logs)
 
-    self.update_nodes_dct_timer = rospy.Timer(rospy.Duration(self.slow_period), update_node_map)
-    self.record_nodes_stats_timer = rospy.Timer(rospy.Duration(self.fast_period), record_nodes_stats_timer)
+    self.update_nodes_dct_timer = rospy.Timer(rospy.Duration(self.slow_period), self.update_node_map)
+    self.record_nodes_stats_timer = rospy.Timer(rospy.Duration(self.fast_period), self.record_nodes_stats_timer)
 
-    def update_node_map(self):
-      for node in rosnode.get_node_names():
-        if node in self.node_map or node in self.ignored_nodes:
-          continue
+  def update_node_map(self):
+    for node in rosnode.get_node_names():
+      if node in self.node_map or node in self.ignored_nodes:
+        continue
 
-        node_api = rosnode.get_api_uri(self.master, node)[2]
-        if not node_api:
-          rospy.logerr("[node cpu logger] failed to get api of node %s (%s)" % (node, node_api))
-          continue
+      node_api = rosnode.get_api_uri(self.master, node)[2]
+      if not node_api:
+        rospy.logerr("[node cpu logger] failed to get api of node %s (%s)" % (node, node_api))
+        continue
 
-        ros_ip = node_api[7:] # strip http://
-        ros_ip = ros_ip.split(':')[0] # strip :<port>/
-        local_node = "localhost" in node_api or \
-                    "127.0.0.1" in node_api or \
-                    (self.this_ip is not None and self.this_ip == ros_ip) or \
-                    subprocess.check_output("hostname").decode('utf-8').strip() in node_api
-        if not local_node:
-          self.ignored_nodes.add(node)
-          rospy.loginfo("[node cpu logger] ignoring node %s with URI %s" % (node, node_api))
-          continue
+      ros_ip = node_api[7:] # strip http://
+      ros_ip = ros_ip.split(':')[0] # strip :<port>/
+      local_node = "localhost" in node_api or \
+                  "127.0.0.1" in node_api or \
+                  (self.this_ip is not None and self.this_ip == ros_ip) or \
+                  subprocess.check_output("hostname").decode('utf-8').strip() in node_api
+      if not local_node:
+        self.ignored_nodes.add(node)
+        rospy.loginfo("[node cpu logger] ignoring node %s with URI %s" % (node, node_api))
+        continue
+      try:
+        resp = ServerProxy(node_api).getPid('/NODEINFO')
+      except:
+        rospy.logerr("[node cpu logger] failed to get pid of node %s (api is %s)" % (node, node_api))
+      else:
         try:
-          resp = ServerProxy(node_api).getPid('/NODEINFO')
+          pid = resp[2]
         except:
-          rospy.logerr("[node cpu logger] failed to get pid of node %s (api is %s)" % (node, node_api))
+          rospy.logerr("[node cpu logger] failed to get pid for node %s from NODEINFO response: %s" % (node, resp))
         else:
-          try:
-            pid = resp[2]
-          except:
-            rospy.logerr("[node cpu logger] failed to get pid for node %s from NODEINFO response: %s" % (node, resp))
-          else:
-            self.node_map[node] = RecordNode(name=node, pid=pid, logs_path=self.path_to_store_logs)
-            rospy.loginfo("[node cpu logger] adding new node %s" % node)
+          self.node_map[node] = RecordNode(name=node, pid=pid, logs_path=self.path_to_store_logs)
+          rospy.loginfo("[node cpu logger] adding new node %s" % node)
 
-    def record_nodes_stats_timer(self):
-      for node_name, node in list(self.node_map.items()):
-        if node.alive():
-          node.record()
-        else:
-          rospy.logwarn("[node cpu logger] lost node %s" % node_name)
-          del self.node_map[node_name]
+  def record_nodes_stats_timer(self):
+    for node_name, node in list(self.node_map.items()):
+      if node.alive():
+        node.record()
+      else:
+        rospy.logwarn("[node cpu logger] lost node %s" % node_name)
+        del self.node_map[node_name]
 
 if __name__ == "__main__":
   main_ros = mainROS()

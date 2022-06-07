@@ -29,7 +29,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConfigFileReader.getParam(nhPrivate, "intervalDistance", mIntervalDistance, 0.5);
         mConfigFileReader.getParam(nhPrivate, "planningHorizon", mPlanningHorizon, 25);
         mConfigFileReader.getParam(nhPrivate, "desiredHeight", mDesiredHeight, 1.2);
-        mConfigFileReader.getParam(nhPrivate, "method", mTransformMethod, 1);
         mConfigFileReader.getParam(nhPrivate, "useUWB", useUWB, false);
 
 
@@ -44,7 +43,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConvexRegion2DPublisher = mNh.advertise<mt_msgs::convexRegion2D>("/convex_region_2D", 10);
         mConvexRegion3DPublisher = mNh.advertise<mt_msgs::convexRegion3D>("/convex_region_3D", 10);
         mAssignedVirtualPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/assigned_virtual_position", 10);
-        mAssignedt265VirtualPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/assignedt265_virtual_position", 10);
+        // mAssignedt265VirtualPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/assignedt265_virtual_position", 10);
         mAssignedVirtualPoseMapPublisher = mNh.advertise<mt_msgs::posevector>("/assigned_virtual_pose_map", 10);
         mControlStatePublisher = mNh.advertise<std_msgs::Int8>("/control_state",10);
         mVoxel_filter_cloudPublisher = mNh.advertise<sensor_msgs::PointCloud>("/voxel_filter_cloud",10);

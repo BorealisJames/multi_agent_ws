@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="borealis_control_manager" type="control_manager.py" name="control_manager" output="screen"/>
+</launch>

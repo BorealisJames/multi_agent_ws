@@ -215,29 +215,6 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
         std::string err_string;
 
         mAssignedVirtualPosePublisher.publish(tmp);
-
-        // Transform from UWB to t265 frame manually
-        if (mTransformMethod == 1)
-        {
-            // find vector diff 
-            geometry_msgs::PoseStamped vector_diff;
-            geometry_msgs::PoseStamped t265Assignedpose;
-            geometry_msgs::PoseStamped uwbSystemPose;
-
-            uwbSystemPose.pose.position.x = mSelfSystemPose.position.x;
-            uwbSystemPose.pose.position.y = mSelfSystemPose.position.y;
-            uwbSystemPose.pose.position.z = mSelfSystemPose.position.z;
-
-            tf::Quaternion tmpQuat = tf::createQuaternionFromYaw(mSelfSystemPose.headingRad);
-            uwbSystemPose.pose.orientation.w = tmpQuat.getW();
-            uwbSystemPose.pose.orientation.x = tmpQuat.getX();
-            uwbSystemPose.pose.orientation.y = tmpQuat.getY();
-            uwbSystemPose.pose.orientation.z = tmpQuat.getZ();
-
-            vector_diff = TeamingPlanner::subtractPoseStamped(uwbSystemPose, tmp);
-            t265Assignedpose = TeamingPlanner::addPoseStamped(vector_diff, mSelft265SystemPose);
-            mAssignedt265VirtualPosePublisher.publish(t265Assignedpose);
-        }
     }
 
     else

@@ -5,5 +5,4 @@
 /uav2/borealis_teaming_planner/planningHorizon: 25
 /uav2/borealis_teaming_planner/debugVerbose: false
 /uav2/borealis_teaming_planner/desiredHeight: 1.2
-/uav2/borealis_teaming_planner/method: 1
 /uav2/borealis_teaming_planner/useUWB: true
