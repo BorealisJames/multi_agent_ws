@@ -76,17 +76,18 @@ class transform():
 
                 formation_pose_uav1 = PoseStamped()
                 formation_pose_uav2 = PoseStamped()
-                formation_pose_uav1.pose = self.follow_me_pos.pose.pose 
-                formation_pose_uav1.pose.position.z=1
-
-                formation_pose_uav2.pose.position.x=self.follow_me_pos.pose.pose.position.x - 2
-                formation_pose_uav2.pose.position.y=self.follow_me_pos.pose.pose.position.y 
+                
+                formation_pose_uav2.pose = self.follow_me_pos.pose.pose 
                 formation_pose_uav2.pose.position.z=1
 
-                formation_pose_uav2.pose.orientation.x=self.follow_me_pos.pose.pose.orientation.x
-                formation_pose_uav2.pose.orientation.y=self.follow_me_pos.pose.pose.orientation.y
-                formation_pose_uav2.pose.orientation.z=self.follow_me_pos.pose.pose.orientation.z
-                formation_pose_uav2.pose.orientation.w=self.follow_me_pos.pose.pose.orientation.w
+                formation_pose_uav1.pose.position.x=self.follow_me_pos.pose.pose.position.x - 2
+                formation_pose_uav1.pose.position.y=self.follow_me_pos.pose.pose.position.y 
+                formation_pose_uav1.pose.position.z=1
+
+                formation_pose_uav1.pose.orientation.x=self.follow_me_pos.pose.pose.orientation.x
+                formation_pose_uav1.pose.orientation.y=self.follow_me_pos.pose.pose.orientation.y
+                formation_pose_uav1.pose.orientation.z=self.follow_me_pos.pose.pose.orientation.z
+                formation_pose_uav1.pose.orientation.w=self.follow_me_pos.pose.pose.orientation.w
 
                 self.cmd1 = formation_pose_uav1
                 self.cmd2 = formation_pose_uav2

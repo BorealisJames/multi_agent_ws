@@ -454,14 +454,17 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     DistributedFormation::ProcessPointCloud tmpProcessPointCloud;
     sensor_msgs::PointCloud tmp;
     tmpProcessPointCloud.ApplyVoxelFilterAndConvertToPointCloud(*aSystemPointCloud2, tmp);
-    tmp.header.frame_id = sourceFrame;
-    tmp.header.stamp = ros::Time::now();
+    tmp.header.stamp = aSystemPointCloud2->header.stamp; 
+    tmp.header.frame_id = aSystemPointCloud2->header.frame_id; 
+
+    // tmp.header.frame_id = sourceFrame;
+    // tmp.header.stamp = ros::Time::now();
+
     mVoxel_filter_cloudPublisher.publish(tmp);
-    // tmp.header.stamp = aSystemPointCloud2->header.stamp; // The correct way
 
     try 
     {        
-        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(0.3));
+        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(0.5));
         mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemPointCloud);
     }
     catch (tf::TransformException ex)
