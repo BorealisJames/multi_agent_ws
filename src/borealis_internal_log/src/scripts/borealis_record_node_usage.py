@@ -24,20 +24,6 @@ from datetime import datetime
 def ns_join(*names):
   return functools.reduce(rospy.names.ns_join, names, "")
 
-class Node:
-  def __init__(self, name, pid):
-    self.name = name
-    self.proc = psutil.Process(pid)
-    self.cpu_publisher = rospy.Publisher(ns_join("~", name[1:], "cpu"), Float32, queue_size=20)
-    self.mem_publisher = rospy.Publisher(ns_join("~", name[1:], "mem"), UInt64, queue_size=20)
-
-  def publish(self):
-    self.cpu_publisher.publish(Float32(self.proc.cpu_percent()))
-    self.mem_publisher.publish(UInt64(self.proc.memory_info().rss))
-
-  def alive(self):
-    return self.proc.is_running()
-
 class RecordNode:
     def __init__(self, name, pid, logs_path):
         self._name = name[1:] # strip "/" infront of the name
@@ -83,8 +69,8 @@ class mainROS:
     rospy.init_node("local_ros_node_logger")
     self.master = rospy.get_master()
 
-    self.fast_period = 0.5
-    self.slow_period = 5
+    self.fast_period = 5
+    self.slow_period = 6
 
     self.this_ip = os.environ.get("ROS_IP")
     self.node_map = {}

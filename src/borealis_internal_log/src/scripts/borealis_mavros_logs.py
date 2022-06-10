@@ -126,7 +126,7 @@ if __name__ == "__main__":
     localposition_sub = rospy.Subscriber(localposition_topic, PoseStamped, localpose_cb)
     setpoint_sub = rospy.Subscriber(setpoint_topic, PoseStamped, setpoint_cb)
     assignedpose_sub = rospy.Subscriber(assignedpose_topic, PoseStamped, assignedpose_cb)
-    hri_mode_sub = rospy.Subscriber(assignedpose_topic, String, hri_mode_cb)
+    hri_mode_sub = rospy.Subscriber(hri_mode_topic, String, hri_mode_cb)
 
     setpoint_timer = rospy.Timer(rospy.Duration(loop_rate), record_localpose)
     localpose_timer = rospy.Timer(rospy.Duration(loop_rate), record_setpointpose)
