@@ -73,32 +73,31 @@ def pose_addition(vector_pose_stamped, pose_staped_now):
 
 
 if __name__ == "__main__":
-    # Take goal in UWB frame - Pose in UWB drone 
-    # Take this relative vector
-    # Add this vector to the goal in mavros position
-    # This is to account for drift in the 2 readings
+    # Take goal in UWB frame - Pose in UWB drone frame
+    # Take this vector
+    # Add this vector to the goal in t265 frame
 
-    rospy.init_node("test")
+    rospy.init_node("kekw")
     # Method 1 manual method 
-    mavros_pose = PoseStamped()
-    goal_in_mavros_pose  = PoseStamped()
+    t265_pose = PoseStamped()
+    goal_in_t265_pose  = PoseStamped()
     uwb_pose = PoseStamped()
     goal_in_uwb_pose = PoseStamped()
     vector_diff = PoseStamped()
     final_pose = PoseStamped()
 
-    # drone pose in mavros
-    mavros_pose.pose.position.x = 0.1
-    mavros_pose.pose.position.y = 0.1
-    mavros_pose.pose.position.z = 0.1
+    # drone pose in t265
+    t265_pose.pose.position.x = 0.1
+    t265_pose.pose.position.y = 0.1
+    t265_pose.pose.position.z = 0.1
 
-    q_mavros = quaternion_from_euler(math.pi/2, 0, 0, axes='sxyz')
-    (roll, pitch, yaw) = euler_from_quaternion(q_mavros, axes='sxyz')
+    q_t265 = quaternion_from_euler(math.pi/2, 0, 0, axes='sxyz')
+    (roll, pitch, yaw) = euler_from_quaternion(q_t265, axes='sxyz')
 
-    mavros_pose.pose.orientation.x = q_mavros[0]
-    mavros_pose.pose.orientation.y = q_mavros[1]
-    mavros_pose.pose.orientation.z = q_mavros[2]
-    mavros_pose.pose.orientation.w = q_mavros[3]
+    t265_pose.pose.orientation.x = q_t265[0]
+    t265_pose.pose.orientation.y = q_t265[1]
+    t265_pose.pose.orientation.z = q_t265[2]
+    t265_pose.pose.orientation.w = q_t265[3]
 
     # drone pose in uwb
     uwb_pose.pose.position.x = 1.1
@@ -133,7 +132,7 @@ if __name__ == "__main__":
     print("vector_diff diff z_rot", vector_diff.pose.orientation.z)
     print("vector_diff diff w_rot", vector_diff.pose.orientation.w)
 
-    final_pose = pose_addition(vector_diff, mavros_pose)
+    final_pose = pose_addition(vector_diff, t265_pose)
     print("final_pose diff x is", final_pose.pose.position.x)
     print("final_pose diff y is ", final_pose.pose.position.y)
     print("final_pose diff z is ", final_pose.pose.position.z)
