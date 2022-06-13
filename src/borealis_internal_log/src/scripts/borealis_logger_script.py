@@ -1,6 +1,5 @@
 #!/usr/bin/env python3.6
 
-from ast import arg
 import multiprocessing
 import signal
 import time
@@ -10,6 +9,8 @@ from datetime import datetime
 from pythonping import ping
 import psutil
 import re
+
+# Borealis logger that record system performance while on flight
 
 def handler(signum, frame):
     print("Stopping logger")

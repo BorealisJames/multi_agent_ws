@@ -31,7 +31,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConfigFileReader.getParam(nhPrivate, "desiredHeight", mDesiredHeight, 1.2);
         mConfigFileReader.getParam(nhPrivate, "useUWB", useUWB, false);
 
-
         mgunTargetPoseRecieved = false;
 
         // Publishers

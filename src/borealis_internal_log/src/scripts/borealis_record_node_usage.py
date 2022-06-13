@@ -19,7 +19,8 @@ except ImportError:
 from std_msgs.msg import Float32, UInt64
 from datetime import datetime
 
-# adapted from https://github.com/alspitz/cpu_monitor
+# adapted from https://github.com/alspitz/cpu_monitor 
+# additional reference -> https://github.com/ros-visualization rqt, git hub where i reference from rqt system_plot
 
 def ns_join(*names):
   return functools.reduce(rospy.names.ns_join, names, "")

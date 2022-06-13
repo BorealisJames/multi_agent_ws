@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 
-import subprocess
 from datetime import datetime
 import rospy
 import os
@@ -8,9 +7,17 @@ from geometry_msgs.msg import PoseStamped
 from std_msgs.msg import String
 from nav_msgs.msg import Odometry
 
+# Borealis flight log that records...
+# local pose
+# assigned pose
+# setpoint
 # aloam
-# uwb 
-# vision 
+# vision
+# hri mode
+
+# Experimenting with global variables.
+# Can probably use classes with inheritance to encapsulate things better and reduce repeat code
+# File opening, recording, closing, callbacks can seem to be repated. 
 
 def localpose_cb(msg):
     global localpose, localpose_flag
@@ -18,6 +25,27 @@ def localpose_cb(msg):
     localpose.pose.position.y = msg.pose.position.y
     localpose.pose.position.z = msg.pose.position.z
     localpose_flag = True
+
+def assignedpose_cb(msg):
+    global assignedpose, assignedpose_flag
+    assignedpose.pose.position.x = msg.pose.position.x
+    assignedpose.pose.position.y = msg.pose.position.y
+    assignedpose.pose.position.z = msg.pose.position.z
+    assignedpose_flag = True
+
+def setpoint_cb(msg):
+    global setpointpose, setpoint_flag
+    setpointpose.pose.position.x = msg.pose.position.x
+    setpointpose.pose.position.y = msg.pose.position.y
+    setpointpose.pose.position.z = msg.pose.position.z
+    setpoint_flag = True
+
+def aloam_cb(msg):
+    global aloam_odom, aloam_flag
+    aloam_odom.pose.pose.position.x = msg.pose.pose.position.x
+    aloam_odom.pose.pose.position.y = msg.pose.pose.position.y
+    aloam_odom.pose.pose.position.z = msg.pose.pose.position.z
+    aloam_flag = True
 
 def mavros_vision_cb(msg):
     global mavros_vision, mavros_vision_flag
@@ -27,33 +55,12 @@ def mavros_vision_cb(msg):
     mavros_vision.pose.position.z = msg.pose.position.z
     mavros_vision_flag = True
 
-def aloam_cb(msg):
-    global aloam_odom, aloam_flag
-    aloam_odom.pose.pose.position.x = msg.pose.pose.position.x
-    aloam_odom.pose.pose.position.y = msg.pose.pose.position.y
-    aloam_odom.pose.pose.position.z = msg.pose.pose.position.z
-    aloam_flag = True
-
 def hri_mode_cb(msg):
     global hri_mode_file
     f = open(hri_mode_file, 'a')
     now = datetime.now()
     f.write("{},{}\n".format(msg.data,now))
     f.close()
-
-def setpoint_cb(msg):
-    global setpointpose, setpoint_flag
-    setpointpose.pose.position.x = msg.pose.position.x
-    setpointpose.pose.position.y = msg.pose.position.y
-    setpointpose.pose.position.z = msg.pose.position.z
-    setpoint_flag = True
-
-def assignedpose_cb(msg):
-    global assignedpose, assignedpose_flag
-    assignedpose.pose.position.x = msg.pose.position.x
-    assignedpose.pose.position.y = msg.pose.position.y
-    assignedpose.pose.position.z = msg.pose.position.z
-    assignedpose_flag = True
 
 def record_localpose(event):
     global localpose, localpose_file, localpose_flag
@@ -64,7 +71,18 @@ def record_localpose(event):
         y = str(localpose.pose.position.y)
         z = str(localpose.pose.position.z)
         now = datetime.now()
-        # print("Recording mavros local position {}, {}, {}".format(x,y,z))
+        f.write("{},{},{},{}\n".format(x,y,z,now))
+        f.close()
+
+def record_assignedpose(event):
+    global assignedpose, assignedpose_file, assignedpose_flag
+
+    if assignedpose_flag == True:
+        f = open(assignedpose_file, 'a')
+        x = str(assignedpose.pose.position.x)
+        y = str(assignedpose.pose.position.y)
+        z = str(assignedpose.pose.position.z)
+        now = datetime.now()
         f.write("{},{},{},{}\n".format(x,y,z,now))
         f.close()
 
@@ -78,20 +96,6 @@ def record_setpointpose(event):
         z = str(setpointpose.pose.position.z)
         now = datetime.now()
         f.write("{},{},{},{}\n".format(x,y,z,now))
-        # print("Recording mavros setpoint position {}, {}, {}".format(x,y,z))
-        f.close()
-
-def record_mavros_vision_pose(event):
-    global mavros_vision, mavros_vision_file, mavros_vision_flag
-
-    if mavros_vision_flag == True:
-        f = open(mavros_vision_file, 'a')
-        x = str(mavros_vision.pose.position.x)
-        y = str(mavros_vision.pose.position.y)
-        z = str(mavros_vision.pose.position.z)
-        now = datetime.now()
-        # print("Recording mavros local position {}, {}, {}".format(x,y,z))
-        f.write("{},{},{},{}\n".format(x,y,z,now))
         f.close()
 
 def record_aloam(event):
@@ -103,53 +107,34 @@ def record_aloam(event):
         y = str(aloam_odom.pose.pose.position.y)
         z = str(aloam_odom.pose.pose.position.z)
         now = datetime.now()
-        # print("Recording mavros local position {}, {}, {}".format(x,y,z))
         f.write("{},{},{},{}\n".format(x,y,z,now))
         f.close()
 
-def record_localpose(event):
-    global localpose, localpose_file, localpose_flag
+def record_mavros_vision_pose(event):
+    global mavros_vision, mavros_vision_file, mavros_vision_flag
 
-    if localpose_flag == True:
-        f = open(localpose_file, 'a')
-        x = str(localpose.pose.position.x)
-        y = str(localpose.pose.position.y)
-        z = str(localpose.pose.position.z)
-        now = datetime.now()
-        # print("Recording mavros local position {}, {}, {}".format(x,y,z))
-        f.write("{},{},{},{}\n".format(x,y,z,now))
-        f.close()
-
-
-def record_assignedpose(event):
-    global assignedpose, assignedpose_file, assignedpose_flag
-
-    if assignedpose_flag == True:
-        f = open(assignedpose_file, 'a')
-        x = str(assignedpose.pose.position.x)
-        y = str(assignedpose.pose.position.y)
-        z = str(assignedpose.pose.position.z)
+    if mavros_vision_flag == True:
+        f = open(mavros_vision_file, 'a')
+        x = str(mavros_vision.pose.position.x)
+        y = str(mavros_vision.pose.position.y)
+        z = str(mavros_vision.pose.position.z)
         now = datetime.now()
         f.write("{},{},{},{}\n".format(x,y,z,now))
-        # print("Recording assignedd pose position {}, {}, {}".format(x,y,z))
         f.close()
-
 
 if __name__ == "__main__":
     rospy.init_node('borealis_mavros_log')
     rospy.loginfo("Borealis internal log running")
     localpose = PoseStamped()
-    setpointpose = PoseStamped()
     assignedpose = PoseStamped()
-
-    mavros_vision = PoseStamped()
+    setpointpose = PoseStamped()
     aloam_odom = Odometry()
+    mavros_vision = PoseStamped()
         
     localpose_flag = False
-    setpoint_flag = False
     assignedpose_flag = False
+    setpoint_flag = False
     aloam_flag = False
-    localpose_flag = False
     mavros_vision_flag = False
 
     loop_rate = 0.5 
@@ -159,11 +144,11 @@ if __name__ == "__main__":
     path_to_store_logs = os.path.expanduser('~/Diagnosis/MavrosLogs/') + now
     os.mkdir(path_to_store_logs)
 
-    f = open(os.path.expanduser('~/Diagnosis/MavrosLogs/') + "last_run.txt"  , 'w')
+    f = open(os.path.expanduser('~/Diagnosis/MavrosLogs/') + "last_run.txt"  , 'a')
     f.write(now)
     f.close()
 
-    localpose_file = path_to_store_logs + "/localpose_log.csv"
+    localpose_file = path_to_store_logs + "/mavros_pose_log.csv"
     f = open(localpose_file, 'a')
     f.write("X(m), Y(m), Z(m), time(24h)\n")
     f.close()
@@ -178,12 +163,7 @@ if __name__ == "__main__":
     f.write("X(m), Y(m), Z(m), time(24h)\n")
     f.close()
 
-    hri_mode_file = path_to_store_logs + "/hri_mode_log.csv"
-    f = open(hri_mode_file, 'a')
-    f.write("mode, time(24h)\n")
-    f.close()
-
-    aloam_file = path_to_store_logs + "/aloam_raw_log.csv"
+    aloam_file = path_to_store_logs + "/aloam_log.csv"
     f = open(aloam_file, 'a')
     f.write("X(m), Y(m), Z(m), time(24h)\n")
     f.close()
@@ -193,24 +173,30 @@ if __name__ == "__main__":
     f.write("X(m), Y(m), Z(m), time(24h)\n")
     f.close()
 
+    hri_mode_file = path_to_store_logs + "/hri_mode_log.csv"
+    f = open(hri_mode_file, 'a')
+    f.write("mode, time(24h)\n")
+    f.close()
+
     localposition_topic = "/uav" + str(drone_number) + "/mavros/local_position/pose"
-    setpoint_topic = "/uav" + str(drone_number) + "/mavros/setpoint_position/local"
     assignedpose_topic = "/uav" + str(drone_number) + "/teaming_planner/t265assigned_virtual_position"
-    hri_mode_topic = "/hri_mode" 
+    setpoint_topic = "/uav" + str(drone_number) + "/mavros/setpoint_position/local"
     aloam_topic = "/uav" + str(drone_number) + "/aft_mapped_to_init"
-    mavros_vision_file = "/uav" + str(drone_number) + "/mavros/vision_pose/pose"
+    mavros_vision_topic = "/uav" + str(drone_number) + "/mavros/vision_pose/pose"
+    hri_mode_topic = "/hri_mode" 
 
     localposition_sub = rospy.Subscriber(localposition_topic, PoseStamped, localpose_cb)
-    setpoint_sub = rospy.Subscriber(setpoint_topic, PoseStamped, setpoint_cb)
     assignedpose_sub = rospy.Subscriber(assignedpose_topic, PoseStamped, assignedpose_cb)
+    setpoint_sub = rospy.Subscriber(setpoint_topic, PoseStamped, setpoint_cb)
+    aloam_sub = rospy.Subscriber(aloam_topic, Odometry, aloam_cb)
+    mavros_vision_sub = rospy.Subscriber(mavros_vision_topic, PoseStamped, mavros_vision_cb)
     hri_mode_sub = rospy.Subscriber(hri_mode_topic, String, hri_mode_cb)
 
-    aloam_sub = rospy.Subscriber(aloam_topic, Odometry, aloam_cb)
-    mavros_vision_sub = rospy.Subscriber(mavros_vision_file, PoseStamped, mavros_vision_cb)
+    localpose_timer = rospy.Timer(rospy.Duration(loop_rate), record_localpose)
+    assignedpose_timer = rospy.Timer(rospy.Duration(loop_rate), record_assignedpose)
+    setpoint_timer = rospy.Timer(rospy.Duration(loop_rate), record_setpointpose)
+    aloam_timer = rospy.Timer(rospy.Duration(loop_rate), record_aloam)
+    mavros_vision_timer = rospy.Timer(rospy.Duration(loop_rate), record_mavros_vision_pose)
 
-    setpoint_timer = rospy.Timer(rospy.Duration(loop_rate), record_localpose)
-    localpose_timer = rospy.Timer(rospy.Duration(loop_rate), record_setpointpose)
-    localpose_timer = rospy.Timer(rospy.Duration(loop_rate), record_assignedpose)
-
-    print("Mavros logs")
+    print("Mavros logs succesfully ran")
     rospy.spin()
