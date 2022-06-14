@@ -8,10 +8,17 @@ namespace Formation2DWithYaw
 {
 
     Optimize2DFormation::Optimize2DFormation()
-    : m_formation2DAbreast2AgentsInitialized(false)
+    : m_formation2DPoint1AgentInitialized(false)
+    , m_formation2DAbreast2AgentsInitialized(false)
     , m_formation2DLine3AgentsInitialized(false)
     , m_formation2DTri3AgentsInitialized(false)
     {}
+
+    void Optimize2DFormation::SetFormation2DPoint1Agent (const Formation2DPoint1Agent& formation2DPoint1Agent)
+    {
+        m_formation2DPoint1Agent = formation2DPoint1Agent;
+        m_formation2DPoint1AgentInitialized = true;
+    }
 
     void
     Optimize2DFormation::SetFormation2DAbreast2Agents (const Formation2DAbreast2Agents& formation2DAbreast2Agents)
@@ -37,9 +44,16 @@ namespace Formation2DWithYaw
     void
     Optimize2DFormation::RemoveAllFormations ()
     {
+        m_formation2DPoint1AgentInitialized = false;
         m_formation2DAbreast2AgentsInitialized = false;
         m_formation2DLine3AgentsInitialized = false;
         m_formation2DTri3AgentsInitialized = false;
+    }
+
+    void
+    Optimize2DFormation::RemoveFormation2DPoint1Agent ()
+    {
+        m_formation2DPoint1AgentInitialized = false;
     }
 
     void
@@ -194,6 +208,12 @@ namespace Formation2DWithYaw
                                                                       std::vector <Formation2DBase::Ptr>& formation2DBasePtrVec)
     {
         formation2DBasePtrVec.clear();
+
+        if (m_formation2DPoint1AgentInitialized && m_formation2DPoint1Agent.GetNumberOfAgents() == numberOfAgents)
+        {
+            Formation2DBase::Ptr ptr = std::make_shared<Formation2DPoint1Agent>(m_formation2DPoint1Agent);
+            formation2DBasePtrVec.push_back(ptr);
+        }
 
         if (m_formation2DAbreast2AgentsInitialized && m_formation2DAbreast2Agents.GetNumberOfAgents() == numberOfAgents)
         {

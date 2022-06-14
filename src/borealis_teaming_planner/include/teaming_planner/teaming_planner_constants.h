@@ -5,13 +5,10 @@ namespace TeamingPlannerConstants
 {
     enum class ModuleState
     {
-        NOT_APPLICABLE = 0,
-        INITILAISING = 1,
-        READY = 2,
-        RUNNING = 3,
-        PAUSED = 4,
-        COMPLETED = 5,
-        CANCELLED = 6
+        INITILAISING = 0,
+        READY = 1,
+        RUNNING = 2,
+        DEACTIVATED = 3
     };
 } // Teaming Planner
 

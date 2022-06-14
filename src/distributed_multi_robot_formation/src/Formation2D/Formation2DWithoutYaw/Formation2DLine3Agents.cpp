@@ -7,10 +7,8 @@
 namespace Formation2DWithoutYaw
 {
     Formation2DLine3Agents::Formation2DLine3Agents()
-    : Formation2DBase()
+    : Formation2DBase(3, DistributedFormation::Common::Formation2DType::LINE_FORMATION)
     {
-        m_numberOfAgents = 3;
-        m_formationType = DistributedFormation::Common::Formation2DType::LINE_FORMATION;
     }
 
     void
@@ -66,12 +64,6 @@ namespace Formation2DWithoutYaw
         positions2DJacobian(5,0) = 0;
         positions2DJacobian(5,1) = 1;
         positions2DJacobian(5,2) = -m_desiredDistance * std::sin(m_desiredYaw);
-    }
-
-    void
-    Formation2DLine3Agents::SetNumberOfAgents ()
-    {
-        m_numberOfAgents = 3;
     }
 
 }   // namespace Formation2DWithoutYaw

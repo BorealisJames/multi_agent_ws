@@ -17,6 +17,8 @@ class DistributedMultiRobotFormation
 public:
     DistributedMultiRobotFormation();
 
+    void SetParameters(const Common::DistributedFormationParameters& params);
+
     void AttachHandler(const std::shared_ptr<DistributedMultiRobotFormationHandler>& handlerPtr);
 
     void RunDistributedFormation();

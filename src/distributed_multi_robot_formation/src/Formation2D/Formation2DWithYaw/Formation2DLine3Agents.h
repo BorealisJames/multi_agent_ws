@@ -43,10 +43,6 @@ public:
                                const double d_yaw,
                                const double d_size,
                                Eigen::Matrix<double, Eigen::Dynamic, 4>& positions2DJacobian) const override;
-
-protected:
-    void SetNumberOfAgents () override;
-
 };
 
 }   // namespace Formation2DWithYaw

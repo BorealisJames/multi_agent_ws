@@ -12,12 +12,11 @@ void TeamingPlanner::teamingPlannerMain()
                 ROS_INFO("Module State Initialising\n");
                 mModuleStateVerbose = true;
             }
-
+            
             mHistoryOfHumanPoses.reserve(mPlanningHorizon/mIntervalDistance);
 
             mHandlerPtr->m_getOwnAgentID = std::bind(&TeamingPlanner::getOwnAgentId, this, std::placeholders::_1);
-
-            mHandlerPtr->m_getHistoryOfHumanPoses = std::bind(&TeamingPlanner::getHistoryOfHumanPoses, this, std::placeholders::_1);
+            mHandlerPtr->m_getPosesForFormationToTrack = std::bind(&TeamingPlanner::getPosesForFormationToTrack, this, std::placeholders::_1); // HIstory of human poses
             mHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhaseAndTimeMap, this, std::placeholders::_1);
             mHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubPhaseAndTime, this, std::placeholders::_1, std::placeholders::_2);
 
@@ -50,28 +49,27 @@ void TeamingPlanner::teamingPlannerMain()
 
             mModuleState = TeamingPlannerConstants::ModuleState::READY;
             mModuleStateVerbose = false;
+
+            mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
             break;
 
         case TeamingPlannerConstants::ModuleState::READY:
             
             if(!mModuleStateVerbose)
             {
-                //ROS_INFO("Module State Ready, waiting for Task Command\n");
+                ROS_INFO("Module State Ready, waiting for Task Command\n");
                 mModuleStateVerbose = true;
             }
 
-            mControlState = Common::Entity::ControlState::IN_CONTROL;
-
             break;
+
         case TeamingPlannerConstants::ModuleState::RUNNING:
 
             if(!mModuleStateVerbose)
             {
-                //ROS_INFO("Module State Running\n");
+                ROS_INFO("Module State Running\n");
                 mModuleStateVerbose = true;
             }
-
-            pubControlState(mControlState);
             switch (mTask.type)
             {
                 case Common::Entity::MTTaskEnum::FOLLOW_ME:
@@ -85,48 +83,27 @@ void TeamingPlanner::teamingPlannerMain()
                     mDistributedFormation.RunDistributedFormation();
                     break;
                 }
-
-                case Common::Entity::MTTaskEnum::GO_THERE:
-                {
-                    // ROS_INFO("Go there!");
-                    switchToGunTargetPose(mSourceSegmentId);
-                    if (!mModuleTaskVerbose)
-                    {
-                        //ROS_INFO("Go There\n");
-                        mModuleTaskVerbose = true;
-                    }
-                    break;
-
-                }
-
-                case Common::Entity::MTTaskEnum::DISTRACT_TARGET:
-                {
-                    if (!mModuleTaskVerbose)
-                    {
-                        //ROS_INFO("Distract Target\n");
-                        mModuleTaskVerbose = true;
-                    }
-                    break;
-                }
-                default:
-                    //ROS_INFO("Wrong Task Enum\n");
-                    break;
             }
 
+            //     case Common::Entity::MTTaskEnum::GO_THERE:
+            //     {
+            //         ROS_INFO("Go there!");
+            //         switchToGunTargetPose(mSourceSegmentId);
+            //         if (!mModuleTaskVerbose)
+            //         {
+            //             //ROS_INFO("Go There\n");
+            //             mModuleTaskVerbose = true;
+            //         }
+            //         break;
+
+            //     }
+            // }
             break;
-        case TeamingPlannerConstants::ModuleState::CANCELLED:
+        case TeamingPlannerConstants::ModuleState::DEACTIVATED:
 
             if(!mModuleStateVerbose)
             {
-                //ROS_INFO("Module State Cancelled\n");
-                mModuleStateVerbose = true;
-            }
-            break;
-        case TeamingPlannerConstants::ModuleState::COMPLETED:
-            
-            if(!mModuleStateVerbose)
-            {
-                //ROS_INFO("Module State Completed\n");
+                //ROS_INFO("Module State Deactivated\n");
                 mModuleStateVerbose = true;
             }
             break;

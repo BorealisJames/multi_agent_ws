@@ -7,10 +7,8 @@
 namespace Formation3DWithOnlyYaw
 {
     Formation3DAbreast2Agents::Formation3DAbreast2Agents()
-    : Formation3DBase()
+    : Formation3DBase(2, DistributedFormation::Common::Formation3DType::ABREAST_FORMATION)
     {
-        m_numberOfAgents = 2;
-        m_formationType = DistributedFormation::Common::Formation3DType::ABREAST_FORMATION;
     }
 
     void
@@ -96,12 +94,6 @@ namespace Formation3DWithOnlyYaw
         positions3DJacobian(5,2) = 1;
         positions3DJacobian(5,3) = (1.0/2.0)*m_desiredDistance*(d_size + m_desiredSize)*(-m_desiredQw*sin((1.0/2.0)*d_yaw) - m_desiredQz*cos((1.0/2.0)*d_yaw))*((1.0/2.0)*m_desiredQx*cos((1.0/2.0)*d_yaw) -1.0/2.0*m_desiredQy*sin((1.0/2.0)*d_yaw)) + (1.0/2.0)*m_desiredDistance*(d_size + m_desiredSize)*(-1.0/2.0*m_desiredQw*sin((1.0/2.0)*d_yaw) - 1.0/2.0*m_desiredQz*cos((1.0/2.0)*d_yaw))*(-m_desiredQx*cos((1.0/2.0)*d_yaw) + m_desiredQy*sin((1.0/2.0)*d_yaw)) - 1.0/2.0*m_desiredDistance*(d_size + m_desiredSize)*(-1.0/2.0*m_desiredQw*sin((1.0/2.0)*d_yaw) - 1.0/2.0*m_desiredQz*cos((1.0/2.0)*d_yaw))*(m_desiredQx*cos((1.0/2.0)*d_yaw) - m_desiredQy*sin((1.0/2.0)*d_yaw)) + (1.0/2.0)*m_desiredDistance*(d_size + m_desiredSize)*(m_desiredQw*sin((1.0/2.0)*d_yaw) + m_desiredQz*cos((1.0/2.0)*d_yaw))*(-1.0/2.0*m_desiredQx*cos((1.0/2.0)*d_yaw) + (1.0/2.0)*m_desiredQy*sin((1.0/2.0)*d_yaw)) + (1.0/2.0)*m_desiredDistance*(d_size + m_desiredSize)*(-1.0/2.0*m_desiredQw*cos((1.0/2.0)*d_yaw) + (1.0/2.0)*m_desiredQz*sin((1.0/2.0)*d_yaw))*(m_desiredQx*sin((1.0/2.0)*d_yaw) + m_desiredQy*cos((1.0/2.0)*d_yaw)) + (1.0/2.0)*m_desiredDistance*(d_size + m_desiredSize)*((1.0/2.0)*m_desiredQw*cos((1.0/2.0)*d_yaw) - 1.0/2.0*m_desiredQz*sin((1.0/2.0)*d_yaw))*(-m_desiredQx*sin((1.0/2.0)*d_yaw) - m_desiredQy*cos((1.0/2.0)*d_yaw)) - 1.0/2.0*m_desiredDistance*(d_size + m_desiredSize)*(m_desiredQw*cos((1.0/2.0)*d_yaw) - m_desiredQz*sin((1.0/2.0)*d_yaw))*(-1.0/2.0*m_desiredQx*sin((1.0/2.0)*d_yaw) - 1.0/2.0*m_desiredQy*cos((1.0/2.0)*d_yaw)) + (1.0/2.0)*m_desiredDistance*(d_size + m_desiredSize)*(m_desiredQw*cos((1.0/2.0)*d_yaw) -m_desiredQz*sin((1.0/2.0)*d_yaw))*((1.0/2.0)*m_desiredQx*sin((1.0/2.0)*d_yaw) + (1.0/2.0)*m_desiredQy*cos((1.0/2.0)*d_yaw));
         positions3DJacobian(5,4) = (1.0/2.0)*m_desiredDistance*(-m_desiredQw*sin((1.0/2.0)*d_yaw) - m_desiredQz*cos((1.0/2.0)*d_yaw))*(m_desiredQx*sin((1.0/2.0)*d_yaw) + m_desiredQy*cos((1.0/2.0)*d_yaw)) + (1.0/2.0)*m_desiredDistance*(m_desiredQw*sin((1.0/2.0)*d_yaw) + m_desiredQz*cos((1.0/2.0)*d_yaw))*(-m_desiredQx*sin((1.0/2.0)*d_yaw) - m_desiredQy*cos((1.0/2.0)*d_yaw)) + (1.0/2.0)*m_desiredDistance*(m_desiredQw*cos((1.0/2.0)*d_yaw) - m_desiredQz*sin((1.0/2.0)*d_yaw))*(-m_desiredQx*cos((1.0/2.0)*d_yaw) + m_desiredQy*sin((1.0/2.0)*d_yaw)) - 1.0/2.0*m_desiredDistance*(m_desiredQw*cos((1.0/2.0)*d_yaw) - m_desiredQz*sin((1.0/2.0)*d_yaw))*(m_desiredQx*cos((1.0/2.0)*d_yaw) - m_desiredQy*sin((1.0/2.0)*d_yaw));
-    }
-
-    void
-    Formation3DAbreast2Agents::SetNumberOfAgents ()
-    {
-        m_numberOfAgents = 2;
     }
 
 }   // namespace Formation3DWithOnlyYaw

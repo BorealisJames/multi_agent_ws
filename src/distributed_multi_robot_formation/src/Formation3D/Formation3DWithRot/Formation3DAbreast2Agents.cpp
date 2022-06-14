@@ -7,10 +7,8 @@
 namespace Formation3DWithRot
 {
     Formation3DAbreast2Agents::Formation3DAbreast2Agents()
-    : Formation3DBase()
+    : Formation3DBase(2, DistributedFormation::Common::Formation3DType::ABREAST_FORMATION)
     {
-        m_numberOfAgents = 2;
-        m_formationType = DistributedFormation::Common::Formation3DType::ABREAST_FORMATION;
     }
 
     void
@@ -108,12 +106,6 @@ namespace Formation3DWithRot
         positions3DJacobian(5,5) = -m_desiredDistance*(d_qw + m_desiredQw)*(d_qx + m_desiredQx)*(-2*d_qy - 2*m_desiredQy)*(d_size + m_desiredSize)/pow(pow(d_qw + m_desiredQw, 2) + pow(d_qx + m_desiredQx, 2) + pow(d_qy + m_desiredQy, 2) + pow(d_qz + m_desiredQz, 2), 2) - m_desiredDistance*(-2*d_qy - 2*m_desiredQy)*(d_qy + m_desiredQy)*(d_qz + m_desiredQz)*(d_size + m_desiredSize)/pow(pow(d_qw + m_desiredQw, 2) + pow(d_qx + m_desiredQx, 2) + pow(d_qy + m_desiredQy, 2) + pow(d_qz + m_desiredQz, 2), 2) - m_desiredDistance*(d_qz + m_desiredQz)*(d_size + m_desiredSize)/(pow(d_qw + m_desiredQw, 2) + pow(d_qx + m_desiredQx, 2) + pow(d_qy + m_desiredQy, 2) + pow(d_qz + m_desiredQz, 2));
         positions3DJacobian(5,6) = -m_desiredDistance*(d_qw + m_desiredQw)*(d_qx + m_desiredQx)*(-2*d_qz - 2*m_desiredQz)*(d_size + m_desiredSize)/pow(pow(d_qw + m_desiredQw, 2) + pow(d_qx + m_desiredQx, 2) + pow(d_qy + m_desiredQy, 2) + pow(d_qz + m_desiredQz, 2), 2) - m_desiredDistance*(d_qy + m_desiredQy)*(-2*d_qz - 2*m_desiredQz)*(d_qz + m_desiredQz)*(d_size + m_desiredSize)/pow(pow(d_qw + m_desiredQw, 2) + pow(d_qx + m_desiredQx, 2) + pow(d_qy + m_desiredQy, 2) + pow(d_qz + m_desiredQz, 2), 2) - m_desiredDistance*(d_qy + m_desiredQy)*(d_size + m_desiredSize)/(pow(d_qw + m_desiredQw, 2) + pow(d_qx + m_desiredQx, 2) + pow(d_qy + m_desiredQy, 2) + pow(d_qz + m_desiredQz, 2));
         positions3DJacobian(5,7) = -m_desiredDistance*(d_qw + m_desiredQw)*(d_qx + m_desiredQx)/(pow(d_qw + m_desiredQw, 2) + pow(d_qx + m_desiredQx, 2) + pow(d_qy + m_desiredQy, 2) + pow(d_qz + m_desiredQz, 2)) - m_desiredDistance*(d_qy + m_desiredQy)*(d_qz + m_desiredQz)/(pow(d_qw + m_desiredQw, 2) + pow(d_qx + m_desiredQx, 2) + pow(d_qy + m_desiredQy, 2) + pow(d_qz + m_desiredQz, 2));
-    }
-
-    void
-    Formation3DAbreast2Agents::SetNumberOfAgents ()
-    {
-        m_numberOfAgents = 2;
     }
 
 }   // namespace Formation3DWithRot

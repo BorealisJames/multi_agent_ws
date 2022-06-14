@@ -15,22 +15,19 @@
 namespace Formation3DWithOnlyYaw
 {
 
-class Formation3DLine3Agents : public Formation3DBase
+class Formation3DPoint1Agent : public Formation3DBase
 {
 /*
- - line will have the tip pointing to the desired direction
- - the point on the tip will be pt1
- - the next point will be pt2
- - the last point will be pt3
+ - point will have pt1 as close as possible to center point
 
  - the center point is (desiredX+deltaX, desiredY+deltaY, desiredZ+deltaZ)
  - the direction which the formation points to is d_yaw applied to Q_desired
  - the size of the formation is desiredSize+deltaSize
  */
 public:
-    Formation3DLine3Agents();
+    Formation3DPoint1Agent();
 
-    // output is [pt1x, pt1y, pt1z, pt2x, pt2y, pt2z, pt3x, pt3y, pt3z]^T
+    // output is [pt1x, pt1y, pt1z]^T
     void GetFormationPositions (const double d_x, const double d_y, const double d_z,
                                 const double d_yaw,
                                 const double d_size,
@@ -38,8 +35,7 @@ public:
 
     // output is [d_pt1x/d_deltaX, d_pt1x/d_deltaY, d_pt1x/d_deltaZ, d_pt1x/d_deltaYaw, ...  d_pt1x/d_deltaSize ;
     //            d_pt1y/d_deltaX, d_pt1y/d_deltaY, d_pt1y/d_deltaZ, d_pt1y/d_deltaYaw, ...  d_pt1y/d_deltaSize ;
-    //            ...
-    //            d_pt3z/d_deltaX, d_pt3z/d_deltaY, d_pt3z/d_deltaZ, d_pt3z/d_deltaYaw, ...  d_pt3z/d_deltaSize ;]
+    //            d_pt1z/d_deltaX, d_pt1z/d_deltaY, d_pt1z/d_deltaZ, d_pt1z/d_deltaYaw, ...  d_pt1z/d_deltaSize]
     void GetFormationJacobian (const double d_x, const double d_y, const double d_z,
                                const double d_yaw,
                                const double d_size,

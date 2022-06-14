@@ -36,7 +36,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         // Publishers
         mPhaseAndTimePublisher = mNh.advertise<mt_msgs::phaseAndTime>("/phase_and_time", 10);
         // mSelfSystemPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/system_pose", 10);
-
         mPosePublisher = mNh.advertise<mt_msgs::pose>("/system_pose_from_formation", 10);
         mDirectionUtilityPublisher = mNh.advertise<mt_msgs::angleIndexAndUtility>("/direction_utility", 10);
         mConvexRegion2DPublisher = mNh.advertise<mt_msgs::convexRegion2D>("/convex_region_2D", 10);
@@ -44,7 +43,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAssignedVirtualPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/assigned_virtual_position", 10);
         // mAssignedt265VirtualPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/assignedt265_virtual_position", 10);
         mAssignedVirtualPoseMapPublisher = mNh.advertise<mt_msgs::posevector>("/assigned_virtual_pose_map", 10);
-        mControlStatePublisher = mNh.advertise<std_msgs::Int8>("/control_state",10);
         mVoxel_filter_cloudPublisher = mNh.advertise<sensor_msgs::PointCloud>("/voxel_filter_cloud",10);
 
         // Subscribers 
@@ -60,14 +58,12 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         {
             mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
         }
-        
         mSelft265SystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/t265_system_pose", 10, &TeamingPlanner::selft265SystemPoseCallback, this);
-        
         // Changed to point cloud 
         mSystemPointCloud2Subscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/pointcloud", 10, &TeamingPlanner::systemPointCloud2Callback, this);
         // mSystemPointCloudSubscriber = mNh.subscribe<sensor_msgs::PointCloud>("/pointcloud", 10, &TeamingPlanner::systemPointCloudCallback, this);
-
         mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::taskCallback, this);
+        mActivatePlannerSubscriber = mNh.subscribe<std_msgs::Bool>("/activate_planner", 10, &TeamingPlanner::activatePlannerCallback, this);
 
         for (int i = 1; i <= mNumOfAgents; i++)
         {

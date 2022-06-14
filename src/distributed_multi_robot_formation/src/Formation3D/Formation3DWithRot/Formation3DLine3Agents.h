@@ -44,10 +44,6 @@ public:
                                const double d_qw, const double d_qx, const double d_qy, const double d_qz,
                                const double d_size,
                                Eigen::Matrix<double, Eigen::Dynamic, 8>& positions3DJacobian) const override;
-
-protected:
-    void SetNumberOfAgents () override;
-
 };
 
 }   // namespace Formation3DWithRot

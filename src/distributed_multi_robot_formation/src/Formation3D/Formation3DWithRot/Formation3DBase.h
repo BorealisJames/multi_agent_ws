@@ -17,9 +17,10 @@ class Formation3DBase
 public:
     typedef std::shared_ptr<Formation3DBase> Ptr;
 
-    Formation3DBase()
-    : m_desiredDistance(1.5)
-    , m_numberOfAgents(3)
+    Formation3DBase(uint32_t numberOfAgents, DistributedFormation::Common::Formation3DType formationType)
+    : m_numberOfAgents(numberOfAgents)
+    , m_formationType(formationType)
+    , m_desiredDistance(1.5)
     , m_desiredX(0)
     , m_desiredY(0)
     , m_desiredZ(0)
@@ -28,7 +29,6 @@ public:
     , m_desiredQy(0)
     , m_desiredQz(0)
     , m_desiredSize(1)
-    , m_formationType(DistributedFormation::Common::Formation3DType::NO_FORMATION)
     {
     }
 
@@ -89,12 +89,11 @@ public:
 
 
 protected:
-    virtual void SetNumberOfAgents () = 0;
 
-    double m_desiredDistance;
     uint32_t m_numberOfAgents;
-    double m_desiredX, m_desiredY, m_desiredZ, m_desiredQw, m_desiredQx, m_desiredQy, m_desiredQz, m_desiredSize;
     DistributedFormation::Common::Formation3DType m_formationType;
+    double m_desiredDistance;
+    double m_desiredX, m_desiredY, m_desiredZ, m_desiredQw, m_desiredQx, m_desiredQy, m_desiredQz, m_desiredSize;
 };
 
 }   // namespace Formation3DWithRot

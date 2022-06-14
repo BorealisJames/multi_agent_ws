@@ -5,6 +5,7 @@
 #pragma once
 
 #include <sensor_msgs/PointCloud.h>
+
 #include "../Common/Common.h"
 
 #include <sensor_msgs/PointCloud2.h>
@@ -16,7 +17,6 @@
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/crop_box.h>
 
-
 namespace DistributedFormation
 {
 
@@ -27,22 +27,10 @@ public:
     void AppendPointClouds(const sensor_msgs::PointCloud& cloudInput1, const sensor_msgs::PointCloud& cloudInput2,
                            sensor_msgs::PointCloud& cloudOutput);
 
-    void RemovePointsOutsideOfRadiusRangeFromPointCloud2D(const sensor_msgs::PointCloud& cloudInput,
-                                                    const Common::Position& point,
-                                                    const double maxRadius,
-                                                    const double minRadius,
-                                                    sensor_msgs::PointCloud& cloudOutput);      
-
     void RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(const sensor_msgs::PointCloud& cloudInput,
                                                                 const Common::Position& point,
                                                                 const double removalRadius,
                                                                 sensor_msgs::PointCloud& cloudOutput);
-
-    void RemovePointsOutsideOfRadiusRangeFromPointCloud3D(const sensor_msgs::PointCloud& cloudInput,
-                                               const Common::Position& point,
-                                               const double maxRadius,
-                                               const double minRadius,
-                                               sensor_msgs::PointCloud& cloudOutput);                                                           
 
     void RemovePointsWithinARadiusPointCloud3D(const sensor_msgs::PointCloud& cloudInput,
                                                const Common::Position& point,
@@ -62,8 +50,9 @@ public:
                                                         const double boundingBoxZ,
                                                         sensor_msgs::PointCloud& cloudOutput);
 
-    // Quick Fix
-    bool ApplyVoxelFilterAndConvertToPointCloud(const sensor_msgs::PointCloud2& pointCloud2input, sensor_msgs::PointCloud& pointCloud1output);
+    bool ApplyVoxelFilterAndConvertToPointCloud(const sensor_msgs::PointCloud2& pointCloud2input, 
+                                                sensor_msgs::PointCloud& pointCloud1output);
+
 
 private:
     float m_leaf_size_x = 0.4; //

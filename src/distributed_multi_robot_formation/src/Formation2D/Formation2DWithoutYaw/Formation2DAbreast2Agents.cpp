@@ -7,10 +7,8 @@
 namespace Formation2DWithoutYaw
 {
     Formation2DAbreast2Agents::Formation2DAbreast2Agents()
-    : Formation2DBase()
+    : Formation2DBase(2, DistributedFormation::Common::Formation2DType::ABREAST_FORMATION)
     {
-        m_numberOfAgents = 2;
-        m_formationType = DistributedFormation::Common::Formation2DType::ABREAST_FORMATION;
     }
 
     void
@@ -54,12 +52,6 @@ namespace Formation2DWithoutYaw
         positions2DJacobian(3,0) = 0;
         positions2DJacobian(3,1) = 1;
         positions2DJacobian(3,2) = -0.5 * m_desiredDistance * std::cos(m_desiredYaw);
-    }
-
-    void
-    Formation2DAbreast2Agents::SetNumberOfAgents ()
-    {
-        m_numberOfAgents = 2;
     }
 
 }   // namespace Formation2DWithoutYaw

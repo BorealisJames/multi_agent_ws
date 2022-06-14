@@ -7,10 +7,8 @@
 namespace Formation3DWithoutRot
 {
     Formation3DLine3Agents::Formation3DLine3Agents()
-    : Formation3DBase()
+    : Formation3DBase(3, DistributedFormation::Common::Formation3DType::LINE_FORMATION)
     {
-        m_numberOfAgents = 3;
-        m_formationType = DistributedFormation::Common::Formation3DType::LINE_FORMATION;
     }
 
     void
@@ -104,12 +102,6 @@ namespace Formation3DWithoutRot
         positions3DJacobian(8,1) = 0;
         positions3DJacobian(8,2) = 1;
         positions3DJacobian(8,3) = 2*m_desiredDistance*m_desiredQw*m_desiredQy - 2*m_desiredDistance*m_desiredQx*m_desiredQz;
-    }
-
-    void
-    Formation3DLine3Agents::SetNumberOfAgents ()
-    {
-        m_numberOfAgents = 3;
     }
 
 }   // namespace Formation3DWithoutRot

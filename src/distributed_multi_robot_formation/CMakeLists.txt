@@ -15,6 +15,8 @@ SET(FORMATION2D
 	src/Formation2D/Formation2DWithoutYaw/Optimize2DFormation.h
 	src/Formation2D/Formation2DWithoutYaw/Optimize2DFormation.cpp
 	src/Formation2D/Formation2DWithoutYaw/Optimizer2DVarsConstrCost.h
+	src/Formation2D/Formation2DWithoutYaw/Formation2DPoint1Agent.h
+	src/Formation2D/Formation2DWithoutYaw/Formation2DPoint1Agent.cpp
 	src/Formation2D/Formation2DWithoutYaw/Formation2DAbreast2Agents.h
 	src/Formation2D/Formation2DWithoutYaw/Formation2DAbreast2Agents.cpp
 	src/Formation2D/Formation2DWithoutYaw/Formation2DLine3Agents.h
@@ -25,6 +27,8 @@ SET(FORMATION2D
 	src/Formation2D/Formation2DWithYaw/Optimize2DFormation.h
 	src/Formation2D/Formation2DWithYaw/Optimize2DFormation.cpp
 	src/Formation2D/Formation2DWithYaw/Optimizer2DVarsConstrCost.h
+	src/Formation2D/Formation2DWithYaw/Formation2DPoint1Agent.h
+	src/Formation2D/Formation2DWithYaw/Formation2DPoint1Agent.cpp
 	src/Formation2D/Formation2DWithYaw/Formation2DAbreast2Agents.h
 	src/Formation2D/Formation2DWithYaw/Formation2DAbreast2Agents.cpp
 	src/Formation2D/Formation2DWithYaw/Formation2DLine3Agents.h
@@ -38,6 +42,8 @@ SET(FORMATION3D
 	src/Formation3D/Formation3DWithoutRot/Optimize3DFormation.h
 	src/Formation3D/Formation3DWithoutRot/Optimize3DFormation.cpp
 	src/Formation3D/Formation3DWithoutRot/Optimizer3DVarsConstrCost.h
+	src/Formation3D/Formation3DWithoutRot/Formation3DPoint1Agent.h
+	src/Formation3D/Formation3DWithoutRot/Formation3DPoint1Agent.cpp
 	src/Formation3D/Formation3DWithoutRot/Formation3DAbreast2Agents.h
 	src/Formation3D/Formation3DWithoutRot/Formation3DAbreast2Agents.cpp
 	src/Formation3D/Formation3DWithoutRot/Formation3DLine3Agents.h
@@ -48,6 +54,8 @@ SET(FORMATION3D
 	src/Formation3D/Formation3DWithRot/Optimize3DFormation.h
 	src/Formation3D/Formation3DWithRot/Optimize3DFormation.cpp
 	src/Formation3D/Formation3DWithRot/Optimizer3DVarsConstrCost.h
+	src/Formation3D/Formation3DWithRot/Formation3DPoint1Agent.h
+	src/Formation3D/Formation3DWithRot/Formation3DPoint1Agent.cpp
 	src/Formation3D/Formation3DWithRot/Formation3DAbreast2Agents.h
 	src/Formation3D/Formation3DWithRot/Formation3DAbreast2Agents.cpp
 	src/Formation3D/Formation3DWithRot/Formation3DLine3Agents.h
@@ -58,6 +66,8 @@ SET(FORMATION3D
 	src/Formation3D/Formation3DWithOnlyYaw/Optimize3DFormation.h
 	src/Formation3D/Formation3DWithOnlyYaw/Optimize3DFormation.cpp
 	src/Formation3D/Formation3DWithOnlyYaw/Optimizer3DVarsConstrCost.h
+	src/Formation3D/Formation3DWithOnlyYaw/Formation3DPoint1Agent.h
+	src/Formation3D/Formation3DWithOnlyYaw/Formation3DPoint1Agent.cpp
 	src/Formation3D/Formation3DWithOnlyYaw/Formation3DAbreast2Agents.h
 	src/Formation3D/Formation3DWithOnlyYaw/Formation3DAbreast2Agents.cpp
 	src/Formation3D/Formation3DWithOnlyYaw/Formation3DLine3Agents.h
@@ -79,34 +89,33 @@ SET(FORMATION3D
 find_package(Eigen3 REQUIRED)
 find_package(decomp_util REQUIRED)
 find_package(eigen-cdd REQUIRED)
-# find_package(GTest REQUIRED)
+find_package(GTest REQUIRED)
 
 catkin_package(INCLUDE_DIRS
-        	#include
-		${DECOMP_UTIL_INCLUDE_DIRS}
-        	LIBRARIES
-        	${PROJECT_NAME}_core
-        	CATKIN_DEPENDS
-		catkin_simple
-		decomp_ros_utils
-        	roscpp
-		sensor_msgs
-        	std_msgs
-        	DEPENDS
-		ifopt
-        	EIGEN3
-		EIGEN_CDD
-		pcl_conversions
-		pcl_ros
-		)
+				include
+				${DECOMP_UTIL_INCLUDE_DIRS}
+				LIBRARIES
+				${PROJECT_NAME}_core
+				CATKIN_DEPENDS
+				catkin_simple
+				decomp_ros_utils
+				roscpp
+				sensor_msgs
+				std_msgs
+				DEPENDS
+				ifopt
+				EIGEN3
+				EIGEN_CDD
+				pcl_conversions
+				pcl_ros
+)
 
 include_directories(include
 		${catkin_INCLUDE_DIRS}
 		${EIGEN3_INCLUDE_DIRS}
 		${DECOMP_UTIL_INCLUDE_DIRS}
 		${EIGEN_CDD_INCLUDE_DIRS}
-		#${GTEST_INCLUDE_DIRS}
-		)
+		${GTEST_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME}_core
 			src/ConvexHullOfRobotPosition/ConvexHullOfRobotPosition.h
@@ -132,8 +141,7 @@ add_library(${PROJECT_NAME}_core
 			src/ProcessPointCloud/ProcessPointCloud.h
 			src/ProcessPointCloud/ProcessPointCloud.cpp
         	src/FollowMeGoalGenerator/FollowMeGoalGenerator.h
-        	src/FollowMeGoalGenerator/FollowMeGoalGenerator.cpp
-			../Common/Config/ConfigFileReader.h)
+        	src/FollowMeGoalGenerator/FollowMeGoalGenerator.cpp)
 
 # Each node in the package must be declared like this
 add_executable(${PROJECT_NAME} src/main.cpp)
@@ -152,10 +160,10 @@ catkin_add_gtest(RunTest
 				src/Test/DirectionOfMotionTest.cpp
 				src/Test/FollowMeGoalGeneratorTest.cpp
 				src/Test/GenerateConvexRegionsTest.cpp
-        		# src/Test/Optimize2DFormationWithoutYawTest.cpp
+        		src/Test/Optimize2DFormationWithoutYawTest.cpp
 				src/Test/Optimize2DFormationWithYawTest.cpp
-				# src/Test/Optimize3DFormationWithOnlyYawTest.cpp
-				# src/Test/Optimize3DFormationWithoutRotTest.cpp
-				# src/Test/Optimize3DFormationWithRotTest.cpp
+				src/Test/Optimize3DFormationWithOnlyYawTest.cpp
+				src/Test/Optimize3DFormationWithoutRotTest.cpp
+				src/Test/Optimize3DFormationWithRotTest.cpp
 				src/Test/ProcessPointCloudTest.cpp)
 target_link_libraries(RunTest ${PROJECT_NAME}_core ${catkin_LIBRARIES} ${EIGEN_CDD_LIBRARIES})

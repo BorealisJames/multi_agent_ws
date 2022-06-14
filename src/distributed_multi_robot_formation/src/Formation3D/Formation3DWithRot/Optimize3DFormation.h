@@ -14,6 +14,7 @@
 
 #include "../../Common/Common.h"
 #include "Formation3DBase.h"
+#include "Formation3DPoint1Agent.h"
 #include "Formation3DAbreast2Agents.h"
 #include "Formation3DLine3Agents.h"
 #include "Formation3DTri3Agents.h"
@@ -27,11 +28,13 @@ class Optimize3DFormation
 public:
     Optimize3DFormation();
 
+    void SetFormation3DPoint1Agent (const Formation3DPoint1Agent& formation3DPoint1Agent);
     void SetFormation3DAbreast2Agents (const Formation3DAbreast2Agents& formation3DAbreast2Agents);
     void SetFormation3DLine3Agents (const Formation3DLine3Agents& formation3DLine3Agents);
     void SetFormation3DTri3Agents (const Formation3DTri3Agents& formation3DTri3Agents);
 
     void RemoveAllFormations ();
+    void RemoveFormation3DPoint1Agent();
     void RemoveFormation3DAbreast2Agents ();
     void RemoveFormation3DLine3Agents ();
     void RemoveFormation3DTri3Agents ();
@@ -64,10 +67,12 @@ private:
     void ConvertVectorOf3DPointsToMapOf3DPoints (const Eigen::Matrix<double, Eigen::Dynamic, 1>& pointsVec,
                                                  std::unordered_map<uint32_t, DistributedFormation::Common::Position>& optVirtualPositions);
 
+    bool m_formation3DPoint1AgentInitialized;
     bool m_formation3DAbreast2AgentsInitialized;
     bool m_formation3DLine3AgentsInitialized;
     bool m_formation3DTri3AgentsInitialized;
 
+    Formation3DPoint1Agent m_formation3DPoint1Agent;
     Formation3DAbreast2Agents m_formation3DAbreast2Agents;
     Formation3DLine3Agents m_formation3DLine3Agents;
     Formation3DTri3Agents m_formation3DTri3Agents;

@@ -8,10 +8,12 @@
 
 #include "../Common/Common.h"
 #include "Formation2DWithYaw/Optimize2DFormation.h"
+#include "Formation2DWithYaw/Formation2DPoint1Agent.h"
 #include "Formation2DWithYaw/Formation2DTri3Agents.h"
 #include "Formation2DWithYaw/Formation2DLine3Agents.h"
 #include "Formation2DWithYaw/Formation2DAbreast2Agents.h"
 #include "Formation2DWithoutYaw/Optimize2DFormation.h"
+#include "Formation2DWithoutYaw/Formation2DPoint1Agent.h"
 #include "Formation2DWithoutYaw/Formation2DTri3Agents.h"
 #include "Formation2DWithoutYaw/Formation2DLine3Agents.h"
 #include "Formation2DWithoutYaw/Formation2DAbreast2Agents.h"
@@ -55,6 +57,11 @@ namespace Formation2D
         {
             case DistributedFormation::Common::WORKSPACE::DIM_2_WITHOUT_YAW:
             {
+                Formation2DWithoutYaw::Formation2DPoint1Agent formation2DPoint1Agent;
+                formation2DPoint1Agent.SetDesiredPositionYawAndSize(desiredX,
+                                                                    desiredY,
+                                                                    desiredYaw,
+                                                                    1.0);
                 Formation2DWithoutYaw::Formation2DAbreast2Agents formation2DAbreast2Agents;
                 formation2DAbreast2Agents.SetDesiredPositionYawAndSize(desiredX,
                                                                        desiredY,
@@ -75,6 +82,7 @@ namespace Formation2D
                 formation2DLine3Agents.SetDesiredDistanceBetweenAgents(desiredAgentSeperationForLine);
 
                 Formation2DWithoutYaw::Optimize2DFormation opt;
+                opt.SetFormation2DPoint1Agent(formation2DPoint1Agent);
                 opt.SetFormation2DAbreast2Agents(formation2DAbreast2Agents);
                 opt.SetFormation2DTri3Agents(formation2DTri3Agents);
                 opt.SetFormation2DLine3Agents(formation2DLine3Agents);
@@ -98,6 +106,11 @@ namespace Formation2D
 
             case DistributedFormation::Common::WORKSPACE::DIM_2_WITH_YAW:
             {
+                Formation2DWithYaw::Formation2DPoint1Agent formation2DPoint1Agent;
+                formation2DPoint1Agent.SetDesiredPositionYawAndSize(desiredX,
+                                                                    desiredY,
+                                                                    desiredYaw,
+                                                                    1.0);
                 Formation2DWithYaw::Formation2DAbreast2Agents formation2DAbreast2Agents;
                 formation2DAbreast2Agents.SetDesiredPositionYawAndSize(desiredX,
                                                                        desiredY,
@@ -118,6 +131,7 @@ namespace Formation2D
                 formation2DLine3Agents.SetDesiredDistanceBetweenAgents(desiredAgentSeperationForLine);
 
                 Formation2DWithYaw::Optimize2DFormation opt;
+                opt.SetFormation2DPoint1Agent(formation2DPoint1Agent);
                 opt.SetFormation2DAbreast2Agents(formation2DAbreast2Agents);
                 opt.SetFormation2DTri3Agents(formation2DTri3Agents);
                 opt.SetFormation2DLine3Agents(formation2DLine3Agents);

@@ -42,10 +42,6 @@ public:
     void GetFormationJacobian (const double d_x, const double d_y, const double d_z,
                                const double d_size,
                                Eigen::Matrix<double, Eigen::Dynamic, 4>& positions3DJacobian) const override;
-
-protected:
-    void SetNumberOfAgents () override;
-
 };
 
 }   // namespace Formation3DWithoutRot

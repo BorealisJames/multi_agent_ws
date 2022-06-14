@@ -6,12 +6,9 @@
 
 namespace Formation2DWithYaw
 {
-
     Formation2DTri3Agents::Formation2DTri3Agents()
-    : Formation2DBase()
+    : Formation2DBase(3, DistributedFormation::Common::Formation2DType::TRIANGLE_FORMATION)
     {
-        m_numberOfAgents = 3;
-        m_formationType = DistributedFormation::Common::Formation2DType::TRIANGLE_FORMATION;
     }
 
     void
@@ -77,12 +74,6 @@ namespace Formation2DWithYaw
         positions2DJacobian(5,1) = 1;
         positions2DJacobian(5,2) = l * k_oneOverSqrtOfThree * std::cos(m_desiredYaw + d_yaw - 2.0*M_PI/3.0);
         positions2DJacobian(5,3) = m_desiredDistance * k_oneOverSqrtOfThree * std::sin(m_desiredYaw + d_yaw - 2.0*M_PI/3.0);
-    }
-
-    void
-    Formation2DTri3Agents::SetNumberOfAgents ()
-    {
-        m_numberOfAgents = 3;
     }
 
 }   // namespace Formation2DWithYaw

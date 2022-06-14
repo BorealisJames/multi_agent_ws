@@ -17,14 +17,14 @@ class Formation2DBase
 public:
     typedef std::shared_ptr<Formation2DBase> Ptr;
 
-    Formation2DBase()
-    : m_desiredDistance(1.5)
-    , m_numberOfAgents(3)
+    Formation2DBase(uint32_t numberOfAgents, DistributedFormation::Common::Formation2DType formationType)
+    : m_numberOfAgents(numberOfAgents)
+    , m_formationType(formationType)
+    , m_desiredDistance(1.5)
     , m_desiredX(0)
     , m_desiredY(0)
     , m_desiredYaw(0)
     , m_desiredSize(1)
-    , m_formationType(DistributedFormation::Common::Formation2DType::NO_FORMATION)
     {
     }
 
@@ -67,12 +67,11 @@ public:
 
 
 protected:
-    virtual void SetNumberOfAgents () = 0;
 
-    double m_desiredDistance;
     uint32_t m_numberOfAgents;
-    double m_desiredX, m_desiredY, m_desiredYaw, m_desiredSize;
     DistributedFormation::Common::Formation2DType m_formationType;
+    double m_desiredDistance;
+    double m_desiredX, m_desiredY, m_desiredYaw, m_desiredSize;
 };
 
 }   // namespace Formation2DWithoutYaw

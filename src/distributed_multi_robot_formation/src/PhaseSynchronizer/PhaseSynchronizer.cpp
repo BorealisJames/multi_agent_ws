@@ -7,65 +7,90 @@
 namespace DistributedFormation
 {
     PhaseSynchronizer::PhaseSynchronizer()
-    : m_workspace(Common::WORKSPACE::DIM_2_WITH_YAW)
-    , m_phase(Common::PHASE::PHASE_1)
+    : m_phase(Common::PHASE::PHASE_1)
     , m_transitingPhase(true)
     , m_handlerPtr(std::make_shared<DistributedMultiRobotFormationHandler>())
 
+    , m_workspace(Common::WORKSPACE::DIM_2_WITH_YAW)
     , m_expiryDurationMicroSec(15*1000000)
     , m_numberOfAzimuthDiscreteAnglesOnASide(0)
     , m_resolutionAzimuthAngleRad(0.0)
     , m_numberOfElevationDiscreteAnglesOnASide(0)
     , m_resolutionElevationAngleRad(0.0)
-    , m_distanceToFollowBehind(0)
+    , m_distanceToFollowBehind(-1.0)
     , m_localBoundingBoxForPathAlongX(3.0)
     , m_localBoundingBoxForPathAlongY(3.0)
     , m_localBoundingBoxForPathAlongZ(2.0)
-    , m_pointRemovalRadius(1.0)
+    , m_pointRemovalRadius(0.45)
     , m_desiredDistanceInTriFormation(2.5)
-    , m_desiredDistanceInLineFormation(2)
-    , m_incrementOffsetToFormationYaw(0)
-    //, m_incrementOffsetToFormationYaw(M_PI / 2.0)
-    , m_agentRadius(0.2) // 0.35 actual borealis 0.45 to be safe
+    , m_desiredDistanceInLineFormation(1.25)
+    , m_incrementOffsetToFormationYaw(M_PI / 2.0)
+    , m_agentRadius(0.3)
     , m_waypointReachedBoundary(1.5)
     , m_weightForGoal(0.3)
     , m_weightForRotation(0.3)
     , m_weightForSize(0.4)
-    , m_desiredHeight(1.2)
+    , m_desiredHeight(2.0)
     , m_priorityPenalty(1.0)
-    , m_expectedNumberOfAgents(2)
     {
-        // Workaround should use config file reader instead 
-        double tmp_distance;
-        double tmp_agentradius;
-        double desiredDistanceinTri;
-        double desiredDistanceinLine;
-        
-        m_handlerPtr->m_nh.getParam("/follow_distance", tmp_distance);
-        m_handlerPtr->m_nh.getParam("/agent_radius", tmp_agentradius);
-        m_handlerPtr->m_nh.getParam("/desired_tri_length", desiredDistanceinTri);
-        m_handlerPtr->m_nh.getParam("/desired_line_length", desiredDistanceinLine);
-        m_handlerPtr->m_nh.getParam("/point_removal_radius", m_pointRemovalRadius);
-        m_handlerPtr->m_nh.getParam("/increment_offset_yaw", m_incrementOffsetToFormationYaw);
+        UpdateWorkspaceDimension();
+    }
 
-        m_distanceToFollowBehind = tmp_distance;
-        m_agentRadius = tmp_agentradius;
-        m_desiredDistanceInTriFormation = desiredDistanceinTri;
-        m_desiredDistanceInLineFormation = desiredDistanceinLine;
-        std::cout << "agentradius init to be " << m_agentRadius << std::endl;
-        std::cout << "increment_offset_yaw to be " << m_agentRadius << std::endl;
+    PhaseSynchronizer::PhaseSynchronizer(const Common::DistributedFormationParameters& params)
+    : m_phase(Common::PHASE::PHASE_1)
+    , m_transitingPhase(true)
+    , m_handlerPtr(std::make_shared<DistributedMultiRobotFormationHandler>())
 
-        if (m_workspace == Common::WORKSPACE::DIM_2_WITH_YAW ||
-            m_workspace == Common::WORKSPACE::DIM_2_WITHOUT_YAW)
-        {
-            m_dimension = Common::DIMENSION::DIM_2;
-        }
-        else if (m_workspace == Common::WORKSPACE::DIM_3_WITH_ROT ||
-                 m_workspace == Common::WORKSPACE::DIM_3_WITHOUT_ROT ||
-                 m_workspace == Common::WORKSPACE::DIM_3_WITH_ONLY_YAW)
-        {
-            m_dimension = Common::DIMENSION::DIM_3;
-        }
+    , m_workspace(params.workspace)
+    , m_expiryDurationMicroSec(params.expiryDurationMicroSec)
+    , m_numberOfAzimuthDiscreteAnglesOnASide(params.numberOfAzimuthDiscreteAnglesOnASide)
+    , m_resolutionAzimuthAngleRad(params.resolutionAzimuthAngleRad)
+    , m_numberOfElevationDiscreteAnglesOnASide(params.numberOfElevationDiscreteAnglesOnASide)
+    , m_resolutionElevationAngleRad(params.resolutionElevationAngleRad)
+    , m_distanceToFollowBehind(params.distanceToFollowBehind)
+    , m_localBoundingBoxForPathAlongX(params.localBoundingBoxForPathAlongX)
+    , m_localBoundingBoxForPathAlongY(params.localBoundingBoxForPathAlongY)
+    , m_localBoundingBoxForPathAlongZ(params.localBoundingBoxForPathAlongZ)
+    , m_pointRemovalRadius(params.pointRemovalRadius)
+    , m_desiredDistanceInTriFormation(params.desiredDistanceInTriFormation)
+    , m_desiredDistanceInLineFormation(params.desiredDistanceInLineFormation)
+    , m_incrementOffsetToFormationYaw(params.incrementOffsetToFormationYaw)
+    , m_agentRadius(params.agentRadius)
+    , m_waypointReachedBoundary(params.waypointReachedBoundary)
+    , m_weightForGoal(params.weightForGoal)
+    , m_weightForRotation(params.weightForRotation)
+    , m_weightForSize(params.weightForSize)
+    , m_desiredHeight(params.desiredHeight)
+    , m_priorityPenalty(params.priorityPenalty)
+    {
+        UpdateWorkspaceDimension();
+    }
+
+    void PhaseSynchronizer::SetDistributedFormationParameters(const Common::DistributedFormationParameters& params)
+    {
+        m_workspace = params.workspace;
+        m_expiryDurationMicroSec = params.expiryDurationMicroSec;
+        m_numberOfAzimuthDiscreteAnglesOnASide = params.numberOfAzimuthDiscreteAnglesOnASide;
+        m_resolutionAzimuthAngleRad = params.resolutionAzimuthAngleRad;
+        m_numberOfElevationDiscreteAnglesOnASide = params.numberOfElevationDiscreteAnglesOnASide;
+        m_resolutionElevationAngleRad = params.resolutionElevationAngleRad;
+        m_distanceToFollowBehind = params.distanceToFollowBehind;
+        m_localBoundingBoxForPathAlongX = params.localBoundingBoxForPathAlongX;
+        m_localBoundingBoxForPathAlongY = params.localBoundingBoxForPathAlongY;
+        m_localBoundingBoxForPathAlongZ = params.localBoundingBoxForPathAlongZ;
+        m_pointRemovalRadius = params.pointRemovalRadius;
+        m_desiredDistanceInTriFormation = params.desiredDistanceInTriFormation;
+        m_desiredDistanceInLineFormation = params.desiredDistanceInLineFormation;
+        m_incrementOffsetToFormationYaw = params.incrementOffsetToFormationYaw;
+        m_agentRadius = params.agentRadius;
+        m_waypointReachedBoundary = params.waypointReachedBoundary;
+        m_weightForGoal = params.weightForGoal;
+        m_weightForRotation = params.weightForRotation;
+        m_weightForSize = params.weightForSize;
+        m_desiredHeight = params.desiredHeight;
+        m_priorityPenalty = params.priorityPenalty;
+
+        UpdateWorkspaceDimension();
     }
 
     void PhaseSynchronizer::AttachHandler(const std::shared_ptr<DistributedMultiRobotFormationHandler>& handlerPtr)
@@ -81,6 +106,7 @@ namespace DistributedFormation
         Vizualize();
 
         // check if reset is needed
+        UpdateNumberOfAgentsInTeam();
         UpdatePhasesOfAgentsInTeam();
         UpdatePositionsOfAgentsInTeam();
         UpdatePositionOfHuman();
@@ -202,6 +228,26 @@ namespace DistributedFormation
         }
     }
 
+    void PhaseSynchronizer::UpdateWorkspaceDimension()
+    {
+        if (m_workspace == Common::WORKSPACE::DIM_2_WITH_YAW ||
+            m_workspace == Common::WORKSPACE::DIM_2_WITHOUT_YAW)
+        {
+            m_dimension = Common::DIMENSION::DIM_2;
+        }
+        else if (m_workspace == Common::WORKSPACE::DIM_3_WITH_ROT ||
+                 m_workspace == Common::WORKSPACE::DIM_3_WITHOUT_ROT ||
+                 m_workspace == Common::WORKSPACE::DIM_3_WITH_ONLY_YAW)
+        {
+            m_dimension = Common::DIMENSION::DIM_3;
+        }
+    }
+
+    void PhaseSynchronizer::UpdateNumberOfAgentsInTeam()
+    {
+        m_handlerPtr->m_getNumberOfAgentsInTeam(m_numberOfAgentsInTeam);
+    }
+
     void PhaseSynchronizer::UpdatePhasesOfAgentsInTeam()
     {
         m_handlerPtr->m_getPhasesAndTimeRecordOfAgents(m_phasesAndTimeRecordOfAgents);
@@ -216,11 +262,10 @@ namespace DistributedFormation
         m_phasesAndTimeRecordOfAgents[m_ownAgentID] = ownPhaseAndTime;
 
         //reset if team members are not equal to number of expecting agents
-        if (m_phasesAndTimeRecordOfAgents.size() != m_expectedNumberOfAgents)
-        // if (2 != m_expectedNumberOfAgents)
+        if (m_phasesAndTimeRecordOfAgents.size() != m_numberOfAgentsInTeam)
         {
-            std::cout << "Agent" << m_ownAgentID << ": reset in update" << std::endl;
-            ROS_INFO("Expected Number of agents is: %i, ActualAgentsNumber: %i", m_expectedNumberOfAgents, m_phasesAndTimeRecordOfAgents.size());
+            std::cout << "Agent" << m_ownAgentID << ": reset in phase update of agents" << std::endl;
+
             ResetPhase();
             return;
         }
@@ -260,7 +305,7 @@ namespace DistributedFormation
             latestAgentsInTeam != lastKnownAgentsInTeam ||
             std::abs(largestPhase - smallestPhase)%(5-1)>=2)
         {
-            std::cout << "Agent" << m_ownAgentID << ": reset in update" << std::endl;
+            std::cout << "Agent" << m_ownAgentID << ": reset in update due to phase drift" << std::endl;
 
             ResetPhase();
             return;
@@ -277,6 +322,15 @@ namespace DistributedFormation
         m_handlerPtr->m_getAgentsPose(m_agentsPose);
         //set own position in team
         m_agentsPose[m_ownAgentID] = m_ownAgentPose;
+
+        //reset if team members are not equal to number of expecting agents
+        if (m_agentsPose.size() != m_numberOfAgentsInTeam)
+        {
+            std::cout << "Agent" << m_ownAgentID << ": reset in position update of agents" << std::endl;
+
+            ResetPhase();
+            return;
+        }
 
         for(auto&&agent : m_phasesOfAgentsInTeam)
         {
@@ -455,10 +509,10 @@ namespace DistributedFormation
         //input: avg of extrema points of convex region, human pose position
         //output: ownAgentDirectionUtility
 
-        std::vector<Common::Pose> humanPoses;
-        if (!m_handlerPtr->m_getHistoryOfHumanPoses(humanPoses))
+        std::vector<Common::Pose> posesToTrack;
+        if (!m_handlerPtr->m_getPosesForFormationToTrack(posesToTrack))
         {
-            std::cout << "Agent" << m_ownAgentID << ": reset cause unable to get human pose" << std::endl;
+            std::cout << "Agent" << m_ownAgentID << ": reset cause unable to get poses to track" << std::endl;
 
             ResetPhase();
             return;
@@ -515,14 +569,16 @@ namespace DistributedFormation
         }
 
         //get goal for formation avg of bounds to move to
-        if (!m_followMeGoalGenerator.GetGoalFromHumanPosesAndAvgOfExtremaPose(humanPoses, m_avgOfExtremaPose,
-                                                                              m_goal))
+        if (!m_followMeGoalGenerator.GetGoalFromPosesToTrackAndAvgOfExtremaPose(posesToTrack, m_avgOfExtremaPose,
+                                                                                m_goal))
         {
             std::cout << "Agent" << m_ownAgentID << ": reset cause unable to get goal for formation to move to" << std::endl;
 
             ResetPhase();
             return;
         }
+
+        m_goalAlongPoses = m_goal;
 
         double distanceToGoal = std::sqrt(std::pow(m_avgOfExtremaPose.position.x - m_goal.position.x, 2) +
                                           std::pow(m_avgOfExtremaPose.position.y - m_goal.position.y, 2) +
@@ -658,15 +714,9 @@ namespace DistributedFormation
         //input: directionForConvexExpansion, convexRegionOfAgentPosition, obstacles(points from a cube), dynamic obstacles(points from a cube and vel)
         //output: ownAgentObstacleFreeConvexRegion
 
+        //process latest lidar and camera point cloud with latest agent positions
         sensor_msgs::PointCloud lidarPointCloud;
-        sensor_msgs::PointCloud2 lidarPointCloud2;
         sensor_msgs::PointCloud cameraPointCloud;
-
-        // //process latest lidar and camera point cloud with latest agent positions
-        // if (!m_handlerPtr->m_getOwnAgentLidarPointCloud2(lidarPointCloud2) &&
-        //     !m_handlerPtr->m_getOwnAgentCameraPointCloud(cameraPointCloud))
-
-
         if (!m_handlerPtr->m_getOwnAgentLidarPointCloud(lidarPointCloud) &&
             !m_handlerPtr->m_getOwnAgentCameraPointCloud(cameraPointCloud))
         {
@@ -676,17 +726,15 @@ namespace DistributedFormation
             return;
         }
 
-        // Apply Voxel filter and Convert to pointcloud2
-        // ROS_INFO("Phase cppPoint cloud size is %i",lidarPointCloud2.fields.size());
-
         //Note only using lidar and not depth camera
         //m_processPointCloud.AppendPointClouds(lidarPointCloud, cameraPointCloud, m_ownPointCloud);
         m_ownPointCloud = lidarPointCloud;
 
+
+
         if (m_dimension == Common::DIMENSION::DIM_2)
         {
             sensor_msgs::PointCloud tmpOutputPointCloud;
-
             for(auto&& agentPose : m_poseOfAgentsInTeam)
             {
                 m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
@@ -727,48 +775,93 @@ namespace DistributedFormation
         m_ownPointCloud.points.push_back(humanPosition);
 
         //make a 'screen' for the human
-        // double screenChangeLimit = 1.0;
-        // double screenResolution = 1.0;
+        double screenChangeLimit = 1.0;
+        double screenResolution = 1.0;
 
-        // for (double height = -screenChangeLimit; height <= screenChangeLimit; height+=screenResolution)
-        // {
-        //     humanPosition.x = m_humanPose.position.x;
-        //     humanPosition.y = m_humanPose.position.y;
-        //     humanPosition.z = m_humanPose.position.z + height;
-        //     m_ownPointCloud.points.push_back(humanPosition);
-        //     for (double horizontal = screenResolution; horizontal <= screenChangeLimit; horizontal+=screenResolution)
-        //     {
-        //         humanPosition.x = horizontal * std::cos(m_humanPose.headingRad + M_PI/2) + m_humanPose.position.x;
-        //         humanPosition.y = horizontal * std::sin(m_humanPose.headingRad + M_PI/2) + m_humanPose.position.y;
-        //         humanPosition.z = m_humanPose.position.z + height;
-        //         m_ownPointCloud.points.push_back(humanPosition);
-        //         humanPosition.x = horizontal * std::cos(m_humanPose.headingRad - M_PI/2) + m_humanPose.position.x;
-        //         humanPosition.y = horizontal * std::sin(m_humanPose.headingRad - M_PI/2) + m_humanPose.position.y;
-        //         humanPosition.z = m_humanPose.position.z + height;
-        //         m_ownPointCloud.points.push_back(humanPosition);
-        //     }
-        // }
+        for (double height = -screenChangeLimit; height <= screenChangeLimit; height+=screenResolution)
+        {
+            humanPosition.x = m_humanPose.position.x;
+            humanPosition.y = m_humanPose.position.y;
+            humanPosition.z = m_humanPose.position.z + height;
+            m_ownPointCloud.points.push_back(humanPosition);
+            for (double horizontal = screenResolution; horizontal <= screenChangeLimit; horizontal+=screenResolution)
+            {
+                humanPosition.x = horizontal * std::cos(m_humanPose.headingRad + M_PI/2) + m_humanPose.position.x;
+                humanPosition.y = horizontal * std::sin(m_humanPose.headingRad + M_PI/2) + m_humanPose.position.y;
+                humanPosition.z = m_humanPose.position.z + height;
+                m_ownPointCloud.points.push_back(humanPosition);
+                humanPosition.x = horizontal * std::cos(m_humanPose.headingRad - M_PI/2) + m_humanPose.position.x;
+                humanPosition.y = horizontal * std::sin(m_humanPose.headingRad - M_PI/2) + m_humanPose.position.y;
+                humanPosition.z = m_humanPose.position.z + height;
+                m_ownPointCloud.points.push_back(humanPosition);
+            }
+        }
+
+        //wall hack
+        m_ownPointCloud.points.clear();
+        m_ownPointCloud.channels.clear();
+        geometry_msgs::Point32 pt;
+        if (m_ownAgentID == 0 || m_ownAgentID == 1)
+        {
+            for (double x = -1.0; x<=1.0; x=x+0.5)
+            {
+                for (double y = -3.5; y<=3.0; y=y+0.5)
+                {
+                    for (double z = 0.0; z<=4.0; z=z+0.5)
+                    {
+                        pt.x = x; pt.y = y; pt.z = z;
+                        m_ownPointCloud.points.push_back(pt);
+                    }
+                }
+            }
+        }
+        if (m_ownAgentID == 0)
+        {
+            //corridor hack
+            for (double x = 8.0; x<=10.0; x=x+0.5)
+            {
+                for (double y = -3.5; y<=6.5; y=y+0.5)
+                {
+                    for (double z = 0.0; z<=4.0; z=z+0.5)
+                    {
+                        pt.x = x; pt.y = y; pt.z = z;
+                        m_ownPointCloud.points.push_back(pt);
+                    }
+                }
+            }
+            for (double x = 8.0; x<=10.0; x=x+0.5)
+            {
+                for (double y = -9.5; y<=-5.5; y=y+0.5)
+                {
+                    for (double z = 0.0; z<=4.0; z=z+0.5)
+                    {
+                        pt.x = x; pt.y = y; pt.z = z;
+                        m_ownPointCloud.points.push_back(pt);
+                    }
+                }
+            }
+        }
 
         if (m_dimension == Common::DIMENSION::DIM_2)
         {
-            // Eigen::Matrix<decimal_t, Eigen::Dynamic, 2> AFromPoint;
-            // Eigen::Matrix<decimal_t, Eigen::Dynamic, 1> bFromPoint;
+            Eigen::Matrix<decimal_t, Eigen::Dynamic, 2> AFromPoint;
+            Eigen::Matrix<decimal_t, Eigen::Dynamic, 1> bFromPoint;
 
-            // double distanceToGoal = std::sqrt(std::pow(m_avgOfExtremaPose.position.x - m_goal.position.x, 2) +
-            //                                   std::pow(m_avgOfExtremaPose.position.y - m_goal.position.y, 2) );
+            double distanceToGoal = std::sqrt(std::pow(m_avgOfExtremaPose.position.x - m_goal.position.x, 2) +
+                                              std::pow(m_avgOfExtremaPose.position.y - m_goal.position.y, 2) );
 
-            // Polyhedron<2> poly2DViz;
-            // m_generateConvexRegions.Generate2DConvexRegionFromPoint(m_ownPointCloud,
-            //                                                         m_avgOfExtremaPose.position,
-            //                                                         0.1,
-            //                                                         m_localBoundingBoxForPathAlongX + distanceToGoal,
-            //                                                         m_localBoundingBoxForPathAlongY + distanceToGoal,
-            //                                                         AFromPoint,
-            //                                                         bFromPoint,
-            //                                                         poly2DViz);
+            Polyhedron<2> poly2DViz;
+            m_generateConvexRegions.Generate2DConvexRegionFromPoint(m_ownPointCloud,
+                                                                    m_avgOfExtremaPose.position,
+                                                                    0.1,
+                                                                    m_localBoundingBoxForPathAlongX + distanceToGoal,
+                                                                    m_localBoundingBoxForPathAlongY + distanceToGoal,
+                                                                    AFromPoint,
+                                                                    bFromPoint,
+                                                                    poly2DViz);
 
-            // m_polys2DViz.clear();
-            // m_polys2DViz.push_back(poly2DViz);
+            m_polys2DViz.clear();
+            m_polys2DViz.push_back(poly2DViz);
 
 
             Eigen::Matrix<decimal_t, Eigen::Dynamic, 2> AFromPath;
@@ -786,9 +879,9 @@ namespace DistributedFormation
 
             std::vector<Eigen::Matrix<decimal_t, Eigen::Dynamic, 2>> AVec;
             std::vector<Eigen::Matrix<decimal_t, Eigen::Dynamic, 1>> bVec;
-            //AVec.push_back(AFromPoint);
+            AVec.push_back(AFromPoint);
             AVec.push_back(AFromPath);
-            //bVec.push_back(bFromPoint);
+            bVec.push_back(bFromPoint);
             bVec.push_back(bFromPath);
 
             Eigen::Matrix<decimal_t, Eigen::Dynamic, 2> AReduced;
@@ -807,26 +900,26 @@ namespace DistributedFormation
         }
         else if (m_dimension == Common::DIMENSION::DIM_3)
         {
-            // Eigen::Matrix<decimal_t, Eigen::Dynamic, 3> AFromPoint;
-            // Eigen::Matrix<decimal_t, Eigen::Dynamic, 1> bFromPoint;
+            Eigen::Matrix<decimal_t, Eigen::Dynamic, 3> AFromPoint;
+            Eigen::Matrix<decimal_t, Eigen::Dynamic, 1> bFromPoint;
 
-            // double distanceToGoal = std::sqrt(std::pow(m_avgOfExtremaPose.position.x - m_goal.position.x, 2) +
-            //                                   std::pow(m_avgOfExtremaPose.position.y - m_goal.position.y, 2) +
-            //                                   std::pow(m_avgOfExtremaPose.position.z - m_goal.position.z, 2) );
+            double distanceToGoal = std::sqrt(std::pow(m_avgOfExtremaPose.position.x - m_goal.position.x, 2) +
+                                              std::pow(m_avgOfExtremaPose.position.y - m_goal.position.y, 2) +
+                                              std::pow(m_avgOfExtremaPose.position.z - m_goal.position.z, 2) );
 
-            // Polyhedron<3> poly3DViz;
-            // m_generateConvexRegions.Generate3DConvexRegionFromPoint(m_ownPointCloud,
-            //                                                         m_avgOfExtremaPose.position,
-            //                                                         0.1,
-            //                                                         m_localBoundingBoxForPathAlongX+distanceToGoal,
-            //                                                         m_localBoundingBoxForPathAlongY+distanceToGoal,
-            //                                                         m_localBoundingBoxForPathAlongZ+distanceToGoal,
-            //                                                         AFromPoint,
-            //                                                         bFromPoint,
-            //                                                         poly3DViz);
+            Polyhedron<3> poly3DViz;
+            m_generateConvexRegions.Generate3DConvexRegionFromPoint(m_ownPointCloud,
+                                                                    m_avgOfExtremaPose.position,
+                                                                    0.1,
+                                                                    m_localBoundingBoxForPathAlongX+distanceToGoal,
+                                                                    m_localBoundingBoxForPathAlongY+distanceToGoal,
+                                                                    m_localBoundingBoxForPathAlongZ+distanceToGoal,
+                                                                    AFromPoint,
+                                                                    bFromPoint,
+                                                                    poly3DViz);
 
-            // m_polys3DViz.clear();
-            // m_polys3DViz.push_back(poly3DViz);
+            m_polys3DViz.clear();
+            m_polys3DViz.push_back(poly3DViz);
 
 
             Eigen::Matrix<decimal_t, Eigen::Dynamic, 3> AFromPath;
@@ -844,9 +937,9 @@ namespace DistributedFormation
 
             std::vector<Eigen::Matrix<decimal_t, Eigen::Dynamic, 3>> AVec;
             std::vector<Eigen::Matrix<decimal_t, Eigen::Dynamic, 1>> bVec;
-            //AVec.push_back(AFromPoint);
+            AVec.push_back(AFromPoint);
             AVec.push_back(AFromPath);
-            //bVec.push_back(bFromPoint);
+            bVec.push_back(bFromPoint);
             bVec.push_back(bFromPath);
 
             Eigen::Matrix<decimal_t, Eigen::Dynamic, 3> AReduced;
@@ -949,35 +1042,28 @@ namespace DistributedFormation
                     std::unordered_map<uint32_t, Common::Position> optVirtualPositions;
                     double optDeltaX, optDeltaY, optDeltaYaw, optDeltaSize;
                     Common::Formation2DType formation2DType;
-
-		            ROS_INFO("Desired goal %f, %f. Yaw, %f",m_goal.position.x , m_goal.position.y,  Common::MinusPiToPi(m_goal.headingRad + m_incrementOffsetToFormationYaw));
-                    ROS_INFO("AReduced matrix:");
-                    std::cout << AReduced << std::endl;
-                    ROS_INFO("BReduced matrix:");
-                    std::cout << bReduced << std::endl;
-
                     bool optSuccess = Formation2D::GetOptimizedPositions2DInFormation(m_workspace,
-                                                                                        m_expectedNumberOfAgents,
-                                                                                        m_agentRadius,
-                                                                                        m_desiredDistanceInLineFormation,
-                                                                                        m_desiredDistanceInTriFormation,
-                                                                                        m_desiredDistanceInLineFormation,
-                                                                                        m_goal.position.x,
-                                                                                        m_goal.position.y,
-                                                                                        Common::MinusPiToPi(m_goal.headingRad + m_incrementOffsetToFormationYaw),
-                                                                                        m_weightForGoal,
-                                                                                        m_weightForRotation,
-                                                                                        m_weightForSize,
-                                                                                        AReduced,
-                                                                                        bReduced,
-                                                                                        m_desiredHeight,
-                                                                                        m_priorityPenalty,
-                                                                                        optVirtualPositions,
-                                                                                        optDeltaX,
-                                                                                        optDeltaY,
-                                                                                        optDeltaYaw,
-                                                                                        optDeltaSize,
-                                                                                        formation2DType);
+                                                                                      m_numberOfAgentsInTeam,
+                                                                                      m_agentRadius,
+                                                                                      m_desiredDistanceInLineFormation,
+                                                                                      m_desiredDistanceInTriFormation,
+                                                                                      m_desiredDistanceInLineFormation,
+                                                                                      m_goal.position.x,
+                                                                                      m_goal.position.y,
+                                                                                      Common::MinusPiToPi(m_goal.headingRad + m_incrementOffsetToFormationYaw),
+                                                                                      m_weightForGoal,
+                                                                                      m_weightForRotation,
+                                                                                      m_weightForSize,
+                                                                                      AReduced,
+                                                                                      bReduced,
+                                                                                      m_desiredHeight,
+                                                                                      m_priorityPenalty,
+                                                                                      optVirtualPositions,
+                                                                                      optDeltaX,
+                                                                                      optDeltaY,
+                                                                                      optDeltaYaw,
+                                                                                      optDeltaSize,
+                                                                                      formation2DType);
 
                     if (!optSuccess)
                     {
@@ -1079,7 +1165,7 @@ namespace DistributedFormation
                     double optDeltaX, optDeltaY, optDeltaZ, optDeltaQw, optDeltaQx, optDeltaQy, optDeltaQz, optDeltaSize;
                     Common::Formation3DType formation3DType;
                     bool optSuccess = Formation3D::GetOptimizedPositions3DInFormation(m_workspace,
-                                                                                      m_expectedNumberOfAgents,
+                                                                                      m_numberOfAgentsInTeam,
                                                                                       m_agentRadius,
                                                                                       m_desiredDistanceInLineFormation,
                                                                                       m_desiredDistanceInTriFormation,
@@ -1106,6 +1192,15 @@ namespace DistributedFormation
                     if(!optSuccess)
                     {
                         std::cout << "Agent" << m_ownAgentID << ": reset cause no feasible formation found after optimization" << std::endl;
+
+                        ResetPhase();
+                        return;
+                    }
+                    if(optVirtualPositions.size() != m_poseOfAgentsInTeam.size() ||
+                        optVirtualPositions.empty() ||
+                        m_poseOfAgentsInTeam.empty())
+                    {
+                        std::cout << "Agent" << m_ownAgentID << ": reset cause no number of virtual position and agent poses do not match" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1315,5 +1410,12 @@ namespace DistributedFormation
         m_handlerPtr->PubProcessedPointCloud(m_ownPointCloud);
         m_handlerPtr->Pub2DPolyUAV(m_polys2DViz);
         m_handlerPtr->Pub3DPolyUAV(m_polys3DViz);
+
+        Eigen::Vector3d startPosition (m_avgOfExtremaPose.position.x, m_avgOfExtremaPose.position.y, m_avgOfExtremaPose.position.z);
+        m_handlerPtr->PubStartPosition(startPosition);
+        Eigen::Vector3d goalPosition (m_goal.position.x, m_goal.position.y, m_goal.position.z);
+        m_handlerPtr->PubGoalPosition(goalPosition);
+        Eigen::Vector3d goalAlongPosesPosition (m_goalAlongPoses.position.x, m_goalAlongPoses.position.y, m_goalAlongPoses.position.z);
+        m_handlerPtr->PubGoalAlongPosesPosition(goalAlongPosesPosition);
     }
 }

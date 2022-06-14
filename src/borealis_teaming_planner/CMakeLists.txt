@@ -72,6 +72,7 @@ add_library(${PROJECT_NAME}
         src/teaming_planner_controller.cpp
         src/teaming_planner_main.cpp
         src/teaming_planner_middleware.cpp
+        src/formation_middleware.cpp
 )
 
 ## Add cmake target dependencies of the library

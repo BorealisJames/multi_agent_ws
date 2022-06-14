@@ -14,6 +14,7 @@
 
 #include "../../Common/Common.h"
 #include "Formation2DBase.h"
+#include "Formation2DPoint1Agent.h"
 #include "Formation2DAbreast2Agents.h"
 #include "Formation2DLine3Agents.h"
 #include "Formation2DTri3Agents.h"
@@ -27,11 +28,13 @@ class Optimize2DFormation
 public:
     Optimize2DFormation();
 
+    void SetFormation2DPoint1Agent (const Formation2DPoint1Agent& formation2DPoint1Agent);
     void SetFormation2DAbreast2Agents (const Formation2DAbreast2Agents& formation2DAbreast2Agents);
     void SetFormation2DLine3Agents (const Formation2DLine3Agents& formation2DLine3Agents);
     void SetFormation2DTri3Agents (const Formation2DTri3Agents& formation2DTri3Agents);
 
     void RemoveAllFormations ();
+    void RemoveFormation2DPoint1Agent();
     void RemoveFormation2DAbreast2Agents ();
     void RemoveFormation2DLine3Agents ();
     void RemoveFormation2DTri3Agents ();
@@ -63,14 +66,15 @@ private:
                                                  const double desiredHeight,
                                                  std::unordered_map<uint32_t, DistributedFormation::Common::Position>& optVirtualPositions);
 
+    bool m_formation2DPoint1AgentInitialized;
     bool m_formation2DAbreast2AgentsInitialized;
     bool m_formation2DLine3AgentsInitialized;
     bool m_formation2DTri3AgentsInitialized;
 
+    Formation2DPoint1Agent m_formation2DPoint1Agent;
     Formation2DAbreast2Agents m_formation2DAbreast2Agents;
     Formation2DLine3Agents m_formation2DLine3Agents;
     Formation2DTri3Agents m_formation2DTri3Agents;
-
 
 };
 

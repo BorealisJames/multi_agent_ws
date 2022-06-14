@@ -7,10 +7,8 @@
 namespace Formation3DWithoutRot
 {
     Formation3DAbreast2Agents::Formation3DAbreast2Agents()
-    : Formation3DBase()
+    : Formation3DBase(2, DistributedFormation::Common::Formation3DType::ABREAST_FORMATION)
     {
-        m_numberOfAgents = 2;
-        m_formationType = DistributedFormation::Common::Formation3DType::ABREAST_FORMATION;
     }
 
     void
@@ -82,12 +80,6 @@ namespace Formation3DWithoutRot
         positions3DJacobian(5,1) = 0;
         positions3DJacobian(5,2) = 1;
         positions3DJacobian(5,3) = -m_desiredDistance*m_desiredQw*m_desiredQx - m_desiredDistance*m_desiredQy*m_desiredQz;
-    }
-
-    void
-    Formation3DAbreast2Agents::SetNumberOfAgents ()
-    {
-        m_numberOfAgents = 2;
     }
 
 }   // namespace Formation3DWithoutRot

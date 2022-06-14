@@ -10,6 +10,11 @@ namespace DistributedFormation
     : m_ps()
     {}
 
+    void DistributedMultiRobotFormation::SetParameters(const Common::DistributedFormationParameters& params)
+    {
+        m_ps.SetDistributedFormationParameters(params);
+    }
+
     void DistributedMultiRobotFormation::AttachHandler(const std::shared_ptr<DistributedMultiRobotFormationHandler>& handlerPtr)
     {
         m_ps.AttachHandler(handlerPtr);

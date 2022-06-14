@@ -63,39 +63,6 @@ namespace DistributedFormation
         cloudOutput.channels.insert(cloudOutput.channels.end(), cloudInput2.channels.begin(), cloudInput2.channels.end());
     }
 
-    void ProcessPointCloud::RemovePointsOutsideOfRadiusRangeFromPointCloud2D(const sensor_msgs::PointCloud& cloudInput,
-                                                                        const Common::Position& point,
-                                                                        const double maxRadius,
-                                                                        const double minRadius,
-                                                                        sensor_msgs::PointCloud& cloudOutput)
-    {
-        cloudOutput = cloudInput;
-
-        double maxRadiusSquared = maxRadius*maxRadius;
-        double minRadiusSquared = minRadius*minRadius;
-
-        int i=0;
-        while (i!=cloudOutput.points.size())
-        {
-            double distSquared = (cloudOutput.points.at(i).x-point.x)*(cloudOutput.points.at(i).x-point.x) +
-                                    (cloudOutput.points.at(i).y-point.y)*(cloudOutput.points.at(i).y-point.y);
-
-            if (distSquared>maxRadiusSquared || distSquared<minRadiusSquared)
-            {
-                cloudOutput.points.erase(cloudOutput.points.begin() + i);
-
-                if (i<cloudOutput.channels.size())
-                {
-                    cloudOutput.channels.erase(cloudOutput.channels.begin() + i);
-                }
-            }
-            else
-            {
-                i++;
-            }
-        }
-    }
-
     void
     ProcessPointCloud::RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(const sensor_msgs::PointCloud& cloudInput,
                                                                                   const Common::Position& point,
@@ -114,40 +81,6 @@ namespace DistributedFormation
 
             if (distSquared<=removalRadiusSquared ||
                 cloudOutput.points.at(i).z<=0.25)
-            {
-                cloudOutput.points.erase(cloudOutput.points.begin() + i);
-
-                if (i<cloudOutput.channels.size())
-                {
-                    cloudOutput.channels.erase(cloudOutput.channels.begin() + i);
-                }
-            }
-            else
-            {
-                i++;
-            }
-        }
-    }
-
-    void ProcessPointCloud::RemovePointsOutsideOfRadiusRangeFromPointCloud3D(const sensor_msgs::PointCloud& cloudInput,
-                                                                    const Common::Position& point,
-                                                                    const double maxRadius,
-                                                                    const double minRadius,
-                                                                    sensor_msgs::PointCloud& cloudOutput)
-    {
-        cloudOutput = cloudInput;
-
-        double maxRadiusSquared = maxRadius*maxRadius;
-        double minRadiusSquared = minRadius*minRadius;
-
-        int i=0;
-        while (i!=cloudOutput.points.size())
-        {
-            double distSquared = (cloudOutput.points.at(i).x-point.x)*(cloudOutput.points.at(i).x-point.x) +
-                                 (cloudOutput.points.at(i).y-point.y)*(cloudOutput.points.at(i).y-point.y) +
-                                 (cloudOutput.points.at(i).z-point.z)*(cloudOutput.points.at(i).z-point.z);
-
-            if (distSquared>maxRadiusSquared || distSquared<minRadiusSquared)
             {
                 cloudOutput.points.erase(cloudOutput.points.begin() + i);
 

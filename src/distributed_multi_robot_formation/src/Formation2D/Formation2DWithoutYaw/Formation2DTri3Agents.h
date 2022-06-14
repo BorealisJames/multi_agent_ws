@@ -41,8 +41,9 @@ public:
                                const double d_size,
                                Eigen::Matrix<double, Eigen::Dynamic, 3>& positions2DJacobian) const override;
 
-protected:
-    void SetNumberOfAgents () override;
+private:
+    uint32_t numberOfAgents = 3;
+    DistributedFormation::Common::Formation2DType formation2DType = DistributedFormation::Common::Formation2DType::TRIANGLE_FORMATION;
 };
 
 }   // namespace Formation2DWithoutYaw

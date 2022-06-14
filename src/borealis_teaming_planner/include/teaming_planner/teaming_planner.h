@@ -35,9 +35,6 @@
 #include <mt_msgs/posevector.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
-
-// main changes -> depth camera ignored/deleted , system pose cb changed to local pose cb then localpose cb will transform to systempose and pub it, pointcloud 2
-
 class TeamingPlanner
 {
     private:
@@ -75,13 +72,13 @@ class TeamingPlanner
         std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D> mAgentsConvexRegion2DMap;
         std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D> mAgentsConvexRegion3DMap;
         std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedFormation::Common::Pose>> mAgentsAssignedVirtualPoseMap;
-        Common::Entity::ControlState mControlState;
         tf::TransformListener mPoseTransformListener;
         tf::TransformListener mPointCloudTransformListener;
         tf::TransformListener mPointCloud2TransformListener;
 
         bool mHistoryOfHumanPosesReceived;
         bool useUWB;
+        std_msgs::Bool mBoolActivatePlanner; 
 
         // There is a probably better way to implement this but htis should do
         // Whatever lmao
@@ -101,7 +98,6 @@ class TeamingPlanner
         ros::Publisher mAssignedVirtualPosePublisher;
         ros::Publisher mAssignedt265VirtualPosePublisher;
         ros::Publisher mAssignedVirtualPoseMapPublisher;
-        ros::Publisher mControlStatePublisher;
 
         ros::Publisher mVoxel_filter_cloudPublisher;
 
@@ -114,8 +110,8 @@ class TeamingPlanner
         ros::Subscriber mSystemPointCloudSubscriber;
         ros::Subscriber mSystemPointCloud2Subscriber;
         ros::Subscriber mSystemDepthCameraSubscriber;
-
         ros::Subscriber mGunTargetPoseSubscriber;
+        ros::Subscriber mActivatePlannerSubscriber;
 
         // Hardcoded for now
         std::vector<ros::Subscriber> mUAVSystemPoseSubscriberVector;
@@ -136,12 +132,13 @@ class TeamingPlanner
         bool pubConvexRegion3D(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion3D aConvexRegion3D);
         bool pubAssignedPose(const int32_t aAgentId, const DistributedFormation::Common::Pose aAssignedVirtualPose);
         bool pubAssignedPoseMap(const int32_t aAgentId, const std::unordered_map<int32_t, DistributedFormation::Common::Pose> aAssignedVirtualPoseMap);
-        bool pubControlState(const Common::Entity::ControlState aControlState);
         bool switchToGunTargetPose(const int32_t aAgentId);
 
         // Subscriber Functions
         void goalCallback(const mt_msgs::pose::ConstPtr& aGoal);
         void taskCallback(const mt_msgs::mtTask::ConstPtr& aTask);
+        void activatePlannerCallback(const std_msgs::Bool::ConstPtr& aBoolActivatePlanner);
+
         void humanSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aHumanSystemPose);
         // void selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aSelfSystemPose);
         void selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& aSelfSystemPose);
@@ -166,7 +163,7 @@ class TeamingPlanner
 
         // Get Functions
         bool getOwnAgentId(int32_t& ownAgentID);
-        bool getHistoryOfHumanPoses(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses);
+        bool getPosesForFormationToTrack(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses);
         bool getPhaseAndTimeMap(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap);
         bool getPoseMap(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap);
         bool getDirectionUtilityMap(std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility>& directionUtilityMap);
@@ -185,7 +182,6 @@ class TeamingPlanner
         void clearConvexRegion3DMap();
         void clearAssignedVirtualPoseMap();
 
-        
         // Functions 
         void teamingPlannerMain();
         bool checkAndAddHumanSystemPose(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses, const DistributedFormation::Common::Pose aPose);

@@ -8,10 +8,8 @@
 namespace Formation3DWithoutRot
 {
     Formation3DTri3Agents::Formation3DTri3Agents()
-    : Formation3DBase()
+    : Formation3DBase(3, DistributedFormation::Common::Formation3DType::TRIANGLE_FORMATION)
     {
-        m_numberOfAgents = 3;
-        m_formationType = DistributedFormation::Common::Formation3DType::TRIANGLE_FORMATION;
     }
 
     void
@@ -108,12 +106,6 @@ namespace Formation3DWithoutRot
         positions3DJacobian(8,1) = 0;
         positions3DJacobian(8,2) = 1;
         positions3DJacobian(8,3) = m_desiredQw*(-k_oneOverSqrtOfThree*m_desiredDistance*m_desiredQx*sin((2.0/3.0)*M_PI) - k_oneOverSqrtOfThree*m_desiredDistance*m_desiredQy*cos((2.0/3.0)*M_PI)) + m_desiredQx*(-k_oneOverSqrtOfThree*m_desiredDistance*m_desiredQw*sin((2.0/3.0)*M_PI) + k_oneOverSqrtOfThree*m_desiredDistance*m_desiredQz*cos((2.0/3.0)*M_PI)) - m_desiredQy*(k_oneOverSqrtOfThree*m_desiredDistance*m_desiredQw*cos((2.0/3.0)*M_PI) + k_oneOverSqrtOfThree*m_desiredDistance*m_desiredQz*sin((2.0/3.0)*M_PI)) - m_desiredQz*(-k_oneOverSqrtOfThree*m_desiredDistance*m_desiredQx*cos((2.0/3.0)*M_PI) + k_oneOverSqrtOfThree*m_desiredDistance*m_desiredQy*sin((2.0/3.0)*M_PI));
-    }
-
-    void
-    Formation3DTri3Agents::SetNumberOfAgents ()
-    {
-        m_numberOfAgents = 3;
     }
 
 }   // namespace Formation3DWithoutRot

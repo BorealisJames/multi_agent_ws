@@ -50,7 +50,8 @@ public:
         NO_FORMATION = 0,
         TRIANGLE_FORMATION = 1,
         LINE_FORMATION = 2,
-        ABREAST_FORMATION = 3
+        ABREAST_FORMATION = 3,
+        POINT_FORMATION = 4
     };
 
     enum class Formation3DType
@@ -58,7 +59,8 @@ public:
         NO_FORMATION = 0,
         TRIANGLE_FORMATION = 1,
         LINE_FORMATION = 2,
-        ABREAST_FORMATION = 3
+        ABREAST_FORMATION = 3,
+        POINT_FORMATION = 4
     };
 
     struct PhaseAndTime
@@ -95,6 +97,55 @@ public:
     {
         Position position;
         double headingRad;
+    };
+
+    struct DistributedFormationParameters
+    {
+        Common::WORKSPACE workspace;
+        int64_t expiryDurationMicroSec;
+        unsigned int numberOfAzimuthDiscreteAnglesOnASide;
+        double resolutionAzimuthAngleRad;
+        unsigned int numberOfElevationDiscreteAnglesOnASide;
+        double resolutionElevationAngleRad;
+        double distanceToFollowBehind;
+        double localBoundingBoxForPathAlongX;
+        double localBoundingBoxForPathAlongY;
+        double localBoundingBoxForPathAlongZ;
+        double pointRemovalRadius;
+        double desiredDistanceInTriFormation;
+        double desiredDistanceInLineFormation;
+        double incrementOffsetToFormationYaw;
+        double agentRadius;
+        double waypointReachedBoundary;
+        double weightForGoal;
+        double weightForRotation;
+        double weightForSize;
+        double desiredHeight;
+        double priorityPenalty;
+
+        DistributedFormationParameters()
+        : workspace(Common::WORKSPACE::DIM_3_WITH_ROT)
+        , expiryDurationMicroSec(15*1000000)
+        , numberOfAzimuthDiscreteAnglesOnASide(0)
+        , resolutionAzimuthAngleRad(0.0)
+        , numberOfElevationDiscreteAnglesOnASide(0)
+        , resolutionElevationAngleRad(0.0)
+        , distanceToFollowBehind(-1.0)
+        , localBoundingBoxForPathAlongX(3.0)
+        , localBoundingBoxForPathAlongY(3.0)
+        , localBoundingBoxForPathAlongZ(2.0)
+        , pointRemovalRadius(0.45)
+        , desiredDistanceInTriFormation(2.5)
+        , desiredDistanceInLineFormation(1.25)
+        , incrementOffsetToFormationYaw(M_PI / 2.0)
+        , agentRadius(0.3)
+        , waypointReachedBoundary(1.5)
+        , weightForGoal(0.3)
+        , weightForRotation(0.3)
+        , weightForSize(0.4)
+        , desiredHeight(2.0)
+        , priorityPenalty(1.0)
+        {}
     };
 
     static double MinusPiToPi (const double angleRad)

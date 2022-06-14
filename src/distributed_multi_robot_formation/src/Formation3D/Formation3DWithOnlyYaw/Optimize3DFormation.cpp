@@ -8,10 +8,18 @@ namespace Formation3DWithOnlyYaw
 {
 
     Optimize3DFormation::Optimize3DFormation()
-    : m_formation3DAbreast2AgentsInitialized(false)
+    : m_formation3DPoint1AgentInitialized(false)
+    , m_formation3DAbreast2AgentsInitialized(false)
     , m_formation3DLine3AgentsInitialized(false)
     , m_formation3DTri3AgentsInitialized(false)
     {}
+
+    void
+    Optimize3DFormation::SetFormation3DPoint1Agent (const Formation3DPoint1Agent& formation3DPoint1Agent)
+    {
+        m_formation3DPoint1Agent = formation3DPoint1Agent;
+        m_formation3DPoint1AgentInitialized = true;
+    }
 
     void
     Optimize3DFormation::SetFormation3DAbreast2Agents (const Formation3DAbreast2Agents& formation3DAbreast2Agents)
@@ -37,9 +45,22 @@ namespace Formation3DWithOnlyYaw
     void
     Optimize3DFormation::RemoveAllFormations ()
     {
+        m_formation3DPoint1AgentInitialized = false;
         m_formation3DAbreast2AgentsInitialized = false;
         m_formation3DLine3AgentsInitialized = false;
         m_formation3DTri3AgentsInitialized = false;
+    }
+
+    void
+    Optimize3DFormation::RemoveFormation3DPoint1Agent ()
+    {
+        m_formation3DPoint1AgentInitialized = false;
+    }
+
+    void
+    Optimize3DFormation::RemoveFormation3DAbreast2Agents ()
+    {
+        m_formation3DAbreast2AgentsInitialized = false;
     }
 
     void
@@ -192,6 +213,12 @@ namespace Formation3DWithOnlyYaw
     Optimize3DFormation::PopulateVectorWithFormationInOrderOfPriority(const int numberOfAgents, std::vector <Formation3DBase::Ptr>& formation3DBasePtrVec)
     {
         formation3DBasePtrVec.clear();
+
+        if (m_formation3DPoint1AgentInitialized && m_formation3DPoint1Agent.GetNumberOfAgents() == numberOfAgents)
+        {
+            Formation3DBase::Ptr ptr = std::make_shared<Formation3DPoint1Agent>(m_formation3DPoint1Agent);
+            formation3DBasePtrVec.push_back(ptr);
+        }
 
         if (m_formation3DAbreast2AgentsInitialized && m_formation3DAbreast2Agents.GetNumberOfAgents() == numberOfAgents)
         {

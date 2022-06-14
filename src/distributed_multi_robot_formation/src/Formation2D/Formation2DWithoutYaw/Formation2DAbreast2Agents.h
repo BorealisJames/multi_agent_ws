@@ -24,7 +24,7 @@ class Formation2DAbreast2Agents : public Formation2DBase
  - the size of the formation is m_desiredSize+d_size
  */
 public:
-        Formation2DAbreast2Agents();
+    Formation2DAbreast2Agents();
 
     // output is [pt1x, pt1y, pt2x, pt2y, pt3x, pt3y]^T
     void GetFormationPositions (const double d_x, const double d_y,
@@ -38,10 +38,6 @@ public:
     void GetFormationJacobian (const double d_x, const double d_y,
                                const double d_size,
                                Eigen::Matrix<double, Eigen::Dynamic, 3>& positions2DJacobian) const override;
-
-protected:
-    void SetNumberOfAgents () override;
-
 };
 
 }   // namespace Formation2DWithoutYaw

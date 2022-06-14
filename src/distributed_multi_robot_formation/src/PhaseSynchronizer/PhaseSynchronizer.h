@@ -11,13 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <sensor_msgs/PointCloud2.h>
-
 #include "../Common/Common.h"
-// Could not find path?
-#include "../../../Common/ConstantsEnum.h"
-#include "../../../Common/Config/ConfigFileReader.h"
-
 #include "../ConvexHullOfRobotPosition/ConvexHullOfRobotPosition.h"
 #include "../DirectionOfMotion/DirectionOfMotion.h"
 #include "../VirtualPositionAssignment/VirtualPositionAssignment.h"
@@ -43,6 +37,9 @@ class PhaseSynchronizer
 public:
 
     PhaseSynchronizer();
+    PhaseSynchronizer(const Common::DistributedFormationParameters& params);
+
+    void SetDistributedFormationParameters(const Common::DistributedFormationParameters& params);
 
     void AttachHandler(const std::shared_ptr<DistributedMultiRobotFormationHandler>& handlerPtr);
 
@@ -51,9 +48,6 @@ public:
 private:
     DistributedMultiRobotFormationHandler::Ptr m_handlerPtr;
 
-    // Namespace not found 
-    // Common::Utils::ConfigFileReader mConfigFileReader;
- 
     void OnEnterPhase1();
     void OnEnterPhase2();
     void OnEnterPhase3();
@@ -78,6 +72,9 @@ private:
     void DoPhase4();
     void DoPhase5();
 
+    void UpdateWorkspaceDimension();
+
+    void UpdateNumberOfAgentsInTeam();
     void UpdatePhasesOfAgentsInTeam();
     void UpdatePositionsOfAgentsInTeam();
     void UpdatePositionOfHuman();
@@ -109,12 +106,12 @@ private:
     double m_weightForSize;
     double m_desiredHeight;
     double m_priorityPenalty;
-    int m_expectedNumberOfAgents;
 
     Common::WORKSPACE m_workspace;
     Common::DIMENSION m_dimension;
     Common::PHASE m_phase;
     bool m_transitingPhase;
+    Common::Pose m_goalAlongPoses;
     Common::Pose m_goal;
 
     std::unordered_map<int32_t, Common::PhaseAndTime> m_phasesAndTimeRecordOfAgents;
@@ -127,6 +124,7 @@ private:
     std::unordered_map<int32_t, Common::ConvexRegion3D> m_agents3DConvexRegion;
     std::unordered_map<int32_t, std::unordered_map<int32_t, Common::Pose>> m_agentsTaskAssignments;
 
+    int32_t m_numberOfAgentsInTeam;
     int32_t m_ownAgentID;
     Common::Pose m_ownAgentPose;
     Common::Pose m_humanPose;
@@ -134,7 +132,6 @@ private:
     Common::ConvexRegion2D m_ownAgent2DConvexRegion;
     Common::ConvexRegion3D m_ownAgent3DConvexRegion;
     sensor_msgs::PointCloud m_ownPointCloud;
-    
     std::unordered_map<int32_t, Common::Pose> m_ownTaskAssignments;
 
     std::vector<Common::Pose> m_agentPosesThatFormConvexhull;

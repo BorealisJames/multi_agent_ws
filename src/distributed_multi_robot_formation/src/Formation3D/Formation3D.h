@@ -8,14 +8,17 @@
 
 #include "../Common/Common.h"
 #include "Formation3DWithRot/Optimize3DFormation.h"
+#include "Formation3DWithRot/Formation3DPoint1Agent.h"
 #include "Formation3DWithRot/Formation3DTri3Agents.h"
 #include "Formation3DWithRot/Formation3DLine3Agents.h"
 #include "Formation3DWithRot/Formation3DAbreast2Agents.h"
 #include "Formation3DWithoutRot/Optimize3DFormation.h"
+#include "Formation3DWithoutRot/Formation3DPoint1Agent.h"
 #include "Formation3DWithoutRot/Formation3DTri3Agents.h"
 #include "Formation3DWithoutRot/Formation3DLine3Agents.h"
 #include "Formation3DWithoutRot/Formation3DAbreast2Agents.h"
 #include "Formation3DWithOnlyYaw//Optimize3DFormation.h"
+#include "Formation3DWithOnlyYaw/Formation3DPoint1Agent.h"
 #include "Formation3DWithOnlyYaw/Formation3DTri3Agents.h"
 #include "Formation3DWithOnlyYaw/Formation3DLine3Agents.h"
 #include "Formation3DWithOnlyYaw/Formation3DAbreast2Agents.h"
@@ -65,6 +68,10 @@ namespace Formation3D
         {
             case DistributedFormation::Common::WORKSPACE::DIM_3_WITH_ROT:
             {
+                Formation3DWithRot::Formation3DPoint1Agent formation3DPoint1Agent;
+                formation3DPoint1Agent.SetDesiredPositionRotationAndSize(desiredX, desiredY, desiredZ,
+                                                                            desiredQw, desiredQx, desiredQy, desiredQz,
+                                                                            1.0);
                 Formation3DWithRot::Formation3DAbreast2Agents formation3DAbreast2Agents;
                 formation3DAbreast2Agents.SetDesiredPositionRotationAndSize(desiredX, desiredY, desiredZ,
                                                                             desiredQw, desiredQx, desiredQy, desiredQz,
@@ -82,6 +89,7 @@ namespace Formation3D
                 formation3DLine3Agents.SetDesiredDistanceBetweenAgents(desiredAgentSeperationForLine);
 
                 Formation3DWithRot::Optimize3DFormation opt;
+                opt.SetFormation3DPoint1Agent(formation3DPoint1Agent);
                 opt.SetFormation3DAbreast2Agents(formation3DAbreast2Agents);
                 opt.SetFormation3DTri3Agents(formation3DTri3Agents);
                 opt.SetFormation3DLine3Agents(formation3DLine3Agents);
@@ -110,6 +118,10 @@ namespace Formation3D
 
             case DistributedFormation::Common::WORKSPACE::DIM_3_WITHOUT_ROT:
             {
+                Formation3DWithoutRot::Formation3DPoint1Agent formation3DPoint1Agent;
+                formation3DPoint1Agent.SetDesiredPositionRotationAndSize(desiredX, desiredY, desiredZ,
+                                                                         desiredQw, desiredQx, desiredQy, desiredQz,
+                                                                         1.0);
                 Formation3DWithoutRot::Formation3DAbreast2Agents formation3DAbreast2Agents;
                 formation3DAbreast2Agents.SetDesiredPositionRotationAndSize(desiredX, desiredY, desiredZ,
                                                                             desiredQw, desiredQx, desiredQy, desiredQz,
@@ -127,6 +139,7 @@ namespace Formation3D
                 formation3DLine3Agents.SetDesiredDistanceBetweenAgents(desiredAgentSeperationForLine);
 
                 Formation3DWithoutRot::Optimize3DFormation opt;
+                opt.SetFormation3DPoint1Agent(formation3DPoint1Agent);
                 opt.SetFormation3DAbreast2Agents(formation3DAbreast2Agents);
                 opt.SetFormation3DTri3Agents(formation3DTri3Agents);
                 opt.SetFormation3DLine3Agents(formation3DLine3Agents);
@@ -150,6 +163,10 @@ namespace Formation3D
 
             case DistributedFormation::Common::WORKSPACE::DIM_3_WITH_ONLY_YAW:
             {
+                Formation3DWithOnlyYaw::Formation3DPoint1Agent formation3DPoint1Agent;
+                formation3DPoint1Agent.SetDesiredPositionRotationAndSize(desiredX, desiredY, desiredZ,
+                                                                         desiredQw, desiredQx, desiredQy, desiredQz,
+                                                                         1.0);
                 Formation3DWithOnlyYaw::Formation3DAbreast2Agents formation3DAbreast2Agents;
                 formation3DAbreast2Agents.SetDesiredPositionRotationAndSize(desiredX, desiredY, desiredZ,
                                                                             desiredQw, desiredQx, desiredQy, desiredQz,
@@ -167,6 +184,7 @@ namespace Formation3D
                 formation3DLine3Agents.SetDesiredDistanceBetweenAgents(desiredAgentSeperationForLine);
 
                 Formation3DWithOnlyYaw::Optimize3DFormation opt;
+                opt.SetFormation3DPoint1Agent(formation3DPoint1Agent);
                 opt.SetFormation3DAbreast2Agents(formation3DAbreast2Agents);
                 opt.SetFormation3DTri3Agents(formation3DTri3Agents);
                 opt.SetFormation3DLine3Agents(formation3DLine3Agents);

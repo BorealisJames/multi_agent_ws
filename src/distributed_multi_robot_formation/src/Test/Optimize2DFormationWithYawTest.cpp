@@ -16,8 +16,8 @@ namespace Formation2DWithYaw
 {
     TEST (Formation2DWithYaw, JacobianConstraintOnFormation2DAbreast2Agents)
     {
-        double agentRadius = 0.45;
-        double desiredDistanceInFormation = 2;
+        double agentRadius = 0.5;
+        double desiredDistanceInFormation = 1.5;
 
         // init must be at origin for test as the jacobian is found using drone frame
         double initX = 0.0;
@@ -25,80 +25,30 @@ namespace Formation2DWithYaw
         double initYaw = 0.0;
         double initSize = 1.0;
 
-        double initDeltaX = 0.207493;//0.0; 
-        double initDeltaY = -1.070856; //0.0
+        double initDeltaX = 0.0;
+        double initDeltaY = 0.0;
         double initDeltaYaw = 0.0;
         double initDeltaSize = 0.0;
 
         double desiredDeltaX = 10.0;
         double desiredDeltaY = 0.0;
-        double desiredDeltaYaw = 0;
+        double desiredDeltaYaw = 1.57;
         double desiredDeltaSize = 0.0;
-        double weightForGoal = 0.3;
-        double weightForRotation = 0.3;
-        double weightForSize = 0.4;
-
-        // [ INFO] [1648694916.603075176]: Desired goal 0.207493, -1.070856
-        // [ INFO] [1648694916.603200931]: AReduced matrix:
-        // 0.96466 -0.263499
-        // -0.283463  0.958983
-        // -0.263499  -0.96466
-        // -0.964662  0.263491
-        // -0.263491 -0.964662
-        // -0.125226  0.992128
-        // 0.964662 -0.263491
-        // [ INFO] [1648694916.603714085]: BReduced matrix:
-        // 3.48233
-        // -1.00889
-        // 5.47724
-        // 2.51767
-        // 5.47724
-        // -1.08982
-        // 3.48233
+        double weightForGoal = 1.0;
+        double weightForRotation = 1.0;
+        double weightForSize = 1.0;
 
         Eigen::Matrix<double, Eigen::Dynamic, 2> A;
         Eigen::Matrix<double, Eigen::Dynamic, 1> b;
-        A.resize(7,2);
-        b.resize(7,1);
+        A.resize(2,2);
+        b.resize(2,1);
 
-        A(0,0) = 0.96466;
-        A(0,1) = -0.263499;
-
-        A(1,0) = -0.283463;
-        A(1,1) = 0.958983;
-
-        A(2,0) = -0.263499;
-        A(2,1) = -0.96466;
-
-        A(3,0) = -0.964662;
-        A(3,1) = 0.263491;
-
-        A(4,0) = -0.263491;
-        A(4,1) = -0.964662;
-
-        A(5,0) = -0.125226;
-        A(5,1) = 0.992128;
-
-        A(6,0) = 0.964662;
-        A(6,1) = -0.263491;
-
-        // [ INFO] [1648694916.603714085]: BReduced matrix:
-        // 3.48233
-        // -1.00889
-        // 5.47724
-        // 2.51767
-        // 5.47724
-        // -1.08982
-        // 3.48233
-
-
-        b(0) = 3.48233;
-        b(1) = -1.00889;
-        b(2) = 5.47724;
-        b(3) = 2.51767;
-        b(4) = 5.47724;
-        b(5) = -1.08982;
-        b(6) = 3.48233;
+        A(0,0) = 0;
+        A(0,1) = 1;
+        b(0) = 2.0;
+        A(1,0) = 0;
+        A(1,1) = -1;
+        b(1) = 2.0;
 
         Formation2DAbreast2Agents formation2DAbreast2Agents;
         formation2DAbreast2Agents.SetDesiredPositionYawAndSize(initX, initY,
@@ -519,84 +469,30 @@ namespace Formation2DWithYaw
         double initYaw = 0.0;
         double initSize = 1.0;
 
-        double initDeltaX = 0.207493;//0.0; 
-        double initDeltaY = -1.070856; //0.0
+        double initDeltaX = 0.0;
+        double initDeltaY = 0.0;
         double initDeltaYaw = 0.0;
         double initDeltaSize = 0.0;
 
         double desiredDeltaX = 10.0;
         double desiredDeltaY = 0.0;
-        double desiredDeltaYaw = 0;
-        double desiredDeltaSize = 0.0;
-        double weightForGoal = 0.3;
-        double weightForRotation = 0.3;
-        double weightForSize = 0.4;
-
-        // [ INFO] [1648694916.603075176]: Desired goal 0.207493, -1.070856
-        // [ INFO] [1648694916.603200931]: AReduced matrix:
-        // 0.96466 -0.263499
-        // -0.283463  0.958983
-        // -0.263499  -0.96466
-        // -0.964662  0.263491
-        // -0.263491 -0.964662
-        // -0.125226  0.992128
-        // 0.964662 -0.263491
-        // [ INFO] [1648694916.603714085]: BReduced matrix:
-        // 3.48233
-        // -1.00889
-        // 5.47724
-        // 2.51767
-        // 5.47724
-        // -1.08982
-        // 3.48233
+        double desiredDeltaYaw = 1.57;
+        double desiredDeltaSize = 1.0;
+        double weightForGoal = 1.0;
+        double weightForRotation = 1.0;
+        double weightForSize = 1.0;
 
         Eigen::Matrix<double, Eigen::Dynamic, 2> A;
         Eigen::Matrix<double, Eigen::Dynamic, 1> b;
-        A.resize(7,2);
-        b.resize(7,1);
+        A.resize(2,2);
+        b.resize(2,1);
 
-        // A(0,0) = 0.96466;
-        // A(0,1) = -0.263499;
-
-        A(0,0) = 100;
-        A(0,1) = -40;
-
-        A(1,0) = -0.12383463;
-        A(1,1) = 1234;
-
-        A(2,0) = -0.263499;
-        A(2,1) = -10.96466;
-
-        A(3,0) = -0.964662;
-        A(3,1) = 0.263491;
-
-        A(4,0) = -0.263491;
-        A(4,1) = -0.964662;
-
-        A(5,0) = -0.125226;
-        A(5,1) = 0.992128;
-
-        A(6,0) = 0.964662;
-        A(6,1) = -0.263491;
-
-        // [ INFO] [1648694916.603714085]: BReduced matrix:
-        // 3.48233
-        // -1.00889
-        // 5.47724
-        // 2.51767
-        // 5.47724
-        // -1.08982
-        // 3.48233
-
-
-        b(0) = 3.48233;
-        // b(0) = 3.48233;
-        b(1) = -1.00889;
-        b(2) = 10000.47724;
-        b(3) = 2.51767;
-        b(4) = 5.47724;
-        b(5) = -1.08982;
-        b(6) = 3.48233;
+        A(0,0) = 0;
+        A(0,1) = 1;
+        b(0) = 2.0;
+        A(1,0) = 0;
+        A(1,1) = -1;
+        b(1) = 2.0;
 
         Formation2DAbreast2Agents formation2DAbreast2Agents;
         formation2DAbreast2Agents.SetDesiredPositionYawAndSize(initX, initY,
