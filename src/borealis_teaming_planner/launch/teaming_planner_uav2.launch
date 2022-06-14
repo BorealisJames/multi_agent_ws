@@ -18,8 +18,8 @@
       <remap from="/depth_camera" to="depth/points"/>
       <remap from="/pointcloud" to="/uav2_object_filter/filtered_point_cloud"/>
       <!-- <remap from="/local_pose" to="mavros/local_position/pose"/> -->
-      <remap from="/system_pose" to="/UAV2PoseUWB"/>
-      <!-- <remap from="/system_pose" to="mavros/local_position/pose"/> -->
+      <!-- <remap from="/system_pose" to="/UAV2PoseUWB"/> -->
+      <remap from="/system_pose" to="mavros/local_position/pose"/>
       <remap from="/t265_system_pose" to="mavros/local_position/pose"/>
       <remap from="/system_pose_from_formation" to="teaming_planner/system_pose"/>
       <remap from="/task" to="/task"/>
