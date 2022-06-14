@@ -282,6 +282,16 @@ bool TeamingPlanner::getOwnAgentId(int32_t& ownAgentID)
     return status;
 }
 
+bool TeamingPlanner::getNumberOfAgentsInTeam(int32_t& numberOfAgentsInTeam)
+{
+    bool status = true;
+
+    numberOfAgentsInTeam = mNumberOfAgentsInFormation;
+
+    return status;
+}
+
+
 bool TeamingPlanner::getPosesForFormationToTrack(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses)
 {
     bool status(false);

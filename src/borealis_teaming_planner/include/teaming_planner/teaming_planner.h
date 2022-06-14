@@ -54,6 +54,7 @@ class TeamingPlanner
         double mIntervalDistance;
         double mPlanningHorizon;
         double mDesiredHeight;
+        int mNumberOfAgentsInFormation;
 
         // Variables
         TeamingPlannerConstants::ModuleState mModuleState;
@@ -163,6 +164,7 @@ class TeamingPlanner
 
         // Get Functions
         bool getOwnAgentId(int32_t& ownAgentID);
+        bool getNumberOfAgentsInTeam(int32_t& numberOfAgentsInTeam);
         bool getPosesForFormationToTrack(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses);
         bool getPhaseAndTimeMap(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap);
         bool getPoseMap(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap);

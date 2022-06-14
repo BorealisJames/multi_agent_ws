@@ -15,6 +15,7 @@ void TeamingPlanner::teamingPlannerMain()
             
             mHistoryOfHumanPoses.reserve(mPlanningHorizon/mIntervalDistance);
 
+            mHandlerPtr->m_getNumberOfAgentsInTeam = std::bind(&TeamingPlanner::getNumberOfAgentsInTeam, this, std::placeholders::_1);
             mHandlerPtr->m_getOwnAgentID = std::bind(&TeamingPlanner::getOwnAgentId, this, std::placeholders::_1);
             mHandlerPtr->m_getPosesForFormationToTrack = std::bind(&TeamingPlanner::getPosesForFormationToTrack, this, std::placeholders::_1); // HIstory of human poses
             mHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhaseAndTimeMap, this, std::placeholders::_1);
@@ -50,7 +51,9 @@ void TeamingPlanner::teamingPlannerMain()
             mModuleState = TeamingPlannerConstants::ModuleState::READY;
             mModuleStateVerbose = false;
 
+            // quick implementation
             mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
+            mNumberOfAgentsInFormation = 2;
             break;
 
         case TeamingPlannerConstants::ModuleState::READY:
