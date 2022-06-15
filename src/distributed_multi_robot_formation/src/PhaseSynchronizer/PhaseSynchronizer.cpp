@@ -797,50 +797,50 @@ namespace DistributedFormation
             }
         }
 
-        //wall hack
-        m_ownPointCloud.points.clear();
-        m_ownPointCloud.channels.clear();
-        geometry_msgs::Point32 pt;
-        if (m_ownAgentID == 0 || m_ownAgentID == 1)
-        {
-            for (double x = -1.0; x<=1.0; x=x+0.5)
-            {
-                for (double y = -3.5; y<=3.0; y=y+0.5)
-                {
-                    for (double z = 0.0; z<=4.0; z=z+0.5)
-                    {
-                        pt.x = x; pt.y = y; pt.z = z;
-                        m_ownPointCloud.points.push_back(pt);
-                    }
-                }
-            }
-        }
-        if (m_ownAgentID == 0)
-        {
-            //corridor hack
-            for (double x = 8.0; x<=10.0; x=x+0.5)
-            {
-                for (double y = -3.5; y<=6.5; y=y+0.5)
-                {
-                    for (double z = 0.0; z<=4.0; z=z+0.5)
-                    {
-                        pt.x = x; pt.y = y; pt.z = z;
-                        m_ownPointCloud.points.push_back(pt);
-                    }
-                }
-            }
-            for (double x = 8.0; x<=10.0; x=x+0.5)
-            {
-                for (double y = -9.5; y<=-5.5; y=y+0.5)
-                {
-                    for (double z = 0.0; z<=4.0; z=z+0.5)
-                    {
-                        pt.x = x; pt.y = y; pt.z = z;
-                        m_ownPointCloud.points.push_back(pt);
-                    }
-                }
-            }
-        }
+        // //wall hack
+        // m_ownPointCloud.points.clear();
+        // m_ownPointCloud.channels.clear();
+        // geometry_msgs::Point32 pt;
+        // if (m_ownAgentID == 0 || m_ownAgentID == 1)
+        // {
+        //     for (double x = -1.0; x<=1.0; x=x+0.5)
+        //     {
+        //         for (double y = -3.5; y<=3.0; y=y+0.5)
+        //         {
+        //             for (double z = 0.0; z<=4.0; z=z+0.5)
+        //             {
+        //                 pt.x = x; pt.y = y; pt.z = z;
+        //                 m_ownPointCloud.points.push_back(pt);
+        //             }
+        //         }
+        //     }
+        // }
+        // if (m_ownAgentID == 0)
+        // {
+        //     //corridor hack
+        //     for (double x = 8.0; x<=10.0; x=x+0.5)
+        //     {
+        //         for (double y = -3.5; y<=6.5; y=y+0.5)
+        //         {
+        //             for (double z = 0.0; z<=4.0; z=z+0.5)
+        //             {
+        //                 pt.x = x; pt.y = y; pt.z = z;
+        //                 m_ownPointCloud.points.push_back(pt);
+        //             }
+        //         }
+        //     }
+        //     for (double x = 8.0; x<=10.0; x=x+0.5)
+        //     {
+        //         for (double y = -9.5; y<=-5.5; y=y+0.5)
+        //         {
+        //             for (double z = 0.0; z<=4.0; z=z+0.5)
+        //             {
+        //                 pt.x = x; pt.y = y; pt.z = z;
+        //                 m_ownPointCloud.points.push_back(pt);
+        //             }
+        //         }
+        //     }
+        // }
 
         if (m_dimension == Common::DIMENSION::DIM_2)
         {

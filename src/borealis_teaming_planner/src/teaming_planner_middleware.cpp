@@ -80,7 +80,7 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseWithCovari
 
 //     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
 
-//     pubPose(mSourceSegmentId, mSelfSystemPose);
+//     pubPoseRFH(mSourceSegmentId, mSelfSystemPose);
 
 //     // if (mDebugVerbose)
 //     // {
@@ -102,7 +102,7 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::Co
 
     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
 
-    pubPose(mSourceSegmentId, mSelfSystemPose);
+    pubPoseRFH(mSourceSegmentId, mSelfSystemPose);
 
     // if (mDebugVerbose)
     // {
@@ -124,7 +124,7 @@ void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCova
 
     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
 
-    pubPose(mSourceSegmentId, mSelfSystemPose);
+    pubPoseRFH(mSourceSegmentId, mSelfSystemPose);
 
     // if (mDebugVerbose)
     // {

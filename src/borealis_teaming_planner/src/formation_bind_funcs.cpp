@@ -2,7 +2,7 @@
 
 // Functions decleration for the formation handler pointers
 
-bool TeamingPlanner::pubPhaseAndTime(const int32_t aAgentId, const DistributedFormation::Common::PhaseAndTime aPhaseAndTime)
+bool TeamingPlanner::pubPhaseAndTimeRFH(const int32_t aAgentId, const DistributedFormation::Common::PhaseAndTime aPhaseAndTime)
 {
     bool status = true;
 
@@ -25,7 +25,7 @@ bool TeamingPlanner::pubPhaseAndTime(const int32_t aAgentId, const DistributedFo
 }
 
 
-bool TeamingPlanner::pubPose(const int32_t aAgentId, const DistributedFormation::Common::Pose aPose)
+bool TeamingPlanner::pubPoseRFH(const int32_t aAgentId, const DistributedFormation::Common::Pose aPose)
 {
     bool status = true;
 
@@ -49,7 +49,7 @@ bool TeamingPlanner::pubPose(const int32_t aAgentId, const DistributedFormation:
     return status;
 }
 
-bool TeamingPlanner::pubDirectionUtility(const int32_t aAgentId, const DistributedFormation::Common::DirectionUtility aDirectionUtility)
+bool TeamingPlanner::pubDirectionUtilityRFH(const int32_t aAgentId, const DistributedFormation::Common::DirectionUtility aDirectionUtility)
 {
     bool status = true;
     
@@ -70,7 +70,7 @@ bool TeamingPlanner::pubDirectionUtility(const int32_t aAgentId, const Distribut
     return status;
 }
 
-bool TeamingPlanner::pubConvexRegion2D(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion2D aConvexRegion2D)
+bool TeamingPlanner::pubConvexRegion2DRFH(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion2D aConvexRegion2D)
 {
     bool status = true;
     
@@ -93,30 +93,30 @@ bool TeamingPlanner::pubConvexRegion2D(const int32_t aAgentId, const Distributed
 
         if (mDebugVerbose)
         {
-            ROS_INFO("pubConvexRegion2D Vector A column 1 Values: ");
+            ROS_INFO("pubConvexRegion2DRFH Vector A column 1 Values: ");
             for (auto value : matrixACol1)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion2D Vector A column 2 Values: ");
+            ROS_INFO("pubConvexRegion2DRFH Vector A column 2 Values: ");
             for (auto value : matrixACol2)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion2D Matrix A Values: ");
+            ROS_INFO("pubConvexRegion2DRFH Matrix A Values: ");
 
-            ROS_INFO("pubConvexRegion2D Vector B Values: ");
+            ROS_INFO("pubConvexRegion2DRFH Vector B Values: ");
             for (auto value : matrixB)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion2D Matrix B Values: ");
+            ROS_INFO("pubConvexRegion2DRFH Matrix B Values: ");
         }
     }
     else
@@ -126,7 +126,7 @@ bool TeamingPlanner::pubConvexRegion2D(const int32_t aAgentId, const Distributed
     return status;
 }
 
-bool TeamingPlanner::pubConvexRegion3D(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion3D aConvexRegion3D)
+bool TeamingPlanner::pubConvexRegion3DRFH(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion3D aConvexRegion3D)
 {
     bool status = true;
     
@@ -152,28 +152,28 @@ bool TeamingPlanner::pubConvexRegion3D(const int32_t aAgentId, const Distributed
 
         if (mDebugVerbose)
         {
-            ROS_INFO("pubConvexRegion3D Vector A column 1 Values: ");
+            ROS_INFO("pubConvexRegion3DRFH Vector A column 1 Values: ");
             for (auto value : matrixACol1)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion3D Vector A column 2 Values: ");
+            ROS_INFO("pubConvexRegion3DRFH Vector A column 2 Values: ");
             for (auto value : matrixACol2)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion3D Vector A column 3 Values: ");
+            ROS_INFO("pubConvexRegion3DRFH Vector A column 3 Values: ");
             for (auto value : matrixACol3)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion3D Vector B Values: ");
+            ROS_INFO("pubConvexRegion3DRFH Vector B Values: ");
             for (auto value : matrixB)
             {
                 ROS_INFO("%d ", value);
@@ -189,7 +189,7 @@ bool TeamingPlanner::pubConvexRegion3D(const int32_t aAgentId, const Distributed
 }
 
 // Published Assigned Pose of the Agent into the /t265_pose_frame
-bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFormation::Common::Pose aAssignedVirtualPose)
+bool TeamingPlanner::pubAssignedPoseRFH(const int32_t aAgentId, const DistributedFormation::Common::Pose aAssignedVirtualPose)
 {
     bool status = true;
 
@@ -226,7 +226,7 @@ bool TeamingPlanner::pubAssignedPose(const int32_t aAgentId, const DistributedFo
     return status;
 }
 
-bool TeamingPlanner::pubAssignedPoseMap(const int32_t aAgentId, const std::unordered_map<int32_t, DistributedFormation::Common::Pose> aAssignedPoseMap)
+bool TeamingPlanner::pubAssignedPoseMapRFH(const int32_t aAgentId, const std::unordered_map<int32_t, DistributedFormation::Common::Pose> aAssignedPoseMap)
 {
     bool status = true;
 
@@ -273,26 +273,7 @@ bool TeamingPlanner::pubAssignedPoseMap(const int32_t aAgentId, const std::unord
     return status;
 }
 
-bool TeamingPlanner::getOwnAgentId(int32_t& ownAgentID)
-{
-    bool status = true;
-
-    ownAgentID = mSourceSegmentId;
-
-    return status;
-}
-
-bool TeamingPlanner::getNumberOfAgentsInTeam(int32_t& numberOfAgentsInTeam)
-{
-    bool status = true;
-
-    numberOfAgentsInTeam = mNumberOfAgentsInFormation;
-
-    return status;
-}
-
-
-bool TeamingPlanner::getPosesForFormationToTrack(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses)
+bool TeamingPlanner::getPosesForFormationToTrackRFH(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses)
 {
     bool status(false);
 
@@ -310,7 +291,7 @@ bool TeamingPlanner::getPosesForFormationToTrack(std::vector<DistributedFormatio
     return status;
 }
 
-bool TeamingPlanner::getPhaseAndTimeMap(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap)
+bool TeamingPlanner::getPhaseAndTimeMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap)
 {
     bool status = true;
 
@@ -328,7 +309,7 @@ bool TeamingPlanner::getPhaseAndTimeMap(std::unordered_map<int32_t, DistributedF
     return status;
 }
 
-bool TeamingPlanner::getPoseMap(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap)
+bool TeamingPlanner::getPoseMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap)
 {
     bool status = true;
 
@@ -346,7 +327,7 @@ bool TeamingPlanner::getPoseMap(std::unordered_map<int32_t, DistributedFormation
     return status;
 }
 
-bool TeamingPlanner::getDirectionUtilityMap(std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility>& directionUtilityMap)
+bool TeamingPlanner::getDirectionUtilityMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility>& directionUtilityMap)
 {
     bool status = true;
 
@@ -364,33 +345,7 @@ bool TeamingPlanner::getDirectionUtilityMap(std::unordered_map<int32_t, Distribu
     return status;
 }
 
-// Get Functions
-bool TeamingPlanner::getOwnAgentLidarPointCloud(sensor_msgs::PointCloud& cloud)
-{
-
-    bool status = false;
-    if (!mSystemPointCloud.points.empty())
-    {
-        cloud = mSystemPointCloud;
-        status = true;
-    }
-    else
-    {
-        ROS_WARN("[Teaming Planner %d]: Agents Point Cloud empty", mSourceSegmentId);
-        status = false;
-    }
-    
-    return status;
-}
-
-bool TeamingPlanner::getOwnAgentDepthCamera(sensor_msgs::PointCloud& depthCamera)
-{
-    bool status = true;
-    depthCamera = mSystemDepthCamera;
-    return status;
-}
-
-bool TeamingPlanner::getConvexRegion2DMap(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D>& convexRegion2DMap)
+bool TeamingPlanner::getConvexRegion2DMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D>& convexRegion2DMap)
 {
     bool status = true;
 
@@ -408,7 +363,7 @@ bool TeamingPlanner::getConvexRegion2DMap(std::unordered_map<int32_t, Distribute
     return status;
 }
 
-bool TeamingPlanner::getConvexRegion3DMap(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D>& convexRegion3DMap)
+bool TeamingPlanner::getConvexRegion3DMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D>& convexRegion3DMap)
 {
     bool status = true;
 
@@ -426,7 +381,7 @@ bool TeamingPlanner::getConvexRegion3DMap(std::unordered_map<int32_t, Distribute
     return status;
 }
 
-bool TeamingPlanner::getAssignedVirtualPoseMap(std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedFormation::Common::Pose>>& assignedVirtualPoseMap)
+bool TeamingPlanner::getAssignedVirtualPoseMapRFH(std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedFormation::Common::Pose>>& assignedVirtualPoseMap)
 {
     bool status = true;
 
@@ -444,7 +399,7 @@ bool TeamingPlanner::getAssignedVirtualPoseMap(std::unordered_map<int32_t, std::
     return status;
 }
 
-bool TeamingPlanner::getHumanSystemPose(DistributedFormation::Common::Pose& aHumanSystemPose)
+bool TeamingPlanner::getHumanSystemPoseRFH(DistributedFormation::Common::Pose& aHumanSystemPose)
 {
     bool status = true;
 
@@ -456,7 +411,7 @@ bool TeamingPlanner::getHumanSystemPose(DistributedFormation::Common::Pose& aHum
     return status;
 }
 
-bool TeamingPlanner::getOwnUAVSystemPose(DistributedFormation::Common::Pose& aUAVSystemPose)
+bool TeamingPlanner::getOwnUAVSystemPoseRFH(DistributedFormation::Common::Pose& aUAVSystemPose)
 {
     bool status = true;
 
@@ -468,7 +423,7 @@ bool TeamingPlanner::getOwnUAVSystemPose(DistributedFormation::Common::Pose& aUA
     return status;
 }
 
-void TeamingPlanner::clearPhaseAndTimeMap()
+void TeamingPlanner::clearPhaseAndTimeMapRFH()
 {
     mAgentsPhaseAndTimeMap.clear();
 
@@ -478,7 +433,7 @@ void TeamingPlanner::clearPhaseAndTimeMap()
     }
 }
 
-void TeamingPlanner::clearPoseMap()
+void TeamingPlanner::clearPoseMapRFH()
 {
     mAgentsPoseMap.clear();
 
@@ -488,7 +443,7 @@ void TeamingPlanner::clearPoseMap()
     }
 }
 
-void TeamingPlanner::clearDirectionUtilityMap()
+void TeamingPlanner::clearDirectionUtilityMapRFH()
 {
     mAgentsDirectionUtilityMap.clear();
 
@@ -498,7 +453,7 @@ void TeamingPlanner::clearDirectionUtilityMap()
     }
 }
 
-void TeamingPlanner::clearConvexRegion2DMap()
+void TeamingPlanner::clearConvexRegion2DMapRFH()
 {
     mAgentsConvexRegion2DMap.clear();
 
@@ -508,7 +463,7 @@ void TeamingPlanner::clearConvexRegion2DMap()
     }
 }
 
-void TeamingPlanner::clearConvexRegion3DMap()
+void TeamingPlanner::clearConvexRegion3DMapRFH()
 {
     mAgentsConvexRegion3DMap.clear();
 
@@ -518,7 +473,7 @@ void TeamingPlanner::clearConvexRegion3DMap()
     }
 }
 
-void TeamingPlanner::clearAssignedVirtualPoseMap()
+void TeamingPlanner::clearAssignedVirtualPoseMapRFH()
 {
     mAgentsAssignedVirtualPoseMap.clear();
 

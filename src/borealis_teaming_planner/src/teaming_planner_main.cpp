@@ -17,34 +17,34 @@ void TeamingPlanner::teamingPlannerMain()
 
             mHandlerPtr->m_getNumberOfAgentsInTeam = std::bind(&TeamingPlanner::getNumberOfAgentsInTeam, this, std::placeholders::_1);
             mHandlerPtr->m_getOwnAgentID = std::bind(&TeamingPlanner::getOwnAgentId, this, std::placeholders::_1);
-            mHandlerPtr->m_getPosesForFormationToTrack = std::bind(&TeamingPlanner::getPosesForFormationToTrack, this, std::placeholders::_1); // HIstory of human poses
-            mHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhaseAndTimeMap, this, std::placeholders::_1);
-            mHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubPhaseAndTime, this, std::placeholders::_1, std::placeholders::_2);
+            mHandlerPtr->m_getPosesForFormationToTrack = std::bind(&TeamingPlanner::getPosesForFormationToTrackRFH, this, std::placeholders::_1); // HIstory of human poses
+            mHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhaseAndTimeMapRFH, this, std::placeholders::_1);
+            mHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubPhaseAndTimeRFH, this, std::placeholders::_1, std::placeholders::_2);
 
-            mHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearPoseMap, this);
-            mHandlerPtr->m_pubOwnPoseFunc = std::bind(&TeamingPlanner::pubPose, this, std::placeholders::_1, std::placeholders::_2);
-            mHandlerPtr->m_getOwnAgentPose = std::bind(&TeamingPlanner::getOwnUAVSystemPose, this, std::placeholders::_1);
-            mHandlerPtr->m_getAgentsPose = std::bind(&TeamingPlanner::getPoseMap, this, std::placeholders::_1);
-            mHandlerPtr->m_getHumanPose = std::bind(&TeamingPlanner::getHumanSystemPose, this, std::placeholders::_1);
+            mHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearPoseMapRFH, this);
+            mHandlerPtr->m_pubOwnPoseFunc = std::bind(&TeamingPlanner::pubPoseRFH, this, std::placeholders::_1, std::placeholders::_2);
+            mHandlerPtr->m_getOwnAgentPose = std::bind(&TeamingPlanner::getOwnUAVSystemPoseRFH, this, std::placeholders::_1);
+            mHandlerPtr->m_getAgentsPose = std::bind(&TeamingPlanner::getPoseMapRFH, this, std::placeholders::_1);
+            mHandlerPtr->m_getHumanPose = std::bind(&TeamingPlanner::getHumanSystemPoseRFH, this, std::placeholders::_1);
 
-            mHandlerPtr->m_clearAgentsDirectionUtilityBuffer = std::bind(&TeamingPlanner::clearDirectionUtilityMap, this);
-            mHandlerPtr->m_pubOwnDirectionUtility = std::bind(&TeamingPlanner::pubDirectionUtility, this, std::placeholders::_1, std::placeholders::_2);
-            mHandlerPtr->m_getAgentsDirectionUtility = std::bind(&TeamingPlanner::getDirectionUtilityMap, this, std::placeholders::_1);
+            mHandlerPtr->m_clearAgentsDirectionUtilityBuffer = std::bind(&TeamingPlanner::clearDirectionUtilityMapRFH, this);
+            mHandlerPtr->m_pubOwnDirectionUtility = std::bind(&TeamingPlanner::pubDirectionUtilityRFH, this, std::placeholders::_1, std::placeholders::_2);
+            mHandlerPtr->m_getAgentsDirectionUtility = std::bind(&TeamingPlanner::getDirectionUtilityMapRFH, this, std::placeholders::_1);
 
             mHandlerPtr->m_getOwnAgentLidarPointCloud = std::bind(&TeamingPlanner::getOwnAgentLidarPointCloud, this, std::placeholders::_1);
             
-            mHandlerPtr->m_clearAgentsConvexRegion2DBuffer = std::bind(&TeamingPlanner::clearConvexRegion2DMap, this);
-            mHandlerPtr->m_pubOwnConvex2DRegion = std::bind(&TeamingPlanner::pubConvexRegion2D, this, std::placeholders::_1, std::placeholders::_2);
-            mHandlerPtr->m_getAgentsConvex2DRegion = std::bind(&TeamingPlanner::getConvexRegion2DMap, this, std::placeholders::_1);
-            mHandlerPtr->m_clearAgentsConvexRegion3DBuffer = std::bind(&TeamingPlanner::clearConvexRegion3DMap, this);
-            mHandlerPtr->m_pubOwnConvex3DRegion = std::bind(&TeamingPlanner::pubConvexRegion3D, this, std::placeholders::_1, std::placeholders::_2);
-            mHandlerPtr->m_getAgentsConvex3DRegion = std::bind(&TeamingPlanner::getConvexRegion3DMap, this, std::placeholders::_1);
+            mHandlerPtr->m_clearAgentsConvexRegion2DBuffer = std::bind(&TeamingPlanner::clearConvexRegion2DMapRFH, this);
+            mHandlerPtr->m_pubOwnConvex2DRegion = std::bind(&TeamingPlanner::pubConvexRegion2DRFH, this, std::placeholders::_1, std::placeholders::_2);
+            mHandlerPtr->m_getAgentsConvex2DRegion = std::bind(&TeamingPlanner::getConvexRegion2DMapRFH, this, std::placeholders::_1);
+            mHandlerPtr->m_clearAgentsConvexRegion3DBuffer = std::bind(&TeamingPlanner::clearConvexRegion3DMapRFH, this);
+            mHandlerPtr->m_pubOwnConvex3DRegion = std::bind(&TeamingPlanner::pubConvexRegion3DRFH, this, std::placeholders::_1, std::placeholders::_2);
+            mHandlerPtr->m_getAgentsConvex3DRegion = std::bind(&TeamingPlanner::getConvexRegion3DMapRFH, this, std::placeholders::_1);
 
-            mHandlerPtr->m_pubOwnTaskAssignments = std::bind(&TeamingPlanner::pubAssignedPoseMap, this, std::placeholders::_1, std::placeholders::_2);
+            mHandlerPtr->m_pubOwnTaskAssignments = std::bind(&TeamingPlanner::pubAssignedPoseMapRFH, this, std::placeholders::_1, std::placeholders::_2);
 
-            mHandlerPtr->m_clearAgentsTaskAssignmentsBuffer = std::bind(&TeamingPlanner::clearPoseMap, this);
-            mHandlerPtr->m_getAgentsTaskAssignments = std::bind(&TeamingPlanner::getAssignedVirtualPoseMap, this, std::placeholders::_1);
-            mHandlerPtr->m_pubOwnAgentAssignedPose = std::bind(&TeamingPlanner::pubAssignedPose, this, std::placeholders::_1, std::placeholders::_2);
+            mHandlerPtr->m_clearAgentsTaskAssignmentsBuffer = std::bind(&TeamingPlanner::clearPoseMapRFH, this);
+            mHandlerPtr->m_getAgentsTaskAssignments = std::bind(&TeamingPlanner::getAssignedVirtualPoseMapRFH, this, std::placeholders::_1);
+            mHandlerPtr->m_pubOwnAgentAssignedPose = std::bind(&TeamingPlanner::pubAssignedPoseRFH, this, std::placeholders::_1, std::placeholders::_2);
 
             mDistributedFormation.AttachHandler(mHandlerPtr);
 
