@@ -25,7 +25,9 @@
       <remap from="/control_state" to="control/state"/>
       <remap from= "/human_input_pose" to="/uav_all/follow_me_target_pose"/>
       <remap from="/voxel_filter_cloud" to="teaming_planner/voxel_filter_cloud"/>
+      <remap from="/hri_output" to="hri_output"/>
 
+      
     </node>
   </group>
 

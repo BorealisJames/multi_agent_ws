@@ -18,7 +18,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mModuleStateVerbose(false),
         mModuleTaskVerbose(false),
 
-        mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>())
+        mFormationHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>())
 
     {
         // Configured Variables
@@ -41,7 +41,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConvexRegion2DPublisher = mNh.advertise<mt_msgs::convexRegion2D>("/convex_region_2D", 10);
         mConvexRegion3DPublisher = mNh.advertise<mt_msgs::convexRegion3D>("/convex_region_3D", 10);
         mAssignedVirtualPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/assigned_virtual_position", 10);
-        // mAssignedt265VirtualPosePublisher = mNh.advertise<geometry_msgs::PoseStamped>("/assignedt265_virtual_position", 10);
         mAssignedVirtualPoseMapPublisher = mNh.advertise<mt_msgs::posevector>("/assigned_virtual_pose_map", 10);
         mVoxel_filter_cloudPublisher = mNh.advertise<sensor_msgs::PointCloud>("/voxel_filter_cloud",10);
 
@@ -49,6 +48,9 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mGoalSubscriber = mNh.subscribe<mt_msgs::pose>("/goal", 10, &TeamingPlanner::goalCallback, this);
         mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/human_input_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
         // mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
+
+        // KIV
+        // mHRIModeSubscriber = mNh.subscribe<borealis_hri_msgs::Borealis_HRI_Output> ("/hri_output", 10, &TeamingPlanner::incomingHRIModeCallback, this);
 
         if (useUWB)
         {
@@ -59,7 +61,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
             mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
         }
         mSelft265SystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>("/t265_system_pose", 10, &TeamingPlanner::selft265SystemPoseCallback, this);
-        // Changed to point cloud 
         mSystemPointCloud2Subscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/pointcloud", 10, &TeamingPlanner::systemPointCloud2Callback, this);
         // mSystemPointCloudSubscriber = mNh.subscribe<sensor_msgs::PointCloud>("/pointcloud", 10, &TeamingPlanner::systemPointCloudCallback, this);
         mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::taskCallback, this);

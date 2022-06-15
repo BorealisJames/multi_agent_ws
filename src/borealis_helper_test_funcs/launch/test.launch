@@ -1,5 +1,6 @@
 <launch>
-    <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 1 /odom /map 10" />
+    <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 1 /odom /uav1UWB 10" />
+    <node pkg="tf" type="static_transform_publisher" name="link2_broadcaster" args="0 0 0 0 0 0 1 /odom /uav2UWB 10" />
 </launch>
     
     

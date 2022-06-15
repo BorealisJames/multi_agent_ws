@@ -510,7 +510,7 @@ namespace DistributedFormation
         //output: ownAgentDirectionUtility
 
         std::vector<Common::Pose> posesToTrack;
-        if (!m_handlerPtr->m_getPosesForFormationToTrack(posesToTrack))
+        if (!m_handlerPtr->m_getPosesForFormationToTrack_mrf(posesToTrack))
         {
             std::cout << "Agent" << m_ownAgentID << ": reset cause unable to get poses to track" << std::endl;
 

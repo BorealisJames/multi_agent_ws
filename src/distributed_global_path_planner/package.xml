@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>distributed_global_path_planner</name>
+  <version>1.0.0</version>
+  <description>obtain multi robot global path</description>
+  <maintainer email="bensonkuan1990@gmail.com">Benson Kuan</maintainer>
+  <license>TODO</license>
+  <author email="bensonkuan1990@gmail.com">Benson Kuan</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!--Other depends-->
+  <depend>catkin_simple</depend>
+  <depend>geometry_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>Eigen3</depend>
+ 
+</package>

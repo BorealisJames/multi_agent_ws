@@ -1,7 +1,9 @@
-1) Figuring out how does the path generator relates back to the multi robot formation
-2) Remove debug verbose logic?
 
-3) Remove the settings of param from launch file
-4) Attach the distributed robot formation as class wrapper
-5) Attach the path planner and stuff
-6) Ask sam for his path planner with history
+// Listen to HRI mode 
+// Decouple the incoming msgs
+// Record the human poses into history of human poses
+// If activated + follow me, then pass the history of human poses into the formation planner
+// If activated + go there, dont pass the history of human poses. Instead take the "Go there pose" pass it to consensus_path_planner.
+// consensus_path_planner will generate a series of poses. Pass this poses to the formation planner instead.
+
+// Params?

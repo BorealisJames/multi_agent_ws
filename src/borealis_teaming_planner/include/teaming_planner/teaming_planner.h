@@ -9,8 +9,12 @@
 #include "../../../distributed_multi_robot_formation/src/Common/Common.h"
 #include "../../../distributed_multi_robot_formation/src/DistributedMultiRobotFormation.h"
 #include "../../../distributed_multi_robot_formation/src/DistributedMultiRobotFormationHandler.h"
-
 #include "../../../distributed_multi_robot_formation/src/ProcessPointCloud/ProcessPointCloud.h"
+
+#include "../../../distributed_global_path_planner/src/Common/Common.h"
+
+#include "../../../distributed_global_path_planner/src/DistributedGlobalPathPlanner.h"
+#include "../../../distributed_global_path_planner/src/DistributedGlobalPathPlannerHandler.h"
 
 #include "../../../Common/ConstantsEnum.h"
 #include "../../../Common/Config/ConfigFileReader.h"
@@ -18,13 +22,12 @@
 
 #include <geometry_msgs/PointStamped.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>
-
 #include <std_msgs/Int8.h>
-#include <tf/transform_listener.h>
 #include <mt_msgs/pose.h>
 #include <mt_msgs/mtTask.h>
 #include <mt_msgs/angleIndexAndUtility.h>
@@ -33,7 +36,9 @@
 #include <mt_msgs/phaseAndTime.h>
 #include <mt_msgs/position.h>
 #include <mt_msgs/posevector.h>
-#include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <borealis_hri_msgs/Borealis_HRI_Output.h>
+
+#include <tf/transform_listener.h>
 
 class TeamingPlanner
 {
@@ -43,8 +48,11 @@ class TeamingPlanner
 
         Common::Utils::ConfigFileReader mConfigFileReader;
 
-        DistributedFormation::DistributedMultiRobotFormationHandler::Ptr mHandlerPtr;
+        DistributedFormation::DistributedMultiRobotFormationHandler::Ptr mFormationHandlerPtr;
         DistributedFormation::DistributedMultiRobotFormation mDistributedFormation;
+
+        // DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler::Ptr mConsensusGlobalPathHandlerPtr;
+        // DistributedGlobalPathPlanner::DistributedGlobalPathPlanner mConsensusGlobalPath;
 
         // Configurable Variables
         uint32_t mSourceSegmentId;
@@ -54,8 +62,7 @@ class TeamingPlanner
         double mIntervalDistance;
         double mPlanningHorizon;
         double mDesiredHeight;
-        int mNumberOfAgentsInFormation;
-
+        
         // Variables
         TeamingPlannerConstants::ModuleState mModuleState;
         std::vector<DistributedFormation::Common::Pose> mHistoryOfHumanPoses;
@@ -79,10 +86,13 @@ class TeamingPlanner
 
         bool mHistoryOfHumanPosesReceived;
         bool useUWB;
+
         std_msgs::Bool mBoolActivatePlanner; 
+        std::string mHRIMode;
+        geometry_msgs::PoseStamped mHRIPoseStamped;
+        int mNumberOfAgentsInFormation;
 
         // There is a probably better way to implement this but htis should do
-        // Whatever lmao
         geometry_msgs::PoseWithCovarianceStamped mGunTargetPose;
         bool mgunTargetPoseRecieved;
     
@@ -114,6 +124,8 @@ class TeamingPlanner
         ros::Subscriber mGunTargetPoseSubscriber;
         ros::Subscriber mActivatePlannerSubscriber;
 
+        ros::Subscriber mHRIModeSubscriber;
+
         // Hardcoded for now
         std::vector<ros::Subscriber> mUAVSystemPoseSubscriberVector;
         std::vector<ros::Subscriber> mUAVPhaseAndTimeSubscriberVector;
@@ -126,13 +138,13 @@ class TeamingPlanner
         ros::Timer mModuleLoopTimer;
 
         // Publisher Functions
-        bool pubPhaseAndTime(const int32_t aAgentId, const DistributedFormation::Common::PhaseAndTime aPhaseAndTime);
-        bool pubPose(const int32_t aAgentId, const DistributedFormation::Common::Pose aPose);
-        bool pubDirectionUtility(const int32_t aAgentId, const DistributedFormation::Common::DirectionUtility aDirectionUtility);
-        bool pubConvexRegion2D(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion2D aConvexRegion2D);
-        bool pubConvexRegion3D(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion3D aConvexRegion3D);
-        bool pubAssignedPose(const int32_t aAgentId, const DistributedFormation::Common::Pose aAssignedVirtualPose);
-        bool pubAssignedPoseMap(const int32_t aAgentId, const std::unordered_map<int32_t, DistributedFormation::Common::Pose> aAssignedVirtualPoseMap);
+        bool pubPhaseAndTime_mrf(const int32_t aAgentId, const DistributedFormation::Common::PhaseAndTime aPhaseAndTime);
+        bool pubPose_mrf(const int32_t aAgentId, const DistributedFormation::Common::Pose aPose);
+        bool pubDirectionUtility_mrf(const int32_t aAgentId, const DistributedFormation::Common::DirectionUtility aDirectionUtility);
+        bool pubConvexRegion2D_mrf(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion2D aConvexRegion2D);
+        bool pubConvexRegion3D_mrf(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion3D aConvexRegion3D);
+        bool pubAssignedPose_mrf(const int32_t aAgentId, const DistributedFormation::Common::Pose aAssignedVirtualPose);
+        bool pubAssignedPoseMap_mrf(const int32_t aAgentId, const std::unordered_map<int32_t, DistributedFormation::Common::Pose> aAssignedVirtualPoseMap);
         bool switchToGunTargetPose(const int32_t aAgentId);
 
         // Subscriber Functions
@@ -158,6 +170,7 @@ class TeamingPlanner
         void assignedVirtualPoseMapCallback(const mt_msgs::posevector::ConstPtr& aAssignedVirtualPoseMap);
 
         void gunCommandPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aPoseWithCovarianceStamped);
+        void incomingHRIModeCallback(const borealis_hri_msgs::Borealis_HRI_Output::ConstPtr& aHRImsg);
 
         // Timer Functions 
         void moduleLoopCallback(const ros::TimerEvent& event);
@@ -165,17 +178,56 @@ class TeamingPlanner
         // Get Functions
         bool getOwnAgentId(int32_t& ownAgentID);
         bool getNumberOfAgentsInTeam(int32_t& numberOfAgentsInTeam);
-        bool getPosesForFormationToTrack(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses);
-        bool getPhaseAndTimeMap(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap);
-        bool getPoseMap(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap);
-        bool getDirectionUtilityMap(std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility>& directionUtilityMap);
+
+        bool getPosesForFormationToTrack_mrf(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses);
+        bool getPhaseAndTimeMap_mrf(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap);
+        bool getPoseMap_mrf(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap);
+        bool getDirectionUtilityMap_mrf(std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility>& directionUtilityMap);
         bool getOwnAgentLidarPointCloud(sensor_msgs::PointCloud& cloud);
         bool getOwnAgentDepthCamera(sensor_msgs::PointCloud& depthCamera);
-        bool getConvexRegion2DMap(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D>& convexRegion2DMap);
-        bool getConvexRegion3DMap(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D>& convexRegion3DMap);
-        bool getAssignedVirtualPoseMap(std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedFormation::Common::Pose>>& assignedVirtualPoseMap);
-        bool getHumanSystemPose(DistributedFormation::Common::Pose& aHumanSystemPose);
-        bool getOwnUAVSystemPose(DistributedFormation::Common::Pose& aUAVSystemPose);
+        bool getConvexRegion2DMap_mrf(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D>& convexRegion2DMap);
+        bool getConvexRegion3DMap_mrf(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D>& convexRegion3DMap);
+        bool getAssignedVirtualPoseMap_mrf(std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedFormation::Common::Pose>>& assignedVirtualPoseMap);
+        bool getHumanSystemPose_mrf(DistributedFormation::Common::Pose& aHumanSystemPose);
+        bool getOwnUAVSystemPose_mrf(DistributedFormation::Common::Pose& aUAVSystemPose);
+
+        // distributed path planner
+
+    // std::function<bool(std::vector<Common::Pose>& goTherePath)> m_getGoTherePath;
+    // std::function<void()>  m_clearAgentsPoseBuffer;
+    // std::function<bool(std::unordered_map<int32_t, Common::PhaseAndTime>& phasesAndTimeRecordOfAgents)>  m_getPhasesAndTimeRecordOfAgents;
+
+    // std::function<bool(const int32_t, const Common::PhaseAndTime& ownAgentPhaseAndTime)>  m_pubOwnPhaseAndTime;
+
+    // std::function<bool(const int32_t ownAgentID, const Common::Pose& ownAgentPose)>  m_pubOwnPoseFunc;
+    // std::function<bool(Common::Pose& ownAgentPose)>  m_getOwnAgentPose;
+    // std::function<bool(std::unordered_map<int32_t, Common::Pose>& agentsPose)>  m_getAgentsPose;
+
+    // std::function<void()>m_clearAgentsPathAndWaypointProgressBuffer;
+    // std::function<bool(std::unordered_map<int32_t, Common::PathAndWaypointProgress>& agentsGoTherePathAndWaypointProgress)> m_getAgentsPathAndWaypointProgress;
+    // std::function<bool(const int32_t, const Common::PathAndWaypointProgress& goTherePathAndWaypointProgress)> m_pubOwnPathAndWaypointProgress;
+
+    // std::function<bool(sensor_msgs::PointCloud& cloud)>  m_getOwnAgentLidarPointCloud;
+    // std::function<bool(sensor_msgs::PointCloud& cloud)>  m_getOwnAgentCameraPointCloud;
+
+    // std::function<void()>  m_clearAgentsPlannedPathBuffer;
+    // std::function<bool(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsPlannedPath)> m_getAgentsPlannedPath;
+    // std::function<bool(const int32_t, const std::vector<Eigen::Vector3d>& ownPlannedPath)> m_pubOwnPlannedPath;
+
+    // std::function<void()>  m_clearAgentsProcessedPathOfAgentsBuffer;
+    // std::function<bool(std::unordered_map<int32_t, std::unordered_map<int32_t, Common::PathAndCost>>& agentsProcessedPathOfAgents)> m_getAgentsProcessedPathOfAgents;
+    // std::function<bool(const int32_t, const std::unordered_map<int32_t, Common::PathAndCost>& ownProcessedPathOfAgents)> m_pubOwnProcessedPathOfAgents;
+
+    // std::function<void()> m_clearAgentsBestProcessedPathBuffer;
+    // std::function<bool(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsBestProcessedPath)> m_getAgentsBestProcessedPath;
+    // std::function<bool(const int32_t, const std::vector<Eigen::Vector3d>& ownBestProcessedPath)> m_pubOwnBestProcessedPath;
+
+    // std::function<bool(const int32_t, const std::vector<Common::Pose>& processedGoTherePath)>  m_pubProcessedGoTherePath;
+
+        bool getGoTherePath(std::vector<DistributedGlobalPathPlanner::Common::Pose>& goTherePath);
+        bool clearAgentsPoseBuffer_cgpp();
+        bool getPhasesAndTimeRecordOfAgents(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime>& phaseAndTimeMap_gpp);
+        bool pubPhaseAndTime_mrf_cgpp(const int32_t, const DistributedGlobalPathPlanner::Common::PhaseAndTime& ownAgentPhaseAndTime);
 
         void clearPhaseAndTimeMap();
         void clearPoseMap();

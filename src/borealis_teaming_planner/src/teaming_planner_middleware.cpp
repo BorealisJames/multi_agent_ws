@@ -66,28 +66,6 @@ void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseWithCovari
     // comment this guy out
 }
 
-// void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseWithCovarianceStamped)
-// {
-//     geometry_msgs::PoseStamped tmp_pose;
-//     tmp_pose.header = PoseWithCovarianceStamped->header;
-//     tmp_pose.pose = PoseWithCovarianceStamped->pose.pose;
-
-//     Common::Entity::Pose tmp(tmp_pose);
-//     mSelfSystemPose.position.x = tmp.position.x;
-//     mSelfSystemPose.position.y = tmp.position.y;
-//     mSelfSystemPose.position.z = tmp.position.z;
-//     mSelfSystemPose.headingRad = tmp.yaw;
-
-//     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
-
-//     pubPose(mSourceSegmentId, mSelfSystemPose);
-
-//     // if (mDebugVerbose)
-//     // {
-//     //     ROS_INFO("[Teaming Planner %d]: Self System Pose Received\n", mSourceSegmentId);
-//     // } 
-// }
-
 void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& PoseStamped)
 {
     geometry_msgs::PoseStamped tmp_pose;
@@ -102,7 +80,7 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::Co
 
     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
 
-    pubPose(mSourceSegmentId, mSelfSystemPose);
+    pubPose_mrf(mSourceSegmentId, mSelfSystemPose);
 
     // if (mDebugVerbose)
     // {
@@ -124,7 +102,7 @@ void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCova
 
     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
 
-    pubPose(mSourceSegmentId, mSelfSystemPose);
+    pubPose_mrf(mSourceSegmentId, mSelfSystemPose);
 
     // if (mDebugVerbose)
     // {
@@ -164,7 +142,6 @@ void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::Con
     }
 }
 
-// This will not be needed once grid map is published in pc1
 void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::ConstPtr& aSystemPointCloud2)
 {
 
@@ -421,6 +398,28 @@ void TeamingPlanner::activatePlannerCallback(const std_msgs::Bool::ConstPtr& aBo
         }
     }
 }
+
+void TeamingPlanner::incomingHRIModeCallback(const borealis_hri_msgs::Borealis_HRI_Output::ConstPtr& aHRImsg)
+{
+
+    mHRIPoseStamped.pose.position.x = aHRImsg->uav_pose_array.poses.at(mSourceSegmentId).position.x;
+    mHRIPoseStamped.pose.position.y = aHRImsg->uav_pose_array.poses.at(mSourceSegmentId).position.y;
+    mHRIPoseStamped.pose.position.z = aHRImsg->uav_pose_array.poses.at(mSourceSegmentId).position.z;
+
+    mHRIPoseStamped.pose.orientation.x = aHRImsg->uav_pose_array.poses.at(mSourceSegmentId).orientation.x;
+    mHRIPoseStamped.pose.orientation.y = aHRImsg->uav_pose_array.poses.at(mSourceSegmentId).orientation.y;
+    mHRIPoseStamped.pose.orientation.z = aHRImsg->uav_pose_array.poses.at(mSourceSegmentId).orientation.z;
+    mHRIPoseStamped.pose.orientation.w = aHRImsg->uav_pose_array.poses.at(mSourceSegmentId).orientation.w;
+
+    mHRIMode = aHRImsg->uav_state_list[mSourceSegmentId];
+    ROS_INFO("Agent: %i, recieved pose x:%f, y:%f, z:%f", mSourceSegmentId, mHRIPoseStamped.pose.position.x, mHRIPoseStamped.pose.position.y, mHRIPoseStamped.pose.position.z);
+    ROS_INFO("Agent: %i, now at mode : %s", mSourceSegmentId, mHRIMode);
+
+    std::vector<std::string> tmp;
+    // tmp = aHRImsg->uav_state_list;
+
+}
+
 
 geometry_msgs::PoseStamped TeamingPlanner::subtractPoseStamped(geometry_msgs::PoseStamped previous, geometry_msgs::PoseStamped current)
 {
