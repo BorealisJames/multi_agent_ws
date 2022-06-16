@@ -1,34 +1,236 @@
 #include "../include/teaming_planner/teaming_planner.h"
 
-    // std::function<bool(int32_t& numberOfAgentsInTeam)> m_getNumberOfAgentsInTeam;
-    // std::function<bool(int32_t& ownAgentID)> m_getOwnAgentID;
-    // std::function<bool(std::vector<Common::Pose>& goTherePath)> m_getGoTherePath;
+bool TeamingPlanner::getGoTherePathCPH(std::vector<DistributedGlobalPathPlanner::Common::Pose>& goTherePath)
+{
+    bool status = true;
 
-    // std::function<bool(std::unordered_map<int32_t, Common::PhaseAndTime>& phasesAndTimeRecordOfAgents)>  m_getPhasesAndTimeRecordOfAgents;
-    // std::function<bool(const int32_t, const Common::PhaseAndTime& ownAgentPhaseAndTime)>  m_pubOwnPhaseAndTime;
+    if (!m_goTherePath.empty())
+    {
+        goTherePath = m_goTherePath;
+    }
+    else
+    {
+        status = false;
+        ROS_WARN("Agent%d CPH: get m_goTherePath empty!", mSourceSegmentId);
+    }
 
-    // std::function<void()>  m_clearAgentsPoseBuffer;
-    // std::function<bool(const int32_t ownAgentID, const Common::Pose& ownAgentPose)>  m_pubOwnPoseFunc;
-    // std::function<bool(Common::Pose& ownAgentPose)>  m_getOwnAgentPose;
-    // std::function<bool(std::unordered_map<int32_t, Common::Pose>& agentsPose)>  m_getAgentsPose;
+    return status;
+}
 
-    // std::function<void()>m_clearAgentsPathAndWaypointProgressBuffer;
-    // std::function<bool(std::unordered_map<int32_t, Common::PathAndWaypointProgress>& agentsGoTherePathAndWaypointProgress)> m_getAgentsPathAndWaypointProgress;
-    // std::function<bool(const int32_t, const Common::PathAndWaypointProgress& goTherePathAndWaypointProgress)> m_pubOwnPathAndWaypointProgress;
+bool TeamingPlanner::getPhasesAndTimeRecordOfAgentsCPH(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime>& phasesAndTimeRecordOfAgents)
+{
+    bool status = true;
 
-    // std::function<bool(sensor_msgs::PointCloud& cloud)>  m_getOwnAgentLidarPointCloud;
-    // std::function<bool(sensor_msgs::PointCloud& cloud)>  m_getOwnAgentCameraPointCloud;
+    if (!m_phasesAndTimeRecordOfAgents.empty())
+    {
+        phasesAndTimeRecordOfAgents = m_phasesAndTimeRecordOfAgents;
+    }
+    else
+    {
+        ROS_WARN("Agent%d CPH: get m_phasesAndTimeRecordOfAgents empty!", mSourceSegmentId);
+    }
 
-    // std::function<void()>  m_clearAgentsPlannedPathBuffer;
-    // std::function<bool(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsPlannedPath)> m_getAgentsPlannedPath;
-    // std::function<bool(const int32_t, const std::vector<Eigen::Vector3d>& ownPlannedPath)> m_pubOwnPlannedPath;
+    return status;
+}
 
-    // std::function<void()>  m_clearAgentsProcessedPathOfAgentsBuffer;
-    // std::function<bool(std::unordered_map<int32_t, std::unordered_map<int32_t, Common::PathAndCost>>& agentsProcessedPathOfAgents)> m_getAgentsProcessedPathOfAgents;
-    // std::function<bool(const int32_t, const std::unordered_map<int32_t, Common::PathAndCost>& ownProcessedPathOfAgents)> m_pubOwnProcessedPathOfAgents;
+bool getOwnAgentPoseCPH(DistributedGlobalPathPlanner::Common::Pose& ownAgentPose)
+{
+    bool status = true;
 
-    // std::function<void()> m_clearAgentsBestProcessedPathBuffer;
-    // std::function<bool(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsBestProcessedPath)> m_getAgentsBestProcessedPath;
-    // std::function<bool(const int32_t, const std::vector<Eigen::Vector3d>& ownBestProcessedPath)> m_pubOwnBestProcessedPath;
+    ownAgentPose = m_ownAgentPose;
+    
+    return true;
+}
 
-    // std::function<bool(const int32_t, const std::vector<Common::Pose>& processedGoTherePath)>  m_pubProcessedGoTherePath;
+
+bool TeamingPlanner::pubOwnPhaseAndTimeCPH(const int32_t, const DistributedGlobalPathPlanner::Common::PhaseAndTime& ownAgentPhaseAndTime)
+{
+    bool status = true;
+
+    if (status)
+    {
+
+    }
+
+    return status;
+}
+
+bool TeamingPlanner::pubOwnPoseFuncCPH(const int32_t ownAgentID, const DistributedGlobalPathPlanner::Common::Pose& ownAgentPose)
+{
+    bool status = true;
+
+    if (status)
+    {
+
+    }
+
+    return status;
+}
+
+bool TeamingPlanner::getOtherAgentsPoseCPH(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose>& agentsPose)
+{
+    bool status = true;
+
+    if (status)
+    {
+
+    }
+
+    return status;
+}
+
+
+bool TeamingPlanner::getAgentsPathAndWaypointProgressCPH(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndWaypointProgress>& agentsGoTherePathAndWaypointProgress)
+{
+    bool status = true;
+
+    if (!m_agentsPathAndWaypointProgress.empty())
+    {
+        agentsGoTherePathAndWaypointProgress = m_agentsPathAndWaypointProgress;
+    }
+    else
+    {
+        status = false;
+        ROS_WARN("Agent%d CPH: get m_agentsPathAndWaypointProgress empty!", mSourceSegmentId);
+    }
+
+    return status;
+}
+
+
+bool TeamingPlanner::pubOwnPathAndWaypointProgressCPH(const int32_t, const DistributedGlobalPathPlanner::Common::PathAndWaypointProgress& goTherePathAndWaypointProgress)
+{
+    bool status = true;
+
+    if (status)
+    {
+
+    }
+
+    return status;
+}
+
+
+bool TeamingPlanner::getAgentsPlannedPathCPH(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsPlannedPath)
+{
+    bool status = true;
+
+    if (!m_AgentsPlannedPath.empty())
+    {
+        agentsPlannedPath = m_AgentsPlannedPath;
+    }
+    else
+    {
+        status = false;
+        ROS_WARN("Agent%d CPH: get m_AgentsPlannedPath empty!", mSourceSegmentId);
+    }
+    return status;
+}
+
+
+bool TeamingPlanner::pubOwnPlannedPathCPH(const int32_t, const std::vector<Eigen::Vector3d>& ownPlannedPath)
+{
+    bool status = true;
+
+    if (status)
+    {
+
+    }
+
+    return status;
+}
+
+
+bool TeamingPlanner::getAgentsProcessedPathOfAgentsCPH(std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost>>& agentsProcessedPathOfAgents)
+{
+    bool status = true;
+
+    if (!m_AgentsProcessedPathOfAgents.empty())
+    {
+        agentsProcessedPathOfAgents = m_AgentsProcessedPathOfAgents;
+    }
+    else
+    {
+        status = false;
+        ROS_WARN("Agent%d CPH: get m_AgentsProcessedPathOfAgents empty!", mSourceSegmentId);
+    }
+
+    return status;
+}
+
+
+bool TeamingPlanner::pubOwnProcessedPathOfAgentsCPH(const int32_t, const std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost>& ownProcessedPathOfAgents)
+{
+    bool status = true;
+
+    if (status)
+    {
+
+    }
+
+    return status;
+}
+
+
+bool TeamingPlanner::getAgentsBestProcessedPathCPH(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsBestProcessedPath)
+{
+    bool status = true;
+
+    if (!m_AgentsBestProcessedPath.empty())
+    {
+        agentsBestProcessedPath = m_AgentsBestProcessedPath;
+    }
+    else
+    {
+        status = false;
+        ROS_WARN("Agent%d CPH: get m_AgentsBestProcessedPath empty!", mSourceSegmentId);
+    }
+
+    return status;
+}
+
+
+bool TeamingPlanner::pubOwnBestProcessedPathCPH(const int32_t, const std::vector<Eigen::Vector3d>& ownBestProcessedPath)
+{
+    bool status = true;
+
+    if (status)
+    {
+
+    }
+
+    return status;
+}
+
+bool TeamingPlanner::pubProcessedGoTherePathCPH(const int32_t, const std::vector<DistributedGlobalPathPlanner::Common::Pose>& processedGoTherePath)
+{
+    bool status = true;
+
+    if (status)
+    {
+
+    }
+
+    return status;
+}
+
+
+void TeamingPlanner::clearAgentsPoseBufferCPH()
+{
+    m_agentsPose.clear();
+}
+
+void TeamingPlanner::clearAgentsProcessedPathOfAgentsBufferCPH()
+{
+    m_AgentsProcessedPathOfAgents.clear();
+}
+
+void TeamingPlanner::clearAgentsPlannedPathBufferCPH()
+{
+    m_AgentsPlannedPath.clear();
+}
+
+void TeamingPlanner::clearAgentsPathAndWaypointProgressBufferCPH()
+{
+    m_agentsPathAndWaypointProgress.clear();
+}

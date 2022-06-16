@@ -88,18 +88,18 @@ void TeamingPlanner::teamingPlannerMain()
                 }
             }
 
-            //     case Common::Entity::MTTaskEnum::GO_THERE:
-            //     {
-            //         ROS_INFO("Go there!");
-            //         switchToGunTargetPose(mSourceSegmentId);
-            //         if (!mModuleTaskVerbose)
-            //         {
-            //             //ROS_INFO("Go There\n");
-            //             mModuleTaskVerbose = true;
-            //         }
-            //         break;
+                // case Common::Entity::MTTaskEnum::GO_THERE:
+                // {
+                //     ROS_INFO("Go there!");
+                //     switchToGunTargetPose(mSourceSegmentId);
+                //     if (!mModuleTaskVerbose)
+                //     {
+                //         //ROS_INFO("Go There\n");
+                //         mModuleTaskVerbose = true;
+                //     }
+                //     break;
 
-            //     }
+                // }
             // }
             break;
         case TeamingPlannerConstants::ModuleState::DEACTIVATED:

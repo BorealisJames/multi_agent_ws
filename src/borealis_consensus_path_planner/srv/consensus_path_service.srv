@@ -1,0 +1,3 @@
+geometry_msgs/PoseStamped inputPose
+---
+geometry_msgs/PoseStamped[] outputPoseStamped

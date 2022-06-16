@@ -12,7 +12,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAgentsAssignedVirtualPoseMap(),
         mPoseTransformListener(),
         mPointCloudTransformListener(),
-        mTask(),
+        // mTask(),
         mHistoryOfHumanPoses(),
         mHistoryOfHumanPosesReceived(false),
         mModuleStateVerbose(false),
@@ -49,7 +49,8 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mGoalSubscriber = mNh.subscribe<mt_msgs::pose>("/goal", 10, &TeamingPlanner::goalCallback, this);
         mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/human_input_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
         // mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallback, this);
-
+        mUAVmodeSubscriber = mNh.subscribe<std_msgs::String> ("/hri_mode", 10, &TeamingPlanner::UAVModeCallback, this);
+        
         if (useUWB)
         {
             mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallbackUWB, this);
@@ -62,7 +63,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         // Changed to point cloud 
         mSystemPointCloud2Subscriber = mNh.subscribe<sensor_msgs::PointCloud2>("/pointcloud", 10, &TeamingPlanner::systemPointCloud2Callback, this);
         // mSystemPointCloudSubscriber = mNh.subscribe<sensor_msgs::PointCloud>("/pointcloud", 10, &TeamingPlanner::systemPointCloudCallback, this);
-        mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::taskCallback, this);
+        // mTaskSubscriber = mNh.subscribe<mt_msgs::mtTask>("/task", 10, &TeamingPlanner::taskCallback, this);
         mActivatePlannerSubscriber = mNh.subscribe<std_msgs::Bool>("/activate_planner", 10, &TeamingPlanner::activatePlannerCallback, this);
 
         for (int i = 1; i <= mNumOfAgents; i++)

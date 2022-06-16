@@ -13,16 +13,16 @@ void TeamingPlanner::goalCallback(const mt_msgs::pose::ConstPtr& aGoal)
     //ROS_INFO("[Teaming Planner %d]: Goal Message Received\n", mSourceSegmentId);
 }
 
-void TeamingPlanner::taskCallback(const mt_msgs::mtTask::ConstPtr& aTask)
-{
-    mTask = *aTask;
+// void TeamingPlanner::taskCallback(const mt_msgs::mtTask::ConstPtr& aTask)
+// {
+//     mTask = *aTask;
     
-    mModuleState = TeamingPlannerConstants::ModuleState::RUNNING;
-    mModuleStateVerbose = false;
-    mModuleTaskVerbose = false;
+//     mModuleState = TeamingPlannerConstants::ModuleState::RUNNING;
+//     mModuleStateVerbose = false;
+//     mModuleTaskVerbose = false;
 
-    //ROS_INFO("[Teaming Planner %d]: Task Message Received\n", mSourceSegmentId);
-}
+//     //ROS_INFO("[Teaming Planner %d]: Task Message Received\n", mSourceSegmentId);
+// }
 
 // human array systempose callback input-> pose array stamped vector, convert to std::vector<DistributedFormation::Common::Pose> and assign it to mHistoryOfHumanPoses; 
 // mHistoryOfHumanPoses
@@ -422,67 +422,19 @@ void TeamingPlanner::activatePlannerCallback(const std_msgs::Bool::ConstPtr& aBo
     }
 }
 
-geometry_msgs::PoseStamped TeamingPlanner::subtractPoseStamped(geometry_msgs::PoseStamped previous, geometry_msgs::PoseStamped current)
+void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
 {
-    geometry_msgs::PoseStamped vector_diff;
-    tf2::Quaternion q1_inv;
-    tf2::Quaternion q2;
-    tf2::Quaternion qr;
-
-
-    vector_diff.pose.position.x = current.pose.position.x - previous.pose.position.x;
-    vector_diff.pose.position.y = current.pose.position.y - previous.pose.position.y;
-    vector_diff.pose.position.z = current.pose.position.z - previous.pose.position.z;
-
-    q1_inv.setX(previous.pose.orientation.x);
-    q1_inv.setY(previous.pose.orientation.y);
-    q1_inv.setZ(previous.pose.orientation.z);
-    q1_inv.setW(-previous.pose.orientation.w); // Negative to invert it
-
-    q2.setX(current.pose.orientation.x);
-    q2.setY(current.pose.orientation.y);
-    q2.setZ(current.pose.orientation.z);
-    q2.setW(current.pose.orientation.w); // Negative to invert it
-
-    qr = q2 * q1_inv;
-
-    vector_diff.pose.orientation.x = qr.getX();
-    vector_diff.pose.orientation.y = qr.getY();
-    vector_diff.pose.orientation.z = qr.getZ();
-    vector_diff.pose.orientation.w = qr.getW();
-
-    return vector_diff;
+    mUAVMode = aUAVmode->data;
+    std::string str1 ("Follow_Me");
+    std::string str2 ("Go_There");
+    
+    if (str1.compare(aUAVmode->data.c_str()) == 0) // They compare equal
+    {
+        mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
+    }
+    if (str2.compare(aUAVmode->data.c_str()) == 0)
+    {
+        mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
+    }
+    ROS_INFO("Agent %i now in this mode %s", mSourceSegmentId, mUAVMode);
 }
-
-geometry_msgs::PoseStamped TeamingPlanner::addPoseStamped(geometry_msgs::PoseStamped vector_pose, geometry_msgs::PoseStamped current)
-{
-
-    geometry_msgs::PoseStamped new_pose_stamped;
-    tf2::Quaternion q1_rot;
-    tf2::Quaternion q2_origin;
-    tf2::Quaternion q_new;
-
-    new_pose_stamped.pose.position.x = vector_pose.pose.position.x + current.pose.position.x;
-    new_pose_stamped.pose.position.y = vector_pose.pose.position.y + current.pose.position.y;
-    new_pose_stamped.pose.position.z = vector_pose.pose.position.z + current.pose.position.z;
-
-    q2_origin.setX(current.pose.orientation.x);
-    q2_origin.setY(current.pose.orientation.y);
-    q2_origin.setZ(current.pose.orientation.z);
-    q2_origin.setW(current.pose.orientation.w);
-
-    q1_rot.setX(vector_pose.pose.orientation.x);
-    q1_rot.setY(vector_pose.pose.orientation.y);
-    q1_rot.setZ(vector_pose.pose.orientation.z);
-    q1_rot.setW(vector_pose.pose.orientation.w);
-
-    q_new = q1_rot * q2_origin;
-
-    new_pose_stamped.pose.orientation.x = q_new.getX();
-    new_pose_stamped.pose.orientation.y = q_new.getY();
-    new_pose_stamped.pose.orientation.z = q_new.getZ();
-    new_pose_stamped.pose.orientation.w = q_new.getW();
-
-    return new_pose_stamped;
-}
-
