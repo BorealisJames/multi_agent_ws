@@ -83,7 +83,8 @@ add_library(${PROJECT_NAME}
         src/teaming_planner_middleware.cpp
         src/formation_bind_funcs.cpp
         src/common_bind_funcs.cpp
-
+        
+        ${JPS}
         ../distributed_global_path_planner/src/DistributedGlobalPathPlanner.h
         ../distributed_global_path_planner/src/DistributedGlobalPathPlanner.cpp
         ../distributed_global_path_planner/src/DistributedGlobalPathPlannerHandler.h
