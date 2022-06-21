@@ -1,5 +1,0 @@
-lidar_frame: "iris_$(arg ID)/os_sensor"  # lidar_frame: "uav_0/ousterlidar_link"
-body_frame: "base_link"
-local_frame: "odom"
-
-camera_frame: "camera"

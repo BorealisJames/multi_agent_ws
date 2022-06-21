@@ -1,3 +1,3 @@
 - redefinition of certain function template in decomp ros and jp3d causing catkin build to fail
-- clearPoseMapRFH is binded twice
-- in teaming_planner.h and middleware clearPhaseAndTimeMapRFH() is not binded and unused
+- clearPoseMap_rf is binded twice
+- in teaming_planner.h and middleware clearPhaseAndTimeMap_rf() is not binded and unused

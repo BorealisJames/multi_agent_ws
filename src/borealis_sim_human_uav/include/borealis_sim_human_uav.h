@@ -39,7 +39,7 @@ class BorealisFollowMe
         BorealisMode mMode = BorealisMode::UAVSimulationFollow;
 
         // Variables
-        Common::Entity::Pose mHumanSystemPose; 
+        Common::Entity::Pose mHumanSystemPose_rf; 
         Common::Entity::Pose mHumanLocalPose;
         mavros_msgs::SetMode mOffboardSetMode;
         mavros_msgs::CommandBool mArmCommand;

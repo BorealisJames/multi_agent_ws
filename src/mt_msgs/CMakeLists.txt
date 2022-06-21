@@ -62,6 +62,9 @@ add_message_files(
   phaseAndTime.msg
   position.msg
   posevector.msg
+  pathAndProgress.msg
+  pathAndCost.msg
+  pathAndCostVector.msg
 )
 
 ## Generate services in the 'srv' folder

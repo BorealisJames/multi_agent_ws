@@ -2,7 +2,7 @@
 
 // Functions decleration for the formation handler pointers
 
-bool TeamingPlanner::pubPhaseAndTimeRFH(const int32_t aAgentId, const DistributedFormation::Common::PhaseAndTime aPhaseAndTime)
+bool TeamingPlanner::pubPhaseAndTime_rf(const int32_t aAgentId, const DistributedFormation::Common::PhaseAndTime aPhaseAndTime)
 {
     bool status = true;
 
@@ -15,7 +15,7 @@ bool TeamingPlanner::pubPhaseAndTimeRFH(const int32_t aAgentId, const Distribute
         tmp.phase = static_cast<uint8_t>(aPhaseAndTime.phase);
         tmp.time = aPhaseAndTime.timeMicroSecs;
 
-        mPhaseAndTimePublisher.publish(tmp);
+        mPhaseAndTimePublisher_rf.publish(tmp);
     }
     else 
     {
@@ -24,8 +24,7 @@ bool TeamingPlanner::pubPhaseAndTimeRFH(const int32_t aAgentId, const Distribute
     return status;
 }
 
-
-bool TeamingPlanner::pubPoseRFH(const int32_t aAgentId, const DistributedFormation::Common::Pose aPose)
+bool TeamingPlanner::pubPose_rf(const int32_t aAgentId, const DistributedFormation::Common::Pose aPose)
 {
     bool status = true;
 
@@ -40,7 +39,7 @@ bool TeamingPlanner::pubPoseRFH(const int32_t aAgentId, const DistributedFormati
         tmp.position.z = aPose.position.z;
         tmp.headingRad = aPose.headingRad;
 
-        mPosePublisher.publish(tmp);
+        mPosePublisher_rf.publish(tmp);
     }
     else
     {
@@ -49,7 +48,7 @@ bool TeamingPlanner::pubPoseRFH(const int32_t aAgentId, const DistributedFormati
     return status;
 }
 
-bool TeamingPlanner::pubDirectionUtilityRFH(const int32_t aAgentId, const DistributedFormation::Common::DirectionUtility aDirectionUtility)
+bool TeamingPlanner::pubDirectionUtility_rf(const int32_t aAgentId, const DistributedFormation::Common::DirectionUtility aDirectionUtility)
 {
     bool status = true;
     
@@ -61,7 +60,7 @@ bool TeamingPlanner::pubDirectionUtilityRFH(const int32_t aAgentId, const Distri
         tmp.sourceSegmentId = mSourceSegmentId;
         tmp.angleIndexAndUtility = aDirectionUtility.angleIndexAndUtility;
 
-        mDirectionUtilityPublisher.publish(tmp);
+        mDirectionUtilityPublisher_rf.publish(tmp);
     }
     else
     {
@@ -70,7 +69,7 @@ bool TeamingPlanner::pubDirectionUtilityRFH(const int32_t aAgentId, const Distri
     return status;
 }
 
-bool TeamingPlanner::pubConvexRegion2DRFH(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion2D aConvexRegion2D)
+bool TeamingPlanner::pubConvexRegion2D_rf(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion2D aConvexRegion2D)
 {
     bool status = true;
     
@@ -89,34 +88,34 @@ bool TeamingPlanner::pubConvexRegion2DRFH(const int32_t aAgentId, const Distribu
         std::vector<double> matrixB(aConvexRegion2D.b.data(), aConvexRegion2D.b.data() + aConvexRegion2D.b.size());
         tmp.matrixB = matrixB;
         
-        mConvexRegion2DPublisher.publish(tmp);
+        mConvexRegion2DPublisher_rf.publish(tmp);
 
         if (mDebugVerbose)
         {
-            ROS_INFO("pubConvexRegion2DRFH Vector A column 1 Values: ");
+            ROS_INFO("pubConvexRegion2D_rf Vector A column 1 Values: ");
             for (auto value : matrixACol1)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion2DRFH Vector A column 2 Values: ");
+            ROS_INFO("pubConvexRegion2D_rf Vector A column 2 Values: ");
             for (auto value : matrixACol2)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion2DRFH Matrix A Values: ");
+            ROS_INFO("pubConvexRegion2D_rf Matrix A Values: ");
 
-            ROS_INFO("pubConvexRegion2DRFH Vector B Values: ");
+            ROS_INFO("pubConvexRegion2D_rf Vector B Values: ");
             for (auto value : matrixB)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion2DRFH Matrix B Values: ");
+            ROS_INFO("pubConvexRegion2D_rf Matrix B Values: ");
         }
     }
     else
@@ -126,7 +125,7 @@ bool TeamingPlanner::pubConvexRegion2DRFH(const int32_t aAgentId, const Distribu
     return status;
 }
 
-bool TeamingPlanner::pubConvexRegion3DRFH(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion3D aConvexRegion3D)
+bool TeamingPlanner::pubConvexRegion3D_rf(const int32_t aAgentId, const DistributedFormation::Common::ConvexRegion3D aConvexRegion3D)
 {
     bool status = true;
     
@@ -148,32 +147,32 @@ bool TeamingPlanner::pubConvexRegion3DRFH(const int32_t aAgentId, const Distribu
         std::vector<double> matrixB(aConvexRegion3D.b.data(), aConvexRegion3D.b.data() + aConvexRegion3D.b.size());
         tmp.matrixB = matrixB;
         
-        mConvexRegion3DPublisher.publish(tmp);
+        mConvexRegion3DPublisher_rf.publish(tmp);
 
         if (mDebugVerbose)
         {
-            ROS_INFO("pubConvexRegion3DRFH Vector A column 1 Values: ");
+            ROS_INFO("pubConvexRegion3D_rf Vector A column 1 Values: ");
             for (auto value : matrixACol1)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion3DRFH Vector A column 2 Values: ");
+            ROS_INFO("pubConvexRegion3D_rf Vector A column 2 Values: ");
             for (auto value : matrixACol2)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion3DRFH Vector A column 3 Values: ");
+            ROS_INFO("pubConvexRegion3D_rf Vector A column 3 Values: ");
             for (auto value : matrixACol3)
             {
                 ROS_INFO("%d ", value);
             }
             ROS_INFO("\n");
 
-            ROS_INFO("pubConvexRegion3DRFH Vector B Values: ");
+            ROS_INFO("pubConvexRegion3D_rf Vector B Values: ");
             for (auto value : matrixB)
             {
                 ROS_INFO("%d ", value);
@@ -189,7 +188,7 @@ bool TeamingPlanner::pubConvexRegion3DRFH(const int32_t aAgentId, const Distribu
 }
 
 // Published Assigned Pose of the Agent into the /t265_pose_frame
-bool TeamingPlanner::pubAssignedPoseRFH(const int32_t aAgentId, const DistributedFormation::Common::Pose aAssignedVirtualPose)
+bool TeamingPlanner::pubAssignedPose_rf(const int32_t aAgentId, const DistributedFormation::Common::Pose aAssignedVirtualPose)
 {
     bool status = true;
 
@@ -216,7 +215,7 @@ bool TeamingPlanner::pubAssignedPoseRFH(const int32_t aAgentId, const Distribute
         ros::Time tm;
         std::string err_string;
 
-        mAssignedVirtualPosePublisher.publish(tmp);
+        mAssignedVirtualPosePublisher_rf.publish(tmp);
     }
 
     else
@@ -226,7 +225,7 @@ bool TeamingPlanner::pubAssignedPoseRFH(const int32_t aAgentId, const Distribute
     return status;
 }
 
-bool TeamingPlanner::pubAssignedPoseMapRFH(const int32_t aAgentId, const std::unordered_map<int32_t, DistributedFormation::Common::Pose> aAssignedPoseMap)
+bool TeamingPlanner::pubAssignedPoseMap_rf(const int32_t aAgentId, const std::unordered_map<int32_t, DistributedFormation::Common::Pose> aAssignedPoseMap)
 {
     bool status = true;
 
@@ -256,7 +255,7 @@ bool TeamingPlanner::pubAssignedPoseMapRFH(const int32_t aAgentId, const std::un
 
         if (!tmpPoseVector.poseVector.empty())
         {
-            mAssignedVirtualPoseMapPublisher.publish(tmpPoseVector);
+            mAssignedVirtualPoseMapPublisher_rf.publish(tmpPoseVector);
             status = status && true;
         }
         else
@@ -273,31 +272,49 @@ bool TeamingPlanner::pubAssignedPoseMapRFH(const int32_t aAgentId, const std::un
     return status;
 }
 
-bool TeamingPlanner::getPosesForFormationToTrackRFH(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses)
+bool TeamingPlanner::getPosesForFormationToTrack_rf(std::vector<DistributedFormation::Common::Pose>& posesForFormationToTrack)
 {
     bool status(false);
 
-    if (!mHistoryOfHumanPoses.empty())
+    if (mTask.type == Common::Entity::MTTaskEnum::FOLLOW_ME )
     {
-        historyOfHumanPoses = mHistoryOfHumanPoses;
-        status = true;
-        mHistoryOfHumanPosesReceived = false;
+        if (!mHistoryOfHumanPoses_rf.empty())
+        {
+            posesForFormationToTrack = mHistoryOfHumanPoses_rf;
+            status = true;
+            mHistoryOfHumanPosesReceived = false;
+        }
+        else
+        {
+            status = false;
+        }
     }
-    else
+    
+    if (mTask.type == Common::Entity::MTTaskEnum::GO_THERE)
     {
-        status = false;
+        if (!posesForFormationToTrack.empty())
+        {
+            // posesForFormationToTrack = ;
+            posesForFormationToTrack = mPlannedPathPoses_rf;
+            status = true;
+        }
+        else
+        {
+            status = false;
+            ROS_ERROR("[Teaming Planner %d]: Agent ID No go there poses for formation to track! \n", mSourceSegmentId);
+        }
     }
 
     return status;
 }
 
-bool TeamingPlanner::getPhaseAndTimeMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap)
+bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap)
 {
     bool status = true;
 
-    if (!mAgentsPhaseAndTimeMap.empty())
+    if (!mAgentsPhaseAndTimeMap_rf.empty())
     {
-        phaseAndTimeMap = mAgentsPhaseAndTimeMap;
+        phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
     }
     else
     {
@@ -309,13 +326,13 @@ bool TeamingPlanner::getPhaseAndTimeMapRFH(std::unordered_map<int32_t, Distribut
     return status;
 }
 
-bool TeamingPlanner::getPoseMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap)
+bool TeamingPlanner::getPoseMap_rf(std::unordered_map<int32_t, DistributedFormation::Common::Pose>& poseMap)
 {
     bool status = true;
 
-    if (!mAgentsPoseMap.empty())
+    if (!mAgentsPoseMap_rf.empty())
     {
-        poseMap = mAgentsPoseMap;
+        poseMap = mAgentsPoseMap_rf;
     }
     else
     {
@@ -327,13 +344,13 @@ bool TeamingPlanner::getPoseMapRFH(std::unordered_map<int32_t, DistributedFormat
     return status;
 }
 
-bool TeamingPlanner::getDirectionUtilityMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility>& directionUtilityMap)
+bool TeamingPlanner::getDirectionUtilityMap_rf(std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility>& directionUtilityMap)
 {
     bool status = true;
 
-    if (!mAgentsDirectionUtilityMap.empty())
+    if (!mAgentsDirectionUtilityMap_rf.empty())
     {
-        directionUtilityMap = mAgentsDirectionUtilityMap;
+        directionUtilityMap = mAgentsDirectionUtilityMap_rf;
     }
     else
     {
@@ -345,13 +362,13 @@ bool TeamingPlanner::getDirectionUtilityMapRFH(std::unordered_map<int32_t, Distr
     return status;
 }
 
-bool TeamingPlanner::getConvexRegion2DMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D>& convexRegion2DMap)
+bool TeamingPlanner::getConvexRegion2DMap_rf(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D>& convexRegion2DMap)
 {
     bool status = true;
 
-    if (!mAgentsConvexRegion2DMap.empty())
+    if (!mAgentsConvexRegion2DMap_rf.empty())
     {
-        convexRegion2DMap = mAgentsConvexRegion2DMap;
+        convexRegion2DMap = mAgentsConvexRegion2DMap_rf;
     }
     else
     {
@@ -363,13 +380,13 @@ bool TeamingPlanner::getConvexRegion2DMapRFH(std::unordered_map<int32_t, Distrib
     return status;
 }
 
-bool TeamingPlanner::getConvexRegion3DMapRFH(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D>& convexRegion3DMap)
+bool TeamingPlanner::getConvexRegion3DMap_rf(std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D>& convexRegion3DMap)
 {
     bool status = true;
 
-    if (!mAgentsConvexRegion3DMap.empty())
+    if (!mAgentsConvexRegion3DMap_rf.empty())
     {
-        convexRegion3DMap = mAgentsConvexRegion3DMap;
+        convexRegion3DMap = mAgentsConvexRegion3DMap_rf;
     }
     else
     {
@@ -381,13 +398,13 @@ bool TeamingPlanner::getConvexRegion3DMapRFH(std::unordered_map<int32_t, Distrib
     return status;
 }
 
-bool TeamingPlanner::getAssignedVirtualPoseMapRFH(std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedFormation::Common::Pose>>& assignedVirtualPoseMap)
+bool TeamingPlanner::getAssignedVirtualPoseMap_rf(std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedFormation::Common::Pose>>& assignedVirtualPoseMap)
 {
     bool status = true;
 
-    if (!mAgentsAssignedVirtualPoseMap.empty())
+    if (!mAgentsAssignedVirtualPoseMap_rf.empty())
     {
-        assignedVirtualPoseMap = mAgentsAssignedVirtualPoseMap;
+        assignedVirtualPoseMap = mAgentsAssignedVirtualPoseMap_rf;
     }
     else
     {
@@ -399,33 +416,33 @@ bool TeamingPlanner::getAssignedVirtualPoseMapRFH(std::unordered_map<int32_t, st
     return status;
 }
 
-bool TeamingPlanner::getHumanSystemPoseRFH(DistributedFormation::Common::Pose& aHumanSystemPose)
+bool TeamingPlanner::getHumanSystemPose_rf(DistributedFormation::Common::Pose& aHumanSystemPose)
 {
     bool status = true;
 
     if (status)
     {
-        aHumanSystemPose = mHumanSystemPose;
+        aHumanSystemPose = mHumanSystemPose_rf;
     }
 
     return status;
 }
 
-bool TeamingPlanner::getOwnUAVSystemPoseRFH(DistributedFormation::Common::Pose& aUAVSystemPose)
+bool TeamingPlanner::getOwnUAVSystemPose_rf(DistributedFormation::Common::Pose& aUAVSystemPose)
 {
     bool status = true;
 
     if (status)
     {
-        aUAVSystemPose = mSelfSystemPose;
+        aUAVSystemPose = mSelfSystemPose_rf;
     }
 
     return status;
 }
 
-void TeamingPlanner::clearPhaseAndTimeMapRFH()
+void TeamingPlanner::clearPhaseAndTimeMap_rf()
 {
-    mAgentsPhaseAndTimeMap.clear();
+    mAgentsPhaseAndTimeMap_rf.clear();
 
     if(mDebugVerbose)
     {
@@ -433,9 +450,9 @@ void TeamingPlanner::clearPhaseAndTimeMapRFH()
     }
 }
 
-void TeamingPlanner::clearPoseMapRFH()
+void TeamingPlanner::clearPoseMap_rf()
 {
-    mAgentsPoseMap.clear();
+    mAgentsPoseMap_rf.clear();
 
     if(mDebugVerbose)
     {
@@ -443,9 +460,9 @@ void TeamingPlanner::clearPoseMapRFH()
     }
 }
 
-void TeamingPlanner::clearDirectionUtilityMapRFH()
+void TeamingPlanner::clearDirectionUtilityMap_rf()
 {
-    mAgentsDirectionUtilityMap.clear();
+    mAgentsDirectionUtilityMap_rf.clear();
 
     if(mDebugVerbose)
     {
@@ -453,9 +470,9 @@ void TeamingPlanner::clearDirectionUtilityMapRFH()
     }
 }
 
-void TeamingPlanner::clearConvexRegion2DMapRFH()
+void TeamingPlanner::clearConvexRegion2DMap_rf()
 {
-    mAgentsConvexRegion2DMap.clear();
+    mAgentsConvexRegion2DMap_rf.clear();
 
     if(mDebugVerbose)
     {
@@ -463,9 +480,9 @@ void TeamingPlanner::clearConvexRegion2DMapRFH()
     }
 }
 
-void TeamingPlanner::clearConvexRegion3DMapRFH()
+void TeamingPlanner::clearConvexRegion3DMap_rf()
 {
-    mAgentsConvexRegion3DMap.clear();
+    mAgentsConvexRegion3DMap_rf.clear();
 
     if(mDebugVerbose)
     {
@@ -473,9 +490,9 @@ void TeamingPlanner::clearConvexRegion3DMapRFH()
     }
 }
 
-void TeamingPlanner::clearAssignedVirtualPoseMapRFH()
+void TeamingPlanner::clearAssignedVirtualPoseMap_rf()
 {
-    mAgentsAssignedVirtualPoseMap.clear();
+    mAgentsAssignedVirtualPoseMap_rf.clear();
 
     if(mDebugVerbose)
     {

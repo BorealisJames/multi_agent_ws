@@ -6,3 +6,26 @@
 /uav2/borealis_teaming_planner/debugVerbose: false
 /uav2/borealis_teaming_planner/desiredHeight: 1.2
 /uav2/borealis_teaming_planner/useUWB: false
+
+# pi /2 1.57079632679 
+# pi /4 0.785398163397
+/uav2/borealis_teaming_planner/expiryDurationMicroSec: 15*1000000
+/uav2/borealis_teaming_planner/numberOfAzimuthDiscreteAnglesOnASide: 0
+/uav2/borealis_teaming_planner/resolutionAzimuthAngleRad: 0.0
+/uav2/borealis_teaming_planner/numberOfElevationDiscreteAnglesOnASide: 0
+/uav2/borealis_teaming_planner/resolutionElevationAngleRad: 0.0
+/uav2/borealis_teaming_planner/distanceToFollowBehind: 0.0
+/uav2/borealis_teaming_planner/localBoundingBoxForPathAlongX: 3.0
+/uav2/borealis_teaming_planner/localBoundingBoxForPathAlongY: 3.0
+/uav2/borealis_teaming_planner/localBoundingBoxForPathAlongZ: 2.0
+/uav2/borealis_teaming_planner/pointRemovalRadius: 0.45
+/uav2/borealis_teaming_planner/desiredDistanceInTriFormation: 2.5
+/uav2/borealis_teaming_planner/desiredDistanceInLineFormation: 2.5
+/uav2/borealis_teaming_planner/incrementOffsetToFormationYaw: 0.785398163397
+/uav2/borealis_teaming_planner/agentRadius: 0.60
+/uav2/borealis_teaming_planner/waypointReachedBoundary: 1.5
+/uav2/borealis_teaming_planner/weightForGoal: 0.3
+/uav2/borealis_teaming_planner/weightForRotation: 0.4
+/uav2/borealis_teaming_planner/weightForSize: 0.4
+/uav2/borealis_teaming_planner/desiredHeight: 2.0
+/uav2/borealis_teaming_planner/priorityPenalty: 1.0

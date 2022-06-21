@@ -4,89 +4,12 @@
 void TeamingPlanner::goalCallback(const mt_msgs::pose::ConstPtr& aGoal)
 {
     DistributedFormation::Common::Pose pose;
-
     pose.position.x = aGoal->position.x;
     pose.position.y = aGoal->position.y;
     pose.position.z = aGoal->position.z;
     pose.headingRad = aGoal->headingRad;
-
     //ROS_INFO("[Teaming Planner %d]: Goal Message Received\n", mSourceSegmentId);
 }
-
-// void TeamingPlanner::taskCallback(const mt_msgs::mtTask::ConstPtr& aTask)
-// {
-//     mTask = *aTask;
-    
-//     mModuleState = TeamingPlannerConstants::ModuleState::RUNNING;
-//     mModuleStateVerbose = false;
-//     mModuleTaskVerbose = false;
-
-//     //ROS_INFO("[Teaming Planner %d]: Task Message Received\n", mSourceSegmentId);
-// }
-
-// human array systempose callback input-> pose array stamped vector, convert to std::vector<DistributedFormation::Common::Pose> and assign it to mHistoryOfHumanPoses; 
-// mHistoryOfHumanPoses
-void TeamingPlanner::humanSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aHumanSystemPose)
-{
-    geometry_msgs::PoseStamped tmp_pose; 
-    tmp_pose.header =  aHumanSystemPose->header;
-    tmp_pose.pose =  aHumanSystemPose->pose.pose;
-
-    Common::Entity::Pose tmp(tmp_pose);
-    mHumanSystemPose.position.x = tmp.position.x;
-    mHumanSystemPose.position.y = tmp.position.y;
-    mHumanSystemPose.position.z = tmp.position.z;
-    mHumanSystemPose.headingRad = tmp.yaw;
-
-    // comment this guy out
-    while(mHistoryOfHumanPoses.size() > (mPlanningHorizon/mIntervalDistance) - 1)
-    {
-        mHistoryOfHumanPoses.erase(mHistoryOfHumanPoses.begin());    
-    }
-
-    DistributedFormation::Common::Pose tPose;
-    tPose.position.x = tmp.position.x;
-    tPose.position.y = tmp.position.y;
-    tPose.position.z = tmp.position.z;
-    tPose.headingRad = tmp.yaw;
-
-    if (checkAndAddHumanSystemPose(mHistoryOfHumanPoses, tPose))
-    {
-        mHistoryOfHumanPosesReceived = true;
-    }
-    else
-    {
-        // do nothing.
-    }
-
-    if (mDebugVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: Human System Pose Received\n", mSourceSegmentId);
-    }
-    // comment this guy out
-}
-
-// void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseWithCovarianceStamped)
-// {
-//     geometry_msgs::PoseStamped tmp_pose;
-//     tmp_pose.header = PoseWithCovarianceStamped->header;
-//     tmp_pose.pose = PoseWithCovarianceStamped->pose.pose;
-
-//     Common::Entity::Pose tmp(tmp_pose);
-//     mSelfSystemPose.position.x = tmp.position.x;
-//     mSelfSystemPose.position.y = tmp.position.y;
-//     mSelfSystemPose.position.z = tmp.position.z;
-//     mSelfSystemPose.headingRad = tmp.yaw;
-
-//     mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
-
-//     pubPoseRFH(mSourceSegmentId, mSelfSystemPose);
-
-//     // if (mDebugVerbose)
-//     // {
-//     //     ROS_INFO("[Teaming Planner %d]: Self System Pose Received\n", mSourceSegmentId);
-//     // } 
-// }
 
 void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& PoseStamped)
 {
@@ -95,19 +18,21 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::Co
     tmp_pose.pose = PoseStamped->pose;
 
     Common::Entity::Pose tmp(tmp_pose);
-    mSelfSystemPose.position.x = tmp.position.x;
-    mSelfSystemPose.position.y = tmp.position.y;
-    mSelfSystemPose.position.z = tmp.position.z;
-    mSelfSystemPose.headingRad = tmp.yaw;
+    mSelfSystemPose_rf.position.x = tmp.position.x;
+    mSelfSystemPose_rf.position.y = tmp.position.y;
+    mSelfSystemPose_rf.position.z = tmp.position.z;
+    mSelfSystemPose_rf.headingRad = tmp.yaw;
+    mAgentsPoseMap_rf[mSourceSegmentId] = mSelfSystemPose_rf;
+    pubPose_rf(mSourceSegmentId, mSelfSystemPose_rf);
 
-    mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
-
-    pubPoseRFH(mSourceSegmentId, mSelfSystemPose);
-
-    // if (mDebugVerbose)
-    // {
-    //     ROS_INFO("[Teaming Planner %d]: Self System Pose Received\n", mSourceSegmentId);
-    // } 
+    DistributedFormation::Common::Pose aPose;
+    mOwnAgentPose_cp.position(0) = tmp.position.x;
+    mOwnAgentPose_cp.position(1) = tmp.position.y;
+    mOwnAgentPose_cp.position(2) = tmp.position.z;
+    mOwnAgentPose_cp.headingRad = tmp.yaw;
+    mAgentsPose_cp[mSourceSegmentId] = mOwnAgentPose_cp;
+    uint32_t huh = mSourceSegmentId;
+    // pubOwnPoseFunc_cp(huh, mOwnAgentPose_cp);
 }
 
 void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseStampedCovar)
@@ -117,29 +42,21 @@ void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCova
     tmp_pose.pose = PoseStampedCovar->pose.pose;
 
     Common::Entity::Pose tmp(tmp_pose);
-    mSelfSystemPose.position.x = tmp.position.x;
-    mSelfSystemPose.position.y = tmp.position.y;
-    mSelfSystemPose.position.z = tmp.position.z;
-    mSelfSystemPose.headingRad = tmp.yaw;
+    mSelfSystemPose_rf.position.x = tmp.position.x;
+    mSelfSystemPose_rf.position.y = tmp.position.y;
+    mSelfSystemPose_rf.position.z = tmp.position.z;
+    mSelfSystemPose_rf.headingRad = tmp.yaw;
+    mAgentsPoseMap_rf[mSourceSegmentId] = mSelfSystemPose_rf;
+    pubPose_rf(mSourceSegmentId, mSelfSystemPose_rf);
 
-    mAgentsPoseMap[mSourceSegmentId] = mSelfSystemPose;
-
-    pubPoseRFH(mSourceSegmentId, mSelfSystemPose);
-
-    // if (mDebugVerbose)
-    // {
-    //     ROS_INFO("[Teaming Planner %d]: Self System Pose Received\n", mSourceSegmentId);
-    // } 
+    mOwnAgentPose_cp.position(0) = tmp.position.x;
+    mOwnAgentPose_cp.position(1) = tmp.position.y;
+    mOwnAgentPose_cp.position(2) = tmp.position.z;
+    mOwnAgentPose_cp.headingRad = tmp.yaw;
+    mAgentsPose_cp[mSourceSegmentId] = mOwnAgentPose_cp;
+    uint32_t huh = mSourceSegmentId;
+    // pubOwnPoseFunc_cp(huh, mOwnAgentPose_cp);
 }
-
-
-void TeamingPlanner::selft265SystemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& PoseWithCovarianceStamped)
-{
-    geometry_msgs::PoseStamped tmp_pose;
-    mSelft265SystemPose.header = PoseWithCovarianceStamped->header;
-    mSelft265SystemPose.pose = PoseWithCovarianceStamped->pose; 
-}
-
 
 void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
 {
@@ -179,7 +96,7 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     // tmp.header.frame_id = sourceFrame;
     // tmp.header.stamp = ros::Time::now();
 
-    mVoxel_filter_cloudPublisher.publish(tmp);
+    mVoxelFilterCloudPublisher_rf.publish(tmp);
 
     try 
     {        
@@ -194,212 +111,6 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     {
         ROS_INFO("[Teaming Planner %d]: Point Cloud Received\n", mSourceSegmentId);
     }
-}
-
-// Store into map.
-void TeamingPlanner::systemPoseCallback(const mt_msgs::pose::ConstPtr& aSystemPose)
-{
-    DistributedFormation::Common::Pose tmp;
-    tmp.position.x = aSystemPose->position.x;
-    tmp.position.y = aSystemPose->position.y;
-    tmp.position.z = aSystemPose->position.z;
-    tmp.headingRad = aSystemPose->headingRad;
-
-    mAgentsPoseMap[aSystemPose->sourceSegmentId] = tmp;
-
-    if (mDebugVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
-    }
-}
-
-void TeamingPlanner::phaseTimeCallback(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
-{
-    DistributedFormation::Common::PhaseAndTime tmp;
-
-    tmp.phase = static_cast<DistributedFormation::Common::PHASE>(aPhaseAndTime->phase);
-    tmp.timeMicroSecs = aPhaseAndTime->time;
-    mAgentsPhaseAndTimeMap[aPhaseAndTime->sourceSegmentId] = tmp;
-
-    if (mDebugVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
-    }
-}
-
-void TeamingPlanner::directionUtilityCallback(const mt_msgs::angleIndexAndUtility::ConstPtr& aDirectionUtility)
-{
-    DistributedFormation::Common::DirectionUtility tmp;
-
-    tmp.angleIndexAndUtility = aDirectionUtility->angleIndexAndUtility;
-    mAgentsDirectionUtilityMap[aDirectionUtility->sourceSegmentId] = tmp;
-
-    if (mDebugVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: Direction Utility Received from Agent: %d\n", mSourceSegmentId, aDirectionUtility->sourceSegmentId);
-    }
-}
-
-void TeamingPlanner::convexRegion2DCallback(const mt_msgs::convexRegion2D::ConstPtr& aConvexRegion2D)
-{
-    DistributedFormation::Common::ConvexRegion2D tmp;
-
-    std::vector<double> vecACol1 = aConvexRegion2D->matrixACol1;
-    std::vector<double> vecACol2 = aConvexRegion2D->matrixACol2;
-    std::vector<double> vecB = aConvexRegion2D->matrixB;
-
-    tmp.A.conservativeResize(vecACol1.size(), Eigen::NoChange);
-    tmp.b.conservativeResize(vecB.size(), Eigen::NoChange);
-
-    tmp.A.col(0) = Eigen::Map<Eigen::VectorXd>(&vecACol1[0], vecACol1.size());
-    tmp.A.col(1) = Eigen::Map<Eigen::VectorXd>(&vecACol2[0], vecACol2.size());
-    tmp.b = Eigen::Map<Eigen::VectorXd>(&vecB[0], vecB.size());
-
-    mAgentsConvexRegion2DMap[aConvexRegion2D->sourceSegmentId] = tmp;
-
-    if (mDebugVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: Convex Region Received from Agent: %d\n", mSourceSegmentId, aConvexRegion2D->sourceSegmentId);
-    }
-
-    if (mDebugVerbose)
-    {
-        ROS_INFO("ConvexRegion2DCallback Vector A column 1 Values: ");
-        for (auto value : vecACol1)
-        {
-            ROS_INFO("%d ", value);
-        }
-        ROS_INFO("\n");
-
-        ROS_INFO("ConvexRegion2DCallback Vector A column 2 Values: ");
-        for (auto value : vecACol2)
-        {
-            ROS_INFO("%d ", value);
-        }
-        ROS_INFO("\n");
-
-        ROS_INFO("ConvexRegion2DCallback Vector B Values: ");
-        for (auto value : vecB)
-        {
-            ROS_INFO("%d ", value);
-        }
-        ROS_INFO("\n");
-    }
-}
-
-void TeamingPlanner::convexRegion3DCallback(const mt_msgs::convexRegion3D::ConstPtr& aConvexRegion3D)
-{
-    DistributedFormation::Common::ConvexRegion3D tmp;
-
-    std::vector<double> vecACol1 = aConvexRegion3D->matrixACol1;
-    std::vector<double> vecACol2 = aConvexRegion3D->matrixACol2;
-    std::vector<double> vecACol3 = aConvexRegion3D->matrixACol3;
-    std::vector<double> vecB = aConvexRegion3D->matrixB;
-
-    tmp.A.conservativeResize(vecACol1.size(), Eigen::NoChange);
-    tmp.b.conservativeResize(vecB.size(), Eigen::NoChange);
-
-    tmp.A.col(0) = Eigen::Map<Eigen::VectorXd>(&vecACol1[0], vecACol1.size());
-    tmp.A.col(1) = Eigen::Map<Eigen::VectorXd>(&vecACol2[0], vecACol2.size());
-    tmp.A.col(2) = Eigen::Map<Eigen::VectorXd>(&vecACol3[0], vecACol3.size());
-    tmp.b = Eigen::Map<Eigen::VectorXd>(&vecB[0], vecB.size());
-
-    mAgentsConvexRegion3DMap[aConvexRegion3D->sourceSegmentId] = tmp;
-
-    if (mDebugVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: Convex Region Received from Agent: %d\n", mSourceSegmentId, aConvexRegion3D->sourceSegmentId);
-    }
-
-    if (mDebugVerbose)
-    {
-        ROS_INFO("ConvexRegion3DCallback Vector A column 1 Values: ");
-        for (auto value : vecACol1)
-        {
-            ROS_INFO("%d ", value);
-        }
-        ROS_INFO("\n");
-
-        ROS_INFO("ConvexRegion3DCallback Vector A column 2 Values: ");
-        for (auto value : vecACol2)
-        {
-            ROS_INFO("%d ", value);
-        }
-        ROS_INFO("\n");
-
-        ROS_INFO("ConvexRegion3DCallback Vector A column 3 Values: ");
-        for (auto value : vecACol3)
-        {
-            ROS_INFO("%d ", value);
-        }
-        ROS_INFO("\n");
-
-        ROS_INFO("ConvexRegion3DCallback Vector B Values: ");
-        for (auto value : vecB)
-        {
-            ROS_INFO("%d ", value);
-        }
-        ROS_INFO("\n");
-    }
-}
-
-void TeamingPlanner::assignedVirtualPoseMapCallback(const mt_msgs::posevector::ConstPtr& aAssignedVirtualPoseMap)
-{
-    std::unordered_map<int32_t, DistributedFormation::Common::Pose> tmpMap;
-    for (auto pose : aAssignedVirtualPoseMap->poseVector)
-    {
-        DistributedFormation::Common::Pose tmp;
-        tmp.position.x = pose.position.x;
-        tmp.position.y = pose.position.y;
-        tmp.position.z = pose.position.z;
-
-        tmp.headingRad = pose.headingRad;
-
-        
-        tmpMap[pose.sourceSegmentId] = tmp;
-    }
-    mAgentsAssignedVirtualPoseMap[aAssignedVirtualPoseMap->sourceSegmentId] = tmpMap;
-
-    if(mDebugVerbose)
-    {
-        ROS_INFO("Assigned Virtual Position Received from Agent: %d\n", aAssignedVirtualPoseMap->sourceSegmentId);
-    }
-}
-
-void TeamingPlanner::gunCommandPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aPoseWithCovarianceStamped)
-{
-    // Update the Target pose
-    mGunTargetPose.pose = aPoseWithCovarianceStamped->pose;
-    mGunTargetPose.header = aPoseWithCovarianceStamped->header;
-    mgunTargetPoseRecieved = true;
-}
-
-bool TeamingPlanner::switchToGunTargetPose(const int32_t aAgentId)
-{
-    bool status = true;
-    status = status && aAgentId == mSourceSegmentId;
-    if (status)
-    {
-        // Publish only when target pose is recieved
-        if (mgunTargetPoseRecieved == true)
-        {
-            geometry_msgs::PoseStamped tmp;
-
-            tmp.header.stamp = ros::Time::now();
-            tmp.pose.orientation = mGunTargetPose.pose.pose.orientation;
-            tmp.pose.position = mGunTargetPose.pose.pose.position;
-            tmp.pose.position.z = mDesiredHeight;
-            tmp.header.frame_id = "/odom";
-
-            mAssignedVirtualPosePublisher.publish(tmp);
-        }
-
-    }
-    else
-    {
-        ROS_ERROR("[Teaming Planner %d]: Agent ID %d and Source Segment ID %d mismatch\n", mSourceSegmentId, aAgentId, mSourceSegmentId);
-    }
-    return status;
 }
 
 void TeamingPlanner::activatePlannerCallback(const std_msgs::Bool::ConstPtr& aBoolActivatePlanner)
@@ -427,7 +138,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
     mUAVMode = aUAVmode->data;
     std::string str1 ("Follow_Me");
     std::string str2 ("Go_There");
-    
+
     if (str1.compare(aUAVmode->data.c_str()) == 0) // They compare equal
     {
         mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
@@ -437,4 +148,355 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
     }
     ROS_INFO("Agent %i now in this mode %s", mSourceSegmentId, mUAVMode);
+}
+
+void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& aInputPose)
+{
+    if(mTask.type == Common::Entity::MTTaskEnum::FOLLOW_ME)
+    {
+        // Add this input pose into its own history of human poses
+    
+        geometry_msgs::PoseStamped tmp_pose; 
+        tmp_pose.header =  aInputPose->header;
+        tmp_pose.pose =  aInputPose->pose;
+
+        Common::Entity::Pose tmp(tmp_pose);
+        mHumanSystemPose_rf.position.x = tmp.position.x;
+        mHumanSystemPose_rf.position.y = tmp.position.y;
+        mHumanSystemPose_rf.position.z = tmp.position.z;
+        mHumanSystemPose_rf.headingRad = tmp.yaw;
+
+        // comment this guy out
+        while(mHistoryOfHumanPoses_rf.size() > (mPlanningHorizon/mIntervalDistance) - 1)
+        {
+            mHistoryOfHumanPoses_rf.erase(mHistoryOfHumanPoses_rf.begin());    
+        }
+
+        DistributedFormation::Common::Pose tPose;
+        tPose.position.x = tmp.position.x;
+        tPose.position.y = tmp.position.y;
+        tPose.position.z = tmp.position.z;
+        tPose.headingRad = tmp.yaw;
+
+        if (checkAndAddHumanSystemPose(mHistoryOfHumanPoses_rf, tPose))
+        {
+            mHistoryOfHumanPosesReceived = true;
+        }
+        else
+        {
+            // do nothing.
+        }
+
+        if (mDebugVerbose)
+        {
+            ROS_INFO("[Teaming Planner %d]: Human System Pose Received\n", mSourceSegmentId);
+        }
+    }
+    
+    if (mTask.type == Common::Entity::MTTaskEnum::GO_THERE)
+    {
+        // Assign this input pose as a go there path
+        std::vector<DistributedGlobalPathPlanner::Common::Pose> tmp_vec;
+        DistributedGlobalPathPlanner::Common::Pose tmp;
+
+        tmp.position(0) = aInputPose->pose.position.x;
+        tmp.position(1) = aInputPose->pose.position.y;;
+        tmp.position(2) = aInputPose->pose.position.z;
+
+        tmp_vec.push_back(tmp);
+
+        mGoTherePath_cp = tmp_vec;
+    }
+}
+
+void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8::ConstPtr& aNumberOfAgents)
+{
+    mNumberOfAgentsInTeam = aNumberOfAgents->data;
+}
+
+/* Callbacks used by robot formation */
+// Store into map.
+void TeamingPlanner::systemPoseCallback_rf(const mt_msgs::pose::ConstPtr& aSystemPose)
+{
+    DistributedFormation::Common::Pose tmp;
+    tmp.position.x = aSystemPose->position.x;
+    tmp.position.y = aSystemPose->position.y;
+    tmp.position.z = aSystemPose->position.z;
+    tmp.headingRad = aSystemPose->headingRad;
+
+    mAgentsPoseMap_rf[aSystemPose->sourceSegmentId] = tmp;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
+    }
+}
+
+void TeamingPlanner::phaseTimeCallback_rf(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
+{
+    DistributedFormation::Common::PhaseAndTime tmp;
+
+    tmp.phase = static_cast<DistributedFormation::Common::PHASE>(aPhaseAndTime->phase);
+    tmp.timeMicroSecs = aPhaseAndTime->time;
+    mAgentsPhaseAndTimeMap_rf[aPhaseAndTime->sourceSegmentId] = tmp;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
+    }
+}
+
+void TeamingPlanner::directionUtilityCallback_rf(const mt_msgs::angleIndexAndUtility::ConstPtr& aDirectionUtility)
+{
+    DistributedFormation::Common::DirectionUtility tmp;
+
+    tmp.angleIndexAndUtility = aDirectionUtility->angleIndexAndUtility;
+    mAgentsDirectionUtilityMap_rf[aDirectionUtility->sourceSegmentId] = tmp;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: Direction Utility Received from Agent: %d\n", mSourceSegmentId, aDirectionUtility->sourceSegmentId);
+    }
+}
+
+void TeamingPlanner::convexRegion2DCallback_rf(const mt_msgs::convexRegion2D::ConstPtr& aConvexRegion2D)
+{
+    DistributedFormation::Common::ConvexRegion2D tmp;
+
+    std::vector<double> vecACol1 = aConvexRegion2D->matrixACol1;
+    std::vector<double> vecACol2 = aConvexRegion2D->matrixACol2;
+    std::vector<double> vecB = aConvexRegion2D->matrixB;
+
+    tmp.A.conservativeResize(vecACol1.size(), Eigen::NoChange);
+    tmp.b.conservativeResize(vecB.size(), Eigen::NoChange);
+
+    tmp.A.col(0) = Eigen::Map<Eigen::VectorXd>(&vecACol1[0], vecACol1.size());
+    tmp.A.col(1) = Eigen::Map<Eigen::VectorXd>(&vecACol2[0], vecACol2.size());
+    tmp.b = Eigen::Map<Eigen::VectorXd>(&vecB[0], vecB.size());
+
+    mAgentsConvexRegion2DMap_rf[aConvexRegion2D->sourceSegmentId] = tmp;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: Convex Region Received from Agent: %d\n", mSourceSegmentId, aConvexRegion2D->sourceSegmentId);
+    }
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("convexRegion2DCallback_rf Vector A column 1 Values: ");
+        for (auto value : vecACol1)
+        {
+            ROS_INFO("%d ", value);
+        }
+        ROS_INFO("\n");
+
+        ROS_INFO("convexRegion2DCallback_rf Vector A column 2 Values: ");
+        for (auto value : vecACol2)
+        {
+            ROS_INFO("%d ", value);
+        }
+        ROS_INFO("\n");
+
+        ROS_INFO("convexRegion2DCallback_rf Vector B Values: ");
+        for (auto value : vecB)
+        {
+            ROS_INFO("%d ", value);
+        }
+        ROS_INFO("\n");
+    }
+}
+
+void TeamingPlanner::convexRegion3DCallback_rf(const mt_msgs::convexRegion3D::ConstPtr& aConvexRegion3D)
+{
+    DistributedFormation::Common::ConvexRegion3D tmp;
+
+    std::vector<double> vecACol1 = aConvexRegion3D->matrixACol1;
+    std::vector<double> vecACol2 = aConvexRegion3D->matrixACol2;
+    std::vector<double> vecACol3 = aConvexRegion3D->matrixACol3;
+    std::vector<double> vecB = aConvexRegion3D->matrixB;
+
+    tmp.A.conservativeResize(vecACol1.size(), Eigen::NoChange);
+    tmp.b.conservativeResize(vecB.size(), Eigen::NoChange);
+
+    tmp.A.col(0) = Eigen::Map<Eigen::VectorXd>(&vecACol1[0], vecACol1.size());
+    tmp.A.col(1) = Eigen::Map<Eigen::VectorXd>(&vecACol2[0], vecACol2.size());
+    tmp.A.col(2) = Eigen::Map<Eigen::VectorXd>(&vecACol3[0], vecACol3.size());
+    tmp.b = Eigen::Map<Eigen::VectorXd>(&vecB[0], vecB.size());
+
+    mAgentsConvexRegion3DMap_rf[aConvexRegion3D->sourceSegmentId] = tmp;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: Convex Region Received from Agent: %d\n", mSourceSegmentId, aConvexRegion3D->sourceSegmentId);
+    }
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("convexRegion3DCallback_rf Vector A column 1 Values: ");
+        for (auto value : vecACol1)
+        {
+            ROS_INFO("%d ", value);
+        }
+        ROS_INFO("\n");
+
+        ROS_INFO("convexRegion3DCallback_rf Vector A column 2 Values: ");
+        for (auto value : vecACol2)
+        {
+            ROS_INFO("%d ", value);
+        }
+        ROS_INFO("\n");
+
+        ROS_INFO("convexRegion3DCallback_rf Vector A column 3 Values: ");
+        for (auto value : vecACol3)
+        {
+            ROS_INFO("%d ", value);
+        }
+        ROS_INFO("\n");
+
+        ROS_INFO("convexRegion3DCallback_rf Vector B Values: ");
+        for (auto value : vecB)
+        {
+            ROS_INFO("%d ", value);
+        }
+        ROS_INFO("\n");
+    }
+}
+
+void TeamingPlanner::assignedVirtualPoseMapCallback_rf(const mt_msgs::posevector::ConstPtr& aAssignedVirtualPoseMap)
+{
+    std::unordered_map<int32_t, DistributedFormation::Common::Pose> tmpMap;
+    for (auto pose : aAssignedVirtualPoseMap->poseVector)
+    {
+        DistributedFormation::Common::Pose tmp;
+        tmp.position.x = pose.position.x;
+        tmp.position.y = pose.position.y;
+        tmp.position.z = pose.position.z;
+
+        tmp.headingRad = pose.headingRad;
+
+        
+        tmpMap[pose.sourceSegmentId] = tmp;
+    }
+    mAgentsAssignedVirtualPoseMap_rf[aAssignedVirtualPoseMap->sourceSegmentId] = tmpMap;
+
+    if(mDebugVerbose)
+    {
+        ROS_INFO("Assigned Virtual Position Received from Agent: %d\n", aAssignedVirtualPoseMap->sourceSegmentId);
+    }
+}
+
+/* Global Consensus path callbacks*/
+
+void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
+{
+    DistributedGlobalPathPlanner::Common::PhaseAndTime tmp;
+    tmp.phase = static_cast<DistributedGlobalPathPlanner::Common::PHASE>(aPhaseAndTime->phase);
+    tmp.timeMicroSecs = aPhaseAndTime->time;
+    mAgentsPhasesAndTimeMap_cp[aPhaseAndTime->sourceSegmentId] = tmp;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner CP %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
+    }
+}
+
+void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSystemPose)
+{
+    DistributedGlobalPathPlanner::Common::Pose tmp;
+    tmp.position(0) = aSystemPose->position.x;
+    tmp.position(1) = aSystemPose->position.y;
+    tmp.position(2) = aSystemPose->position.z;
+    tmp.headingRad = aSystemPose->headingRad;
+
+    mAgentsPose_cp[aSystemPose->sourceSegmentId] = tmp;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
+    }
+}
+
+void TeamingPlanner::pathAndProgressCallback_cp(const mt_msgs::pathAndProgress::ConstPtr& aPathAndProgress)
+{
+    DistributedGlobalPathPlanner::Common::PathAndWaypointProgress agents_path_progress_tmp;
+    std::vector<DistributedGlobalPathPlanner::Common::Pose> tmp_poses;
+    for (auto pose : aPathAndProgress->poseVector)
+    {
+        DistributedGlobalPathPlanner::Common::Pose tmp_pose;
+        tmp_pose.position(0) = pose.position.x;
+        tmp_pose.position(1) = pose.position.y;
+        tmp_pose.position(2)= pose.position.z;
+        tmp_poses.push_back(tmp_pose);
+    }
+
+    agents_path_progress_tmp.poses = tmp_poses;
+    agents_path_progress_tmp.waypointProgress = aPathAndProgress->waypointProgress;
+    mAgentsPathAndWaypointProgressMap_cp[aPathAndProgress->sourceSegmentId] = agents_path_progress_tmp;
+}
+
+void TeamingPlanner::plannedPathCallback_cp(const mt_msgs::posevector::ConstPtr& aPlannedPath)
+{
+    std::vector<Eigen::Vector3d> tmp_poses;
+    for (auto pose : aPlannedPath->poseVector)
+    {
+        Eigen::Vector3d pose_eigen;
+        pose_eigen(0) = pose.position.x;
+        pose_eigen(1) = pose.position.y;
+        pose_eigen(2) = pose.position.z;
+        tmp_poses.push_back(pose_eigen);
+    }
+    mAgentsPlannedPath_cp[aPlannedPath->sourceSegmentId] = tmp_poses;
+}
+
+void TeamingPlanner::agentProcessedPathOfAgentsCallback_cp(const mt_msgs::pathAndCostVector::ConstPtr& aPathAndCostVector)
+{
+    std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost> path_and_cost_tmp_map;
+    for (auto path_cost : aPathAndCostVector->pathAndCostVector)
+    {
+        DistributedGlobalPathPlanner::Common::PathAndCost path_and_cost_tmp;
+        std::vector<Eigen::Vector3d> tmp_poses;
+        for (auto pose : path_cost.poseVector)
+        {            
+            Eigen::Vector3d pose_eigen;
+            pose_eigen(0) = pose.position.x;
+            pose_eigen(1) = pose.position.y;
+            pose_eigen(2) = pose.position.z;
+            tmp_poses.push_back(pose_eigen);
+        }
+        path_and_cost_tmp.positions = tmp_poses;
+        path_and_cost_tmp.cost = path_cost.cost;
+        path_and_cost_tmp_map[path_cost.sourceSegmentId] =  path_and_cost_tmp;
+    }
+    mAgentsProcessedPathOfAgentsMap_cp[aPathAndCostVector->sourceSegmentId] = path_and_cost_tmp_map;
+}
+
+void TeamingPlanner::agentBestProcessedPathCallback_cp(const mt_msgs::posevector::ConstPtr& aBestProcessedPath)
+{
+    std::vector<Eigen::Vector3d> tmp_poses;
+    for (auto pose : aBestProcessedPath->poseVector)
+    {
+        Eigen::Vector3d pose_eigen;
+        pose_eigen(0) = pose.position.x;
+        pose_eigen(1) = pose.position.y;
+        pose_eigen(2) = pose.position.z;
+        tmp_poses.push_back(pose_eigen);
+    }
+    mAgentsBestProcessedPath_cp[aBestProcessedPath->sourceSegmentId] = tmp_poses;
+}
+
+void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray::ConstPtr& aInputPoseArray)
+{
+    std::vector<DistributedFormation::Common::Pose> tmp_vec;
+
+    for (auto pose : aInputPoseArray->poses)
+    {
+        DistributedFormation::Common::Pose tmp_pose;
+        tmp_pose.position.x = pose.position.x;
+        tmp_pose.position.y = pose.position.y;
+        tmp_pose.position.z = pose.position.z;
+        tmp_pose.headingRad = 0; 
+        tmp_vec.push_back(tmp_pose);
+    }
+    mPlannedPathPoses_rf = tmp_vec;
+ 
 }
