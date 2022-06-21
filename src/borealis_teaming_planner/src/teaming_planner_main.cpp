@@ -43,13 +43,13 @@ void TeamingPlanner::teamingPlannerMain()
             mHandlerPtr->m_pubOwnAgentAssignedPose = std::bind(&TeamingPlanner::pubAssignedPose_rf, this, std::placeholders::_1, std::placeholders::_2);
 
             mDistributedFormation.AttachHandler(mHandlerPtr);
-            ROS_INFO("Finished binding Distributed formation stuff\n");
+            ROS_INFO("Finished binding Distributed formation handler\n");
 
             // attach consensus path
+            ROS_INFO("Binding consensus path planner handler\n");
             mGlobalPathPlannerHandlerPtr->m_getNumberOfAgentsInTeam = std::bind(&TeamingPlanner::getNumberOfAgentsInTeam, this, std::placeholders::_1);
             mGlobalPathPlannerHandlerPtr->m_getOwnAgentID = std::bind(&TeamingPlanner::getOwnAgentId, this, std::placeholders::_1);
             mGlobalPathPlannerHandlerPtr->m_getOwnAgentLidarPointCloud = std::bind(&TeamingPlanner::getOwnAgentLidarPointCloud, this, std::placeholders::_1);
-
             mGlobalPathPlannerHandlerPtr->m_getGoTherePath = std::bind(&TeamingPlanner::getGoTherePath_cp, this, std::placeholders::_1);
             mGlobalPathPlannerHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp, this, std::placeholders::_1);
             mGlobalPathPlannerHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubOwnPhaseAndTime_cp, this, std::placeholders::_1, std::placeholders::_2);
@@ -72,11 +72,12 @@ void TeamingPlanner::teamingPlannerMain()
             mGlobalPathPlannerHandlerPtr->m_pubProcessedGoTherePath = std::bind(&TeamingPlanner::pubProcessedGoTherePath_cp, this, std::placeholders::_1, std::placeholders::_2);
 
             mGlobalPathPlanner.AttachHandler(mGlobalPathPlannerHandlerPtr);
+
             ROS_INFO("Finished binding global path planner \n");
 
             // Set parameters
-            readRobotFormationParameters();
             ROS_INFO("Reading parameters \n");
+            readRobotFormationParameters();
             mDistributedFormation.SetParameters(mRobotFormationParameters);
             ROS_INFO("Finished setting parameters \n");
             // mGlobalPathPlanner.SetParameters(mGlobalPathPlanParameters);

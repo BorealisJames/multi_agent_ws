@@ -7,11 +7,11 @@
 
       <rosparam command="load" file="$(find borealis_teaming_planner)/config/teaming_planner_config_uav1.yaml"/>
       <remap from="/assigned_virtual_position_rf" to="teaming_planner/uwb_assigned_virtual_position"/>
-      <remap from="/assigned_virtual_pose_map_rf" to="teaming_planner/assigned_virtual_pose_map"/>
-      <remap from="/convex_region_2D_rf" to="teaming_planner/convex_region_2D"/>
-      <remap from="/convex_region_3D_rf" to="teaming_planner/convex_region_3D"/>
-      <remap from="/direction_utility_rf" to="teaming_planner/direction_utility"/>
-      <remap from="/phase_and_time_rf" to="teaming_planner/phase_and_time"/>
+      <remap from="/assigned_virtual_pose_map_rf" to="teaming_planner/assigned_virtual_pose_map_rf"/>
+      <remap from="/convex_region_2D_rf" to="teaming_planner/convex_region_2D_rf"/>
+      <remap from="/convex_region_3D_rf" to="teaming_planner/convex_region_3D_rf"/>
+      <remap from="/direction_utility_rf" to="teaming_planner/direction_utility_rf"/>
+      <remap from="/phase_and_time_rf" to="teaming_planner/phase_and_time_rf"/>
       <remap from="/system_pose_rf" to="teaming_planner/system_pose_rf"/>
 
       <remap from="/pointcloud" to="/uav1_object_filter/filtered_point_cloud"/>

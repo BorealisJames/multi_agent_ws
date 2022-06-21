@@ -59,7 +59,7 @@ class TeamingPlanner
         Common::Utils::ConfigFileReader mConfigFileReader;
         DistributedFormation::DistributedMultiRobotFormationHandler::Ptr mHandlerPtr;
         DistributedFormation::DistributedMultiRobotFormation mDistributedFormation;
-
+        
         DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler::Ptr mGlobalPathPlannerHandlerPtr;
         DistributedGlobalPathPlanner::DistributedGlobalPathPlanner mGlobalPathPlanner;
 
@@ -169,7 +169,6 @@ class TeamingPlanner
         std::vector<ros::Subscriber> mUAVPhaseAndTimeSubscriberVector_cp;
         std::vector<ros::Subscriber> pathAndWayPointProgressSubscriberVector_cp;
         std::vector<ros::Subscriber> plannedPathSubscriberVector_cp;
-        std::vector<ros::Subscriber> processedPathSubsriberVector_cp;
         std::vector<ros::Subscriber> bestProcessedPathSubsriberVector_cp;
         std::vector<ros::Subscriber> agentsBestProcessedPathSubscriberVector_cp;
         

@@ -12,13 +12,14 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAgentsAssignedVirtualPoseMap_rf(),
         mPoseTransformListener(),
         mPointCloudTransformListener(),
-        // mTask(),
+        mTask(),
         mHistoryOfHumanPoses_rf(),
         mHistoryOfHumanPosesReceived(false),
         mModuleStateVerbose(false),
         mModuleTaskVerbose(false),
+        mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>()),
 
-        mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>())
+        mGlobalPathPlannerHandlerPtr(std::make_shared<DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler>())
 
     {
         // Module Configurable Variables
@@ -117,17 +118,17 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
             ros::Subscriber phaseAndTimeSubscriber_cp = mNh.subscribe<mt_msgs::phaseAndTime>(phaseTimeTopic_cp, 10, &TeamingPlanner::phaseTimeCallback_cp, this);
             ros::Subscriber UAVSystemPoseSubscriber_cp = mNh.subscribe<mt_msgs::pose>(systemPoseTopic_cp, 10, &TeamingPlanner::systemPoseCallback_cp, this);
             ros::Subscriber pathAndWayPointProgressSubscriber_cp = mNh.subscribe<mt_msgs::pathAndProgress>(pathAndProgressTopic_cp, 10, &TeamingPlanner::pathAndProgressCallback_cp, this);
-            ros::Subscriber plannedPathSubscriber_cp = mNh.subscribe<mt_msgs::posevector>(plannedPathTopic_cp, 10, &TeamingPlanner::plannedPathCallback_cp, this);
+            ros::Subscriber plannedPathSubscriber_cp = mNh.subscribe<mt_msgs::posevector>(plannedPathTopic_cp, 10, &TeamingPlanner::plannedPathCallback_cp, this);           
             ros::Subscriber agentsBestProcessedPathSubscriber_cp = mNh.subscribe<mt_msgs::pathAndCostVector>(agentsBestProcessedPathTopic_cp, 10, &TeamingPlanner::agentProcessedPathOfAgentsCallback_cp, this);
             ros::Subscriber bestProcessedPathSubsriber_cp = mNh.subscribe<mt_msgs::posevector>(bestProcessedTopic_cp, 10, &TeamingPlanner::agentBestProcessedPathCallback_cp, this);
 
             mUAVSystemPoseSubscriberVector_cp.push_back(UAVSystemPoseSubscriber_cp);
             mUAVPhaseAndTimeSubscriberVector_cp.push_back(phaseAndTimeSubscriber_cp);
             pathAndWayPointProgressSubscriberVector_cp.push_back(pathAndWayPointProgressSubscriber_cp);
-            // plannedPathSubscriberVector_cp.push_back(plannedPathSubscriber_cp);
-            // processedPathSubsriberVector_cp.push_back(processedPathSubsriber_cp);
-            // bestProcessedPathSubsriberVector_cp.push_back(bestProcessedPathSubsriber_cp);
+            plannedPathSubscriberVector_cp.push_back(plannedPathSubscriber_cp);
             agentsBestProcessedPathSubscriberVector_cp.push_back(agentsBestProcessedPathSubscriber_cp);
+            bestProcessedPathSubsriberVector_cp.push_back(bestProcessedPathSubsriber_cp);
+            // processedPathSubsriberVector_cp.push_back(processedPathSubsriber_cp);
         }
         // Timers
         mModuleLoopTimer = mNh.createTimer(ros::Duration(mModulePeriod), &TeamingPlanner::moduleLoopCallback, this);
