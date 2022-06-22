@@ -10,7 +10,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAgentsDirectionUtilityMap_rf(),
         mAgentsConvexRegion2DMap_rf(),
         mAgentsAssignedVirtualPoseMap_rf(),
-        mPoseTransformListener(),
         mPointCloudTransformListener(),
         mTask(),
         mHistoryOfHumanPoses_rf(),
@@ -18,9 +17,14 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mModuleStateVerbose(false),
         mModuleTaskVerbose(false),
         mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>()),
-
-        mGlobalPathPlannerHandlerPtr(std::make_shared<DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler>())
-
+        mGlobalPathPlannerHandlerPtr(std::make_shared<DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler>()),
+        mAgentsPoseMap_cp(),
+        mAgentsPhasesAndTimeMap_cp(),
+        mAgentsPathAndWaypointProgressMap_cp(),
+        mAgentsPlannedPathMap_cp(),
+        mAgentsProcessedPathOfAgentsMap_cp(),
+        // mOwnProcessedPathOfAgents_cp(),
+        mAgentsBestProcessedPath_cp()
     {
         // Module Configurable Variables
         mConfigFileReader.getParam(nhPrivate, "sourceSegmentId", mSourceSegmentId, static_cast<uint32_t>(0));

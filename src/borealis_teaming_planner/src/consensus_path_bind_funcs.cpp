@@ -175,14 +175,14 @@ bool TeamingPlanner::getAgentsPlannedPath_cp(std::unordered_map<int32_t, std::ve
 {
     bool status = true;
 
-    if (!mAgentsPlannedPath_cp.empty())
+    if (!mAgentsPlannedPathMap_cp.empty())
     {
-        agentsPlannedPath = mAgentsPlannedPath_cp;
+        agentsPlannedPath = mAgentsPlannedPathMap_cp;
     }
     else
     {
         status = false;
-        ROS_WARN("Agent%d CPH: get mAgentsPlannedPath_cp empty!", mSourceSegmentId);
+        ROS_WARN("Agent%d CPH: get mAgentsPlannedPathMap_cp empty!", mSourceSegmentId);
     }
     return status;
 }
@@ -367,7 +367,7 @@ void TeamingPlanner::clearAgentsPathAndWaypointProgressBuffer_cp()
 
 void TeamingPlanner::clearAgentsPlannedPathBuffer_cp()
 {
-    mAgentsPlannedPath_cp.clear();
+    mAgentsPlannedPathMap_cp.clear();
 }
 
 

@@ -443,7 +443,7 @@ void TeamingPlanner::plannedPathCallback_cp(const mt_msgs::posevector::ConstPtr&
         pose_eigen(2) = pose.position.z;
         tmp_poses.push_back(pose_eigen);
     }
-    mAgentsPlannedPath_cp[aPlannedPath->sourceSegmentId] = tmp_poses;
+    mAgentsPlannedPathMap_cp[aPlannedPath->sourceSegmentId] = tmp_poses;
 }
 
 void TeamingPlanner::agentProcessedPathOfAgentsCallback_cp(const mt_msgs::pathAndCostVector::ConstPtr& aPathAndCostVector)

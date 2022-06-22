@@ -83,7 +83,6 @@ class TeamingPlanner
         sensor_msgs::PointCloud mSystemPointCloud;
         geometry_msgs::PoseStamped mSelft265SystemPose;
         sensor_msgs::PointCloud2 mSystemPointCloud2;
-        tf::TransformListener mPoseTransformListener;
         tf::TransformListener mPointCloudTransformListener;
         tf::TransformListener mPointCloud2TransformListener;
         bool mHistoryOfHumanPosesReceived;
@@ -148,10 +147,10 @@ class TeamingPlanner
         DistributedGlobalPathPlanner::Common::PhaseAndTime mOwnAgentPhaseAndTime_cp;
         std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndWaypointProgress> mAgentsPathAndWaypointProgressMap_cp;
         DistributedGlobalPathPlanner::Common::PathAndWaypointProgress mOwnPathAndWaypointProgress_cp;
-        std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> mAgentsPlannedPath_cp;
+        std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> mAgentsPlannedPathMap_cp;
         std::vector<Eigen::Vector3d> mOwnPlannedPath_cp;
         std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost>> mAgentsProcessedPathOfAgentsMap_cp;
-        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost> mOwnProcessedPathOfAgents_cp;
+        // std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost> mOwnProcessedPathOfAgents_cp;
         std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> mAgentsBestProcessedPath_cp;
         std::vector<Eigen::Vector3d> mOwnBestProcessedPath_cp;
         std::vector<DistributedGlobalPathPlanner::Common::Pose> m_ownProcessedGoTherePath_cp;
