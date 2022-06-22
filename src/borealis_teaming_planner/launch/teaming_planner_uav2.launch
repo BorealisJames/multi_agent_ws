@@ -7,7 +7,9 @@
 
       <rosparam command="load" file="$(find borealis_teaming_planner)/config/teaming_planner_config_uav2.yaml"/>
       <remap from="/assigned_virtual_position_rf" to="teaming_planner/uwb_assigned_virtual_position"/>
-      <remap from="/activate_planner" to="/teaming_planner/activate_planner"> </remap>
+
+      <remap from="/activate_planner" to="teaming_planner/activate_planner"/> 
+
       <remap from="/assigned_virtual_pose_map_rf" to="teaming_planner/assigned_virtual_pose_map_rf"/>
       <remap from="/convex_region_2D_rf" to="teaming_planner/convex_region_2D_rf"/>
       <remap from="/convex_region_3D_rf" to="teaming_planner/convex_region_3D_rf"/>
@@ -15,6 +17,7 @@
       <remap from="/phase_and_time_rf" to="teaming_planner/phase_and_time_rf"/>
       <remap from="/system_pose_rf" to="teaming_planner/system_pose_rf"/>
       <remap from="/pointcloud" to="/uav2_object_filter/filtered_point_cloud"/>
+
       <!-- <remap from="/system_pose" to="/UAV2PoseUWB"/> -->
       <remap from="/system_pose" to="mavros/local_position/pose"/>
       <remap from="/system_pose_rf" to="teaming_planner/system_pose_rf"/>
