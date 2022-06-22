@@ -78,11 +78,11 @@ void TeamingPlanner::teamingPlannerMain()
 
             ROS_INFO("Finished binding global path planner ");
             // Set parameters
-            ROS_INFO("Reading parameters");
-            readRobotFormationParameters();
+            ROS_INFO("Reading and setting parameters");
+            readParameters();
             mDistributedFormation.SetParameters(mRobotFormationParameters);
-            ROS_INFO("Finished setting parameters");
-            // mGlobalPathPlanner.SetParameters(mGlobalPathPlanParameters);
+            mGlobalPathPlanner.SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+            ROS_INFO("Finished reading and setting parameters");
 
             // Finished init
             mModuleState = TeamingPlannerConstants::ModuleState::READY;
@@ -188,11 +188,8 @@ double TeamingPlanner::euclideanDistance(const double x1, const double y1, const
     return std::sqrt(x+y);
 }
 
-void TeamingPlanner::readRobotFormationParameters()
+void TeamingPlanner::readParameters()
 {
-        // Module Configurable Variables
-        // mDistributedFormation.SetParameters()
-
         // DistributedFormationParameters()
         // : workspace(Common::WORKSPACE::DIM_3_WITH_ROT)
         // , expiryDurationMicroSec(15*1000000)
@@ -219,6 +216,7 @@ void TeamingPlanner::readRobotFormationParameters()
 
         // robot formation parameters
         mRobotFormationParameters.workspace = DistributedFormation::Common::WORKSPACE::DIM_2_WITH_YAW; // hmm
+        mRobotFormationParameters.expiryDurationMicroSec = 15*1000000;
         mConfigFileReader.getParam(mNhPrivate, "numberOfAzimuthDiscreteAnglesOnASide", mRobotFormationParameters.numberOfAzimuthDiscreteAnglesOnASide, 0);
         mConfigFileReader.getParam(mNhPrivate, "resolutionAzimuthAngleRad", mRobotFormationParameters.resolutionAzimuthAngleRad, 0.0);
         mConfigFileReader.getParam(mNhPrivate, "numberOfElevationDiscreteAnglesOnASide", mRobotFormationParameters.numberOfElevationDiscreteAnglesOnASide, 0);
@@ -238,4 +236,59 @@ void TeamingPlanner::readRobotFormationParameters()
         mConfigFileReader.getParam(mNhPrivate, "weightForSize", mRobotFormationParameters.weightForSize, 0.40);
         mConfigFileReader.getParam(mNhPrivate, "desiredHeight", mRobotFormationParameters.desiredHeight, 2.0);
         mConfigFileReader.getParam(mNhPrivate, "priorityPenalty", mRobotFormationParameters.pointRemovalRadius, 1.0);
+
+        // Common::DIMENSION dimension;
+        // int64_t expiryDurationMicroSec;
+        // double pointRemovalRadius;
+        // double agentRadius;
+        // double waypointReachedBoundary;
+        // double desiredHeight;
+
+        // DistributedGlobalPathParams()
+        // : dimension(Common::DIMENSION::DIM_2)
+        // , expiryDurationMicroSec(15*1000000)
+        // , pointRemovalRadius(0.45)
+        // , agentRadius(0.3)
+        // , waypointReachedBoundary(1.5)
+        // , desiredHeight(2.0)
+
+        mGlobalPathPlanParameters.dimension = DistributedGlobalPathPlanner::Common::DIMENSION::DIM_2;
+        mGlobalPathPlanParameters.expiryDurationMicroSec = 15*1000000;
+        mConfigFileReader.getParam(mNhPrivate, "pointRemovalRadius", mGlobalPathPlanParameters.pointRemovalRadius, 0.45);
+        mConfigFileReader.getParam(mNhPrivate, "agentRadius", mGlobalPathPlanParameters.agentRadius, 0.3);
+        mConfigFileReader.getParam(mNhPrivate, "waypointReachedBoundary", mGlobalPathPlanParameters.waypointReachedBoundary, 1.5);
+        mConfigFileReader.getParam(mNhPrivate, "desiredHeight", mGlobalPathPlanParameters.desiredHeight, 2.0);
+
+        // Global path plan parameters
+
+        // PathPlanningParams()
+        // : radius(0.5)
+        // , cylinderHeight(1.0)
+        // , mapResolution(1.0)
+        // , mapMinBoundsX(-150.0)
+        // , mapMaxBoundsX(150.0)
+        // , mapMinBoundsY(-150.0)
+        // , mapMaxBoundsY(150.0)
+        // , mapMinBoundsZ(1.0)
+        // , mapMaxBoundsZ(2.0)
+        // , hCostWeight(1.0)
+        // , potentialRadius(3.0)
+        // , searchRadius(1.5)
+        // , performJPS(true)
+        // {}
+
+        // Path planning parameters
+        mConfigFileReader.getParam(mNhPrivate, "radius", mPathPlanningParameters.radius, 0.5);
+        mConfigFileReader.getParam(mNhPrivate, "cylinderHeight", mPathPlanningParameters.cylinderHeight, 1.0);
+        mConfigFileReader.getParam(mNhPrivate, "mapResolution", mPathPlanningParameters.mapResolution, 1.0);
+        mConfigFileReader.getParam(mNhPrivate, "mapMinBoundsX", mPathPlanningParameters.mapMinBoundsX, -150.0);
+        mConfigFileReader.getParam(mNhPrivate, "mapMaxBoundsX", mPathPlanningParameters.mapMaxBoundsX, 150);
+        mConfigFileReader.getParam(mNhPrivate, "mapMinBoundsY", mPathPlanningParameters.mapMinBoundsY, -150.0);
+        mConfigFileReader.getParam(mNhPrivate, "mapMaxBoundsY", mPathPlanningParameters.mapMaxBoundsY, 150.0);
+        mConfigFileReader.getParam(mNhPrivate, "mapMinBoundsZ", mPathPlanningParameters.mapMinBoundsZ, 1.0);
+        mConfigFileReader.getParam(mNhPrivate, "mapMaxBoundsZ", mPathPlanningParameters.mapMaxBoundsZ, 2.0);
+        mConfigFileReader.getParam(mNhPrivate, "hCostWeight", mPathPlanningParameters.hCostWeight, 1.0);
+        mConfigFileReader.getParam(mNhPrivate, "potentialRadius", mPathPlanningParameters.potentialRadius, 3.0);
+        mConfigFileReader.getParam(mNhPrivate, "searchRadius", mPathPlanningParameters.searchRadius, 1.5);
+        mConfigFileReader.getParam(mNhPrivate, "performJPS", mPathPlanningParameters.performJPS, true);
 }

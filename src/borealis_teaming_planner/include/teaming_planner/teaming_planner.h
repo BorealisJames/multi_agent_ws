@@ -73,7 +73,8 @@ class TeamingPlanner
         double mDesiredHeight;
         DistributedFormation::Common::DistributedFormationParameters mRobotFormationParameters;
         DistributedGlobalPathPlanner::Common::DistributedGlobalPathParams mGlobalPathPlanParameters;
-
+        pathplanning::PathPlanningParams mPathPlanningParameters;
+    
         // Teaming Planner control variables
         TeamingPlannerConstants::ModuleState mModuleState;
         Common::Entity::MTTaskBundle mTask;
@@ -266,7 +267,7 @@ class TeamingPlanner
 
         // Functions 
         void teamingPlannerMain();
-        void readRobotFormationParameters();
+        void readParameters();
         bool checkAndAddHumanSystemPose(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses, const DistributedFormation::Common::Pose aPose);
         double euclideanDistance(const double x1, const double y1, const double x2, const double y2);
         geometry_msgs::PoseStamped subtractPoseStamped(geometry_msgs::PoseStamped previous, geometry_msgs::PoseStamped current); // current - previous

@@ -29,3 +29,17 @@
 /uav2/borealis_teaming_planner/weightForSize: 0.4
 /uav2/borealis_teaming_planner/desiredHeight: 2.0
 /uav2/borealis_teaming_planner/priorityPenalty: 1.0
+
+/uav2/borealis_teaming_planner/radius: 0.5
+/uav2/borealis_teaming_planner/cylinderHeight: 1.0
+/uav2/borealis_teaming_planner/mapResolution: 1.0
+/uav2/borealis_teaming_planner/mapMinBoundsX: -150.0
+/uav2/borealis_teaming_planner/mapMaxBoundsX: 150.0
+/uav2/borealis_teaming_planner/mapMinBoundsY: -150.0
+/uav2/borealis_teaming_planner/mapMaxBoundsY: 150.0
+/uav2/borealis_teaming_planner/mapMinBoundsZ: 1.0
+/uav2/borealis_teaming_planner/mapMaxBoundsZ: 2.0
+/uav2/borealis_teaming_planner/hCostWeight: 1.0
+/uav2/borealis_teaming_planner/potentialRadius: 3.0
+/uav2/borealis_teaming_planner/searchRadius: 1.5
+/uav2/borealis_teaming_planner/performJPS: true
