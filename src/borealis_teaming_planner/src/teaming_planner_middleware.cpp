@@ -147,7 +147,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
     {
         mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
     }
-    ROS_INFO("Agent %i now in this mode %s", mSourceSegmentId, mUAVMode);
+    ROS_INFO("Agent %i now in this mode %s", mSourceSegmentId, mUAVMode.data());
 }
 
 void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& aInputPose)

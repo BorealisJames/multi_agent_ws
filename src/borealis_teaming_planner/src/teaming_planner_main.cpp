@@ -19,7 +19,6 @@ void TeamingPlanner::teamingPlannerMain()
             mHandlerPtr->m_getNumberOfAgentsInTeam = std::bind(&TeamingPlanner::getNumberOfAgentsInTeam, this, std::placeholders::_1);
             mHandlerPtr->m_getOwnAgentID = std::bind(&TeamingPlanner::getOwnAgentId, this, std::placeholders::_1);
             mHandlerPtr->m_getOwnAgentLidarPointCloud = std::bind(&TeamingPlanner::getOwnAgentLidarPointCloud, this, std::placeholders::_1);
-
             mHandlerPtr->m_getPosesForFormationToTrack = std::bind(&TeamingPlanner::getPosesForFormationToTrack_rf, this, std::placeholders::_1); // HIstory of human poses
             mHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhaseAndTimeMap_rf, this, std::placeholders::_1);
             mHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubPhaseAndTime_rf, this, std::placeholders::_1, std::placeholders::_2);
@@ -50,7 +49,11 @@ void TeamingPlanner::teamingPlannerMain()
             mGlobalPathPlannerHandlerPtr->m_getNumberOfAgentsInTeam = std::bind(&TeamingPlanner::getNumberOfAgentsInTeam, this, std::placeholders::_1);
             mGlobalPathPlannerHandlerPtr->m_getOwnAgentID = std::bind(&TeamingPlanner::getOwnAgentId, this, std::placeholders::_1);
             mGlobalPathPlannerHandlerPtr->m_getOwnAgentLidarPointCloud = std::bind(&TeamingPlanner::getOwnAgentLidarPointCloud, this, std::placeholders::_1);
+
+            ROS_INFO("Binding get go there path");
             mGlobalPathPlannerHandlerPtr->m_getGoTherePath = std::bind(&TeamingPlanner::getGoTherePath_cp, this, std::placeholders::_1);
+            ROS_INFO("Finished binding path");
+
             mGlobalPathPlannerHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp, this, std::placeholders::_1);
             mGlobalPathPlannerHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubOwnPhaseAndTime_cp, this, std::placeholders::_1, std::placeholders::_2);
             mGlobalPathPlannerHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearAgentsPoseBuffer_cp, this);
@@ -73,13 +76,12 @@ void TeamingPlanner::teamingPlannerMain()
 
             mGlobalPathPlanner.AttachHandler(mGlobalPathPlannerHandlerPtr);
 
-            ROS_INFO("Finished binding global path planner \n");
-
+            ROS_INFO("Finished binding global path planner ");
             // Set parameters
-            ROS_INFO("Reading parameters \n");
+            ROS_INFO("Reading parameters");
             readRobotFormationParameters();
             mDistributedFormation.SetParameters(mRobotFormationParameters);
-            ROS_INFO("Finished setting parameters \n");
+            ROS_INFO("Finished setting parameters");
             // mGlobalPathPlanner.SetParameters(mGlobalPathPlanParameters);
 
             // Finished init
