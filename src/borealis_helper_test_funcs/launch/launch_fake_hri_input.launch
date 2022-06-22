@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+        <node pkg="borealis_helper_test_funcs" type="quick_pub_hri_input_mode.py" name="quick_pub_hri_input_mode_node" output="screen"/>
+</launch>

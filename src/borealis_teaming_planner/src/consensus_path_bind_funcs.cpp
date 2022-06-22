@@ -17,14 +17,17 @@ bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner:
             totalX += pose_map.second.position.x;
             totalY += pose_map.second.position.y;
             totalZ += pose_map.second.position.z;
+            ROS_INFO("Agent %i: pose_map.second.position.x %f ", mSourceSegmentId, pose_map.second.position.x);
         }
-        avgOfExtremaPoses.position(0) = (totalX / mAgentsPoseMap_rf.size());
-        avgOfExtremaPoses.position(1) = (totalY / mAgentsPoseMap_rf.size());
-        avgOfExtremaPoses.position(2) = (totalZ / mAgentsPoseMap_rf.size());
+        avgOfExtremaPoses.position(0) = (totalX / (mAgentsPoseMap_rf.size() + 1)); // + 1 to include itself
+        avgOfExtremaPoses.position(1) = (totalY / (mAgentsPoseMap_rf.size() + 1));
+        avgOfExtremaPoses.position(2) = (totalZ / (mAgentsPoseMap_rf.size() + 1));
         avgOfExtremaPoses.headingRad = 0;
         tmp_to_send.push_back(avgOfExtremaPoses);
         tmp_to_send.push_back(mGoTherePath_cp.front());
         ROS_INFO("Agent %i: Sending go there path of size %i, mAgentsPoseMap_rf size %i is ", mSourceSegmentId, tmp_to_send.size(), mAgentsPoseMap_rf.size());
+        ROS_INFO("Agent %i: avgOfExtremaPoses = %f, mAgentsPoseMap_rf size %i is ", mSourceSegmentId, avgOfExtremaPoses.position(0), mAgentsPoseMap_rf.size());
+
         goTherePath = tmp_to_send;
         
     }
