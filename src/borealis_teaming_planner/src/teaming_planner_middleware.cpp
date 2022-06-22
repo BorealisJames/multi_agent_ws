@@ -388,6 +388,7 @@ void TeamingPlanner::assignedVirtualPoseMapCallback_rf(const mt_msgs::posevector
 
 void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
 {
+    mDebugVerbose = true;
     DistributedGlobalPathPlanner::Common::PhaseAndTime tmp;
     tmp.phase = static_cast<DistributedGlobalPathPlanner::Common::PHASE>(aPhaseAndTime->phase);
     tmp.timeMicroSecs = aPhaseAndTime->time;
