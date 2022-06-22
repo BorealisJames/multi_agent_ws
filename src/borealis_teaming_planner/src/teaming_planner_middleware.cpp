@@ -33,7 +33,6 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::Co
     mAgentsPoseMap_cp[mSourceSegmentId] = mOwnAgentPose_cp;
     pubOwnPoseFunc_cp(mSourceSegmentId, mOwnAgentPose_cp);
     std::cout << "pose callback" << std::endl;
-    std::cout << mAgentsPoseMap_cp << std::endl;
 }
 
 void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseStampedCovar)
@@ -56,7 +55,6 @@ void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCova
     mOwnAgentPose_cp.headingRad = tmp.yaw;
     mAgentsPoseMap_cp[mSourceSegmentId] = mOwnAgentPose_cp;
     pubOwnPoseFunc_cp(mSourceSegmentId, mOwnAgentPose_cp);
-    std::cout << mAgentsPoseMap_cp << std::endl;
 }
 
 void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
