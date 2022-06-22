@@ -49,6 +49,8 @@ yawBindings={
 
 human_publisher_topic = "/human/mavros/setpoint_position/local"
 uav_all_publisher_topic = "/uav_all/follow_me_target_pose"
+uav1_input_topic = "/uav1/input_pose_stamped"
+uav2_input_topic = "/uav2/input_pose_stamped"
 
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -68,8 +70,12 @@ def print_pos_speed(speed, x, y, z, yaw):
 if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
     rospy.init_node('borealis_teleop')
-    human_pub = rospy.Publisher(human_publisher_topic, PoseStamped, queue_size=5)
-    uav_all_pub = rospy.Publisher(uav_all_publisher_topic, PoseWithCovarianceStamped, queue_size=5)
+    # human_pub = rospy.Publisher(human_publisher_topic, PoseStamped, queue_size=5)
+    # uav_all_pub = rospy.Publisher(uav_all_publisher_topic, PoseWithCovarianceStamped, queue_size=5)
+    uav1_input_pub = rospy.Publisher(uav1_input_topic, PoseStamped, queue_size=5)
+    uav2_input_pub = rospy.Publisher(uav2_input_topic, PoseStamped, queue_size=5)
+
+
     rate = rospy.Rate(20) 
     try:
         x = 0
@@ -142,7 +148,9 @@ if __name__=="__main__":
             tmp_pose_stamped_covariance.header = pose_stamped.header
 
             # human_pub.publish(pose_stamped)
-            uav_all_pub.publish(tmp_pose_stamped_covariance)
+            uav1_input_pub.publish(pose_stamped)
+            uav2_input_pub.publish(pose_stamped)
+            # uav_all_pub.publish(tmp_pose_stamped_covariance)
             rate.sleep()
 
     except Exception as e:
