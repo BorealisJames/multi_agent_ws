@@ -30,9 +30,8 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::Co
     mOwnAgentPose_cp.position(1) = tmp.position.y;
     mOwnAgentPose_cp.position(2) = tmp.position.z;
     mOwnAgentPose_cp.headingRad = tmp.yaw;
-    mAgentsPose_cp[mSourceSegmentId] = mOwnAgentPose_cp;
-    uint32_t huh = mSourceSegmentId;
-    // pubOwnPoseFunc_cp(huh, mOwnAgentPose_cp);
+    mAgentsPoseMap_cp[mSourceSegmentId] = mOwnAgentPose_cp;
+    pubOwnPoseFunc_cp(mSourceSegmentId, mOwnAgentPose_cp);
 }
 
 void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& PoseStampedCovar)
@@ -53,9 +52,8 @@ void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCova
     mOwnAgentPose_cp.position(1) = tmp.position.y;
     mOwnAgentPose_cp.position(2) = tmp.position.z;
     mOwnAgentPose_cp.headingRad = tmp.yaw;
-    mAgentsPose_cp[mSourceSegmentId] = mOwnAgentPose_cp;
-    uint32_t huh = mSourceSegmentId;
-    // pubOwnPoseFunc_cp(huh, mOwnAgentPose_cp);
+    mAgentsPoseMap_cp[mSourceSegmentId] = mOwnAgentPose_cp;
+    pubOwnPoseFunc_cp(mSourceSegmentId, mOwnAgentPose_cp);
 }
 
 void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
@@ -408,7 +406,7 @@ void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSyste
     tmp.position(2) = aSystemPose->position.z;
     tmp.headingRad = aSystemPose->headingRad;
 
-    mAgentsPose_cp[aSystemPose->sourceSegmentId] = tmp;
+    mAgentsPoseMap_cp[aSystemPose->sourceSegmentId] = tmp;
 
     if (mDebugVerbose)
     {

@@ -92,14 +92,14 @@ bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlo
 {
     bool status = true;
 
-    if (!mAgentsPose_cp.empty())
+    if (!mAgentsPoseMap_cp.empty())
     {
-        agentsPose = mAgentsPose_cp;
+        agentsPose = mAgentsPoseMap_cp;
     }
     else
     {
         status = false;
-        ROS_WARN("Agent%d CPH: get mAgentsPose_cp empty!", mSourceSegmentId);
+        ROS_WARN("Agent%d CPH: get mAgentsPoseMap_cp empty!", mSourceSegmentId);
     }
 
     return status;
@@ -337,7 +337,7 @@ bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t aAgentId, const st
 
 void TeamingPlanner::clearAgentsPoseBuffer_cp()
 {
-    mAgentsPose_cp.clear();
+    mAgentsPoseMap_cp.clear();
 }
 
 void TeamingPlanner::clearAgentsPathAndWaypointProgressBuffer_cp()

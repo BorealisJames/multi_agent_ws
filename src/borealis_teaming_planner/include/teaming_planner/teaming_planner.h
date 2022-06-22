@@ -141,7 +141,7 @@ class TeamingPlanner
 
         /* Consensus global path variables */
         DistributedGlobalPathPlanner::Common::Pose mOwnAgentPose_cp;
-        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose> mAgentsPose_cp;
+        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose> mAgentsPoseMap_cp;
         std::vector<DistributedGlobalPathPlanner::Common::Pose> mGoTherePath_cp;
         std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime> mAgentsPhasesAndTimeMap_cp;
         DistributedGlobalPathPlanner::Common::PhaseAndTime mOwnAgentPhaseAndTime_cp;
