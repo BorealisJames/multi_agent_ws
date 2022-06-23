@@ -146,7 +146,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
     {
         mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
     }
-    ROS_INFO("Agent %i now in this mode %s", mSourceSegmentId, mUAVMode.data());
+    ROS_INFO("Agent %i mode: %s activation state:", mSourceSegmentId, mUAVMode.data(), mBoolActivatePlanner.data);
 }
 
 void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& aInputPose)
@@ -326,7 +326,7 @@ void TeamingPlanner::convexRegion3DCallback_rf(const mt_msgs::convexRegion3D::Co
 
     if (mDebugVerbose)
     {
-        ROS_INFO("[Teaming Planner %d]: Convex Region Received from Agent: %d\n", mSourceSegmentId, aConvexRegion3D->sourceSegmentId);
+        ROS_INFO("[Teaming Planner %d]: Convex Region Received from Agent: %d", mSourceSegmentId, aConvexRegion3D->sourceSegmentId);
     }
 
     if (mDebugVerbose)
@@ -380,7 +380,7 @@ void TeamingPlanner::assignedVirtualPoseMapCallback_rf(const mt_msgs::posevector
 
     if(mDebugVerbose)
     {
-        ROS_INFO("Assigned Virtual Position Received from Agent: %d\n", aAssignedVirtualPoseMap->sourceSegmentId);
+        ROS_INFO("Assigned Virtual Position Received from Agent: %d", aAssignedVirtualPoseMap->sourceSegmentId);
     }
 }
 
@@ -395,7 +395,7 @@ void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr&
 
     if (mDebugVerbose)
     {
-        ROS_INFO("[Teaming Planner CP %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
+        ROS_INFO("[Teaming Planner CP %d]: Phase Time Received from Agent: %d", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
         mDebugVerbose = false;
     }
 }
@@ -413,7 +413,7 @@ void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSyste
 
     if (mDebugVerbose)
     {
-        ROS_INFO("[Teaming Planner %d]: System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
+        ROS_INFO("[Teaming Planner %d]: System Pose Received from Agent: %d", mSourceSegmentId, aSystemPose->sourceSegmentId);
         mDebugVerbose = false;
     }
 }
