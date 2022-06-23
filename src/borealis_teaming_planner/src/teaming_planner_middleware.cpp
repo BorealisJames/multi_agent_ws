@@ -385,7 +385,6 @@ void TeamingPlanner::assignedVirtualPoseMapCallback_rf(const mt_msgs::posevector
 }
 
 /* Global Consensus path callbacks*/
-
 void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
 {
     mDebugVerbose = true;
@@ -397,11 +396,13 @@ void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr&
     if (mDebugVerbose)
     {
         ROS_INFO("[Teaming Planner CP %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
+        mDebugVerbose = false;
     }
 }
 
 void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSystemPose)
 {
+    mDebugVerbose = true;
     DistributedGlobalPathPlanner::Common::Pose tmp;
     tmp.position(0) = aSystemPose->position.x;
     tmp.position(1) = aSystemPose->position.y;
@@ -413,11 +414,13 @@ void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSyste
     if (mDebugVerbose)
     {
         ROS_INFO("[Teaming Planner %d]: System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
+        mDebugVerbose = false;
     }
 }
 
 void TeamingPlanner::pathAndProgressCallback_cp(const mt_msgs::pathAndProgress::ConstPtr& aPathAndProgress)
 {
+    mDebugVerbose = true;
     DistributedGlobalPathPlanner::Common::PathAndWaypointProgress agents_path_progress_tmp;
     std::vector<DistributedGlobalPathPlanner::Common::Pose> tmp_poses;
     for (auto pose : aPathAndProgress->poseVector)
@@ -432,10 +435,17 @@ void TeamingPlanner::pathAndProgressCallback_cp(const mt_msgs::pathAndProgress::
     agents_path_progress_tmp.poses = tmp_poses;
     agents_path_progress_tmp.waypointProgress = aPathAndProgress->waypointProgress;
     mAgentsPathAndWaypointProgressMap_cp[aPathAndProgress->sourceSegmentId] = agents_path_progress_tmp;
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: Path and progress recieved! from %i", mSourceSegmentId, aPathAndProgress->sourceSegmentId);
+        mDebugVerbose = false;
+    }
+
 }
 
 void TeamingPlanner::plannedPathCallback_cp(const mt_msgs::posevector::ConstPtr& aPlannedPath)
 {
+    mDebugVerbose = true;
     std::vector<Eigen::Vector3d> tmp_poses;
     for (auto pose : aPlannedPath->poseVector)
     {
@@ -446,10 +456,17 @@ void TeamingPlanner::plannedPathCallback_cp(const mt_msgs::posevector::ConstPtr&
         tmp_poses.push_back(pose_eigen);
     }
     mAgentsPlannedPathMap_cp[aPlannedPath->sourceSegmentId] = tmp_poses;
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: Planned path recieved! from %i", mSourceSegmentId, aPlannedPath->sourceSegmentId);
+        mDebugVerbose = false;
+    }
+
 }
 
 void TeamingPlanner::agentProcessedPathOfAgentsCallback_cp(const mt_msgs::pathAndCostVector::ConstPtr& aPathAndCostVector)
 {
+    mDebugVerbose = true;
     std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost> path_and_cost_tmp_map;
     for (auto path_cost : aPathAndCostVector->pathAndCostVector)
     {
@@ -468,10 +485,18 @@ void TeamingPlanner::agentProcessedPathOfAgentsCallback_cp(const mt_msgs::pathAn
         path_and_cost_tmp_map[path_cost.sourceSegmentId] =  path_and_cost_tmp;
     }
     mAgentsProcessedPathOfAgentsMap_cp[aPathAndCostVector->sourceSegmentId] = path_and_cost_tmp_map;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: aPathAndCostVector recieved! from %i", mSourceSegmentId, aPathAndCostVector->sourceSegmentId);
+        mDebugVerbose = false;
+    }
+
 }
 
 void TeamingPlanner::agentBestProcessedPathCallback_cp(const mt_msgs::posevector::ConstPtr& aBestProcessedPath)
 {
+    mDebugVerbose = true;
     std::vector<Eigen::Vector3d> tmp_poses;
     for (auto pose : aBestProcessedPath->poseVector)
     {
@@ -482,10 +507,18 @@ void TeamingPlanner::agentBestProcessedPathCallback_cp(const mt_msgs::posevector
         tmp_poses.push_back(pose_eigen);
     }
     mAgentsBestProcessedPath_cp[aBestProcessedPath->sourceSegmentId] = tmp_poses;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: aBestProcessedPath recieved! from %i", mSourceSegmentId, aBestProcessedPath->sourceSegmentId);
+        mDebugVerbose = false;
+    }
+
 }
 
 void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray::ConstPtr& aInputPoseArray)
 {
+    mDebugVerbose = true;
     std::vector<DistributedFormation::Common::Pose> tmp_vec;
 
     for (auto pose : aInputPoseArray->poses)
@@ -498,5 +531,12 @@ void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray
         tmp_vec.push_back(tmp_pose);
     }
     mPlannedPathPoses_rf = tmp_vec;
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: ProcessedGoTherePathCallback recieved! from %i", mSourceSegmentId);
+        mDebugVerbose = false;
+    }
+
  
 }

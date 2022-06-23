@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     output_pose_array.poses.append(go_there_poses)
 
-    output_state_list = ["Go_There", "Go_There", "Nil"]
+    output_state_list = ["Distract", "Go_There", "Nil"]
     output_yaw_list = [10.1, 20.5, 30]
 
     borealis_hri_output_msg.uav_pose_array = output_pose_array

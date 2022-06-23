@@ -26,8 +26,6 @@ class transform():
         self.uav1_pose_uwb = PoseStamped()
         self.uav2_pose_uwb = PoseStamped()
         self.mode = String()
-        self.recieved_new_gt_callback_uav1 = False
-        self.recieved_new_gt_callback_uav2 = False
 
         self.recieved_new_ap_callback_uav1 = False
         self.recieved_new_ap_callback_uav2 = False
@@ -47,27 +45,15 @@ class transform():
         rospy.Subscriber(uav1_uwb_pose_topic,  PoseWithCovarianceStamped, self.uav1_callback_uwb)
         rospy.Subscriber(uav2_uwb_pose_topic,  PoseWithCovarianceStamped, self.uav2_callback_uwb)
 
-        # these subscribers are use to deal with cases of go there to not jitter alot
-        rospy.Subscriber('/uav1/command/pose',  PoseWithCovarianceStamped, self.uav1_go_there_callback)
-        rospy.Subscriber('/uav2/command/pose',  PoseWithCovarianceStamped, self.uav2_go_there_callback)
-        rospy.Subscriber('/hri_mode', String, self.mode_callback)
-
         # Publishers
         # Publish topic for planner
-        uav1_publish_topic = "/uav1/teaming_planner/t265assigned_virtual_position"
-        uav2_publish_topic = "/uav2/teaming_planner/t265assigned_virtual_position"
+        uav1_publish_topic = "/uav1/control_manager/mavros_assigned_virtual_position"
+        uav2_publish_topic = "/uav2/control_manager/mavros_assigned_virtual_position"
 
         # uav1_publish_topic = "/uav1/mavros/setpoint_position/local"
         # uav2_publish_topic = "/uav2/mavros/setpoint_position/local"
         uav1_publisher = rospy.Publisher(uav1_publish_topic , PoseStamped,queue_size=1)
         uav2_publisher = rospy.Publisher(uav2_publish_topic , PoseStamped,queue_size=1)
-
-        self.uav1_go_there_yaw = Float64()
-        rospy.Subscriber('/uav1/command/yaw',  Float64, self.uav1_go_there_yaw_callback)
-        self.uav2_go_there_yaw = Float64()
-        rospy.Subscriber('/uav2/command/yaw',  Float64, self.uav2_go_there_yaw_callback)
-        self.uav1_yaw_publisher = rospy.Publisher("/uav1/command/yaw/out" , Float64,queue_size=1)
-        self.uav2_yaw_publisher = rospy.Publisher("/uav2/command/yaw/out" , Float64,queue_size=1)
 
         rate = rospy.Rate(10)
 
@@ -81,34 +67,17 @@ class transform():
             vector_diff_uav1 = PoseStamped()
             vector_diff_uav2 = PoseStamped()
 
-            # This is due to the fact that the teaming_planner module output one single topic uav1/teaming_planner/uwb_assigned_virtual_position
-            # after taking in  go there or follow me from hri.
-            # to ensure transfomration is only done during a new incoming topic, need 2 listen to the original topic of go there
-            if self.mode.data == "Go_There":
-                if self.recieved_new_gt_callback_uav1:
-                    vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
-                    final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
-                    self.cmd1 = final_pose_uav1
-                    self.recieved_new_gt_callback_uav1 = False
+            if self.recieved_new_ap_callback_uav1:
+                vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
+                final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
+                self.cmd1 = final_pose_uav1
+                self.recieved_new_ap_callback_uav1 = False
 
-                elif self.recieved_new_gt_callback_uav2:
-                    vector_diff_uav2 = self.pose_diff(self.uav2_pose_uwb, self.uav2_ap_uwb)
-                    final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
-                    self.cmd2 = final_pose_uav2
-                    self.recieved_new_gt_callback_uav2 = False
-
-            elif self.mode.data == "Follow_Me":
-                if self.recieved_new_ap_callback_uav1:
-                    vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
-                    final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
-                    self.cmd1 = final_pose_uav1
-                    self.recieved_new_ap_callback_uav1 = False
-
-                elif self.recieved_new_ap_callback_uav2:
-                    vector_diff_uav2 = self.pose_diff(self.uav2_pose_uwb, self.uav2_ap_uwb)
-                    final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
-                    self.cmd2 = final_pose_uav2
-                    self.recieved_new_ap_callback_uav2 = False
+            if self.recieved_new_ap_callback_uav2:
+                vector_diff_uav2 = self.pose_diff(self.uav2_pose_uwb, self.uav2_ap_uwb)
+                final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
+                self.cmd2 = final_pose_uav2
+                self.recieved_new_ap_callback_uav2 = False
 
             # diiff refers to uwb_pose and assigned_pose
             print("Mode: ", self.mode.data)
@@ -161,23 +130,6 @@ class transform():
     def uav2_callback_uwb(self,data):
         self.uav2_pose_uwb.pose=data.pose.pose
         self.uav2_pose_uwb.header=data.header
-
-    def uav1_go_there_callback(self,data):
-        self.uav1_go_there_pos=data
-        self.recieved_new_gt_callback_uav1 = True
-
-    def uav2_go_there_callback(self,data):
-        self.uav2_go_there_pos=data
-        self.recieved_new_gt_callback_uav2 = True
-        
-    def mode_callback(self,data):
-        self.mode=data
-
-    def uav1_go_there_yaw_callback(self,data):
-       self.uav1_go_there_yaw=data.data
-
-    def uav2_go_there_yaw_callback(self,data):
-       self.uav2_go_there_yaw=data.data
     
     # rotation
     # Relative rotation q_r from q_1 to q_2
