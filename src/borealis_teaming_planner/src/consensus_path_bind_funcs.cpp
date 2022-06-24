@@ -9,6 +9,7 @@ bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner:
         std::vector<DistributedGlobalPathPlanner::Common::Pose> tmp_to_send;
         tmp_to_send.push_back(mGoTherePath_cp.front());
         goTherePath = tmp_to_send;
+        ROS_INFO("goTherePath send of size %i, goTherePath x: %f", goTherePath.size(), goTherePath.front().position(0));
     }
     else
     {
