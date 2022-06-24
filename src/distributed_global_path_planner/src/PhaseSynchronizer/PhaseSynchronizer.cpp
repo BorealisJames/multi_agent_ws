@@ -688,6 +688,10 @@ namespace DistributedGlobalPathPlanner
             for (auto pose : updatedPath)
             {
                 inputPathWaypoints.push_back(Eigen::Vector2d(pose.position.x(), pose.position.y()));
+                std::cout << "updatedPath pose x:" << pose.position(0) << std::endl;
+                std::cout << "updatedPath pose y:" << pose.position(1) << std::endl;
+                std::cout << "updatedPath pose z:" << pose.position(2) << std::endl;
+
             }
             std::vector<Eigen::Vector2d> outputPlannedPathWaypoints;
             m_pathPlanning2DHandle.plan(inputPathWaypoints, outputPlannedPathWaypoints);
