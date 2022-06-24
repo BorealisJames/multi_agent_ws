@@ -306,6 +306,9 @@ bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t aAgentId, const st
     mt_msgs::posevector tmp_vector;
     geometry_msgs::PoseArray tmp_pose_array;
 
+    ROS_INFO("Trying to publish Processed Go there path!");
+    ROS_INFO("processedGoTherePath size is %i", processedGoTherePath.size());
+
     for (auto path : processedGoTherePath)
     {
         geometry_msgs::Pose tmp;
