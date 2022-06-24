@@ -23,7 +23,7 @@ GoTherePathTracker::InitPathToTrack(const std::vector<Common::Pose>& pathToTrack
     m_wpIndex = 0;
     m_pathCompleted = false;
 
-    if (pathToTrack.size()<2)
+    if (pathToTrack.size()<1)
     {
         return false;
     }
@@ -57,7 +57,7 @@ GoTherePathTracker::GetUpdatedPath(const Common::Pose& currentPose,
 {
     updatedPath.clear();
 
-    if (m_pathToTrack.size()<2)
+    if (m_pathToTrack.size()<1)
     {
         return false;
     }
@@ -73,6 +73,13 @@ GoTherePathTracker::GetUpdatedPath(const Common::Pose& currentPose,
     //if last wp is reached
     if (m_pathCompleted)
     {
+        return true;
+    }
+
+    //handle single point progress. Since there is only 1 point the updated path is always that point
+    if (m_pathToTrack.size()==1)
+    {
+        updatedPath.push_back(m_pathToTrack.at(0));
         return true;
     }
 
@@ -129,7 +136,7 @@ GoTherePathTracker::GetProgressOfPointALongPathToTrack(const Eigen::Vector3d& po
 {
     progress = 0.0;
 
-    if (m_pathToTrack.size()<2)
+    if (m_pathToTrack.size()<1)
     {
         return false;
     }
@@ -137,6 +144,14 @@ GoTherePathTracker::GetProgressOfPointALongPathToTrack(const Eigen::Vector3d& po
     if (m_pathCompleted)
     {
         progress = m_pathToTrack.size()-1;
+        return true;
+    }
+
+    //handle single point progress. Nearer to goal means larger progress
+    if (m_pathToTrack.size() == 1)
+    {
+        double distToGoal = (point-m_pathToTrack.at(0).position).norm();
+        progress = 1.0 / (distToGoal + 1.0);
         return true;
     }
 

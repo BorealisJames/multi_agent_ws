@@ -27,13 +27,13 @@ decimal_t total_distance_(const vec_E<T>& vs){
 }
 
 ///Transform all entries in a vector using given TF
-#define transform_vec3_ transform_vec_<Vec3f, Aff3f>
+#define transform_vec_3_ transform_vec_<Vec3f, Aff3f>
 ///Sum up total distance for vec_Vec2f
-#define total_distance2f_ total_distance_<Vec2f>
+#define total_distance_2f_ total_distance_<Vec2f>
 ///Sum up total distance for vec_Vec3f
-#define total_distance3f_ total_distance_<Vec3f>
+#define total_distance_3f_ total_distance_<Vec3f>
 ///Sum up total distance for vec_Vec2i
-#define total_distance2i_ total_distance_<Vec2i>
+#define total_distance_2i_ total_distance_<Vec2i>
 ///Sum up total distance for vec_Vec3i
-#define total_distance3i_ total_distance_<Vec3i>
+#define total_distance_3i_ total_distance_<Vec3i>
 #endif

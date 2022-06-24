@@ -238,9 +238,9 @@ namespace DistributedGlobalPathPlanner
         std::vector<Common::Pose> goTherePath;
         m_handlerPtr->m_getGoTherePath(goTherePath);
 
-        if (goTherePath.size() < 2)
+        if (goTherePath.size() < 1)
         {
-            std::cout << "Agent" << m_ownAgentID << ": reset as go there path has less than 2 points" << std::endl;
+            std::cout << "Agent" << m_ownAgentID << ": reset as go there path has less than 1 points" << std::endl;
 
             ResetPhase();
             return;
@@ -827,7 +827,7 @@ namespace DistributedGlobalPathPlanner
 
                     Common::PathAndCost pathAndCost;
                     pathAndCost.positions = agentProcessedPlannedPath;
-                    pathAndCost.cost = 1.0 / progress;
+                    pathAndCost.cost = 1.0 / (progress+1.0);
                     m_ownProcessedPathOfAgents[agentPlannedPath.first] = pathAndCost;
                 }
 
