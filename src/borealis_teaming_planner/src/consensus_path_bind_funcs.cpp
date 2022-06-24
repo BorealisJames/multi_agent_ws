@@ -177,6 +177,7 @@ bool TeamingPlanner::pubOwnPlannedPath_cp(const int32_t aAgentId, const std::vec
     {
         mt_msgs::posevector tmp_vec_msg;
         std::vector<mt_msgs::pose> tmp_vec_to_be_assigned;
+        ROS_INFO("Agent %i: Planned path size of %i", mSourceSegmentId, ownPlannedPath.size());
         for (Eigen::Vector3d path: ownPlannedPath)
         {
             mt_msgs::pose tmp;
