@@ -681,7 +681,7 @@ namespace DistributedGlobalPathPlanner
 
             // reset map with new point cloud
             m_pathPlanning2DHandle.resetMap();
-            m_pathPlanning2DHandle.addInflatedObstaclesPoints(m_ownPointCloud);
+            // m_pathPlanning2DHandle.addInflatedObstaclesPoints(m_ownPointCloud);
 
             // plan path with new map and updatedPath
             std::vector<Eigen::Vector2d> inputPathWaypoints;
