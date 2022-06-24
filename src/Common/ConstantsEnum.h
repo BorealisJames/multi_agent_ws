@@ -267,7 +267,8 @@ namespace Entity
         UNDEFINED = 0,
         GO_THERE = 1,
         FOLLOW_ME = 2,
-        DISTRACT_TARGET = 3
+        DISTRACT_TARGET = 3,
+        IDLE = 4
     };
     using MTTaskEnumType = std::underlying_type<MTTaskEnum>::type;
 

@@ -141,9 +141,13 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
     {
         mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
     }
-    if (str2.compare(aUAVmode->data.c_str()) == 0)
+    else if (str2.compare(aUAVmode->data.c_str()) == 0)
     {
         mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
+    }
+    else 
+    {
+        mTask.type = Common::Entity::MTTaskEnum::STOPPED;
     }
     ROS_INFO("Agent %i mode: %s activation state:", mSourceSegmentId, mUAVMode.data(), mBoolActivatePlanner.data);
 }

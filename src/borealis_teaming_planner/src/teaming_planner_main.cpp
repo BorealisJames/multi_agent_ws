@@ -136,6 +136,16 @@ void TeamingPlanner::teamingPlannerMain()
                     break;
 
                 }
+                case Common::Entity::MTTaskEnum::IDLE:
+                {
+                    ROS_INFO("PLANNER IDLING!");                    
+                    if (!mModuleTaskVerbose)
+                    {
+                        //ROS_INFO("Go There\n");
+                        mModuleTaskVerbose = true;
+                    }
+                    break;
+                }
             }
             break;
         case TeamingPlannerConstants::ModuleState::DEACTIVATED:
