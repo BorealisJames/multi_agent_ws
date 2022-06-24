@@ -8,7 +8,6 @@ bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner:
     {
         std::vector<DistributedGlobalPathPlanner::Common::Pose> tmp_to_send;
         tmp_to_send.push_back(mGoTherePath_cp.front());
-        ROS_INFO("Agent %i: Sending go there path of size %i, mAgentsPoseMap_rf size %i is ", mSourceSegmentId, tmp_to_send.size(), mAgentsPoseMap_rf.size());
         goTherePath = tmp_to_send;
     }
     else

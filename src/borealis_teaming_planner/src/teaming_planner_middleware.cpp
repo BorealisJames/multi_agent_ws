@@ -402,7 +402,7 @@ void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr&
 
 void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSystemPose)
 {
-    mDebugVerbose = true;
+    // mDebugVerbose = true;
     DistributedGlobalPathPlanner::Common::Pose tmp;
     tmp.position(0) = aSystemPose->position.x;
     tmp.position(1) = aSystemPose->position.y;
