@@ -691,7 +691,7 @@ namespace DistributedGlobalPathPlanner
             }
             std::vector<Eigen::Vector2d> outputPlannedPathWaypoints;
             m_pathPlanning2DHandle.plan(inputPathWaypoints, outputPlannedPathWaypoints);
-
+            std::cout << "outPutPlannedPathWaypoints size is: " << outputPlannedPathWaypoints.size() << std::endl;
             m_ownPlannedPath.clear();
             for (auto&& waypoint : outputPlannedPathWaypoints)
             {
