@@ -130,7 +130,7 @@ void TeamingPlanner::teamingPlannerMain()
                     }
                     // If new go there data
                     mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
-                    ros::shutdown();
+                    // ros::shutdown();
                     // else
                     // mDistributedFormation.RunDistributedFormation();
                     break;
