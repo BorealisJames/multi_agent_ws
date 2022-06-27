@@ -56,28 +56,28 @@ void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCova
     pubOwnPoseFunc_cp(mSourceSegmentId, mOwnAgentPose_cp);
 }
 
-void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
-{
-    std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_sensor";
-    // sensor_msgs::PointCloud tmpPointClud;
-    // tmpPointClud = *aSystemPointCloud;
-    // tmpPointClud->header.frame_id = "pseudo_lidar_local"; // change this
-    mSystemPointCloud = *aSystemPointCloud;
-    // try
-    // {
-    //     mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, aSystemPointCloud->header.stamp, ros::Duration(0.3));
-    //     mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, *aSystemPointCloud, mSystemPointCloud);
-    // }
-    // catch (tf::TransformException ex)
-    // {
-    //     ROS_ERROR("%s", ex.what());
-    // }
+// void TeamingPlanner::systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud)
+// {
+//     std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_sensor";
+//     // sensor_msgs::PointCloud tmpPointClud;
+//     // tmpPointClud = *aSystemPointCloud;
+//     // tmpPointClud->header.frame_id = "pseudo_lidar_local"; // change this
+//     mSystemPointCloud = *aSystemPointCloud;
+//     // try
+//     // {
+//     //     mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, aSystemPointCloud->header.stamp, ros::Duration(0.3));
+//     //     mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, *aSystemPointCloud, mSystemPointCloud);
+//     // }
+//     // catch (tf::TransformException ex)
+//     // {
+//     //     ROS_ERROR("%s", ex.what());
+//     // }
 
-    if (mDebugVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: Point Cloud Received\n", mSourceSegmentId);
-    }
-}
+//     if (mDebugVerbose)
+//     {
+//         ROS_INFO("[Teaming Planner %d]: Point Cloud Received\n", mSourceSegmentId);
+//     }
+// }
 
 // This will not be needed once grid map is published in pc1
 void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::ConstPtr& aSystemPointCloud2)

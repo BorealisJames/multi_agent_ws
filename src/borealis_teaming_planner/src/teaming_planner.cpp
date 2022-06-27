@@ -89,12 +89,12 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
             }
 
             /* Robot formation handler subsribers */
-            std::string phaseAndTimeTopic_rf = "/uav" + std::to_string(i) + "/teaming_planner/phase_and_time_rf";
-            std::string systemPoseTopic_rf = "/uav" + std::to_string(i) + "/teaming_planner/system_pose_rf";
-            std::string directionUtilityTopic_rf = "/uav" + std::to_string(i) + "/teaming_planner/direction_utility_rf";
-            std::string convexRegion2DTopic_rf = "/uav" + std::to_string(i) + "/teaming_planner/convex_region_2D_rf";
-            std::string convexRegion3DTopic_rf = "/uav" + std::to_string(i) + "/teaming_planner/convex_region_3D_rf";
-            std::string assignedVirtualPoseMapTopic_rf = "/uav" + std::to_string(i) + "/teaming_planner/assigned_virtual_pose_map_rf";
+            std::string phaseAndTimeTopic_rf = "/uav" + std::to_string(i) + "/borealis_teaming_planner/phase_and_time_rf";
+            std::string systemPoseTopic_rf = "/uav" + std::to_string(i) + "/borealis_teaming_planner/system_pose_rf";
+            std::string directionUtilityTopic_rf = "/uav" + std::to_string(i) + "/borealis_teaming_planner/direction_utility_rf";
+            std::string convexRegion2DTopic_rf = "/uav" + std::to_string(i) + "/borealis_teaming_planner/convex_region_2D_rf";
+            std::string convexRegion3DTopic_rf = "/uav" + std::to_string(i) + "/borealis_teaming_planner/convex_region_3D_rf";
+            std::string assignedVirtualPoseMapTopic_rf = "/uav" + std::to_string(i) + "/borealis_teaming_planner/assigned_virtual_pose_map_rf";
 
             ros::Subscriber phaseAndTimeSubscriber_rf = mNh.subscribe<mt_msgs::phaseAndTime>(phaseAndTimeTopic_rf, 10, &TeamingPlanner::phaseTimeCallback_rf, this);
             ros::Subscriber systemPoseSubscriber_rf = mNh.subscribe<mt_msgs::pose>(systemPoseTopic_rf, 10, &TeamingPlanner::systemPoseCallback_rf, this);
@@ -111,13 +111,13 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
             mUAVAssignedVirtualPoseMapSubscriberVector_rf.push_back(convexRegion3DSuassignedVirtualPoseMapSubscriber_rf);
 
             /* Consensus global path subsribers */
-            std::string phaseTimeTopic_cp = "/uav" + std::to_string(i) + "/teaming_planner/phase_and_time_cp";
-            std::string systemPoseTopic_cp = "/uav" + std::to_string(i) + "/teaming_planner/system_pose_cp";
-            std::string pathAndProgressTopic_cp = "/uav" + std::to_string(i) + "/teaming_planner/path_and_progress_cp";
-            std::string plannedPathTopic_cp = "/uav" + std::to_string(i) + "/teaming_planner/plannned_path_cp";
-            std::string processedPathTopic_cp = "/uav" + std::to_string(i) + "/teaming_planner/processed_path_cp";
-            std::string bestProcessedTopic_cp = "/uav" + std::to_string(i) + "/teaming_planner/best_processed_path_cp";
-            std::string agentsBestProcessedPathTopic_cp = "/uav" + std::to_string(i) + "/teaming_planner/processed_path_of_agents_cp";
+            std::string phaseTimeTopic_cp = "/uav" + std::to_string(i) + "/borealis_teaming_planner/phase_and_time_cp";
+            std::string systemPoseTopic_cp = "/uav" + std::to_string(i) + "/borealis_teaming_planner/system_pose_cp";
+            std::string pathAndProgressTopic_cp = "/uav" + std::to_string(i) + "/borealis_teaming_planner/path_and_progress_cp";
+            std::string plannedPathTopic_cp = "/uav" + std::to_string(i) + "/borealis_teaming_planner/plannned_path_cp";
+            std::string processedPathTopic_cp = "/uav" + std::to_string(i) + "/borealis_teaming_planner/processed_path_cp";
+            std::string bestProcessedTopic_cp = "/uav" + std::to_string(i) + "/borealis_teaming_planner/best_processed_path_cp";
+            std::string agentsBestProcessedPathTopic_cp = "/uav" + std::to_string(i) + "/borealis_teaming_planner/processed_path_of_agents_cp";
 
             ros::Subscriber phaseAndTimeSubscriber_cp = mNh.subscribe<mt_msgs::phaseAndTime>(phaseTimeTopic_cp, 10, &TeamingPlanner::phaseTimeCallback_cp, this);
             ros::Subscriber UAVSystemPoseSubscriber_cp = mNh.subscribe<mt_msgs::pose>(systemPoseTopic_cp, 10, &TeamingPlanner::systemPoseCallback_cp, this);

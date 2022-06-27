@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     output_pose_array.poses.append(go_there_poses)
 
-    output_state_list = ["Go_There", "Nil", "Nil"]
+    output_state_list = ["Nil", "Go_There", "Nil"]
     output_yaw_list = [10.1, 20.5, 30]
 
     borealis_hri_output_msg.uav_pose_array = output_pose_array
@@ -54,35 +54,35 @@ if __name__ == '__main__':
         go_there_poses1 = Pose()
         go_there_poses2 = Pose()
 
-        go_there_poses.position.x = 3 + 1
-        go_there_poses.position.y = 1
-        go_there_poses.position.z = 2
+        go_there_poses.position.x = 3
+        go_there_poses.position.y = 3
+        go_there_poses.position.z = 1.3
         go_there_poses.orientation.x = 0
         go_there_poses.orientation.y = 0
         go_there_poses.orientation.z = 0
         go_there_poses.orientation.w = 1
 
-        output_pose_array.poses.append(go_there_poses)
-        pose_stamped.pose = go_there_poses
-
-        go_there_poses1.position.x = 3 + 1
-        go_there_poses1.position.y = 1
-        go_there_poses1.position.z = 2
+        go_there_poses1.position.x = 3
+        go_there_poses1.position.y = 3
+        go_there_poses1.position.z = 1.3
         go_there_poses1.orientation.x = 0
         go_there_poses1.orientation.y = 0
         go_there_poses1.orientation.z = 0
         go_there_poses1.orientation.w = 1
-        output_pose_array.poses.append(go_there_poses1)
 
-        go_there_poses2.position.x = 2 
-        go_there_poses2.position.y = 1
-        go_there_poses2.position.z = 2
+        go_there_poses2.position.x = 3
+        go_there_poses2.position.y = 3
+        go_there_poses2.position.z = 1.3
         go_there_poses2.orientation.x = 0
         go_there_poses2.orientation.y = 0
         go_there_poses2.orientation.z = 0
         go_there_poses2.orientation.w = 1
+
+        output_pose_array.poses.append(go_there_poses)
+        output_pose_array.poses.append(go_there_poses1)
         output_pose_array.poses.append(go_there_poses2)
 
+        pose_stamped.pose = go_there_poses
         borealis_hri_output_msg.uav_pose_array = output_pose_array
         borealis_hri_output_msg.uav_state_list = output_state_list
         borealis_hri_output_msg.uav_yaw_list = output_yaw_list

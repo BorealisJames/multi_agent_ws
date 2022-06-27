@@ -193,7 +193,7 @@ class TeamingPlanner
         // void humanSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aHumanSystemPose);
         // void selfSystemPoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& aSelfSystemPose);
         void systemPoseCallback_rf(const mt_msgs::pose::ConstPtr& aSystemPose);
-        void systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud);
+        // void systemPointCloudCallback(const sensor_msgs::PointCloud::ConstPtr& aSystemPointCloud);
 
         void phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime);
         void systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSystemPose);
