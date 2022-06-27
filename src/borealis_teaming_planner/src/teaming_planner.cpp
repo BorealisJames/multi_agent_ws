@@ -67,11 +67,11 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mOwnPlannedPathPublisher_cp = mNh.advertise<mt_msgs::posevector>("/plannned_path_cp", 10);
         mOwnProcessedPathOfAgentsPublisher_cp = mNh.advertise<mt_msgs::pathAndCostVector>("/processed_path_of_agents_cp", 10); 
         mOwnBestProcessedPath_cpPublisher_cp = mNh.advertise<mt_msgs::posevector>("/best_processed_path_cp", 10);
-        mProcessedGoTherePathPublisher_cp = mNh.advertise<geometry_msgs::PoseArray>("processed_go_there_path", 10); 
+        mProcessedGoTherePathPublisher_cp = mNh.advertise<geometry_msgs::PoseArray>("/processed_go_there_path", 10); 
 
         // Subscribers 
         mGoalSubscriber = mNh.subscribe<mt_msgs::pose>("/goal", 10, &TeamingPlanner::goalCallback, this);
-        mProcessedGoTherePathSubscriber = mNh.subscribe<geometry_msgs::PoseArray>("processed_go_there_path", 10, &TeamingPlanner::ProcessedGoTherePathCallback, this);
+        mProcessedGoTherePathSubscriber = mNh.subscribe<geometry_msgs::PoseArray>("/processed_go_there_path", 10, &TeamingPlanner::ProcessedGoTherePathCallback, this);
         // mHumanSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/human_input_pose", 10, &TeamingPlanner::humanSystemPoseCallback, this);
         
         for (int i = 1; i <= mNumOfAgents; i++)

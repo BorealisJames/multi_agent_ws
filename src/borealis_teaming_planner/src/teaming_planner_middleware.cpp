@@ -154,6 +154,8 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
 
 void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& aInputPose)
 {
+    mDebugVerbose = true;
+    
     if(mTask.type == Common::Entity::MTTaskEnum::FOLLOW_ME)
     {
         // Add this input pose into its own history of human poses        

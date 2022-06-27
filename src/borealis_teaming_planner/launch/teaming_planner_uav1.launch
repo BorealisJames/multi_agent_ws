@@ -6,7 +6,7 @@
     <node name="borealis_teaming_planner" pkg="borealis_teaming_planner" type="borealis_teaming_planner_node" output="screen" clear_params="true">
 
       <rosparam command="load" file="$(find borealis_teaming_planner)/config/teaming_planner_config_uav1.yaml"/>
-      <remap from="/activate_planner" to="borealis_teaming_planner/activate_planner"/>
+      <remap from="/activate_planner" to="teaming_planner/activate_planner"/>
       <remap from="/assigned_virtual_position_rf" to="borealis_teaming_planner/uwb_assigned_virtual_position_debug"/>
       <remap from="/assigned_virtual_pose_map_rf" to="borealis_teaming_planner/assigned_virtual_pose_map_rf"/>
       <remap from="/convex_region_2D_rf" to="borealis_teaming_planner/convex_region_2D_rf"/>
@@ -25,7 +25,9 @@
       <remap from="/plannned_path_cp" to="borealis_teaming_planner/plannned_path_cp"/>
       <remap from="/processed_path_of_agents_cp" to="borealis_teaming_planner/processed_path_of_agents_cp"/>
       <remap from="/best_processed_path_cp" to="borealis_teaming_planner/best_processed_path_cp"/>
+      <remap from="/processed_go_there_path" to="processed_go_there_path"/>
 
+    
             <!-- <remap from="/task" to="/task"/>
       <remap from="/control_state" to="control/state"/> -->
       <!-- <remap from= "/human_input_pose" to="/uav_all/follow_me_target_pose"/> -->
