@@ -87,6 +87,7 @@ void TeamingPlanner::teamingPlannerMain()
             // Finished init
             mModuleState = TeamingPlannerConstants::ModuleState::READY;
             mModuleStateVerbose = false;
+            mDebugVerbose = true;
             mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
             mNumberOfAgentsInTeam = 2;
             break;

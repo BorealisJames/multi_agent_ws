@@ -156,8 +156,7 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
 {
     if(mTask.type == Common::Entity::MTTaskEnum::FOLLOW_ME)
     {
-        // Add this input pose into its own history of human poses
-    
+        // Add this input pose into its own history of human poses        
         geometry_msgs::PoseStamped tmp_pose; 
         tmp_pose.header =  aInputPose->header;
         tmp_pose.pose =  aInputPose->pose;
@@ -184,14 +183,9 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
         {
             mHistoryOfHumanPosesReceived = true;
         }
-        else
-        {
-            // do nothing.
-        }
-
         if (mDebugVerbose)
         {
-            ROS_INFO("[Teaming Planner %d]: Human System Pose Received\n", mSourceSegmentId);
+            ROS_INFO("[Teaming Planner %d]: Follow Me Input pose Received\n", mSourceSegmentId);
         }
     }
     
@@ -209,6 +203,11 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
 
         mGoTherePath_cp = tmp_vec;
     }
+        if (mDebugVerbose)
+        {
+            ROS_INFO("[Teaming Planner %d]: Go there Input pose Received\n", mSourceSegmentId);
+        }
+
 }
 
 void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8::ConstPtr& aNumberOfAgents)
