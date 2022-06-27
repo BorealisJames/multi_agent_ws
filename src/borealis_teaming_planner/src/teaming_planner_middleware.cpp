@@ -204,6 +204,7 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
         tmp_vec.push_back(tmp);
 
         mGoTherePath_cp = tmp_vec;
+        ROS_INFO("[Teaming Planner %d]: Go there Input pose Received %d\n", mSourceSegmentId, tmp.position(0));
     }
         if (mDebugVerbose)
         {

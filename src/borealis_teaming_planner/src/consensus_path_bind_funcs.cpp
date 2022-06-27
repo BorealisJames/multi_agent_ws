@@ -305,7 +305,6 @@ bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t aAgentId, const st
 {
     bool status = true;
     
-    mt_msgs::posevector tmp_vector;
     geometry_msgs::PoseArray tmp_pose_array;
 
     ROS_INFO("Trying to publish Processed Go there path!");
@@ -327,7 +326,7 @@ bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t aAgentId, const st
 
     tmp_pose_array.header.stamp = ros::Time::now();
 
-    if (!tmp_vector.poseVector.empty())
+    if (!tmp_pose_array.poses.empty())
     {
         mProcessedGoTherePathPublisher_cp.publish(tmp_pose_array);
         status = status && true;

@@ -15,7 +15,7 @@ if __name__ == '__main__':
     hri_output_topic = "/borealis_hri_output_topic"
 
     uav1_input_pose_toppic = "/uav1/input_pose_stamped"
-    uav2_input_pose_toppic = "/uav1/input_pose_stamped"
+    uav2_input_pose_toppic = "/uav2/input_pose_stamped"
     uav1_input_pose_publisher = rospy.Publisher(uav1_input_pose_toppic, PoseStamped, queue_size=10)
     uav2_input_pose_publisher = rospy.Publisher(uav2_input_pose_toppic, PoseStamped, queue_size=10)
 
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         go_there_poses2 = Pose()
 
         go_there_poses.position.x = 3
-        go_there_poses.position.y = 3
+        go_there_poses.position.y = -3
         go_there_poses.position.z = 1.3
         go_there_poses.orientation.x = 0
         go_there_poses.orientation.y = 0
@@ -63,7 +63,7 @@ if __name__ == '__main__':
         go_there_poses.orientation.w = 1
 
         go_there_poses1.position.x = 3
-        go_there_poses1.position.y = 3
+        go_there_poses1.position.y = -3
         go_there_poses1.position.z = 1.3
         go_there_poses1.orientation.x = 0
         go_there_poses1.orientation.y = 0
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         go_there_poses1.orientation.w = 1
 
         go_there_poses2.position.x = 3
-        go_there_poses2.position.y = 3
+        go_there_poses2.position.y = -3
         go_there_poses2.position.z = 1.3
         go_there_poses2.orientation.x = 0
         go_there_poses2.orientation.y = 0
