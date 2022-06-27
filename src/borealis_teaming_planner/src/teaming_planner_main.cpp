@@ -86,8 +86,6 @@ void TeamingPlanner::teamingPlannerMain()
 
             // Finished init
             mModuleState = TeamingPlannerConstants::ModuleState::READY;
-            mModuleStateVerbose = false;
-            mDebugVerbose = true;
             mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
             mNumberOfAgentsInTeam = 2;
             break;
@@ -115,7 +113,7 @@ void TeamingPlanner::teamingPlannerMain()
                 {
                     if (!mModuleTaskVerbose)
                     {
-                        //ROS_INFO("Follow Me\n");
+                        ROS_INFO("Follow Me\n");
                         mModuleTaskVerbose = true;
                     }
                     mDistributedFormation.RunDistributedFormation();
@@ -129,11 +127,15 @@ void TeamingPlanner::teamingPlannerMain()
                         //ROS_INFO("Go There\n");
                         mModuleTaskVerbose = true;
                     }
-                    // If new go there data
-                    mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
-                    // ros::shutdown();
-                    // else
-                    // mDistributedFormation.RunDistributedFormation();
+                    if (mNewPathPlan)
+                    {
+                        mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
+                        mNewPathPlan = false;
+                    }
+                    else
+                    {
+                        mDistributedFormation.RunDistributedFormation();
+                    }
                     break;
 
                 }

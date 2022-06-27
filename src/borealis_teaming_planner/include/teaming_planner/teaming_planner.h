@@ -86,7 +86,8 @@ class TeamingPlanner
         tf::TransformListener mPointCloudTransformListener;
         tf::TransformListener mPointCloud2TransformListener;
         bool mHistoryOfHumanPosesReceived;
-        bool useUWB;
+        bool mUseUWB;
+        bool mNewPathPlan;
         std_msgs::Bool mBoolActivatePlanner; 
         geometry_msgs::PoseStamped mInputUAVPoseStamped;
         std::string mUAVMode;

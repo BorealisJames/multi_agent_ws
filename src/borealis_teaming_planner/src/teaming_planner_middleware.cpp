@@ -144,6 +144,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
     else if (str2.compare(aUAVmode->data.c_str()) == 0)
     {
         mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
+        mNewPathPlan = true;
     }
     else 
     {

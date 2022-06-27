@@ -16,6 +16,8 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mHistoryOfHumanPosesReceived(false),
         mModuleStateVerbose(false),
         mModuleTaskVerbose(false),
+        mNewPathPlan(false),
+        mDebugVerbose(true),
         mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>()),
         mGlobalPathPlannerHandlerPtr(std::make_shared<DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler>()),
         mAgentsPoseMap_cp(),
@@ -34,10 +36,10 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConfigFileReader.getParam(nhPrivate, "intervalDistance", mIntervalDistance, 0.5);
         mConfigFileReader.getParam(nhPrivate, "planningHorizon", mPlanningHorizon, 25);
         mConfigFileReader.getParam(nhPrivate, "desiredHeight", mDesiredHeight, 1.2);
-        mConfigFileReader.getParam(nhPrivate, "useUWB", useUWB, false);
+        mConfigFileReader.getParam(nhPrivate, "useUWB", mUseUWB, false);
 
         // Subscribers
-        if (useUWB)
+        if (mUseUWB)
         {
             mSelfSystemPoseSubscriber = mNh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/system_pose", 10, &TeamingPlanner::selfSystemPoseCallbackUWB, this);
         }
