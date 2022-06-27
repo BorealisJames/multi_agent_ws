@@ -325,6 +325,7 @@ bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t aAgentId, const st
     }
 
     tmp_pose_array.header.stamp = ros::Time::now();
+    tmp_pose_array.header.frame_id = "/odom";
 
     if (!tmp_pose_array.poses.empty())
     {
