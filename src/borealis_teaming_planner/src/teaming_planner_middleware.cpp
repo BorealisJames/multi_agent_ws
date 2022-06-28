@@ -524,7 +524,7 @@ void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSyste
     
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aSystemPose->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
-        // mDebugVerbose = true;
+        mDebugVerbose = true;
         DistributedGlobalPathPlanner::Common::Pose tmp;
         tmp.position(0) = aSystemPose->position.x;
         tmp.position(1) = aSystemPose->position.y;
