@@ -112,7 +112,7 @@ if __name__ == '__main__':
         uav1_number_of_agents_publisher.publish(1)
         uav2_number_of_agents_publisher.publish(1)
 
-        uav1_hri_mode_pose_topic_publisher.publish(go_there_to_send)
+        uav1_hri_mode_pose_topic_publisher.publish(follow_me_to_send)
         uav2_hri_mode_pose_topic_publisher.publish("Nil")
 
         rate.sleep()

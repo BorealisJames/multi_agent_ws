@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     hri_output_publisher = rospy.Publisher(hri_output_topic, Borealis_HRI_Output, queue_size=10)
 
-    rate = rospy.Rate(0.1) # 10hz
+    rate = rospy.Rate(1) # 10hz
     while not rospy.is_shutdown():
 
         borealis_hri_output_msg = Borealis_HRI_Output()
