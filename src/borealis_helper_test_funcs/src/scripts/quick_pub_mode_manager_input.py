@@ -2,26 +2,45 @@
 
 ## Publishes a topic with the the with/after tf transforms
   
+import string
 import rospy
 from geometry_msgs.msg import PoseStamped,PoseWithCovarianceStamped, PoseArray, Pose
 from nav_msgs.msg import Odometry
 from tf2_msgs.msg import TFMessage
-from std_msgs.msg import Int32, Float64, String
+from std_msgs.msg import Int32, Float64, String, Bool, Int8
 from borealis_hri_msgs.msg import Borealis_HRI_Output
 import random
 
 if __name__ == '__main__':
-    rospy.init_node('new_hri_input')
+    rospy.init_node('Pub_new_input')
     hri_output_topic = "/borealis_hri_output_topic"
+
+    uav1_hri_mode_pose_topic = "/uav1/hri_mode"
+    uav2_hri_mode_pose_topic = "/uav2/hri_mode"
 
     uav1_input_pose_toppic = "/uav1/input_pose_stamped"
     uav2_input_pose_toppic = "/uav2/input_pose_stamped"
+
+    uav1_number_of_agents_in_team = "/uav1/number_of_agents_in_team"
+    uav2_number_of_agents_in_team = "/uav2/number_of_agents_in_team"
+
+    uav_1_activate_planner_topic = "/uav1/teaming_planner/activate_planner"
+    uav_2_activate_planner_topic = "/uav2/teaming_planner/activate_planner"
+
     uav1_input_pose_publisher = rospy.Publisher(uav1_input_pose_toppic, PoseStamped, queue_size=10)
     uav2_input_pose_publisher = rospy.Publisher(uav2_input_pose_toppic, PoseStamped, queue_size=10)
 
+    uav1_number_of_agents_publisher = rospy.Publisher(uav1_number_of_agents_in_team, Int8, queue_size=10)
+    uav2_number_of_agents_publisher = rospy.Publisher(uav2_number_of_agents_in_team, Int8, queue_size=10)
+
+    uav1_activate_planner_publisher = rospy.Publisher(uav_1_activate_planner_topic, Bool, queue_size=10)
+    uav2_activate_planner_publisher = rospy.Publisher(uav_2_activate_planner_topic, Bool, queue_size=10)
+
+    uav1_hri_mode_pose_topic_publisher = rospy.Publisher(uav1_hri_mode_pose_topic, String, queue_size=10)
+    uav2_hri_mode_pose_topic_publisher = rospy.Publisher(uav2_hri_mode_pose_topic, String, queue_size=10)
+
     borealis_hri_output_msg = Borealis_HRI_Output()
     output_pose_array = PoseArray()
-
     go_there_poses = Pose()
 
     go_there_poses.position.x = 0
@@ -46,13 +65,16 @@ if __name__ == '__main__':
     rate = rospy.Rate(1) # 10hz
     while not rospy.is_shutdown():
 
-        borealis_hri_output_msg = Borealis_HRI_Output()
-        output_pose_array = PoseArray()
         pose_stamped = PoseStamped()
 
         go_there_poses = Pose()
         go_there_poses1 = Pose()
         go_there_poses2 = Pose()
+
+        bool_to_send = True
+
+        go_there_to_send = String("Go_There")
+        follow_me_to_send = String("Follow_Me")
 
         go_there_poses.position.x = 3
         go_there_poses.position.y = -3
@@ -78,17 +100,20 @@ if __name__ == '__main__':
         go_there_poses2.orientation.z = 0
         go_there_poses2.orientation.w = 1
 
-        output_pose_array.poses.append(go_there_poses)
-        output_pose_array.poses.append(go_there_poses1)
-        output_pose_array.poses.append(go_there_poses2)
-
         pose_stamped.pose = go_there_poses
-        borealis_hri_output_msg.uav_pose_array = output_pose_array
-        borealis_hri_output_msg.uav_state_list = output_state_list
-        borealis_hri_output_msg.uav_yaw_list = output_yaw_list
+        pose_stamped.header.stamp = rospy.Time.now()
 
-        hri_output_publisher.publish(borealis_hri_output_msg)
-        # uav1_input_pose_publisher.publish(pose_stamped)
-        # uav2_input_pose_publisher.publish(pose_stamped)
+        uav1_input_pose_publisher.publish(pose_stamped)
+        uav2_input_pose_publisher.publish(pose_stamped)
+
+        uav1_activate_planner_publisher.publish(bool_to_send)
+        uav2_activate_planner_publisher.publish(bool_to_send)
+
+        uav1_number_of_agents_publisher.publish(1)
+        uav2_number_of_agents_publisher.publish(1)
+
+        uav1_hri_mode_pose_topic_publisher.publish(go_there_to_send)
+        uav2_hri_mode_pose_topic_publisher.publish("Nil")
+
         rate.sleep()
         print("Done")
