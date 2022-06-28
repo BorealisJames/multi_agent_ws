@@ -111,7 +111,7 @@ class TeamingPlanner
                     
         /* Multi Robot formation variables used by handler funcs*/
         std::vector<DistributedFormation::Common::Pose> mHistoryOfHumanPoses_rf;
-        std::vector<DistributedFormation::Common::Pose> mPlannedPathPoses_rf;
+        std::vector<DistributedFormation::Common::Pose> mProcessedGoTherePath;
         DistributedFormation::Common::Pose mHumanSystemPose_rf;
         DistributedFormation::Common::Pose mSelfSystemPose_rf;
         std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime> mAgentsPhaseAndTimeMap_rf;

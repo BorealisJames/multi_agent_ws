@@ -292,10 +292,10 @@ bool TeamingPlanner::getPosesForFormationToTrack_rf(std::vector<DistributedForma
     
     if (mTask.type == Common::Entity::MTTaskEnum::GO_THERE)
     {
-        if (!posesForFormationToTrack.empty())
+        if (!mProcessedGoTherePath.empty())
         {
             // posesForFormationToTrack = ;
-            posesForFormationToTrack = mPlannedPathPoses_rf;
+            posesForFormationToTrack = mProcessedGoTherePath;
             status = true;
         }
         else

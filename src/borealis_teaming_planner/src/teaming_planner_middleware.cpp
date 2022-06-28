@@ -536,7 +536,8 @@ void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray
         tmp_pose.headingRad = 0; 
         tmp_vec.push_back(tmp_pose);
     }
-    mPlannedPathPoses_rf = tmp_vec;
+    mProcessedGoTherePath = tmp_vec;
+
     mNewPathPlan = false;
 
     if (mDebugVerbose)
