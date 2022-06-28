@@ -5,6 +5,7 @@
 #include <ros/subscribe_options.h>
 #include <unordered_map>
 #include <string>
+#include <algorithm>
 
 #include "../../../distributed_multi_robot_formation/src/Common/Common.h"
 #include "../../../distributed_multi_robot_formation/src/DistributedMultiRobotFormation.h"

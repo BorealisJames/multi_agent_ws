@@ -328,6 +328,7 @@ namespace DistributedFormation
         if (m_agentsPose.size() != m_numberOfAgentsInTeam)
         {
             std::cout << "Agent" << m_ownAgentID << ": reset in position update of agents" << std::endl;
+            std::cout << "Agent" << m_ownAgentID << ": m_agentsPose.size() =" << m_agentsPose.size() << " does not match m_numberOfAgentsInTeam =" <<  m_numberOfAgentsInTeam << std::endl;
 
             ResetPhase();
             return;
