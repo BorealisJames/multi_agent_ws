@@ -108,7 +108,9 @@ namespace Formation2DWithYaw
 
         //get formation to be pushed into vector according to priority;
         std::vector <Formation2DBase::Ptr> formation2DBasePtrVec;
+        std::cout << "PopulateVectorWithFormationInOrderOfPriority " << std::endl; 
         PopulateVectorWithFormationInOrderOfPriority(numberOfAgents, formation2DBasePtrVec);
+        std::cout << "PopulateVectorWithFormationInOrderOfPriority done " << std::endl; 
 
         Eigen::Matrix<double, Eigen::Dynamic, 1> optPositions2DInFormationVec;
         double minCost = DBL_MAX;
@@ -136,7 +138,9 @@ namespace Formation2DWithYaw
             // Choose ifopt solver (IPOPT or SNOPT), set some parameters and solve.
             auto solver = std::make_shared<ifopt::IpoptSolver>();
             solver->SetOption("max_cpu_time", 5.0);
+            std::cout << "Before " << std::endl; 
             solver->Solve(nlp);
+            std::cout << "after " << std::endl; 
 
             Eigen::VectorXd optVaraiblesVec = nlp.GetVariableValues();
             double optRefDeltaX = optVaraiblesVec(0);

@@ -139,7 +139,7 @@ namespace Formation2D
                 opt.SetFormation2DTri3Agents(formation2DTri3Agents);
                 std::cout << "opt SetFormation2DTri3Agents done " << std::endl;
                 opt.SetFormation2DLine3Agents(formation2DLine3Agents);
-                std::cout << "opt.SetFormation2DLine3Agents" << std::endl;
+                std::cout << "opt.SetFormation2DLine3Agents done" << std::endl;
                 std::cout << "opt.GetOptimizedPositions2DInFormation" << std::endl;
                 retVal = opt.GetOptimizedPositions2DInFormation (numberOfAgents,
                                                                     agentRadius,
