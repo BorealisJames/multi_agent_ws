@@ -130,12 +130,17 @@ namespace Formation2D
                                                                     1.0);
                 formation2DLine3Agents.SetDesiredDistanceBetweenAgents(desiredAgentSeperationForLine);
 
+                std::cout << "opt init" << std::endl;
                 Formation2DWithYaw::Optimize2DFormation opt;
                 opt.SetFormation2DPoint1Agent(formation2DPoint1Agent);
+                std::cout << "opt SetFormation2DPoint1Agent done " << std::endl;
                 opt.SetFormation2DAbreast2Agents(formation2DAbreast2Agents);
+                std::cout << "opt SetFormation2DAbreast2Agents done " << std::endl;
                 opt.SetFormation2DTri3Agents(formation2DTri3Agents);
+                std::cout << "opt SetFormation2DTri3Agents done " << std::endl;
                 opt.SetFormation2DLine3Agents(formation2DLine3Agents);
-
+                std::cout << "opt.SetFormation2DLine3Agents" << std::endl;
+                std::cout << "opt.GetOptimizedPositions2DInFormation" << std::endl;
                 retVal = opt.GetOptimizedPositions2DInFormation (numberOfAgents,
                                                                     agentRadius,
                                                                     weightForDesiredPosition,

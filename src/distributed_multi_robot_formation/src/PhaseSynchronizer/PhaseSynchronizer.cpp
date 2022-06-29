@@ -1045,27 +1045,27 @@ namespace DistributedFormation
                     double optDeltaX, optDeltaY, optDeltaYaw, optDeltaSize;
                     Common::Formation2DType formation2DType;
                     std::cout << "HOHOHOHO MERRY CHRISTMAS" << std::endl;
-                    std::cout << "line 1" << m_numberOfAgentsInTeam << std::endl;
-                    std::cout << "line 2" << m_agentRadius << std::endl;
-                    std::cout << "line 3" << m_desiredDistanceInLineFormation << std::endl;
-                    std::cout << "line 4" << m_desiredDistanceInTriFormation << std::endl;
-                    std::cout << "line 5" << m_desiredDistanceInLineFormation << std::endl;
-                    std::cout << "line 6" << m_goal.position.x << std::endl;
-                    std::cout << "line 7" << m_goal.position.y << std::endl;
-                    std::cout << "line 8" << Common::MinusPiToPi(m_goal.headingRad + m_incrementOffsetToFormationYaw) << std::endl;
-                    std::cout << "line 9" << m_weightForGoal << std::endl;
-                    std::cout << "line 10" << m_weightForRotation << std::endl;
-                    std::cout << "line 11" << m_weightForSize << std::endl;
-                    std::cout << "line 12" << AReduced << std::endl;
-                    std::cout << "line 13" <<  bReduced << std::endl;
-                    std::cout << "line 14" << m_desiredHeight << std::endl;
-                    std::cout << "line 15" << m_priorityPenalty << std::endl;
-                    std::cout << "line 16 skipped" << std::endl;
-                    std::cout << "line 17" << optDeltaX << std::endl;
-                    std::cout << "line 18" << optDeltaY << std::endl;
-                    std::cout << "line 19" << optDeltaYaw << std::endl;
-                    std::cout << "line 20" << optDeltaSize << std::endl;
-                    std::cout << "line 21 skipped" << std::endl;
+                    std::cout << "m_numberOfAgentsInTeam " << m_numberOfAgentsInTeam << std::endl;
+                    std::cout << "m_agentRadius " << m_agentRadius << std::endl;
+                    std::cout << "m_desiredDistanceInLineFormation " << m_desiredDistanceInLineFormation << std::endl;
+                    std::cout << "m_desiredDistanceInTriFormation " << m_desiredDistanceInTriFormation << std::endl;
+                    std::cout << "m_desiredDistanceInLineFormation" << m_desiredDistanceInLineFormation << std::endl;
+                    std::cout << "m_goal.position.x " << m_goal.position.x << std::endl;
+                    std::cout << "m_goal.position.y " << m_goal.position.y << std::endl;
+                    std::cout << "m_goal.headingRad offset " << Common::MinusPiToPi(m_goal.headingRad + m_incrementOffsetToFormationYaw) << std::endl;
+                    std::cout << "m_weightForGoal " << m_weightForGoal << std::endl;
+                    std::cout << "m_weightForRotation " << m_weightForRotation << std::endl;
+                    std::cout << "m_weightForSize " << m_weightForSize << std::endl;
+                    std::cout << "AReduced " << AReduced << std::endl;
+                    std::cout << "bReduced " <<  bReduced << std::endl;
+                    std::cout << "m_desiredHeight " << m_desiredHeight << std::endl;
+                    std::cout << "m_priorityPenalty " << m_priorityPenalty << std::endl;
+                    std::cout << "optVirtualPositions skipped " << std::endl;
+                    std::cout << "optDeltaX " << optDeltaX << std::endl;
+                    std::cout << "optDeltaY " << optDeltaY << std::endl;
+                    std::cout << "optDeltaYaw " << optDeltaYaw << std::endl;
+                    std::cout << "optDeltaSize " << optDeltaSize << std::endl;
+                    std::cout << "formation2DType skipped " << std::endl;
 
                     bool optSuccess = Formation2D::GetOptimizedPositions2DInFormation(m_workspace,
                                                                                       m_numberOfAgentsInTeam,
