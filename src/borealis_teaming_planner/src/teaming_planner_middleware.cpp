@@ -106,7 +106,7 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     }
     if (mDebugVerbose)
     {
-        ROS_INFO("[Teaming Planner %d]: Point Cloud Received\n", mSourceSegmentId);
+        ROS_INFO("[Teaming Planner %d]: Point Cloud Received", mSourceSegmentId);
     }
 }
 
@@ -245,7 +245,11 @@ void TeamingPlanner::systemPoseCallback_rf(const mt_msgs::pose::ConstPtr& aSyste
 
         if (mDebugVerbose)
         {
-            ROS_INFO("[Teaming Planner %d]: System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
+            ROS_INFO("[Teaming Planner %d]: RF System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
+            for (auto agent : mAgentsInTeamVector)
+            {
+                std::cout << "Agent number in team : " << agent << std::endl;
+            }
         }
     }
 
@@ -533,9 +537,14 @@ void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSyste
 
         mAgentsPoseMap_cp[aSystemPose->sourceSegmentId] = tmp;
 
+        for (auto agent : mAgentsInTeamVector)
+        {
+            std::cout << "Agent number in team : " << agent << std::endl;
+        }
+
         if (mDebugVerbose)
         {
-            ROS_INFO("[Teaming Planner %d]: System Pose Received from Agent: %d", mSourceSegmentId, aSystemPose->sourceSegmentId);
+            ROS_INFO("[Teaming Planner %d]: CP System Pose Received from Agent: %d", mSourceSegmentId, aSystemPose->sourceSegmentId);
             mDebugVerbose = false;
         }
     }
