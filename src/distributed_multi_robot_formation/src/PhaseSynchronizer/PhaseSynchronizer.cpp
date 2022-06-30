@@ -1045,6 +1045,7 @@ namespace DistributedFormation
                     double optDeltaX, optDeltaY, optDeltaYaw, optDeltaSize;
                     Common::Formation2DType formation2DType;
                     std::cout << "HOHOHOHO MERRY CHRISTMAS" << std::endl;
+                    std::cout << "m_workspace " << static_cast<int>(m_workspace) << std::endl;
                     std::cout << "m_numberOfAgentsInTeam " << m_numberOfAgentsInTeam << std::endl;
                     std::cout << "m_agentRadius " << m_agentRadius << std::endl;
                     std::cout << "m_desiredDistanceInLineFormation " << m_desiredDistanceInLineFormation << std::endl;
