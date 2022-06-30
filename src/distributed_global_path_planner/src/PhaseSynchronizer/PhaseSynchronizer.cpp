@@ -539,6 +539,9 @@ namespace DistributedGlobalPathPlanner
                         if (agentPath1.second.poses.size() != agentPath2.second.poses.size())
                         {
                             pathIsSimilar = false;
+                            std::cout << "agentPath1.second.poses.size(): " << agentPath1.second.poses.size() << std::endl;
+                            std::cout << "agentPath2.second.poses.size(): " << agentPath2.second.poses.size() << std::endl;
+
                             break;
                         }
 
@@ -547,6 +550,12 @@ namespace DistributedGlobalPathPlanner
                             if (agentPath1.second.poses.at(i).position != agentPath2.second.poses.at(i).position ||
                                 agentPath1.second.poses.at(i).headingRad != agentPath2.second.poses.at(i).headingRad)
                             {
+                                std::cout << "agentPath1.second.poses.at(i).position: " << agentPath1.second.poses.at(i).position << std::endl;
+                                std::cout << "agentPath2.second.poses.at(i).position: " << agentPath2.second.poses.at(i).position << std::endl;
+
+                                std::cout << "agentPath1.second.poses.at(i).headingRad : " << agentPath1.second.poses.at(i).headingRad << std::endl;
+                                std::cout << "agentPath2.second.poses.at(i).headingRad : " << agentPath2.second.poses.at(i).headingRad << std::endl;
+
                                 pathIsSimilar = false;
                                 break;
                             }
