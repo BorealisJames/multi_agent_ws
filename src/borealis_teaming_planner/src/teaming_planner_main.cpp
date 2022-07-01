@@ -86,7 +86,7 @@ void TeamingPlanner::teamingPlannerMain()
 
         // Finished init
         mModuleState = TeamingPlannerConstants::ModuleState::READY;
-        mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
+        mTask.type = Common::Entity::MTTaskEnum::IDLE;
         mTeamSize = 0;
         break;
 
