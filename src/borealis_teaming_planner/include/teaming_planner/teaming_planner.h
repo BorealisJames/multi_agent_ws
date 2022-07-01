@@ -267,6 +267,7 @@ class TeamingPlanner
         /*Functions to be binded by consensus path planner CPH means consensus path handler */
 
         // Functions 
+        void clearOtherAgentsData();
         void teamingPlannerMain();
         void readParameters();
         bool checkAndAddHumanSystemPose(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses, const DistributedFormation::Common::Pose aPose);

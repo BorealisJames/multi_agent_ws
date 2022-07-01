@@ -18,6 +18,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mModuleTaskVerbose(false),
         mNewPathPlan(false),
         mDebugVerbose(true),
+        mNumberOfAgentsInTeam(0),
         mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>()),
         mGlobalPathPlannerHandlerPtr(std::make_shared<DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler>()),
         mAgentsPoseMap_cp(),

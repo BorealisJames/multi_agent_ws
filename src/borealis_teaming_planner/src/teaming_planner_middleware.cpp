@@ -138,18 +138,29 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
 
     if (str1.compare(aUAVmode->data.c_str()) == 0) // They compare equal
     {
-        mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
+        if (mTask.type != Common::Entity::MTTaskEnum::FOLLOW_ME)
+        {
+            mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
+            TeamingPlanner::clearOtherAgentsData();
+        }
     }
     else if (str2.compare(aUAVmode->data.c_str()) == 0)
     {
-        mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
-        mNewPathPlan = true;
+        if (mTask.type != Common::Entity::MTTaskEnum::GO_THERE)
+        {
+            mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
+            TeamingPlanner::clearOtherAgentsData();
+        }
     }
     else 
     {
         mTask.type = Common::Entity::MTTaskEnum::IDLE;
     }
-    ROS_INFO("Agent %i mode: %s activation state:", mSourceSegmentId, mUAVMode.data(), mBoolActivatePlanner.data);
+    if (mDebugVerbose)
+    {
+        ROS_INFO("Agent %i mode: %s activation state:", mSourceSegmentId, mUAVMode.data(), mBoolActivatePlanner.data);
+    }
+
 }
 
 void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& aInputPose)
@@ -215,7 +226,12 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
 
 void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8::ConstPtr& aNumberOfAgents)
 {
-    mNumberOfAgentsInTeam = aNumberOfAgents->data;
+    if (mNumberOfAgentsInTeam != aNumberOfAgents->data)
+    {
+        ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mNumberOfAgentsInTeam, aNumberOfAgents->data);
+        mNumberOfAgentsInTeam = aNumberOfAgents->data;
+        TeamingPlanner::clearOtherAgentsData();
+    }
 }
 
 /* Callbacks used by robot formation */
@@ -728,4 +744,22 @@ void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray
     }
 
  
+}
+
+// helper funcs
+
+void TeamingPlanner::clearOtherAgentsData()
+{
+    clearPhaseAndTimeMap_rf(); 
+    clearPoseMap_rf(); 
+    clearDirectionUtilityMap_rf();
+    clearConvexRegion2DMap_rf();
+    clearConvexRegion3DMap_rf();
+    clearAssignedVirtualPoseMap_rf(); 
+
+    clearAgentsPoseBuffer_cp();
+    clearAgentsProcessedPathOfAgentsBuffer_cp();
+    clearAgentsPlannedPathBuffer_cp();
+    clearAgentsPathAndWaypointProgressBuffer_cp();
+    clearAgentsBestProcessedPathBuffer_cp();
 }

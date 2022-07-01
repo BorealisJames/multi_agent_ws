@@ -112,8 +112,8 @@ if __name__ == '__main__':
         uav1_number_of_agents_publisher.publish(1)
         uav2_number_of_agents_publisher.publish(1)
 
-        uav1_hri_mode_pose_topic_publisher.publish("Go_There")
-        uav2_hri_mode_pose_topic_publisher.publish("Nil")
+        uav1_hri_mode_pose_topic_publisher.publish("Nil")
+        uav2_hri_mode_pose_topic_publisher.publish("Go_There")
 
         rate.sleep()
         print("Done")

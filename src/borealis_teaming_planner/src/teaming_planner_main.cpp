@@ -87,7 +87,7 @@ void TeamingPlanner::teamingPlannerMain()
         // Finished init
         mModuleState = TeamingPlannerConstants::ModuleState::READY;
         mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
-        mNumberOfAgentsInTeam = 2;
+        mNumberOfAgentsInTeam = 0;
         break;
 
     case TeamingPlannerConstants::ModuleState::READY:
@@ -101,7 +101,6 @@ void TeamingPlanner::teamingPlannerMain()
         break;
 
     case TeamingPlannerConstants::ModuleState::RUNNING:
-
         if (!mModuleStateVerbose)
         {
             ROS_INFO("Module State Running\n");
@@ -153,7 +152,7 @@ void TeamingPlanner::teamingPlannerMain()
 
         if (!mModuleStateVerbose)
         {
-            // ROS_INFO("Module State Deactivated\n");
+            ROS_INFO("Module State Deactivated\n");
             mModuleStateVerbose = true;
         }
         break;
