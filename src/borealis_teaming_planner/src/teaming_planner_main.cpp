@@ -112,7 +112,7 @@ void TeamingPlanner::teamingPlannerMain()
         {
             if (!mModuleTaskVerbose)
             {
-                ROS_INFO("Follow Me\n");
+                ROS_INFO("[Teaming Planner %d]: Follow Me generating Formation\n", mSourceSegmentId);
                 mModuleTaskVerbose = true;
             }
             mDistributedFormation.RunDistributedFormation();
@@ -120,7 +120,6 @@ void TeamingPlanner::teamingPlannerMain()
         }
         case Common::Entity::MTTaskEnum::GO_THERE:
         {
-            ROS_INFO("Go there!");
             if (!mModuleTaskVerbose)
             {
                 // ROS_INFO("Go There\n");
@@ -128,10 +127,12 @@ void TeamingPlanner::teamingPlannerMain()
             }
             if (mNewPathPlan)
             {
+                ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
                 mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
             }
             else
             {
+                ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
                 mDistributedFormation.RunDistributedFormation();
             }
             break;
