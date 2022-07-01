@@ -165,8 +165,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
 
 void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& aInputPose)
 {
-    mDebugVerbose = true;
-    
+    ROS_INFO("[Teaming Planner %d]: Input pose Received %f\n", mSourceSegmentId, aInputPose->pose.position.x);
     if(mTask.type == Common::Entity::MTTaskEnum::FOLLOW_ME)
     {
         // Add this input pose into its own history of human poses        
@@ -215,19 +214,19 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
         tmp_vec.push_back(tmp);
 
         mGoTherePath_cp = tmp_vec;
-        ROS_INFO("[Teaming Planner %d]: Go there Input pose Received %f\n", mSourceSegmentId, tmp.position(0));
         if (mDebugVerbose)
         {
             ROS_INFO("[Teaming Planner %d]: Go there Input pose Received\n", mSourceSegmentId);
         }
     }
+
 }
 
 void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray::ConstPtr& aNumberOfAgents)
 {
     if (mTeamSize != aNumberOfAgents->data.size())
     {
-        ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector, aNumberOfAgents->data);
+        ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), aNumberOfAgents->data.size());
         mTeamSize = aNumberOfAgents->data.size();
 
         mAgentsInTeam.data = aNumberOfAgents->data;
