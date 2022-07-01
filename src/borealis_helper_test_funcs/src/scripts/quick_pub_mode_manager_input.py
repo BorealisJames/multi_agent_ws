@@ -104,13 +104,13 @@ if __name__ == '__main__':
         pose_stamped.header.stamp = rospy.Time.now()
 
         uav1_input_pose_publisher.publish(pose_stamped)
-        # uav2_input_pose_publisher.publish(pose_stamped)
+        uav2_input_pose_publisher.publish(pose_stamped)
 
         uav1_activate_planner_publisher.publish(bool_to_send)
         uav2_activate_planner_publisher.publish(bool_to_send)
 
-        uav1_number_of_agents_publisher.publish(2)
-        uav2_number_of_agents_publisher.publish(2)
+        uav1_number_of_agents_publisher.publish(1)
+        uav2_number_of_agents_publisher.publish(1)
 
         uav1_hri_mode_pose_topic_publisher.publish("Go_There")
         uav2_hri_mode_pose_topic_publisher.publish("Go_There")

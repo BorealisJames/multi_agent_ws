@@ -7,19 +7,18 @@
 namespace DistributedGlobalPathPlanner
 {
     PhaseSynchronizer::PhaseSynchronizer()
-    : m_phase(Common::PHASE::PHASE_1)
-    , m_transitingPhase(true)
-    , m_handlerPtr(std::make_shared<DistributedGlobalPathPlannerHandler>())
+        : m_phase(Common::PHASE::PHASE_1), m_transitingPhase(true), m_handlerPtr(std::make_shared<DistributedGlobalPathPlannerHandler>())
 
-    , m_dimension(Common::DIMENSION::DIM_2)
-    , m_expiryDurationMicroSec(15*1000000)
-    , m_pointRemovalRadius(0.45)
-    , m_agentRadius(0.3)
-    , m_waypointReachedBoundary(1.5)
-    , m_desiredHeight(2.0)
-    , m_pathPlanningParams()
+          ,
+          m_dimension(Common::DIMENSION::DIM_2), 
+          m_expiryDurationMicroSec(15 * 1000000), 
+          m_pointRemovalRadius(0.45), 
+          m_agentRadius(0.3), 
+          m_waypointReachedBoundary(1.5), 
+          m_desiredHeight(2.0), 
+          m_pathPlanningParams()
     {
-        //not the best way but for prototyping so will set the values here
+        // not the best way but for prototyping so will set the values here
         m_pathPlanningParams.mapMinBoundsX = -100.0;
         m_pathPlanningParams.mapMinBoundsY = -100.0;
         m_pathPlanningParams.mapMinBoundsZ = 0.0;
@@ -44,19 +43,12 @@ namespace DistributedGlobalPathPlanner
         }
     }
 
-    PhaseSynchronizer::PhaseSynchronizer(const Common::DistributedGlobalPathParams& distributedGlobalPathParams,
-                                         const pathplanning::PathPlanningParams& pathPlanningParams)
-    : m_phase(Common::PHASE::PHASE_1)
-    , m_transitingPhase(true)
-    , m_handlerPtr(std::make_shared<DistributedGlobalPathPlannerHandler>())
+    PhaseSynchronizer::PhaseSynchronizer(const Common::DistributedGlobalPathParams &distributedGlobalPathParams,
+                                         const pathplanning::PathPlanningParams &pathPlanningParams)
+        : m_phase(Common::PHASE::PHASE_1), m_transitingPhase(true), m_handlerPtr(std::make_shared<DistributedGlobalPathPlannerHandler>())
 
-    , m_dimension(distributedGlobalPathParams.dimension)
-    , m_expiryDurationMicroSec(distributedGlobalPathParams.expiryDurationMicroSec)
-    , m_pointRemovalRadius(distributedGlobalPathParams.pointRemovalRadius)
-    , m_agentRadius(distributedGlobalPathParams.agentRadius)
-    , m_waypointReachedBoundary(distributedGlobalPathParams.waypointReachedBoundary)
-    , m_desiredHeight(distributedGlobalPathParams.desiredHeight)
-    , m_pathPlanningParams(pathPlanningParams)
+          ,
+          m_dimension(distributedGlobalPathParams.dimension), m_expiryDurationMicroSec(distributedGlobalPathParams.expiryDurationMicroSec), m_pointRemovalRadius(distributedGlobalPathParams.pointRemovalRadius), m_agentRadius(distributedGlobalPathParams.agentRadius), m_waypointReachedBoundary(distributedGlobalPathParams.waypointReachedBoundary), m_desiredHeight(distributedGlobalPathParams.desiredHeight), m_pathPlanningParams(pathPlanningParams)
     {
         if (m_dimension == Common::DIMENSION::DIM_2)
         {
@@ -68,8 +60,8 @@ namespace DistributedGlobalPathPlanner
         }
     }
 
-    void PhaseSynchronizer::SetDistributedGlobalPathPlannerParams(const Common::DistributedGlobalPathParams& distributedGlobalPathParams,
-                                                                  const pathplanning::PathPlanningParams& pathPlanningParams)
+    void PhaseSynchronizer::SetDistributedGlobalPathPlannerParams(const Common::DistributedGlobalPathParams &distributedGlobalPathParams,
+                                                                  const pathplanning::PathPlanningParams &pathPlanningParams)
     {
         m_dimension = distributedGlobalPathParams.dimension;
         m_expiryDurationMicroSec = distributedGlobalPathParams.expiryDurationMicroSec;
@@ -89,7 +81,7 @@ namespace DistributedGlobalPathPlanner
         }
     }
 
-    void PhaseSynchronizer::AttachHandler(const std::shared_ptr<DistributedGlobalPathPlannerHandler>& handlerPtr)
+    void PhaseSynchronizer::AttachHandler(const std::shared_ptr<DistributedGlobalPathPlannerHandler> &handlerPtr)
     {
         m_handlerPtr = handlerPtr;
 
@@ -101,7 +93,7 @@ namespace DistributedGlobalPathPlanner
 
     void PhaseSynchronizer::SyncPhasesOfAgents()
     {
-        //Viz
+        // Viz
         Vizualize();
 
         // check if reset is needed
@@ -117,114 +109,114 @@ namespace DistributedGlobalPathPlanner
         ownPhaseAndTime.timeMicroSecs = timeNowMicroSecs;
         m_handlerPtr->m_pubOwnPhaseAndTime(m_ownAgentID, ownPhaseAndTime);
 
-        switch(m_phase)
+        switch (m_phase)
         {
-            case Common::PHASE::PHASE_1:
-            {
-                std::cout << "Agent" << m_ownAgentID << ": Phase1" << std::endl;
+        case Common::PHASE::PHASE_1:
+        {
+            std::cout << "Agent" << m_ownAgentID << ": Phase1" << std::endl;
 
-                if (m_transitingPhase)          // transiting in
-                {
-                    OnEnterPhase1();
-                    m_transitingPhase = false;
-                }
-                if (TransitingFromPhase1())     //transiting out to next phase
-                {
-                    m_transitingPhase = true;
-                    OnExitPhase1();
-                }
-                else                            //remaining in
-                {
-                    DoPhase1();
-                }
-                break;
-            }
-            case Common::PHASE::PHASE_2:
+            if (m_transitingPhase) // transiting in
             {
-                std::cout << "Agent" << m_ownAgentID << ": Phase2" << std::endl;
-
-                if (m_transitingPhase)          // transiting in
-                {
-                    OnEnterPhase2();
-                    m_transitingPhase = false;
-                }
-                if (TransitingFromPhase2())     //transiting out to next phase
-                {
-                    m_transitingPhase = true;
-                    OnExitPhase2();
-                }
-                else                            //remaining in
-                {
-                    DoPhase2();
-                }
-                break;
+                OnEnterPhase1();
+                m_transitingPhase = false;
             }
-            case Common::PHASE::PHASE_3:
+            if (TransitingFromPhase1()) // transiting out to next phase
             {
-                std::cout << "Agent" << m_ownAgentID << ": Phase3" << std::endl;
-
-                if (m_transitingPhase)          // transiting in
-                {
-                    OnEnterPhase3();
-                    m_transitingPhase = false;
-                }
-                if (TransitingFromPhase3())     //transiting out to next phase
-                {
-                    m_transitingPhase = true;
-                    OnExitPhase3();
-                }
-                else                            //remaining in
-                {
-                    DoPhase3();
-                }
-                break;
+                m_transitingPhase = true;
+                OnExitPhase1();
             }
-            case Common::PHASE::PHASE_4:
+            else // remaining in
             {
-                std::cout << "Agent" << m_ownAgentID << ": Phase4" << std::endl;
-
-                if (m_transitingPhase)          // transiting in
-                {
-                    OnEnterPhase4();
-                    m_transitingPhase = false;
-                }
-                if (TransitingFromPhase4())     //transiting out to next phase
-                {
-                    m_transitingPhase = true;
-                    OnExitPhase4();
-                }
-                else                            //remaining in
-                {
-                    DoPhase4();
-                }
-                break;
+                DoPhase1();
             }
-            case Common::PHASE::PHASE_5:
+            break;
+        }
+        case Common::PHASE::PHASE_2:
+        {
+            std::cout << "Agent" << m_ownAgentID << ": Phase2" << std::endl;
+
+            if (m_transitingPhase) // transiting in
             {
-                std::cout << "Agent" << m_ownAgentID << ": Phase5" << std::endl;
-
-                if (m_transitingPhase)          // transiting in
-                {
-                    OnEnterPhase5();
-                    m_transitingPhase = false;
-                }
-                if (TransitingFromPhase5())     //transiting out to next phase
-                {
-                    m_transitingPhase = true;
-                    OnExitPhase4();
-                }
-                else                            //remaining in
-                {
-                    DoPhase5();
-                }
-                break;
+                OnEnterPhase2();
+                m_transitingPhase = false;
             }
-
-            default:
+            if (TransitingFromPhase2()) // transiting out to next phase
             {
-                std::cout << "Agent" << m_ownAgentID << ": switch statement phase do not exist" << std::endl;
-                ResetPhase();
+                m_transitingPhase = true;
+                OnExitPhase2();
             }
+            else // remaining in
+            {
+                DoPhase2();
+            }
+            break;
+        }
+        case Common::PHASE::PHASE_3:
+        {
+            std::cout << "Agent" << m_ownAgentID << ": Phase3" << std::endl;
+
+            if (m_transitingPhase) // transiting in
+            {
+                OnEnterPhase3();
+                m_transitingPhase = false;
+            }
+            if (TransitingFromPhase3()) // transiting out to next phase
+            {
+                m_transitingPhase = true;
+                OnExitPhase3();
+            }
+            else // remaining in
+            {
+                DoPhase3();
+            }
+            break;
+        }
+        case Common::PHASE::PHASE_4:
+        {
+            std::cout << "Agent" << m_ownAgentID << ": Phase4" << std::endl;
+
+            if (m_transitingPhase) // transiting in
+            {
+                OnEnterPhase4();
+                m_transitingPhase = false;
+            }
+            if (TransitingFromPhase4()) // transiting out to next phase
+            {
+                m_transitingPhase = true;
+                OnExitPhase4();
+            }
+            else // remaining in
+            {
+                DoPhase4();
+            }
+            break;
+        }
+        case Common::PHASE::PHASE_5:
+        {
+            std::cout << "Agent" << m_ownAgentID << ": Phase5" << std::endl;
+
+            if (m_transitingPhase) // transiting in
+            {
+                OnEnterPhase5();
+                m_transitingPhase = false;
+            }
+            if (TransitingFromPhase5()) // transiting out to next phase
+            {
+                m_transitingPhase = true;
+                OnExitPhase4();
+            }
+            else // remaining in
+            {
+                DoPhase5();
+            }
+            break;
+        }
+
+        default:
+        {
+            std::cout << "Agent" << m_ownAgentID << ": switch statement phase do not exist" << std::endl;
+            ResetPhase();
+        }
         }
     }
 
@@ -256,8 +248,8 @@ namespace DistributedGlobalPathPlanner
         {
             for (int i = 0; i < goTherePath.size(); i++)
             {
-                if (std::abs(goTherePath.at(i).position.norm() - m_goTherePath.at(i).position.norm()) > FLT_EPSILON ||
-                    std::abs(goTherePath.at(i).headingRad - m_goTherePath.at(i).headingRad) > FLT_EPSILON)
+                if (goTherePath.at(i).position != m_goTherePath.at(i).position ||
+                    goTherePath.at(i).headingRad != m_goTherePath.at(i).headingRad)
                 {
                     resetPath = true;
                     break;
@@ -290,7 +282,7 @@ namespace DistributedGlobalPathPlanner
         ownPhaseAndTime.timeMicroSecs = timeNowMicroSecs;
         m_phasesAndTimeRecordOfAgents[m_ownAgentID] = ownPhaseAndTime;
 
-        //reset if team members are not equal to number of expecting agents
+        // reset if team members are not equal to number of expecting agents
         if (m_phasesAndTimeRecordOfAgents.size() != m_numberOfAgentsInTeam)
         {
             std::cout << "Agent" << m_ownAgentID << ": reset as expected number of agents do not match" << std::endl;
@@ -301,10 +293,10 @@ namespace DistributedGlobalPathPlanner
 
         std::unordered_map<int32_t, Common::PHASE> latestPhasesOfAgentsInTeam;
         int32_t largestPhase = INT32_MIN;
-        int32_t smallestPhase= INT32_MAX;
+        int32_t smallestPhase = INT32_MAX;
         std::set<int32_t> latestAgentsInTeam;
         std::set<int32_t> lastKnownAgentsInTeam;
-        for (auto&&phaseAndTimeOfAgent :  m_phasesAndTimeRecordOfAgents)
+        for (auto &&phaseAndTimeOfAgent : m_phasesAndTimeRecordOfAgents)
         {
             if (std::abs(timeNowMicroSecs - phaseAndTimeOfAgent.second.timeMicroSecs) < m_expiryDurationMicroSec)
             {
@@ -322,17 +314,17 @@ namespace DistributedGlobalPathPlanner
             }
         }
 
-        for (auto&& agent: m_phasesOfAgentsInTeam)
+        for (auto &&agent : m_phasesOfAgentsInTeam)
         {
             lastKnownAgentsInTeam.insert(agent.first);
         }
 
         m_phasesOfAgentsInTeam = latestPhasesOfAgentsInTeam;
 
-        //reset if team member changes or phases more than 2 steps apart
+        // reset if team member changes or phases more than 2 steps apart
         if (m_phasesOfAgentsInTeam.empty() ||
             latestAgentsInTeam != lastKnownAgentsInTeam ||
-            std::abs(largestPhase - smallestPhase)%(5-1)>=2)
+            std::abs(largestPhase - smallestPhase) % (5 - 1) >= 2)
         {
             std::cout << "Agent" << m_ownAgentID << ": reset as phases are not in sync" << std::endl;
 
@@ -344,15 +336,15 @@ namespace DistributedGlobalPathPlanner
     void PhaseSynchronizer::UpdatePositionsOfAgentsInTeam()
     {
         m_handlerPtr->m_getOwnAgentPose(m_ownAgentPose);
-        //publish phase 1 message, agent's position (will send out id and position)
+        // publish phase 1 message, agent's position (will send out id and position)
         m_handlerPtr->m_pubOwnPoseFunc(m_ownAgentID, m_ownAgentPose);
 
-        //get other agent's position
+        // get other agent's position
         m_handlerPtr->m_getAgentsPose(m_agentsPose);
-        //set own position in team
+        // set own position in team
         m_agentsPose[m_ownAgentID] = m_ownAgentPose;
 
-        for(auto&&agent : m_phasesOfAgentsInTeam)
+        for (auto &&agent : m_phasesOfAgentsInTeam)
         {
             int32_t agentID = agent.first;
             if (m_agentsPose.find(agentID) != m_agentsPose.end())
@@ -381,13 +373,12 @@ namespace DistributedGlobalPathPlanner
         m_outputObtainedForPhase3 = false;
         m_outputObtainedForPhase4 = false;
         m_outputObtainedForPhase5 = false;
-
     }
 
     bool PhaseSynchronizer::CheckIfAnyAgentIsStillInPreviousPhase()
     {
         bool ret_val = false;
-        for (auto&&agent : m_phasesOfAgentsInTeam)
+        for (auto &&agent : m_phasesOfAgentsInTeam)
         {
             if (static_cast<int>(agent.second) == static_cast<int>(m_phase) - 1 &&
                 m_phase != Common::PHASE::PHASE_1)
@@ -411,7 +402,7 @@ namespace DistributedGlobalPathPlanner
 
     bool PhaseSynchronizer::TransitingFromPhase1()
     {
-        if(m_outputObtainedForPhase1)
+        if (m_outputObtainedForPhase1)
         {
             m_phase = Common::PHASE::PHASE_2;
             return true;
@@ -429,12 +420,12 @@ namespace DistributedGlobalPathPlanner
 
     void PhaseSynchronizer::DoPhase1()
     {
-        if (m_poseOfAgentsInTeam.size() == m_phasesOfAgentsInTeam.size() && m_phasesOfAgentsInTeam.size()>0)
+        if (m_poseOfAgentsInTeam.size() == m_phasesOfAgentsInTeam.size() && m_phasesOfAgentsInTeam.size() > 0)
         {
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //get points that form the convex region
-            //input: m_positionOfAgentsInTeam
-            //output: A* path plan
+            // get points that form the convex region
+            // input: m_positionOfAgentsInTeam
+            // output: A* path plan
 
             double maxX = -DBL_MAX;
             double minX = DBL_MAX;
@@ -475,7 +466,6 @@ namespace DistributedGlobalPathPlanner
             m_avgOfExtremaPose.position(1) = (maxY + minY) / 2;
             m_avgOfExtremaPose.position(2) = (maxZ + minZ) / 2;
 
-
             m_outputObtainedForPhase1 = true;
         }
     }
@@ -491,7 +481,7 @@ namespace DistributedGlobalPathPlanner
 
     bool PhaseSynchronizer::TransitingFromPhase2()
     {
-        if(m_outputObtainedForPhase2)
+        if (m_outputObtainedForPhase2)
         {
             m_phase = Common::PHASE::PHASE_3;
             return true;
@@ -511,20 +501,20 @@ namespace DistributedGlobalPathPlanner
     {
         if (CheckIfAnyAgentIsStillInPreviousPhase())
         {
-            //publish phase 1 message, agent's position (will send out id and position)
+            // publish phase 1 message, agent's position (will send out id and position)
             m_handlerPtr->m_pubOwnPoseFunc(m_ownAgentID, m_ownAgentPose);
         }
         else
         {
-            //pub phase 2 message, agent's own planned path
+            // pub phase 2 message, agent's own planned path
             m_handlerPtr->m_pubOwnPathAndWaypointProgress(m_ownAgentID, m_ownAgentPathAndWaypointProgress);
 
-            //get other agent's planned path
+            // get other agent's planned path
             m_handlerPtr->m_getAgentsPathAndWaypointProgress(m_agentsPathAndWaypointProgress);
             m_agentsPathAndWaypointProgress[m_ownAgentID] = m_ownAgentPathAndWaypointProgress;
 
             std::unordered_map<int32_t, Common::PathAndWaypointProgress> agentsGoTherePathAndWaypointProgressCopy;
-            for(auto&&agent : m_phasesOfAgentsInTeam)
+            for (auto &&agent : m_phasesOfAgentsInTeam)
             {
                 int32_t agentID = agent.first;
                 if (m_agentsPathAndWaypointProgress.find(agentID) != m_agentsPathAndWaypointProgress.end())
@@ -535,16 +525,16 @@ namespace DistributedGlobalPathPlanner
 
             if (agentsGoTherePathAndWaypointProgressCopy.size() == m_phasesOfAgentsInTeam.size())
             {
-                //check that every agent has the same path
+                // check that every agent has the same path
                 bool pathIsSimilar = true;
-                for (auto&& agentPath1 : agentsGoTherePathAndWaypointProgressCopy)
+                for (auto &&agentPath1 : agentsGoTherePathAndWaypointProgressCopy)
                 {
                     if (!pathIsSimilar)
                     {
                         break;
                     }
 
-                    for (auto&& agentPath2 : agentsGoTherePathAndWaypointProgressCopy)
+                    for (auto &&agentPath2 : agentsGoTherePathAndWaypointProgressCopy)
                     {
 
                         if (agentPath1.first >= agentPath2.first)
@@ -555,14 +545,23 @@ namespace DistributedGlobalPathPlanner
                         if (agentPath1.second.poses.size() != agentPath2.second.poses.size())
                         {
                             pathIsSimilar = false;
+                            std::cout << "agentPath1.second.poses.size(): " << agentPath1.second.poses.size() << std::endl;
+                            std::cout << "agentPath2.second.poses.size(): " << agentPath2.second.poses.size() << std::endl;
+
                             break;
                         }
 
-                        for (int i=0; i<agentPath1.second.poses.size(); i++)
+                        for (int i = 0; i < agentPath1.second.poses.size(); i++)
                         {
-                            if (std::abs(agentPath1.second.poses.at(i).position.norm() - agentPath2.second.poses.at(i).position.norm()) > FLT_EPSILON ||
-                                std::abs(agentPath1.second.poses.at(i).headingRad - agentPath2.second.poses.at(i).headingRad) > FLT_EPSILON)
+                            if (agentPath1.second.poses.at(i).position != agentPath2.second.poses.at(i).position ||
+                                agentPath1.second.poses.at(i).headingRad != agentPath2.second.poses.at(i).headingRad)
                             {
+                                std::cout << "agentPath1.second.poses.at(i).position: " << agentPath1.second.poses.at(i).position << std::endl;
+                                std::cout << "agentPath2.second.poses.at(i).position: " << agentPath2.second.poses.at(i).position << std::endl;
+
+                                std::cout << "agentPath1.second.poses.at(i).headingRad : " << agentPath1.second.poses.at(i).headingRad << std::endl;
+                                std::cout << "agentPath2.second.poses.at(i).headingRad : " << agentPath2.second.poses.at(i).headingRad << std::endl;
+
                                 pathIsSimilar = false;
                                 break;
                             }
@@ -579,7 +578,7 @@ namespace DistributedGlobalPathPlanner
                 }
 
                 int largestWPIndex = 0;
-                for (auto&& agentPath : agentsGoTherePathAndWaypointProgressCopy)
+                for (auto &&agentPath : agentsGoTherePathAndWaypointProgressCopy)
                 {
                     largestWPIndex = std::max(largestWPIndex, agentPath.second.waypointProgress);
                 }
@@ -595,7 +594,7 @@ namespace DistributedGlobalPathPlanner
     {
         m_handlerPtr->m_clearAgentsPlannedPathBuffer();
 
-        //get path to track
+        // get path to track
         std::vector<Common::Pose> updatedPath;
         m_goTherePathTracker.GetUpdatedPath(m_avgOfExtremaPose, updatedPath);
         if (updatedPath.empty())
@@ -610,8 +609,7 @@ namespace DistributedGlobalPathPlanner
             updatedPath.insert(updatedPath.begin(), m_avgOfExtremaPose);
         }
 
-
-        //get point cloud and process it
+        // get point cloud and process it
         m_ownPointCloud.points.clear();
         m_ownPointCloud.channels.clear();
         if (!m_handlerPtr->m_getOwnAgentLidarPointCloud(m_ownPointCloud))
@@ -622,55 +620,55 @@ namespace DistributedGlobalPathPlanner
             return;
         }
 
-//        //wall hack
-//        m_ownPointCloud.points.clear();
-//        m_ownPointCloud.channels.clear();
-//        geometry_msgs::Point32 pt;
-//        if (m_ownAgentID == 0 || m_ownAgentID == 1)
-//        {
-//            for (double x = -1.0; x<=1.0; x=x+0.5)
-//            {
-//                for (double y = -3.5; y<=3.0; y=y+0.5)
-//                {
-//                    for (double z = 0.0; z<=4.0; z=z+0.5)
-//                    {
-//                        pt.x = x; pt.y = y; pt.z = z;
-//                        m_ownPointCloud.points.push_back(pt);
-//                    }
-//                }
-//            }
-//        }
-//        if (m_ownAgentID == 0)
-//        {
-//            //corridor hack
-//            for (double x = 8.0; x<=10.0; x=x+0.5)
-//            {
-//                for (double y = -3.5; y<=6.5; y=y+0.5)
-//                {
-//                    for (double z = 0.0; z<=4.0; z=z+0.5)
-//                    {
-//                        pt.x = x; pt.y = y; pt.z = z;
-//                        m_ownPointCloud.points.push_back(pt);
-//                    }
-//                }
-//            }
-//            for (double x = 8.0; x<=10.0; x=x+0.5)
-//            {
-//                for (double y = -9.5; y<=-5.5; y=y+0.5)
-//                {
-//                    for (double z = 0.0; z<=4.0; z=z+0.5)
-//                    {
-//                        pt.x = x; pt.y = y; pt.z = z;
-//                        m_ownPointCloud.points.push_back(pt);
-//                    }
-//                }
-//            }
-//        }
+        //        //wall hack
+        //        m_ownPointCloud.points.clear();
+        //        m_ownPointCloud.channels.clear();
+        //        geometry_msgs::Point32 pt;
+        //        if (m_ownAgentID == 0 || m_ownAgentID == 1)
+        //        {
+        //            for (double x = -1.0; x<=1.0; x=x+0.5)
+        //            {
+        //                for (double y = -3.5; y<=3.0; y=y+0.5)
+        //                {
+        //                    for (double z = 0.0; z<=4.0; z=z+0.5)
+        //                    {
+        //                        pt.x = x; pt.y = y; pt.z = z;
+        //                        m_ownPointCloud.points.push_back(pt);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        if (m_ownAgentID == 0)
+        //        {
+        //            //corridor hack
+        //            for (double x = 8.0; x<=10.0; x=x+0.5)
+        //            {
+        //                for (double y = -3.5; y<=6.5; y=y+0.5)
+        //                {
+        //                    for (double z = 0.0; z<=4.0; z=z+0.5)
+        //                    {
+        //                        pt.x = x; pt.y = y; pt.z = z;
+        //                        m_ownPointCloud.points.push_back(pt);
+        //                    }
+        //                }
+        //            }
+        //            for (double x = 8.0; x<=10.0; x=x+0.5)
+        //            {
+        //                for (double y = -9.5; y<=-5.5; y=y+0.5)
+        //                {
+        //                    for (double z = 0.0; z<=4.0; z=z+0.5)
+        //                    {
+        //                        pt.x = x; pt.y = y; pt.z = z;
+        //                        m_ownPointCloud.points.push_back(pt);
+        //                    }
+        //                }
+        //            }
+        //        }
 
         if (m_dimension == Common::DIMENSION::DIM_2)
         {
             sensor_msgs::PointCloud tmpOutputPointCloud;
-            for(auto&& agentPose : m_poseOfAgentsInTeam)
+            for (auto &&agentPose : m_poseOfAgentsInTeam)
             {
                 m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
                                                                                            agentPose.second.position,
@@ -681,28 +679,30 @@ namespace DistributedGlobalPathPlanner
 
             // reset map with new point cloud
             m_pathPlanning2DHandle.resetMap();
-            m_pathPlanning2DHandle.addInflatedObstaclesPoints(m_ownPointCloud);
+            // m_pathPlanning2DHandle.addInflatedObstaclesPoints(m_ownPointCloud);
 
             // plan path with new map and updatedPath
             std::vector<Eigen::Vector2d> inputPathWaypoints;
             for (auto pose : updatedPath)
             {
                 inputPathWaypoints.push_back(Eigen::Vector2d(pose.position.x(), pose.position.y()));
+                std::cout << "updatedPath pose x:" << pose.position(0) << std::endl;
+                std::cout << "updatedPath pose y:" << pose.position(1) << std::endl;
+                std::cout << "updatedPath pose z:" << pose.position(2) << std::endl;
             }
             std::vector<Eigen::Vector2d> outputPlannedPathWaypoints;
             m_pathPlanning2DHandle.plan(inputPathWaypoints, outputPlannedPathWaypoints);
-
+            std::cout << "outPutPlannedPathWaypoints size is: " << outputPlannedPathWaypoints.size() << std::endl;
             m_ownPlannedPath.clear();
-            for (auto&& waypoint : outputPlannedPathWaypoints)
+            for (auto &&waypoint : outputPlannedPathWaypoints)
             {
                 m_ownPlannedPath.push_back(Eigen::Vector3d(waypoint.x(), waypoint.y(), m_desiredHeight));
-
             }
         }
         else
         {
             sensor_msgs::PointCloud tmpOutputPointCloud;
-            for(auto&& agentPose : m_poseOfAgentsInTeam)
+            for (auto &&agentPose : m_poseOfAgentsInTeam)
             {
                 m_processPointCloud.RemovePointsWithinARadiusPointCloud3D(m_ownPointCloud,
                                                                           agentPose.second.position,
@@ -731,7 +731,7 @@ namespace DistributedGlobalPathPlanner
 
     bool PhaseSynchronizer::TransitingFromPhase3()
     {
-        if(m_outputObtainedForPhase3)
+        if (m_outputObtainedForPhase3)
         {
             m_phase = Common::PHASE::PHASE_4;
             return true;
@@ -751,20 +751,20 @@ namespace DistributedGlobalPathPlanner
     {
         if (CheckIfAnyAgentIsStillInPreviousPhase())
         {
-            //publish phase 1 message, agent's position (will send out id and position)
+            // publish phase 1 message, agent's position (will send out id and position)
             m_handlerPtr->m_pubOwnPathAndWaypointProgress(m_ownAgentID, m_ownAgentPathAndWaypointProgress);
         }
         else
         {
-            //pub phase 2 message, agent's own planned path
+            // pub phase 2 message, agent's own planned path
             m_handlerPtr->m_pubOwnPlannedPath(m_ownAgentID, m_ownPlannedPath);
 
-            //get other agent's planned path
+            // get other agent's planned path
             m_handlerPtr->m_getAgentsPlannedPath(m_agentsPlannedPath);
             m_agentsPlannedPath[m_ownAgentID] = m_ownPlannedPath;
 
             std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> agentsPlannedPathCopy;
-            for(auto&&agent : m_phasesOfAgentsInTeam)
+            for (auto &&agent : m_phasesOfAgentsInTeam)
             {
                 int32_t agentID = agent.first;
                 if (m_agentsPlannedPath.find(agentID) != m_agentsPlannedPath.end())
@@ -777,9 +777,9 @@ namespace DistributedGlobalPathPlanner
             {
                 m_ownProcessedPathOfAgents.clear();
 
-                //perform check on every path here to shorten it if needed here
+                // perform check on every path here to shorten it if needed here
                 std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> m_agentsProcessedPlannedPath;
-                for (auto&& agentPlannedPath : agentsPlannedPathCopy)
+                for (auto &&agentPlannedPath : agentsPlannedPathCopy)
                 {
                     std::vector<Eigen::Vector3d> agentProcessedPlannedPath;
                     if (!agentPlannedPath.second.empty())
@@ -794,8 +794,8 @@ namespace DistributedGlobalPathPlanner
 
                         if (m_dimension == Common::DIMENSION::DIM_2)
                         {
-                            Eigen::Vector2d start (agentPlannedPath.second.at(i-1).x(), agentPlannedPath.second.at(i-1).y());
-                            Eigen::Vector2d end (agentPlannedPath.second.at(i).x(), agentPlannedPath.second.at(i).y());
+                            Eigen::Vector2d start(agentPlannedPath.second.at(i - 1).x(), agentPlannedPath.second.at(i - 1).y());
+                            Eigen::Vector2d end(agentPlannedPath.second.at(i).x(), agentPlannedPath.second.at(i).y());
                             Eigen::Vector2d point2DBeforeCollision;
                             collisionDetected = m_pathPlanning2DHandle.collisionFoundBetween2Points(start, end, point2DBeforeCollision);
                             point3DBeforeCollision(0) = point2DBeforeCollision.x();
@@ -804,7 +804,7 @@ namespace DistributedGlobalPathPlanner
                         }
                         else
                         {
-                            Eigen::Vector3d start = agentPlannedPath.second.at(i-1);
+                            Eigen::Vector3d start = agentPlannedPath.second.at(i - 1);
                             Eigen::Vector3d end = agentPlannedPath.second.at(i);
                             collisionDetected = m_pathPlanning3DHandle.collisionFoundBetween2Points(start, end, point3DBeforeCollision);
                         }
@@ -827,7 +827,7 @@ namespace DistributedGlobalPathPlanner
 
                     Common::PathAndCost pathAndCost;
                     pathAndCost.positions = agentProcessedPlannedPath;
-                    pathAndCost.cost = 1.0 / (progress+1.0);
+                    pathAndCost.cost = 1.0 / (progress + 1.0);
                     m_ownProcessedPathOfAgents[agentPlannedPath.first] = pathAndCost;
                 }
 
@@ -844,7 +844,7 @@ namespace DistributedGlobalPathPlanner
 
     bool PhaseSynchronizer::TransitingFromPhase4()
     {
-        if(m_outputObtainedForPhase4)
+        if (m_outputObtainedForPhase4)
         {
             m_phase = Common::PHASE::PHASE_5;
             return true;
@@ -864,20 +864,20 @@ namespace DistributedGlobalPathPlanner
     {
         if (CheckIfAnyAgentIsStillInPreviousPhase())
         {
-            //publish phase 1 message, agent's planned path (will send out id and planned path)
+            // publish phase 1 message, agent's planned path (will send out id and planned path)
             m_handlerPtr->m_pubOwnPlannedPath(m_ownAgentID, m_ownPlannedPath);
         }
         else
         {
-            //pub phase 2 message (will send out id and something)
+            // pub phase 2 message (will send out id and something)
             m_handlerPtr->m_pubOwnProcessedPathOfAgents(m_ownAgentID, m_ownProcessedPathOfAgents);
 
-            //get other agent's processed path of agents
+            // get other agent's processed path of agents
             m_handlerPtr->m_getAgentsProcessedPathOfAgents(m_agentsProcessedPathOfAgents);
             m_agentsProcessedPathOfAgents[m_ownAgentID] = m_ownProcessedPathOfAgents;
 
             std::unordered_map<int32_t, std::unordered_map<int32_t, Common::PathAndCost>> agentsProcessedPathOfAgentsCopy;
-            for(auto&&agent : m_phasesOfAgentsInTeam)
+            for (auto &&agent : m_phasesOfAgentsInTeam)
             {
                 int32_t agentID = agent.first;
                 if (m_agentsProcessedPathOfAgents.find(agentID) != m_agentsProcessedPathOfAgents.end())
@@ -888,7 +888,7 @@ namespace DistributedGlobalPathPlanner
 
             if (agentsProcessedPathOfAgentsCopy.size() == m_phasesOfAgentsInTeam.size())
             {
-                for (auto&& processedPathOfAgents : agentsProcessedPathOfAgentsCopy)
+                for (auto &&processedPathOfAgents : agentsProcessedPathOfAgentsCopy)
                 {
                     if (processedPathOfAgents.first == m_ownAgentID)
                     {
@@ -897,7 +897,7 @@ namespace DistributedGlobalPathPlanner
 
                     if (processedPathOfAgents.second.size() == m_ownProcessedPathOfAgents.size())
                     {
-                        for (auto&& processedPath : processedPathOfAgents.second)
+                        for (auto &&processedPath : processedPathOfAgents.second)
                         {
                             if (m_ownProcessedPathOfAgents.find(processedPath.first) != m_ownProcessedPathOfAgents.end())
                             {
@@ -927,7 +927,7 @@ namespace DistributedGlobalPathPlanner
                 m_ownBestProcessedPath.clear();
                 double lowestCost = DBL_MAX;
                 int32_t lowestCostID = -1;
-                for (auto&& processedPathOfAgent : m_ownProcessedPathOfAgents)
+                for (auto &&processedPathOfAgent : m_ownProcessedPathOfAgents)
                 {
                     if ((processedPathOfAgent.second.cost < lowestCost) ||
                         ((processedPathOfAgent.second.cost == lowestCost) && (processedPathOfAgent.first > lowestCostID)))
@@ -951,7 +951,7 @@ namespace DistributedGlobalPathPlanner
 
     bool PhaseSynchronizer::TransitingFromPhase5()
     {
-        if(m_outputObtainedForPhase5)
+        if (m_outputObtainedForPhase5)
         {
             m_phase = Common::PHASE::PHASE_1;
             return true;
@@ -971,20 +971,20 @@ namespace DistributedGlobalPathPlanner
     {
         if (CheckIfAnyAgentIsStillInPreviousPhase())
         {
-            //publish message from previous phase
+            // publish message from previous phase
             m_handlerPtr->m_pubOwnProcessedPathOfAgents(m_ownAgentID, m_ownProcessedPathOfAgents);
         }
         else
         {
-            //pub current phase message calculated in pevious phase (will send out id and something)
+            // pub current phase message calculated in pevious phase (will send out id and something)
             m_handlerPtr->m_pubOwnBestProcessedPath(m_ownAgentID, m_ownBestProcessedPath);
 
-            //get other agent's processed path of agents
+            // get other agent's processed path of agents
             m_handlerPtr->m_getAgentsBestProcessedPath(m_agentsBestProcessedPath);
             m_agentsBestProcessedPath[m_ownAgentID] = m_ownBestProcessedPath;
 
             std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> agentsBestProcessedPathCopy;
-            for(auto&&agent : m_phasesOfAgentsInTeam)
+            for (auto &&agent : m_phasesOfAgentsInTeam)
             {
                 int32_t agentID = agent.first;
                 if (m_agentsBestProcessedPath.find(agentID) != m_agentsBestProcessedPath.end())
@@ -995,16 +995,16 @@ namespace DistributedGlobalPathPlanner
 
             if (agentsBestProcessedPathCopy.size() == m_phasesOfAgentsInTeam.size())
             {
-                //check that every agent has the same path
+                // check that every agent has the same path
                 bool pathIsSimilar = true;
-                for (auto&& agentPath1 : agentsBestProcessedPathCopy)
+                for (auto &&agentPath1 : agentsBestProcessedPathCopy)
                 {
                     if (!pathIsSimilar)
                     {
                         break;
                     }
 
-                    for (auto&& agentPath2 : agentsBestProcessedPathCopy)
+                    for (auto &&agentPath2 : agentsBestProcessedPathCopy)
                     {
 
                         if (agentPath1.first >= agentPath2.first)
@@ -1018,9 +1018,9 @@ namespace DistributedGlobalPathPlanner
                             break;
                         }
 
-                        for (int i=0; i<agentPath1.second.size(); i++)
+                        for (int i = 0; i < agentPath1.second.size(); i++)
                         {
-                            if (std::abs(agentPath1.second.at(i).norm() - agentPath2.second.at(i).norm()) > FLT_EPSILON)
+                            if (agentPath1.second.at(i) != agentPath2.second.at(i))
                             {
                                 pathIsSimilar = false;
                                 break;
@@ -1044,10 +1044,10 @@ namespace DistributedGlobalPathPlanner
                     Common::Pose pose;
                     pose.position = m_ownBestProcessedPath.at(i);
 
-                    if (i+1 < m_ownBestProcessedPath.size())
+                    if (i + 1 < m_ownBestProcessedPath.size())
                     {
-                        headingRad = std::atan2(m_ownBestProcessedPath.at(i+1).y() - m_ownBestProcessedPath.at(i).y(),
-                                                m_ownBestProcessedPath.at(i+1).x() - m_ownBestProcessedPath.at(i).x());
+                        headingRad = std::atan2(m_ownBestProcessedPath.at(i + 1).y() - m_ownBestProcessedPath.at(i).y(),
+                                                m_ownBestProcessedPath.at(i + 1).x() - m_ownBestProcessedPath.at(i).x());
                     }
                     pose.headingRad = headingRad;
 

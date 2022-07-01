@@ -29,7 +29,7 @@ namespace Formation2DWithYaw
                                                   const double d_size,
                                                   Eigen::Matrix<double, Eigen::Dynamic, 4>& positions2DJacobian) const
     {
-        positions2DJacobian.resize(4,3);
+        positions2DJacobian.resize(2,4);
 
         //first row pt1x
         positions2DJacobian(0,0) = 1;
