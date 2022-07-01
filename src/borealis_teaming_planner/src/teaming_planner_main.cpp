@@ -42,18 +42,14 @@ void TeamingPlanner::teamingPlannerMain()
         mHandlerPtr->m_pubOwnAgentAssignedPose = std::bind(&TeamingPlanner::pubAssignedPose_rf, this, std::placeholders::_1, std::placeholders::_2);
 
         mDistributedFormation.AttachHandler(mHandlerPtr);
-        ROS_INFO("Finished binding Distributed formation handler\n");
+        ROS_INFO("Finished binding Distributed formation handler");
 
         // attach consensus path
-        ROS_INFO("Binding consensus path planner handler\n");
+        ROS_INFO("Binding consensus path planner handler");
         mGlobalPathPlannerHandlerPtr->m_getNumberOfAgentsInTeam = std::bind(&TeamingPlanner::getNumberOfAgentsInTeam, this, std::placeholders::_1);
         mGlobalPathPlannerHandlerPtr->m_getOwnAgentID = std::bind(&TeamingPlanner::getOwnAgentId, this, std::placeholders::_1);
         mGlobalPathPlannerHandlerPtr->m_getOwnAgentLidarPointCloud = std::bind(&TeamingPlanner::getOwnAgentLidarPointCloud, this, std::placeholders::_1);
-
-        ROS_INFO("Binding get go there path");
         mGlobalPathPlannerHandlerPtr->m_getGoTherePath = std::bind(&TeamingPlanner::getGoTherePath_cp, this, std::placeholders::_1);
-        ROS_INFO("Finished binding path");
-
         mGlobalPathPlannerHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp, this, std::placeholders::_1);
         mGlobalPathPlannerHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubOwnPhaseAndTime_cp, this, std::placeholders::_1, std::placeholders::_2);
         mGlobalPathPlannerHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearAgentsPoseBuffer_cp, this);
@@ -87,8 +83,6 @@ void TeamingPlanner::teamingPlannerMain()
         // Finished init
         mModuleState = TeamingPlannerConstants::ModuleState::READY;
         mTask.type = Common::Entity::MTTaskEnum::IDLE;
-        mTeamSize = 0;
-        break;
 
     case TeamingPlannerConstants::ModuleState::READY:
 
