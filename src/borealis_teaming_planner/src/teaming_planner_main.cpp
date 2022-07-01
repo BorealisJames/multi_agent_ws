@@ -115,7 +115,7 @@ void TeamingPlanner::teamingPlannerMain()
                 ROS_INFO("Follow Me\n");
                 mModuleTaskVerbose = true;
             }
-            // mDistributedFormation.RunDistributedFormation();
+            mDistributedFormation.RunDistributedFormation();
             break;
         }
         case Common::Entity::MTTaskEnum::GO_THERE:
@@ -128,11 +128,11 @@ void TeamingPlanner::teamingPlannerMain()
             }
             if (mNewPathPlan)
             {
-                // mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
+                mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
             }
             else
             {
-                // mDistributedFormation.RunDistributedFormation();
+                mDistributedFormation.RunDistributedFormation();
             }
             break;
         }
