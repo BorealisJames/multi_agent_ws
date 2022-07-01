@@ -16,7 +16,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mHistoryOfHumanPosesReceived(false),
         mModuleStateVerbose(false),
         mModuleTaskVerbose(false),
-        mNewPathPlan(false),
+        mNewPathPlan(true),
         mDebugVerbose(true),
         mTeamSize(0),
         mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>()),

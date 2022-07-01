@@ -294,6 +294,7 @@ bool TeamingPlanner::getPosesForFormationToTrack_rf(std::vector<DistributedForma
     {
         if (!mProcessedGoTherePath.empty())
         {
+            // mGoTherePath_cp
             // posesForFormationToTrack = ;
             posesForFormationToTrack = mProcessedGoTherePath;
             status = true;
