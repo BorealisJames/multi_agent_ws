@@ -13,7 +13,7 @@ bool TeamingPlanner::getNumberOfAgentsInTeam(int32_t& numberOfAgentsInTeam)
 {
     bool status = true;
 
-    numberOfAgentsInTeam = mNumberOfAgentsInTeam;
+    numberOfAgentsInTeam = mTeamSize;
 
     return status;
 }

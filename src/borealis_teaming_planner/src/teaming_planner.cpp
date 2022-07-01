@@ -18,7 +18,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mModuleTaskVerbose(false),
         mNewPathPlan(false),
         mDebugVerbose(true),
-        mNumberOfAgentsInTeam(0),
+        mTeamSize(0),
         mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>()),
         mGlobalPathPlannerHandlerPtr(std::make_shared<DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler>()),
         mAgentsPoseMap_cp(),
@@ -87,7 +87,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
 
                 mUAVmodeSubscriber = mNh.subscribe<std_msgs::String>(UAVModeTopic, 10, &TeamingPlanner::UAVModeCallback, this);
                 mInputUAVPoseStampedSubscriber = mNh.subscribe<geometry_msgs::PoseStamped>(inputUAVPoseStampedTopic, 10, &TeamingPlanner::UAVInputPoseStampedCallback, this);
-                mNumberOfAgentsInTeamSubscriber = mNh.subscribe<std_msgs::Int8> (numberOfAgentsTopic, 10, &TeamingPlanner::numberOfAgentsInTeamCallback, this);
+                mAgentsInTeamVectorSubscriber = mNh.subscribe<std_msgs::Int8MultiArray> (numberOfAgentsTopic, 10, &TeamingPlanner::numberOfAgentsInTeamCallback, this);
                 continue;
             }
 

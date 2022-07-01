@@ -109,11 +109,11 @@ if __name__ == '__main__':
         uav1_activate_planner_publisher.publish(bool_to_send)
         uav2_activate_planner_publisher.publish(bool_to_send)
 
-        uav1_number_of_agents_publisher.publish(1)
-        uav2_number_of_agents_publisher.publish(1)
+        uav1_number_of_agents_publisher.publish(2)
+        uav2_number_of_agents_publisher.publish(2)
 
-        uav1_hri_mode_pose_topic_publisher.publish("Nil")
-        uav2_hri_mode_pose_topic_publisher.publish("Go_There")
+        uav1_hri_mode_pose_topic_publisher.publish("Follow_Me")
+        uav2_hri_mode_pose_topic_publisher.publish("Follow_Me")
 
         rate.sleep()
         print("Done")

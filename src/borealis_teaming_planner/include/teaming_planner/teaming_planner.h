@@ -29,6 +29,7 @@
 #include <sensor_msgs/point_cloud_conversion.h>
 
 #include <std_msgs/Int8.h>
+#include <std_msgs/Int8MultiArray.h>
 #include <std_msgs/String.h>
 #include <tf/transform_listener.h>
 #include <mt_msgs/pose.h>
@@ -92,7 +93,9 @@ class TeamingPlanner
         std_msgs::Bool mBoolActivatePlanner; 
         geometry_msgs::PoseStamped mInputUAVPoseStamped;
         std::string mUAVMode;
-        int mNumberOfAgentsInTeam;
+        std::vector<int> mAgentsInTeamVector;
+        std_msgs::Int8MultiArray mAgentsInTeam;
+        int mTeamSize;
 
         // Verbose Variables
         bool mModuleStateVerbose;
@@ -107,7 +110,7 @@ class TeamingPlanner
         ros::Subscriber mActivatePlannerSubscriber;
         ros::Subscriber mUAVmodeSubscriber;
         ros::Subscriber mInputUAVPoseStampedSubscriber;
-        ros::Subscriber mNumberOfAgentsInTeamSubscriber;
+        ros::Subscriber mAgentsInTeamVectorSubscriber;
         ros::Subscriber mProcessedGoTherePathSubscriber;
                     
         /* Multi Robot formation variables used by handler funcs*/
@@ -184,7 +187,9 @@ class TeamingPlanner
         void activatePlannerCallback(const std_msgs::Bool::ConstPtr& aBoolActivatePlanner);
         void UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode);
         void UAVInputPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& aInputPose);
-        void numberOfAgentsInTeamCallback(const std_msgs::Int8::ConstPtr& aNumberOfAgents);
+
+        void numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray::ConstPtr& aNumberOfAgents);
+
         void ProcessedGoTherePathCallback(const geometry_msgs::PoseArray::ConstPtr& aInputPoseArray);
 
         void phaseTimeCallback_rf(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime);

@@ -215,21 +215,27 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
         tmp_vec.push_back(tmp);
 
         mGoTherePath_cp = tmp_vec;
-        ROS_INFO("[Teaming Planner %d]: Go there Input pose Received %d\n", mSourceSegmentId, tmp.position(0));
-    }
+        ROS_INFO("[Teaming Planner %d]: Go there Input pose Received %f\n", mSourceSegmentId, tmp.position(0));
         if (mDebugVerbose)
         {
             ROS_INFO("[Teaming Planner %d]: Go there Input pose Received\n", mSourceSegmentId);
         }
-
+    }
 }
 
-void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8::ConstPtr& aNumberOfAgents)
+void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray::ConstPtr& aNumberOfAgents)
 {
-    if (mNumberOfAgentsInTeam != aNumberOfAgents->data)
+    if (mTeamSize != aNumberOfAgents->data.size())
     {
-        ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mNumberOfAgentsInTeam, aNumberOfAgents->data);
-        mNumberOfAgentsInTeam = aNumberOfAgents->data;
+        ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector, aNumberOfAgents->data);
+        mTeamSize = aNumberOfAgents->data.size();
+
+        mAgentsInTeam.data = aNumberOfAgents->data;
+        for (int agentNumber : mAgentsInTeam.data)
+        {
+            mAgentsInTeamVector.push_back(agentNumber);
+        }
+
         TeamingPlanner::clearOtherAgentsData();
     }
 }
@@ -238,17 +244,6 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8::ConstPtr
 // Store into map.
 void TeamingPlanner::systemPoseCallback_rf(const mt_msgs::pose::ConstPtr& aSystemPose)
 {
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aSystemPose->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
         DistributedFormation::Common::Pose tmp;
@@ -272,18 +267,7 @@ void TeamingPlanner::systemPoseCallback_rf(const mt_msgs::pose::ConstPtr& aSyste
 }
 
 void TeamingPlanner::phaseTimeCallback_rf(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
-{
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
+{    
         if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPhaseAndTime->sourceSegmentId) != mAgentsInTeamVector.end() )
         {
 
@@ -302,18 +286,8 @@ void TeamingPlanner::phaseTimeCallback_rf(const mt_msgs::phaseAndTime::ConstPtr&
 
 void TeamingPlanner::directionUtilityCallback_rf(const mt_msgs::angleIndexAndUtility::ConstPtr& aDirectionUtility)
 {
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aDirectionUtility->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-        if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aDirectionUtility->sourceSegmentId) != mAgentsInTeamVector.end() )
-        {
 
         DistributedFormation::Common::DirectionUtility tmp;
 
@@ -329,16 +303,6 @@ void TeamingPlanner::directionUtilityCallback_rf(const mt_msgs::angleIndexAndUti
 
 void TeamingPlanner::convexRegion2DCallback_rf(const mt_msgs::convexRegion2D::ConstPtr& aConvexRegion2D)
 {
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
     
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aConvexRegion2D->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
@@ -391,18 +355,6 @@ void TeamingPlanner::convexRegion2DCallback_rf(const mt_msgs::convexRegion2D::Co
 
 void TeamingPlanner::convexRegion3DCallback_rf(const mt_msgs::convexRegion3D::ConstPtr& aConvexRegion3D)
 {
-
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aConvexRegion3D->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
 
@@ -462,18 +414,7 @@ void TeamingPlanner::convexRegion3DCallback_rf(const mt_msgs::convexRegion3D::Co
 }
 
 void TeamingPlanner::assignedVirtualPoseMapCallback_rf(const mt_msgs::posevector::ConstPtr& aAssignedVirtualPoseMap)
-{
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
+{    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aAssignedVirtualPoseMap->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
 
@@ -501,18 +442,7 @@ void TeamingPlanner::assignedVirtualPoseMapCallback_rf(const mt_msgs::posevector
 
 /* Global Consensus path callbacks*/
 void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
-{
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
+{    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPhaseAndTime->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
         mDebugVerbose = true;
@@ -530,18 +460,7 @@ void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr&
 }
 
 void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSystemPose)
-{
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
+{    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aSystemPose->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
         mDebugVerbose = true;
@@ -567,18 +486,7 @@ void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSyste
 }
 
 void TeamingPlanner::pathAndProgressCallback_cp(const mt_msgs::pathAndProgress::ConstPtr& aPathAndProgress)
-{
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
+{    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPathAndProgress->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
         mDebugVerbose = true;
@@ -605,18 +513,7 @@ void TeamingPlanner::pathAndProgressCallback_cp(const mt_msgs::pathAndProgress::
 }
 
 void TeamingPlanner::plannedPathCallback_cp(const mt_msgs::posevector::ConstPtr& aPlannedPath)
-{
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
+{    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPlannedPath->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
 
@@ -641,18 +538,7 @@ void TeamingPlanner::plannedPathCallback_cp(const mt_msgs::posevector::ConstPtr&
 }
 
 void TeamingPlanner::agentProcessedPathOfAgentsCallback_cp(const mt_msgs::pathAndCostVector::ConstPtr& aPathAndCostVector)
-{
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
+{    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPathAndCostVector->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
         mDebugVerbose = true;
@@ -685,18 +571,7 @@ void TeamingPlanner::agentProcessedPathOfAgentsCallback_cp(const mt_msgs::pathAn
 }
 
 void TeamingPlanner::agentBestProcessedPathCallback_cp(const mt_msgs::posevector::ConstPtr& aBestProcessedPath)
-{
-    std::vector<int> mAgentsInTeamVector;
-    if (mNumberOfAgentsInTeam == 1)
-    {
-        mAgentsInTeamVector.push_back(mSourceSegmentId);
-    }
-    if (mNumberOfAgentsInTeam == 2)
-    {
-        mAgentsInTeamVector.push_back(1);
-        mAgentsInTeamVector.push_back(2);
-    }
-    
+{    
     if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aBestProcessedPath->sourceSegmentId) != mAgentsInTeamVector.end() )
     {
         mDebugVerbose = true;
