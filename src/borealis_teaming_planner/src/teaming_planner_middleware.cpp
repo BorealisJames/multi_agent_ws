@@ -155,6 +155,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
     else 
     {
         mTask.type = Common::Entity::MTTaskEnum::IDLE;
+        ROS_INFO("Agent %i mode IDLE WHAT THE FUCK:", mSourceSegmentId);
     }
     if (mDebugVerbose)
     {
