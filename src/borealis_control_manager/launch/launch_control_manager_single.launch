@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+    <launch>
+        <group ns="$(env DRONE_NAME)">
+            <node pkg="borealis_control_manager" type="control_manager_refactor.py" name="control_manager" output="screen"/>
+        </group>
+    </launch>
