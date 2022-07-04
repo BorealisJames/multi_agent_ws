@@ -30,8 +30,8 @@ class transform():
         self.recieved_new_ap_callback_uav1 = False
         self.recieved_new_ap_callback_uav2 = False
 
-        uav1_ap_uwb_pose_topic = "/uav1/teaming_planner/uwb_assigned_virtual_position"
-        uav2_ap_uwb_pose_topic = "/uav2/teaming_planner/uwb_assigned_virtual_position"
+        uav1_ap_uwb_pose_topic = "/uav1/borealis_teaming_planner/uwb_assigned_virtual_position"
+        uav2_ap_uwb_pose_topic = "/uav2/borealis_teaming_planner/uwb_assigned_virtual_position"
         uav1_uwb_pose_topic = "/UAV1PoseUWB"
         uav2_uwb_pose_topic = "/UAV2PoseUWB"
         uav1_t265_pose_topic = "/uav1/mavros/local_position/pose"
