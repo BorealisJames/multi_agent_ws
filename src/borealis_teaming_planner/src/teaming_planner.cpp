@@ -137,6 +137,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
             bestProcessedPathSubsriberVector_cp.push_back(bestProcessedPathSubsriber_cp);
             // processedPathSubsriberVector_cp.push_back(processedPathSubsriber_cp);
         }
+        
         // Timers
         mModuleLoopTimer = mNh.createTimer(ros::Duration(mModulePeriod), &TeamingPlanner::moduleLoopCallback, this);
     }

@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     output_pose_array.poses.append(go_there_poses)
 
-    output_state_list = ["Follow_Me", "Follow_Me", "Nil"]
+    output_state_list = ["Follow_Me", "Nil", "Nil"]
     output_yaw_list = [10.1, 20.5, 30]
 
     borealis_hri_output_msg.uav_pose_array = output_pose_array
@@ -54,23 +54,23 @@ if __name__ == '__main__':
         go_there_poses1 = Pose()
         go_there_poses2 = Pose()
 
-        go_there_poses.position.x = 2.1
-        go_there_poses.position.y = -3
+        go_there_poses.position.x = 1
+        go_there_poses.position.y = -1
         go_there_poses.position.z = 1.3
         go_there_poses.orientation.x = 0
         go_there_poses.orientation.y = 0
         go_there_poses.orientation.z = 0
         go_there_poses.orientation.w = 1
 
-        go_there_poses1.position.x = 2.1
-        go_there_poses1.position.y = -3
+        go_there_poses1.position.x =  2
+        go_there_poses1.position.y = -1
         go_there_poses1.position.z = 1.3
         go_there_poses1.orientation.x = 0
         go_there_poses1.orientation.y = 0
         go_there_poses1.orientation.z = 0
         go_there_poses1.orientation.w = 1
 
-        go_there_poses2.position.x = 2.1
+        go_there_poses2.position.x = 2.5
         go_there_poses2.position.y = -3
         go_there_poses2.position.z = 1.3
         go_there_poses2.orientation.x = 0
@@ -88,8 +88,6 @@ if __name__ == '__main__':
         borealis_hri_output_msg.uav_yaw_list = output_yaw_list
 
         hri_output_publisher.publish(borealis_hri_output_msg)
-        # uav1_input_pose_publisher.publish(pose_stamped)
-        # uav2_input_pose_publisher.publish(pose_stamped)
 
         rate.sleep()
         print("Done")
