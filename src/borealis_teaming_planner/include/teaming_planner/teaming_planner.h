@@ -269,6 +269,7 @@ class TeamingPlanner
         void clearAgentsPlannedPathBuffer_cp();
         void clearAgentsPathAndWaypointProgressBuffer_cp();
         void clearAgentsBestProcessedPathBuffer_cp();
+        void clearAgentNumberTeamVector();
         /*Functions to be binded by consensus path planner CPH means consensus path handler */
 
         // Functions 

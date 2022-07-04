@@ -230,6 +230,8 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
         mTeamSize = aNumberOfAgents->data.size();
 
         mAgentsInTeam.data = aNumberOfAgents->data;
+
+        TeamingPlanner::clearAgentNumberTeamVector;
         for (int agentNumber : mAgentsInTeam.data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
@@ -636,4 +638,9 @@ void TeamingPlanner::clearOtherAgentsData()
     clearAgentsPlannedPathBuffer_cp();
     clearAgentsPathAndWaypointProgressBuffer_cp();
     clearAgentsBestProcessedPathBuffer_cp();
+}
+
+void TeamingPlanner::clearAgentNumberTeamVector()
+{
+    mAgentsInTeamVector.clear();
 }
