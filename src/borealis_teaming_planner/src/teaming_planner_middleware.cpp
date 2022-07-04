@@ -637,21 +637,23 @@ void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray
 
 void TeamingPlanner::clearOtherAgentsData()
 {
-    clearPhaseAndTimeMap_rf(); 
-    clearPoseMap_rf(); 
-    clearDirectionUtilityMap_rf();
-    clearConvexRegion2DMap_rf();
-    clearConvexRegion3DMap_rf();
-    clearAssignedVirtualPoseMap_rf(); 
+    TeamingPlanner::clearPhaseAndTimeMap_rf(); 
+    TeamingPlanner::clearPoseMap_rf(); 
+    TeamingPlanner::clearDirectionUtilityMap_rf();
+    TeamingPlanner::clearConvexRegion2DMap_rf();
+    TeamingPlanner::clearConvexRegion3DMap_rf();
+    TeamingPlanner::clearAssignedVirtualPoseMap_rf(); 
 
-    clearAgentsPoseBuffer_cp();
-    clearAgentsProcessedPathOfAgentsBuffer_cp();
-    clearAgentsPlannedPathBuffer_cp();
-    clearAgentsPathAndWaypointProgressBuffer_cp();
-    clearAgentsBestProcessedPathBuffer_cp();
+    TeamingPlanner::clearAgentsPoseBuffer_cp();
+    TeamingPlanner::clearAgentsProcessedPathOfAgentsBuffer_cp();
+    TeamingPlanner::clearAgentsPlannedPathBuffer_cp();
+    TeamingPlanner::clearAgentsPathAndWaypointProgressBuffer_cp();
+    TeamingPlanner::clearAgentsBestProcessedPathBuffer_cp();
+    ROS_INFO("Other Agents info cleared!");
 }
 
 void TeamingPlanner::clearAgentNumberTeamVector()
 {
     mAgentsInTeamVector.clear();
+    ROS_INFO("Other Agents info cleared!");
 }
