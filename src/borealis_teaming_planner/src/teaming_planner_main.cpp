@@ -81,8 +81,11 @@ void TeamingPlanner::teamingPlannerMain()
         ROS_INFO("Finished reading and setting parameters");
 
         // Finished init
-        mModuleState = TeamingPlannerConstants::ModuleState::READY;
+        mModuleState = TeamingPlannerConstants::ModuleState::RUNNING;
         mTask.type = Common::Entity::MTTaskEnum::IDLE;
+        ROS_INFO("Finished Init");
+        
+        break;
 
     case TeamingPlannerConstants::ModuleState::READY:
 
