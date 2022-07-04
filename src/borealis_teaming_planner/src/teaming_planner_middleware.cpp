@@ -158,8 +158,8 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
     else 
     {
         mTask.type = Common::Entity::MTTaskEnum::IDLE;
-        TeamingPlanner::clearOtherAgentsData();
-        TeamingPlanner::clearAgentNumberTeamVector();
+        // TeamingPlanner::clearOtherAgentsData();
+        // TeamingPlanner::clearAgentNumberTeamVector();
     }
     if (mDebugVerbose)
     {
