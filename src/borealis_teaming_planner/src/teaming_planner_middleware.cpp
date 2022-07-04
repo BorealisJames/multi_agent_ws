@@ -143,6 +143,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         {
             mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
             TeamingPlanner::clearOtherAgentsData();
+            TeamingPlanner::clearAgentNumberTeamVector();
         }
     }
     else if (str2.compare(aUAVmode->data.c_str()) == 0)
@@ -151,11 +152,14 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         {
             mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
             TeamingPlanner::clearOtherAgentsData();
+            TeamingPlanner::clearAgentNumberTeamVector();
         }
     }
     else 
     {
         mTask.type = Common::Entity::MTTaskEnum::IDLE;
+        TeamingPlanner::clearOtherAgentsData();
+        TeamingPlanner::clearAgentNumberTeamVector();
     }
     if (mDebugVerbose)
     {

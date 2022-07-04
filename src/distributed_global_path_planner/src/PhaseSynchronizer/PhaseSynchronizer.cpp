@@ -294,6 +294,7 @@ namespace DistributedGlobalPathPlanner
         if (m_phasesAndTimeRecordOfAgents.size() != m_numberOfAgentsInTeam)
         {
             std::cout << "Agent" << m_ownAgentID << ": reset as expected number of agents do not match" << std::endl;
+            std::cout << "Agent" << m_ownAgentID << ": m_phasesAndTimeRecordOfAgents.size: " << m_phasesAndTimeRecordOfAgents.size() << ", m_numberOfAgentsInTeam: " <<  m_numberOfAgentsInTeam << std::endl;
 
             ResetPhase();
             return;

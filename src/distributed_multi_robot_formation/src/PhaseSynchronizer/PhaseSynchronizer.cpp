@@ -265,7 +265,7 @@ namespace DistributedFormation
         if (m_phasesAndTimeRecordOfAgents.size() != m_numberOfAgentsInTeam)
         {
             std::cout << "Agent" << m_ownAgentID << ": reset in phase update of agents" << std::endl;
-            std::cout << "Agent" << m_ownAgentID << "Phase and time record is of size " << m_phasesAndTimeRecordOfAgents.size() << " while number of agents" << m_numberOfAgentsInTeam << std::endl;
+            std::cout << "Agent" << m_ownAgentID << ": Phase and time record is of size " << m_phasesAndTimeRecordOfAgents.size() << " while number of agents" << m_numberOfAgentsInTeam << std::endl;
 
             ResetPhase();
             return;
