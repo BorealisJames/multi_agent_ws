@@ -776,28 +776,28 @@ namespace DistributedFormation
         humanPosition.z = m_humanPose.position.z;
         m_ownPointCloud.points.push_back(humanPosition);
 
-        //make a 'screen' for the human
-        double screenChangeLimit = 1.0;
-        double screenResolution = 1.0;
+        // //make a 'screen' for the human
+        // double screenChangeLimit = 1.0;
+        // double screenResolution = 1.0;
 
-        for (double height = -screenChangeLimit; height <= screenChangeLimit; height+=screenResolution)
-        {
-            humanPosition.x = m_humanPose.position.x;
-            humanPosition.y = m_humanPose.position.y;
-            humanPosition.z = m_humanPose.position.z + height;
-            m_ownPointCloud.points.push_back(humanPosition);
-            for (double horizontal = screenResolution; horizontal <= screenChangeLimit; horizontal+=screenResolution)
-            {
-                humanPosition.x = horizontal * std::cos(m_humanPose.headingRad + M_PI/2) + m_humanPose.position.x;
-                humanPosition.y = horizontal * std::sin(m_humanPose.headingRad + M_PI/2) + m_humanPose.position.y;
-                humanPosition.z = m_humanPose.position.z + height;
-                m_ownPointCloud.points.push_back(humanPosition);
-                humanPosition.x = horizontal * std::cos(m_humanPose.headingRad - M_PI/2) + m_humanPose.position.x;
-                humanPosition.y = horizontal * std::sin(m_humanPose.headingRad - M_PI/2) + m_humanPose.position.y;
-                humanPosition.z = m_humanPose.position.z + height;
-                m_ownPointCloud.points.push_back(humanPosition);
-            }
-        }
+        // for (double height = -screenChangeLimit; height <= screenChangeLimit; height+=screenResolution)
+        // {
+        //     humanPosition.x = m_humanPose.position.x;
+        //     humanPosition.y = m_humanPose.position.y;
+        //     humanPosition.z = m_humanPose.position.z + height;
+        //     m_ownPointCloud.points.push_back(humanPosition);
+        //     for (double horizontal = screenResolution; horizontal <= screenChangeLimit; horizontal+=screenResolution)
+        //     {
+        //         humanPosition.x = horizontal * std::cos(m_humanPose.headingRad + M_PI/2) + m_humanPose.position.x;
+        //         humanPosition.y = horizontal * std::sin(m_humanPose.headingRad + M_PI/2) + m_humanPose.position.y;
+        //         humanPosition.z = m_humanPose.position.z + height;
+        //         m_ownPointCloud.points.push_back(humanPosition);
+        //         humanPosition.x = horizontal * std::cos(m_humanPose.headingRad - M_PI/2) + m_humanPose.position.x;
+        //         humanPosition.y = horizontal * std::sin(m_humanPose.headingRad - M_PI/2) + m_humanPose.position.y;
+        //         humanPosition.z = m_humanPose.position.z + height;
+        //         m_ownPointCloud.points.push_back(humanPosition);
+        //     }
+        // }
 
         // //wall hack
         // m_ownPointCloud.points.clear();
