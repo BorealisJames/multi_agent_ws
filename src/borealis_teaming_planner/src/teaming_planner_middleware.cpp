@@ -1,5 +1,6 @@
 #include "../include/teaming_planner/teaming_planner.h"
 
+
 // Subscriber Functions
 void TeamingPlanner::goalCallback(const mt_msgs::pose::ConstPtr& aGoal)
 {
@@ -231,7 +232,7 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
 
         mAgentsInTeam.data = aNumberOfAgents->data;
 
-        TeamingPlanner::clearAgentNumberTeamVector;
+        TeamingPlanner::clearAgentNumberTeamVector();
         for (int agentNumber : mAgentsInTeam.data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
