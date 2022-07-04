@@ -244,6 +244,12 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
 
         TeamingPlanner::clearOtherAgentsData();
     }
+
+    if (mDebugVerbose)
+    {
+        ROS_INFO("[Teaming Planner %d]: numberOfAgentsInTeamCallback: %d  mTeamSize: %d\n", mSourceSegmentId, aNumberOfAgents->data.size(), mTeamSize);
+    }
+
 }
 
 /* Callbacks used by robot formation */
