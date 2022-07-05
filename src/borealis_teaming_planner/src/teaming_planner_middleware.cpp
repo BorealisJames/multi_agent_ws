@@ -92,8 +92,8 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     tmp.header.stamp = aSystemPointCloud2->header.stamp; 
     tmp.header.frame_id = aSystemPointCloud2->header.frame_id; 
 
-    tmp.header.frame_id = sourceFrame;
-    tmp.header.stamp = ros::Time::now();
+    // tmp.header.frame_id = sourceFrame;
+    // tmp.header.stamp = ros::Time::now();
 
     mVoxelFilterCloudPublisher_rf.publish(tmp);
 
