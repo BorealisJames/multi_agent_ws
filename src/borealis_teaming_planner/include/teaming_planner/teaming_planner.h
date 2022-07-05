@@ -146,19 +146,19 @@ class TeamingPlanner
 
         /* Consensus global path variables */
         DistributedGlobalPathPlanner::Common::Pose mOwnAgentPose_cp;
-        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose> mAgentsPoseMap_cp;
         std::vector<DistributedGlobalPathPlanner::Common::Pose> mGoTherePath_cp;
-        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime> mAgentsPhasesAndTimeMap_cp;
         DistributedGlobalPathPlanner::Common::PhaseAndTime mOwnAgentPhaseAndTime_cp;
-        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndWaypointProgress> mAgentsPathAndWaypointProgressMap_cp;
         DistributedGlobalPathPlanner::Common::PathAndWaypointProgress mOwnPathAndWaypointProgress_cp;
-        std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> mAgentsPlannedPathMap_cp;
         std::vector<Eigen::Vector3d> mOwnPlannedPath_cp;
+        std::vector<Eigen::Vector3d> mOwnBestProcessedPath_cp;
+        std::vector<DistributedGlobalPathPlanner::Common::Pose> m_ownProcessedGoTherePath_cp;
+        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose> mAgentsPoseMap_cp;
+        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime> mAgentsPhasesAndTimeMap_cp;
+        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndWaypointProgress> mAgentsPathAndWaypointProgressMap_cp;
+        std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> mAgentsPlannedPathMap_cp;
         std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost>> mAgentsProcessedPathOfAgentsMap_cp;
         // std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost> mOwnProcessedPathOfAgents_cp;
         std::unordered_map<int32_t, std::vector<Eigen::Vector3d>> mAgentsBestProcessedPath_cp;
-        std::vector<Eigen::Vector3d> mOwnBestProcessedPath_cp;
-        std::vector<DistributedGlobalPathPlanner::Common::Pose> m_ownProcessedGoTherePath_cp;
 
         /* Publishers used by Consensus global path handler*/
         ros::Publisher mPosePublisher_cp;
@@ -265,6 +265,7 @@ class TeamingPlanner
 
         // Clear
         void clearAgentsPoseBuffer_cp();
+        void clearPhasesAndTime_cp();
         void clearAgentsProcessedPathOfAgentsBuffer_cp();
         void clearAgentsPlannedPathBuffer_cp();
         void clearAgentsPathAndWaypointProgressBuffer_cp();
@@ -277,9 +278,9 @@ class TeamingPlanner
         void teamingPlannerMain();
         void readParameters();
         bool checkAndAddHumanSystemPose(std::vector<DistributedFormation::Common::Pose>& historyOfHumanPoses, const DistributedFormation::Common::Pose aPose);
+        void printOutDroneMapVariables();
         double euclideanDistance(const double x1, const double y1, const double x2, const double y2);
-        geometry_msgs::PoseStamped subtractPoseStamped(geometry_msgs::PoseStamped previous, geometry_msgs::PoseStamped current); // current - previous
-        geometry_msgs::PoseStamped addPoseStamped(geometry_msgs::PoseStamped vector_pose, geometry_msgs::PoseStamped current);
+
         // Timer Functions 
         void moduleLoopCallback(const ros::TimerEvent& event);
 

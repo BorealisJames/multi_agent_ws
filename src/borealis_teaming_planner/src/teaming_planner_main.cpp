@@ -92,6 +92,7 @@ void TeamingPlanner::teamingPlannerMain()
         if (!mModuleStateVerbose)
         {
             ROS_INFO("Module State Ready, waiting for Task Command\n");
+            printOutDroneMapVariables();
             mModuleStateVerbose = true;
         }
 
@@ -101,6 +102,7 @@ void TeamingPlanner::teamingPlannerMain()
         if (!mModuleStateVerbose)
         {
             ROS_INFO("Module State Running\n");
+            printOutDroneMapVariables();
             mModuleStateVerbose = true;
         }
         switch (mTask.type)
@@ -109,10 +111,11 @@ void TeamingPlanner::teamingPlannerMain()
         {
             if (!mModuleTaskVerbose)
             {
-                ROS_INFO("[Teaming Planner %d]: Follow Me generating Formation\n", mSourceSegmentId);
+                ROS_INFO("[Teaming Planner %d]: Follow Me Generating Formation\n", mSourceSegmentId);
+                printOutDroneMapVariables();
                 mModuleTaskVerbose = true;
             }
-            mDistributedFormation.RunDistributedFormation();
+            // mDistributedFormation.RunDistributedFormation();
             break;
         }
         case Common::Entity::MTTaskEnum::GO_THERE:
@@ -125,12 +128,14 @@ void TeamingPlanner::teamingPlannerMain()
             if (mNewPathPlan)
             {
                 ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
-                mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
+                printOutDroneMapVariables();
+                // mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
             }
             else
             {
                 ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
-                mDistributedFormation.RunDistributedFormation();
+                printOutDroneMapVariables();    
+                // mDistributedFormation.RunDistributedFormation();
             }
             break;
         }
@@ -163,7 +168,6 @@ void TeamingPlanner::teamingPlannerMain()
         }
         break;
     }
-    // Call benson's class and init paramaters and run his module.
 }
 
 bool TeamingPlanner::checkAndAddHumanSystemPose(std::vector<DistributedFormation::Common::Pose> &historyOfHumanPoses, const DistributedFormation::Common::Pose aPose)
@@ -300,4 +304,21 @@ void TeamingPlanner::readParameters()
     mConfigFileReader.getParam(mNhPrivate, "potentialRadius", mPathPlanningParameters.potentialRadius, 3.0);
     mConfigFileReader.getParam(mNhPrivate, "searchRadius", mPathPlanningParameters.searchRadius, 1.5);
     mConfigFileReader.getParam(mNhPrivate, "performJPS", mPathPlanningParameters.performJPS, true);
+}
+
+
+void TeamingPlanner::printOutDroneMapVariables()
+{
+    ROS_INFO("[Teaming Planner %d]: mAgentsPoseMap_cp size : %d!", mSourceSegmentId, mAgentsPoseMap_cp.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsPhasesAndTimeMap_cp size : %d!", mSourceSegmentId, mAgentsPhasesAndTimeMap_cp.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsPathAndWaypointProgressMap_cp size : %d!", mSourceSegmentId, mAgentsPathAndWaypointProgressMap_cp.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsPlannedPathMap_cp size : %d!", mSourceSegmentId, mAgentsPlannedPathMap_cp.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsProcessedPathOfAgentsMap_cp size : %d!", mSourceSegmentId, mAgentsProcessedPathOfAgentsMap_cp.size());
+
+    ROS_INFO("[Teaming Planner %d]: mAgentsPhaseAndTimeMap_rf size : %d!", mSourceSegmentId, mAgentsPhaseAndTimeMap_rf.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsPoseMap_rf size : %d!", mSourceSegmentId, mAgentsPoseMap_rf.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsDirectionUtilityMap_rf size : %d!", mSourceSegmentId, mAgentsDirectionUtilityMap_rf.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsConvexRegion2DMap_rf size : %d!", mSourceSegmentId, mAgentsConvexRegion2DMap_rf.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsConvexRegion3DMap_rf size : %d!", mSourceSegmentId, mAgentsConvexRegion3DMap_rf.size());
+    ROS_INFO("[Teaming Planner %d]: mAgentsAssignedVirtualPoseMap_rf size : %d!", mSourceSegmentId, mAgentsAssignedVirtualPoseMap_rf.size());
 }

@@ -367,3 +367,8 @@ void TeamingPlanner::clearAgentsBestProcessedPathBuffer_cp()
 {
     mAgentsBestProcessedPath_cp.clear();
 }
+
+void TeamingPlanner::clearPhasesAndTime_cp()
+{
+    mAgentsPhasesAndTimeMap_cp.clear();
+}
