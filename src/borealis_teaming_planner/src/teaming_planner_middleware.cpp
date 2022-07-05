@@ -86,6 +86,7 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
 
     std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_sensor";
     DistributedFormation::ProcessPointCloud tmpProcessPointCloud;
+
     sensor_msgs::PointCloud tmp;
     tmpProcessPointCloud.ApplyVoxelFilterAndConvertToPointCloud(*aSystemPointCloud2, tmp);
     tmp.header.stamp = aSystemPointCloud2->header.stamp; 

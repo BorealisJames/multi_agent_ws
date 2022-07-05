@@ -112,10 +112,10 @@ void TeamingPlanner::teamingPlannerMain()
             if (!mModuleTaskVerbose)
             {
                 ROS_INFO("[Teaming Planner %d]: Follow Me Generating Formation\n", mSourceSegmentId);
-                printOutDroneMapVariables();
+                // printOutDroneMapVariables();
                 mModuleTaskVerbose = true;
             }
-            // mDistributedFormation.RunDistributedFormation();
+            mDistributedFormation.RunDistributedFormation();
             break;
         }
         case Common::Entity::MTTaskEnum::GO_THERE:
@@ -128,14 +128,14 @@ void TeamingPlanner::teamingPlannerMain()
             if (mNewPathPlan)
             {
                 ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
-                printOutDroneMapVariables();
-                // mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
+                // printOutDroneMapVariables();
+                mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
             }
             else
             {
                 ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
-                printOutDroneMapVariables();    
-                // mDistributedFormation.RunDistributedFormation();
+                // printOutDroneMapVariables();    
+                mDistributedFormation.RunDistributedFormation();
             }
             break;
         }
