@@ -141,7 +141,7 @@ void TeamingPlanner::teamingPlannerMain()
         }
         case Common::Entity::MTTaskEnum::IDLE:
         {
-            ROS_INFO("Teaming Planner %d]: PLANNER IDLING!");
+            ROS_INFO("Teaming Planner %d]: PLANNER IDLING!", mSourceSegmentId);
             if (!mModuleTaskVerbose)
             {
                 // ROS_INFO("Go There\n");
@@ -311,14 +311,14 @@ void TeamingPlanner::printOutDroneMapVariables()
 {
     ROS_INFO("[Teaming Planner %d]: mAgentsPoseMap_cp size : %d!", mSourceSegmentId, mAgentsPoseMap_cp.size());
     ROS_INFO("[Teaming Planner %d]: mAgentsPhasesAndTimeMap_cp size : %d!", mSourceSegmentId, mAgentsPhasesAndTimeMap_cp.size());
-    ROS_INFO("[Teaming Planner %d]: mAgentsPathAndWaypointProgressMap_cp size : %d!", mSourceSegmentId, mAgentsPathAndWaypointProgressMap_cp.size());
-    ROS_INFO("[Teaming Planner %d]: mAgentsPlannedPathMap_cp size : %d!", mSourceSegmentId, mAgentsPlannedPathMap_cp.size());
-    ROS_INFO("[Teaming Planner %d]: mAgentsProcessedPathOfAgentsMap_cp size : %d!", mSourceSegmentId, mAgentsProcessedPathOfAgentsMap_cp.size());
+    // ROS_INFO("[Teaming Planner %d]: mAgentsPathAndWaypointProgressMap_cp size : %d!", mSourceSegmentId, mAgentsPathAndWaypointProgressMap_cp.size());
+    // ROS_INFO("[Teaming Planner %d]: mAgentsPlannedPathMap_cp size : %d!", mSourceSegmentId, mAgentsPlannedPathMap_cp.size());
+    // ROS_INFO("[Teaming Planner %d]: mAgentsProcessedPathOfAgentsMap_cp size : %d!", mSourceSegmentId, mAgentsProcessedPathOfAgentsMap_cp.size());
 
     ROS_INFO("[Teaming Planner %d]: mAgentsPhaseAndTimeMap_rf size : %d!", mSourceSegmentId, mAgentsPhaseAndTimeMap_rf.size());
     ROS_INFO("[Teaming Planner %d]: mAgentsPoseMap_rf size : %d!", mSourceSegmentId, mAgentsPoseMap_rf.size());
-    ROS_INFO("[Teaming Planner %d]: mAgentsDirectionUtilityMap_rf size : %d!", mSourceSegmentId, mAgentsDirectionUtilityMap_rf.size());
-    ROS_INFO("[Teaming Planner %d]: mAgentsConvexRegion2DMap_rf size : %d!", mSourceSegmentId, mAgentsConvexRegion2DMap_rf.size());
-    ROS_INFO("[Teaming Planner %d]: mAgentsConvexRegion3DMap_rf size : %d!", mSourceSegmentId, mAgentsConvexRegion3DMap_rf.size());
-    ROS_INFO("[Teaming Planner %d]: mAgentsAssignedVirtualPoseMap_rf size : %d!", mSourceSegmentId, mAgentsAssignedVirtualPoseMap_rf.size());
+    // ROS_INFO("[Teaming Planner %d]: mAgentsDirectionUtilityMap_rf size : %d!", mSourceSegmentId, mAgentsDirectionUtilityMap_rf.size());
+    // ROS_INFO("[Teaming Planner %d]: mAgentsConvexRegion2DMap_rf size : %d!", mSourceSegmentId, mAgentsConvexRegion2DMap_rf.size());
+    // ROS_INFO("[Teaming Planner %d]: mAgentsConvexRegion3DMap_rf size : %d!", mSourceSegmentId, mAgentsConvexRegion3DMap_rf.size());
+    // ROS_INFO("[Teaming Planner %d]: mAgentsAssignedVirtualPoseMap_rf size : %d!", mSourceSegmentId, mAgentsAssignedVirtualPoseMap_rf.size());
 }
