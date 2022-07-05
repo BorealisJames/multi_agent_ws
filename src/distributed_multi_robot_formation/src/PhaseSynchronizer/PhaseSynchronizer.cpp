@@ -266,7 +266,10 @@ namespace DistributedFormation
         {
             std::cout << "Agent" << m_ownAgentID << ": reset in phase update of agents" << std::endl;
             std::cout << "Agent" << m_ownAgentID << ": Phase and time record is of size " << m_phasesAndTimeRecordOfAgents.size() << " while number of agents" << m_numberOfAgentsInTeam << std::endl;
-
+            for( auto phase : m_phasesAndTimeRecordOfAgents)
+            {
+                std::cout << "Agent::contains phases %d" << phase.first << std::endl;
+            }
             ResetPhase();
             return;
         }
