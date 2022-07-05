@@ -316,6 +316,28 @@ bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, Distribut
     if (!mAgentsPhaseAndTimeMap_rf.empty())
     {
         phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
+
+        // Check if there is any discepency between the agent vector and phaseSyncMap
+        for (auto phase_time : mAgentsPhaseAndTimeMap_rf)
+        {
+            bool thisNumberExists = false;
+            int number_to_erase; 
+            for (auto number : mAgentsInTeamVector)
+            {
+                number_to_erase = number;
+                if (phase_time.first ==  number)
+                {
+                    thisNumberExists = true;
+                    break;
+                }
+            }
+            if (!thisNumberExists)
+            {
+                mAgentsPhaseAndTimeMap_rf.erase(number_to_erase);
+                ROS_WARN("Agent%d CP: mAgentsPhaseAndTimeMap_rf contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
+            }
+        }
+
     }
     else
     {

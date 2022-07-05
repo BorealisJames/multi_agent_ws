@@ -234,7 +234,6 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
     {
         ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), aNumberOfAgents->data.size());
         mTeamSize = aNumberOfAgents->data.size();
-
         mAgentsInTeam.data = aNumberOfAgents->data;
 
         TeamingPlanner::clearAgentNumberTeamVector();
@@ -659,51 +658,54 @@ void TeamingPlanner::clearOtherAgentsData()
 
 void TeamingPlanner::selfCheckData()
 {
-    if (mTeamSize != mAgentsPhaseAndTimeMap_rf.size())
-    {
-        clearPhaseAndTimeMap_rf();
-        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPhaseAndTimeMap_rf !", mSourceSegmentId);
-    }
-    // Check if the map size correspons to the current team size.
 
-    if (mTeamSize != mAgentsPoseMap_rf.size())
-    {
-        clearPoseMap_rf();
-        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPoseMap_rf !", mSourceSegmentId);
-    }
-    if (mTeamSize != mAgentsDirectionUtilityMap_rf.size())
-    {
-        clearDirectionUtilityMap_rf();
-        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsDirectionUtilityMap_rf !", mSourceSegmentId);
-    }
+    ROS_INFO("[Teaming Planner %d]: mTeamSize: %d", mSourceSegmentId, mTeamSize);
 
-    if (mTeamSize != mAgentsConvexRegion2DMap_rf.size())
-    {
-        clearConvexRegion2DMap_rf();
-        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsConvexRegion2DMap_rf !", mSourceSegmentId);
-    }
+    // if (mTeamSize != mAgentsPhaseAndTimeMap_rf.size())
+    // {
+    //     // clearPhaseAndTimeMap_rf();
+    //     ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPhaseAndTimeMap_rf %d!, mTeamSize: %d", mSourceSegmentId);
+    // }
+    // // Check if the map size correspons to the current team size.
 
-    if (mTeamSize != mAgentsConvexRegion3DMap_rf.size())
-    {
-        clearConvexRegion3DMap_rf();
-        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsConvexRegion3DMap_rf !", mSourceSegmentId);
-    }
+    // if (mTeamSize != mAgentsPoseMap_rf.size())
+    // {
+    //     // clearPoseMap_rf();
+    //     ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPoseMap_rf !", mSourceSegmentId);
+    // }
+    // if (mTeamSize != mAgentsDirectionUtilityMap_rf.size())
+    // {
+    //     // clearDirectionUtilityMap_rf();
+    //     ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsDirectionUtilityMap_rf !", mSourceSegmentId);
+    // }
 
-    if (mTeamSize != mAgentsAssignedVirtualPoseMap_rf.size())
-    {
-        clearAssignedVirtualPoseMap_rf();
-        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsAssignedVirtualPoseMap_rf !", mSourceSegmentId);
-    }
+    // if (mTeamSize != mAgentsConvexRegion2DMap_rf.size())
+    // {
+    //     // clearConvexRegion2DMap_rf();
+    //     ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsConvexRegion2DMap_rf !", mSourceSegmentId);
+    // }
 
-    if (mTeamSize != mAgentsPoseMap_cp.size())
-    {
-        clearAgentsPoseBuffer_cp();
-        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPoseMap_cp !", mSourceSegmentId);
-    }
+    // if (mTeamSize != mAgentsConvexRegion3DMap_rf.size())
+    // {
+    //     // clearConvexRegion3DMap_rf();
+    //     ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsConvexRegion3DMap_rf !", mSourceSegmentId);
+    // }
 
-    if (mTeamSize != mAgentsPhasesAndTimeMap_cp.size())
-    {
-        clearPhasesAndTime_cp();
-        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPhasesAndTimeMap_cp !", mSourceSegmentId);
-    }
+    // if (mTeamSize != mAgentsAssignedVirtualPoseMap_rf.size())
+    // {
+    //     // clearAssignedVirtualPoseMap_rf();
+    //     ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsAssignedVirtualPoseMap_rf !", mSourceSegmentId);
+    // }
+
+    // if (mTeamSize != mAgentsPoseMap_cp.size())
+    // {
+    //     // clearAgentsPoseBuffer_cp();
+    //     ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPoseMap_cp !", mSourceSegmentId);
+    // }
+
+    // if (mTeamSize != mAgentsPhasesAndTimeMap_cp.size())
+    // {
+    //     // clearPhasesAndTime_cp();
+    //     ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPhasesAndTimeMap_cp !", mSourceSegmentId);
+    // }
 }

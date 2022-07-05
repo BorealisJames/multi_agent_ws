@@ -26,14 +26,34 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
 {
     bool status = true;
 
-
     if (!mAgentsPhasesAndTimeMap_cp.empty())
     {
+        // Check if there is any discepency between the agent vector and phaseSyncMap
+        for (auto phase_time : mAgentsPhasesAndTimeMap_cp)
+        {
+            bool thisNumberExists = false;
+            int number_to_erase; 
+            for (auto number : mAgentsInTeamVector)
+            {
+                number_to_erase = number;
+                if (phase_time.first ==  number)
+                {
+                    thisNumberExists = true;
+                    break;
+                }
+            }
+            if (!thisNumberExists)
+            {
+                mAgentsPhasesAndTimeMap_cp.erase(number_to_erase);
+                ROS_WARN("Agent%d CP: mAgentsPhasesAndTimeMap_cp contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
+            }
+        }
+
         phasesAndTimeRecordOfAgents = mAgentsPhasesAndTimeMap_cp;
     }
     else
     {
-        ROS_WARN("Agent%d CPH: get mAgentsPhasesAndTimeMap_cp empty!", mSourceSegmentId);
+        ROS_WARN("Agent%d CP: get mAgentsPhasesAndTimeMap_cp empty!", mSourceSegmentId);
     }
 
     return status;
@@ -101,6 +121,27 @@ bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlo
     if (!mAgentsPoseMap_cp.empty())
     {
         agentsPose = mAgentsPoseMap_cp;
+        // Check if there is any discepency between the agent vector and map
+        for (auto pose : mAgentsPoseMap_cp)
+        {
+            bool thisNumberExists = false;
+            int number_to_erase; 
+
+            for (auto number : mAgentsInTeamVector)
+            {
+                number_to_erase = number;
+                if (pose.first ==  number)
+                {
+                    thisNumberExists = true;
+                    break;
+                }
+            }
+            if (!thisNumberExists)
+            {
+                mAgentsPoseMap_cp.erase(number_to_erase);
+                ROS_WARN("Agent%d CP: mAgentsPoseMap_cp contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
+            }
+        }
     }
     else
     {
