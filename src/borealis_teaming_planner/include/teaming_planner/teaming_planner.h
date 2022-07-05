@@ -265,6 +265,7 @@ class TeamingPlanner
 
         // Clear
         void clearAgentsPoseBuffer_cp();
+        void selfCheckData();
         void clearPhasesAndTime_cp();
         void clearAgentsProcessedPathOfAgentsBuffer_cp();
         void clearAgentsPlannedPathBuffer_cp();

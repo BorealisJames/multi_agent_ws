@@ -284,17 +284,13 @@ void TeamingPlanner::phaseTimeCallback_rf(const mt_msgs::phaseAndTime::ConstPtr&
         if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPhaseAndTime->sourceSegmentId) != mAgentsInTeamVector.end() )
         {
 
-        DistributedFormation::Common::PhaseAndTime tmp;
+            DistributedFormation::Common::PhaseAndTime tmp;
+            tmp.phase = static_cast<DistributedFormation::Common::PHASE>(aPhaseAndTime->phase);
+            tmp.timeMicroSecs = aPhaseAndTime->time;
+            mAgentsPhaseAndTimeMap_rf[aPhaseAndTime->sourceSegmentId] = tmp;
 
-        tmp.phase = static_cast<DistributedFormation::Common::PHASE>(aPhaseAndTime->phase);
-        tmp.timeMicroSecs = aPhaseAndTime->time;
-        mAgentsPhaseAndTimeMap_rf[aPhaseAndTime->sourceSegmentId] = tmp;
-
-        if (mDebugVerbose)
-        {
             ROS_INFO("[Teaming Planner %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
         }
-    }
 }
 
 void TeamingPlanner::directionUtilityCallback_rf(const mt_msgs::angleIndexAndUtility::ConstPtr& aDirectionUtility)
@@ -645,18 +641,69 @@ void TeamingPlanner::clearAgentNumberTeamVector()
 
 void TeamingPlanner::clearOtherAgentsData()
 {
-    TeamingPlanner::clearPhaseAndTimeMap_rf(); 
-    TeamingPlanner::clearPoseMap_rf(); 
-    TeamingPlanner::clearDirectionUtilityMap_rf();
-    TeamingPlanner::clearConvexRegion2DMap_rf();
-    TeamingPlanner::clearConvexRegion3DMap_rf();
-    TeamingPlanner::clearAssignedVirtualPoseMap_rf(); 
+    clearPhaseAndTimeMap_rf(); 
+    clearPoseMap_rf(); 
+    clearDirectionUtilityMap_rf();
+    clearConvexRegion2DMap_rf();
+    clearConvexRegion3DMap_rf();
+    clearAssignedVirtualPoseMap_rf(); 
 
-    TeamingPlanner::clearPhasesAndTime_cp();
-    TeamingPlanner::clearAgentsPoseBuffer_cp();
-    TeamingPlanner::clearAgentsProcessedPathOfAgentsBuffer_cp();
-    TeamingPlanner::clearAgentsPlannedPathBuffer_cp();
-    TeamingPlanner::clearAgentsPathAndWaypointProgressBuffer_cp();
-    TeamingPlanner::clearAgentsBestProcessedPathBuffer_cp();
+    clearPhasesAndTime_cp();
+    clearAgentsPoseBuffer_cp();
+    clearAgentsProcessedPathOfAgentsBuffer_cp();
+    clearAgentsPlannedPathBuffer_cp();
+    clearAgentsPathAndWaypointProgressBuffer_cp();
+    clearAgentsBestProcessedPathBuffer_cp();
     ROS_INFO("[Teaming Planner %d]: Other Agents info cleared!", mSourceSegmentId);
+}
+
+void TeamingPlanner::selfCheckData()
+{
+    if (mTeamSize != mAgentsPhaseAndTimeMap_rf.size())
+    {
+        clearPhaseAndTimeMap_rf();
+        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPhaseAndTimeMap_rf !", mSourceSegmentId);
+    }
+    // Check if the map size correspons to the current team size.
+
+    if (mTeamSize != mAgentsPoseMap_rf.size())
+    {
+        clearPoseMap_rf();
+        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPoseMap_rf !", mSourceSegmentId);
+    }
+    if (mTeamSize != mAgentsDirectionUtilityMap_rf.size())
+    {
+        clearDirectionUtilityMap_rf();
+        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsDirectionUtilityMap_rf !", mSourceSegmentId);
+    }
+
+    if (mTeamSize != mAgentsConvexRegion2DMap_rf.size())
+    {
+        clearConvexRegion2DMap_rf();
+        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsConvexRegion2DMap_rf !", mSourceSegmentId);
+    }
+
+    if (mTeamSize != mAgentsConvexRegion3DMap_rf.size())
+    {
+        clearConvexRegion3DMap_rf();
+        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsConvexRegion3DMap_rf !", mSourceSegmentId);
+    }
+
+    if (mTeamSize != mAgentsAssignedVirtualPoseMap_rf.size())
+    {
+        clearAssignedVirtualPoseMap_rf();
+        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsAssignedVirtualPoseMap_rf !", mSourceSegmentId);
+    }
+
+    if (mTeamSize != mAgentsPoseMap_cp.size())
+    {
+        clearAgentsPoseBuffer_cp();
+        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPoseMap_cp !", mSourceSegmentId);
+    }
+
+    if (mTeamSize != mAgentsPhasesAndTimeMap_cp.size())
+    {
+        clearPhasesAndTime_cp();
+        ROS_INFO("[Teaming Planner %d]: selfCheckData triggered for mAgentsPhasesAndTimeMap_cp !", mSourceSegmentId);
+    }
 }

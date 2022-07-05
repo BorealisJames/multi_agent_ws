@@ -2,6 +2,8 @@
 
 bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner::Common::Pose>& goTherePath)
 {
+
+
     bool status = true;
 
     if (!mGoTherePath_cp.empty())
@@ -23,6 +25,7 @@ bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner:
 bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime>& phasesAndTimeRecordOfAgents)
 {
     bool status = true;
+
 
     if (!mAgentsPhasesAndTimeMap_cp.empty())
     {

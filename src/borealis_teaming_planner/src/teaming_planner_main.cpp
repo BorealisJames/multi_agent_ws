@@ -115,6 +115,7 @@ void TeamingPlanner::teamingPlannerMain()
                 // printOutDroneMapVariables();
                 mModuleTaskVerbose = true;
             }
+            selfCheckData();
             mDistributedFormation.RunDistributedFormation();
             break;
         }
@@ -129,12 +130,14 @@ void TeamingPlanner::teamingPlannerMain()
             {
                 ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
                 // printOutDroneMapVariables();
+                selfCheckData();
                 mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
             }
             else
             {
                 ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
-                // printOutDroneMapVariables();    
+                // printOutDroneMapVariables();
+                selfCheckData();
                 mDistributedFormation.RunDistributedFormation();
             }
             break;
