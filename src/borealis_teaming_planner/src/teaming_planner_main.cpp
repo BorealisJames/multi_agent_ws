@@ -141,7 +141,7 @@ void TeamingPlanner::teamingPlannerMain()
         }
         case Common::Entity::MTTaskEnum::IDLE:
         {
-            ROS_INFO("PLANNER IDLING!");
+            ROS_INFO("Teaming Planner %d]: PLANNER IDLING!");
             if (!mModuleTaskVerbose)
             {
                 // ROS_INFO("Go There\n");
