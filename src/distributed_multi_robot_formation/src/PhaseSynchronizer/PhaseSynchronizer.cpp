@@ -855,18 +855,18 @@ namespace DistributedFormation
             double distanceToGoal = std::sqrt(std::pow(m_avgOfExtremaPose.position.x - m_goal.position.x, 2) +
                                               std::pow(m_avgOfExtremaPose.position.y - m_goal.position.y, 2) );
 
-            Polyhedron<2> poly2DViz;
-            m_generateConvexRegions.Generate2DConvexRegionFromPoint(m_ownPointCloud,
-                                                                    m_avgOfExtremaPose.position,
-                                                                    0.1,
-                                                                    m_localBoundingBoxForPathAlongX + distanceToGoal,
-                                                                    m_localBoundingBoxForPathAlongY + distanceToGoal,
-                                                                    AFromPoint,
-                                                                    bFromPoint,
-                                                                    poly2DViz);
+            // Polyhedron<2> poly2DViz;
+            // m_generateConvexRegions.Generate2DConvexRegionFromPoint(m_ownPointCloud,
+            //                                                         m_avgOfExtremaPose.position,
+            //                                                         0.1,
+            //                                                         m_localBoundingBoxForPathAlongX + distanceToGoal,
+            //                                                         m_localBoundingBoxForPathAlongY + distanceToGoal,
+            //                                                         AFromPoint,
+            //                                                         bFromPoint,
+            //                                                         poly2DViz);
 
-            m_polys2DViz.clear();
-            m_polys2DViz.push_back(poly2DViz);
+            // m_polys2DViz.clear();
+            // m_polys2DViz.push_back(poly2DViz);
 
 
             Eigen::Matrix<decimal_t, Eigen::Dynamic, 2> AFromPath;
@@ -884,9 +884,9 @@ namespace DistributedFormation
 
             std::vector<Eigen::Matrix<decimal_t, Eigen::Dynamic, 2>> AVec;
             std::vector<Eigen::Matrix<decimal_t, Eigen::Dynamic, 1>> bVec;
-            AVec.push_back(AFromPoint);
+            //AVec.push_back(AFromPoint);
             AVec.push_back(AFromPath);
-            bVec.push_back(bFromPoint);
+            //bVec.push_back(bFromPoint);
             bVec.push_back(bFromPath);
 
             Eigen::Matrix<decimal_t, Eigen::Dynamic, 2> AReduced;
