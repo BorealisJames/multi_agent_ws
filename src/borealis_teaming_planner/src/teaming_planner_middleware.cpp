@@ -282,21 +282,21 @@ void TeamingPlanner::systemPoseCallback_rf(const mt_msgs::pose::ConstPtr& aSyste
 
 void TeamingPlanner::phaseTimeCallback_rf(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
 {    
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPhaseAndTime->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPhaseAndTime->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
         DistributedFormation::Common::PhaseAndTime tmp;
         tmp.phase = static_cast<DistributedFormation::Common::PHASE>(aPhaseAndTime->phase);
         tmp.timeMicroSecs = aPhaseAndTime->time;
         mAgentsPhaseAndTimeMap_rf[aPhaseAndTime->sourceSegmentId] = tmp;
 
         ROS_INFO("[Teaming Planner %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
-    // }
+    }
 }
 
 void TeamingPlanner::directionUtilityCallback_rf(const mt_msgs::angleIndexAndUtility::ConstPtr& aDirectionUtility)
 {
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aDirectionUtility->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aDirectionUtility->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
 
         DistributedFormation::Common::DirectionUtility tmp;
 
@@ -307,14 +307,14 @@ void TeamingPlanner::directionUtilityCallback_rf(const mt_msgs::angleIndexAndUti
         {
             ROS_INFO("[Teaming Planner %d]: Direction Utility Received from Agent: %d\n", mSourceSegmentId, aDirectionUtility->sourceSegmentId);
         }
-    // }
+    }
 }
 
 void TeamingPlanner::convexRegion2DCallback_rf(const mt_msgs::convexRegion2D::ConstPtr& aConvexRegion2D)
 {
     
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aConvexRegion2D->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aConvexRegion2D->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
 
         DistributedFormation::Common::ConvexRegion2D tmp;
 
@@ -359,13 +359,13 @@ void TeamingPlanner::convexRegion2DCallback_rf(const mt_msgs::convexRegion2D::Co
             }
             ROS_INFO("\n");
         }
-    // }
+    }
 }
 
 void TeamingPlanner::convexRegion3DCallback_rf(const mt_msgs::convexRegion3D::ConstPtr& aConvexRegion3D)
 {
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aConvexRegion3D->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aConvexRegion3D->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
 
         DistributedFormation::Common::ConvexRegion3D tmp;
 
@@ -419,13 +419,13 @@ void TeamingPlanner::convexRegion3DCallback_rf(const mt_msgs::convexRegion3D::Co
             }
             ROS_INFO("\n");
         }
-    // }
+    }
 }
 
 void TeamingPlanner::assignedVirtualPoseMapCallback_rf(const mt_msgs::posevector::ConstPtr& aAssignedVirtualPoseMap)
 {    
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aAssignedVirtualPoseMap->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aAssignedVirtualPoseMap->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
 
         std::unordered_map<int32_t, DistributedFormation::Common::Pose> tmpMap;
         for (auto pose : aAssignedVirtualPoseMap->poseVector)
@@ -446,14 +446,14 @@ void TeamingPlanner::assignedVirtualPoseMapCallback_rf(const mt_msgs::posevector
         {
             ROS_INFO("Assigned Virtual Position Received from Agent: %d", aAssignedVirtualPoseMap->sourceSegmentId);
         }
-    // }
+    }
 }
 
 /* Global Consensus path callbacks*/
 void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr& aPhaseAndTime)
 {    
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPhaseAndTime->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPhaseAndTime->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
         mDebugVerbose = true;
         DistributedGlobalPathPlanner::Common::PhaseAndTime tmp;
         tmp.phase = static_cast<DistributedGlobalPathPlanner::Common::PHASE>(aPhaseAndTime->phase);
@@ -465,13 +465,13 @@ void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr&
             ROS_INFO("[Teaming Planner CP %d]: Phase Time Received from Agent: %d", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
             mDebugVerbose = false;
         }
-    // }
+    }
 }
 
 void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSystemPose)
 {    
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aSystemPose->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aSystemPose->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
         mDebugVerbose = true;
         DistributedGlobalPathPlanner::Common::Pose tmp;
         tmp.position(0) = aSystemPose->position.x;
@@ -486,13 +486,13 @@ void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSyste
             ROS_INFO("[Teaming Planner %d]: CP System Pose Received from Agent: %d", mSourceSegmentId, aSystemPose->sourceSegmentId);
             mDebugVerbose = false;
         }
-    // }
+    }
 }
 
 void TeamingPlanner::pathAndProgressCallback_cp(const mt_msgs::pathAndProgress::ConstPtr& aPathAndProgress)
 {    
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPathAndProgress->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPathAndProgress->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
         mDebugVerbose = true;
         DistributedGlobalPathPlanner::Common::PathAndWaypointProgress agents_path_progress_tmp;
         std::vector<DistributedGlobalPathPlanner::Common::Pose> tmp_poses;
@@ -513,13 +513,13 @@ void TeamingPlanner::pathAndProgressCallback_cp(const mt_msgs::pathAndProgress::
             ROS_INFO("[Teaming Planner %d]: Path and progress recieved! from %i", mSourceSegmentId, aPathAndProgress->sourceSegmentId);
             mDebugVerbose = false;
         }
-    // }
+    }
 }
 
 void TeamingPlanner::plannedPathCallback_cp(const mt_msgs::posevector::ConstPtr& aPlannedPath)
 {    
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPlannedPath->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPlannedPath->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
 
         mDebugVerbose = true;
         std::vector<Eigen::Vector3d> tmp_poses;
@@ -537,13 +537,13 @@ void TeamingPlanner::plannedPathCallback_cp(const mt_msgs::posevector::ConstPtr&
             ROS_INFO("[Teaming Planner %d]: Planned path recieved! from %i", mSourceSegmentId, aPlannedPath->sourceSegmentId);
             mDebugVerbose = false;
         }
-    // }
+    }
 }
 
 void TeamingPlanner::agentProcessedPathOfAgentsCallback_cp(const mt_msgs::pathAndCostVector::ConstPtr& aPathAndCostVector)
 {    
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPathAndCostVector->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aPathAndCostVector->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
         mDebugVerbose = true;
         std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost> path_and_cost_tmp_map;
         for (auto path_cost : aPathAndCostVector->pathAndCostVector)
@@ -569,14 +569,14 @@ void TeamingPlanner::agentProcessedPathOfAgentsCallback_cp(const mt_msgs::pathAn
             ROS_INFO("[Teaming Planner %d]: aPathAndCostVector recieved! from %i", mSourceSegmentId, aPathAndCostVector->sourceSegmentId);
             mDebugVerbose = false;
         }
-    // }
+    }
 
 }
 
 void TeamingPlanner::agentBestProcessedPathCallback_cp(const mt_msgs::posevector::ConstPtr& aBestProcessedPath)
 {    
-    // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aBestProcessedPath->sourceSegmentId) != mAgentsInTeamVector.end() )
-    // {
+    if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aBestProcessedPath->sourceSegmentId) != mAgentsInTeamVector.end() )
+    {
         mDebugVerbose = true;
         std::vector<Eigen::Vector3d> tmp_poses;
         for (auto pose : aBestProcessedPath->poseVector)
@@ -594,7 +594,7 @@ void TeamingPlanner::agentBestProcessedPathCallback_cp(const mt_msgs::posevector
             ROS_INFO("[Teaming Planner %d]: aBestProcessedPath recieved! from %i", mSourceSegmentId, aBestProcessedPath->sourceSegmentId);
             mDebugVerbose = false;
         }
-    // }
+    }
 }
 
 void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray::ConstPtr& aInputPoseArray)
