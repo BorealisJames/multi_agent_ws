@@ -305,7 +305,7 @@ void TeamingPlanner::phaseTimeCallback_rf(const mt_msgs::phaseAndTime::ConstPtr&
 void TeamingPlanner::directionUtilityCallback_rf(const mt_msgs::angleIndexAndUtility::ConstPtr& aDirectionUtility)
 {
     // if ( std::find(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end(), aDirectionUtility->sourceSegmentId) != mAgentsInTeamVector.end() )
-    {
+    // {
 // 
         DistributedFormation::Common::DirectionUtility tmp;
 
