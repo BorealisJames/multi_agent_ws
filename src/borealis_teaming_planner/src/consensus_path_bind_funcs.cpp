@@ -403,7 +403,6 @@ bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t aAgentId, const st
 void TeamingPlanner::clearAgentsPoseBuffer_cp()
 {
     mAgentsPoseMap_cp.clear();
-    clearPhasesAndTime_cp(); // also clear
 }
 
 void TeamingPlanner::clearAgentsPathAndWaypointProgressBuffer_cp()

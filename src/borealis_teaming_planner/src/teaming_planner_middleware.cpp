@@ -142,7 +142,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         if (mTask.type != Common::Entity::MTTaskEnum::FOLLOW_ME)
         {
             mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
-            // TeamingPlanner::clearOtherAgentsData();
+            TeamingPlanner::clearOtherAgentsData();
             TeamingPlanner::clearAgentNumberTeamVector();
         }
     }
@@ -151,7 +151,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         if (mTask.type != Common::Entity::MTTaskEnum::GO_THERE)
         {
             mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
-            // TeamingPlanner::clearOtherAgentsData();
+            TeamingPlanner::clearOtherAgentsData();
             TeamingPlanner::clearAgentNumberTeamVector();
         }
     }
@@ -244,7 +244,7 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
             mAgentsInTeamVector.push_back(agentNumber);
             ROS_INFO("[Teaming Planner %d: The new agenst are %d", agentNumber);
         }
-        // TeamingPlanner::clearOtherAgentsData();
+        clearOtherAgentsData();
     }
 
     if (mDebugVerbose)

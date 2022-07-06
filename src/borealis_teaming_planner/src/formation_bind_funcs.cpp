@@ -484,7 +484,7 @@ void TeamingPlanner::clearPhaseAndTimeMap_rf()
 void TeamingPlanner::clearPoseMap_rf()
 {
     mAgentsPoseMap_rf.clear();
-    clearPhaseAndTimeMap_rf(); // also clear
+    // clearPhaseAndTimeMap_rf(); // also clear
     if(mDebugVerbose)
     {
         ROS_INFO("[Teaming Planner %d]: Agents Pose Map cleared", mSourceSegmentId);
