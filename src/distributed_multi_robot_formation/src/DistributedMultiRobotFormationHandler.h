@@ -68,13 +68,13 @@ public:
     void Pub2DPolyUAV (const vec_E<Polyhedron<2>>& polyhedron)
     {
         decomp_ros_msgs::PolyhedronArray poly_msg = DecompROS::polyhedron_array_to_ros(polyhedron);
-        poly_msg.header.frame_id = "map";
+        poly_msg.header.frame_id = "/odom";
         m_polyPubUAV.publish(poly_msg);
     }
     void Pub3DPolyUAV (const vec_E<Polyhedron<3>>& polyhedron)
     {
         decomp_ros_msgs::PolyhedronArray poly_msg = DecompROS::polyhedron_array_to_ros(polyhedron);
-        poly_msg.header.frame_id = "map";
+        poly_msg.header.frame_id = "/odom";
         m_polyPubUAV.publish(poly_msg);
     }
     void PubProcessedPointCloud (const sensor_msgs::PointCloud& pointCloud)
@@ -85,7 +85,7 @@ public:
     void PubStartPosition (const Eigen::Vector3d& startPosition)
     {
         visualization_msgs::Marker marker;
-        marker.header.frame_id = "/map";
+        marker.header.frame_id = "/odom";
         marker.header.stamp = ros::Time();
         marker.ns = "start";
         marker.id = 0;
@@ -111,7 +111,7 @@ public:
     void PubGoalPosition (const Eigen::Vector3d& goalPosition)
     {
         visualization_msgs::Marker marker;
-        marker.header.frame_id = "/map";
+        marker.header.frame_id = "/odom";
         marker.header.stamp = ros::Time();
         marker.ns = "goal";
         marker.id = 0;
@@ -137,7 +137,7 @@ public:
     void PubGoalAlongPosesPosition (const Eigen::Vector3d& goalAlongPosesPosition)
     {
         visualization_msgs::Marker marker;
-        marker.header.frame_id = "/map";
+        marker.header.frame_id = "/odom";
         marker.header.stamp = ros::Time();
         marker.ns = "goal_along_poses";
         marker.id = 0;

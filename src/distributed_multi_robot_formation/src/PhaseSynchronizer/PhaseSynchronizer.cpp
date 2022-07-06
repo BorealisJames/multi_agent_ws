@@ -773,11 +773,11 @@ namespace DistributedFormation
         }
 
         //add back human position as a point
-        geometry_msgs::Point32 humanPosition;
-        humanPosition.x = m_humanPose.position.x;
-        humanPosition.y = m_humanPose.position.y;
-        humanPosition.z = m_humanPose.position.z;
-        m_ownPointCloud.points.push_back(humanPosition);
+        // geometry_msgs::Point32 humanPosition;
+        // humanPosition.x = m_humanPose.position.x;
+        // humanPosition.y = m_humanPose.position.y;
+        // humanPosition.z = m_humanPose.position.z;
+        // m_ownPointCloud.points.push_back(humanPosition);
 
         // //make a 'screen' for the human
         // double screenChangeLimit = 1.0;
