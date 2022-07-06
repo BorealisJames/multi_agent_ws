@@ -96,8 +96,8 @@ class transform():
             self.cmd1.header.frame_id = '/odom'
             self.cmd2.header.frame_id = '/odom'
             
-            self.cmd1.pose.position.z = 1.3
-            self.cmd2.pose.position.z = 1.3
+            self.cmd1.pose.position.z = 1
+            self.cmd2.pose.position.z = 1
             
             uav1_publisher.publish(self.cmd1)
             uav2_publisher.publish(self.cmd2)
