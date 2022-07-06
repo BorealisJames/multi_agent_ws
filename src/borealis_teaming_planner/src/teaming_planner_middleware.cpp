@@ -613,8 +613,6 @@ void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray
     }
     mProcessedGoTherePath = tmp_vec;
 
-    mNewPathPlan = false;
-
     if (mDebugVerbose)
     {
         ROS_INFO("[Teaming Planner %d]: ProcessedGoTherePathCallback recieved! ", mSourceSegmentId);
