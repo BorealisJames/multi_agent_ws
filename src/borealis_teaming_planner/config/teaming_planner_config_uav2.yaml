@@ -3,9 +3,11 @@
 /uav2/borealis_teaming_planner/numOfAgents: 2
 /uav2/borealis_teaming_planner/intervalDistance: 0.5
 /uav2/borealis_teaming_planner/planningHorizon: 25
-/uav2/borealis_teaming_planner/debugVerbose: false
 /uav2/borealis_teaming_planner/desiredHeight: 1.2
 /uav2/borealis_teaming_planner/useUWB: false
+/uav2/borealis_teaming_planner/debugVerbose: true
+/uav2/borealis_teaming_planner/pointcloudCallbackVerbose: false
+/uav2/borealis_teaming_planner/agentPoseCallbackVerbose: false
 
 # pi /2 1.57079632679 
 # pi /4 0.785398163397

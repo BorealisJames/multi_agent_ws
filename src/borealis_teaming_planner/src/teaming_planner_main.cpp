@@ -37,7 +37,7 @@ void TeamingPlanner::teamingPlannerMain()
         mHandlerPtr->m_pubOwnConvex3DRegion = std::bind(&TeamingPlanner::pubConvexRegion3D_rf, this, std::placeholders::_1, std::placeholders::_2);
         mHandlerPtr->m_getAgentsConvex3DRegion = std::bind(&TeamingPlanner::getConvexRegion3DMap_rf, this, std::placeholders::_1);
         mHandlerPtr->m_pubOwnTaskAssignments = std::bind(&TeamingPlanner::pubAssignedPoseMap_rf, this, std::placeholders::_1, std::placeholders::_2);
-        mHandlerPtr->m_clearAgentsTaskAssignmentsBuffer = std::bind(&TeamingPlanner::clearPoseMap_rf, this);
+        mHandlerPtr->m_clearAgentsTaskAssignmentsBuffer = std::bind(&TeamingPlanner::clearPoseMap_rf, this); // huh
         mHandlerPtr->m_getAgentsTaskAssignments = std::bind(&TeamingPlanner::getAssignedVirtualPoseMap_rf, this, std::placeholders::_1);
         mHandlerPtr->m_pubOwnAgentAssignedPose = std::bind(&TeamingPlanner::pubAssignedPose_rf, this, std::placeholders::_1, std::placeholders::_2);
 
@@ -92,7 +92,6 @@ void TeamingPlanner::teamingPlannerMain()
         if (!mModuleStateVerbose)
         {
             ROS_INFO("Module State Ready, waiting for Task Command\n");
-            printOutDroneMapVariables();
             mModuleStateVerbose = true;
         }
 
@@ -107,55 +106,56 @@ void TeamingPlanner::teamingPlannerMain()
         }
         switch (mTask.type)
         {
-        case Common::Entity::MTTaskEnum::FOLLOW_ME:
-        {
-            if (!mModuleTaskVerbose)
+            case Common::Entity::MTTaskEnum::FOLLOW_ME:
             {
-                ROS_INFO("[Teaming Planner %d]: Follow Me Generating Formation\n", mSourceSegmentId);
-                // printOutDroneMapVariables();
-                mModuleTaskVerbose = true;
-            }
-            selfCheckData();
-            mDistributedFormation.RunDistributedFormation();
-            break;
-        }
-        case Common::Entity::MTTaskEnum::GO_THERE:
-        {
-            if (!mModuleTaskVerbose)
-            {
-                // ROS_INFO("Go There\n");
-                mModuleTaskVerbose = true;
-            }
-            if (mNewPathPlan)
-            {
-                ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
-                // printOutDroneMapVariables();
-                selfCheckData();
-                mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
-            }
-            else
-            {
-                ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
-                // printOutDroneMapVariables();
+                if (!mModuleTaskVerbose)
+                {
+                    ROS_INFO("[Teaming Planner %d]: Follow Me Generating Formation\n", mSourceSegmentId);
+                    // printOutDroneMapVariables();
+                    mModuleTaskVerbose = true;
+                }
                 selfCheckData();
                 mDistributedFormation.RunDistributedFormation();
+                break;
             }
-            break;
-        }
-        case Common::Entity::MTTaskEnum::IDLE:
-        {
-            ROS_INFO("Teaming Planner %d]: PLANNER IDLING!", mSourceSegmentId);
-            if (!mModuleTaskVerbose)
+
+            case Common::Entity::MTTaskEnum::GO_THERE:
             {
-                // ROS_INFO("Go There\n");
-                mModuleTaskVerbose = true;
+                if (!mModuleTaskVerbose)
+                {
+                    // ROS_INFO("Go There\n");
+                    mModuleTaskVerbose = true;
+                }
+                if (mNewPathPlan)
+                {
+                    ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
+                    // printOutDroneMapVariables();
+                    selfCheckData();
+                    mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
+                }
+                else
+                {
+                    ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
+                    // printOutDroneMapVariables();
+                    selfCheckData();
+                    mDistributedFormation.RunDistributedFormation();
+                }
+                break;
             }
-            break;
-        }
+
+            case Common::Entity::MTTaskEnum::IDLE:
+            {
+                ROS_INFO("Teaming Planner %d]: PLANNER IDLING!", mSourceSegmentId);
+                if (!mModuleTaskVerbose)
+                {
+                    // ROS_INFO("Go There\n");
+                    mModuleTaskVerbose = true;
+                }
+                break;
+            }
         }
         break;
     case TeamingPlannerConstants::ModuleState::DEACTIVATED:
-
         if (!mModuleStateVerbose)
         {
             ROS_INFO("Module State Deactivated\n");
@@ -163,7 +163,6 @@ void TeamingPlanner::teamingPlannerMain()
         }
         break;
     default:
-
         if (!mModuleStateVerbose)
         {
             // ROS_INFO("Module State Not Applicable\n");

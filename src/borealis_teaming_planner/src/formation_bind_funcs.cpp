@@ -315,29 +315,37 @@ bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, Distribut
 
     if (!mAgentsPhaseAndTimeMap_rf.empty())
     {
-        phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
-
         // Check if there is any discepency between the agent vector and phaseSyncMap
-        for (auto phase_time : mAgentsPhaseAndTimeMap_rf)
+        // for (auto phase_time : mAgentsPhaseAndTimeMap_rf)
+        // {
+        //     bool thisNumberExists = false;
+        //     int number_to_erase; 
+        //     for (auto number : mAgentsInTeamVector)
+        //     {
+        //         number_to_erase = number;
+        //         if (phase_time.first ==  number)
+        //         {
+        //             thisNumberExists = true;
+        //             break;
+        //         }
+        //     }
+        //     if (!thisNumberExists)
+        //     {
+        //         mAgentsPhaseAndTimeMap_rf.erase(number_to_erase);
+        //         ROS_WARN("Agent%d CP: mAgentsPhaseAndTimeMap_rf contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
+        //     }
+        // }
+
+        if (mAgentsPhaseAndTimeMap_rf.size() != mTeamSize)
         {
-            bool thisNumberExists = false;
-            int number_to_erase; 
-            for (auto number : mAgentsInTeamVector)
+            ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPhaseAndTimeMap_rf.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, mAgentsPhaseAndTimeMap_rf.size(), mTeamSize);
+            for (auto agent : mAgentsPhaseAndTimeMap_rf)
             {
-                number_to_erase = number;
-                if (phase_time.first ==  number)
-                {
-                    thisNumberExists = true;
-                    break;
-                }
-            }
-            if (!thisNumberExists)
-            {
-                mAgentsPhaseAndTimeMap_rf.erase(number_to_erase);
-                ROS_WARN("Agent%d CP: mAgentsPhaseAndTimeMap_rf contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
+                ROS_INFO("mAgentsPhaseAndTimeMap_rf contains agent %d ", agent.first);
             }
         }
 
+        phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
     }
     else
     {

@@ -56,7 +56,6 @@ class transform():
             rospy.Subscriber(uav2_uwb_pose_topic,  PoseWithCovarianceStamped, self.uav2_callback_uwb)
             uav2_publisher = rospy.Publisher(uav2_publish_topic , PoseStamped,queue_size=1)
 
-            
         # Publishers
         # Publish topic for planner
 

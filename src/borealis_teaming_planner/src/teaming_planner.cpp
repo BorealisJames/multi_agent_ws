@@ -38,6 +38,8 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mConfigFileReader.getParam(nhPrivate, "planningHorizon", mPlanningHorizon, 25);
         mConfigFileReader.getParam(nhPrivate, "desiredHeight", mDesiredHeight, 1.2);
         mConfigFileReader.getParam(nhPrivate, "useUWB", mUseUWB, false);
+        mConfigFileReader.getParam(nhPrivate, "pointcloudCallbackVerbose", mpointcloudCallbackVerbose, false);
+        mConfigFileReader.getParam(nhPrivate, "agentPoseCallbackVerbose", magentPoseCallbackVerbose, false);
 
         // Subscribers
         if (mUseUWB)
