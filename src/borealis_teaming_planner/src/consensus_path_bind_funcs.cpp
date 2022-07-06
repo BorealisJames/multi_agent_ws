@@ -415,7 +415,6 @@ void TeamingPlanner::clearAgentsPlannedPathBuffer_cp()
     mAgentsPlannedPathMap_cp.clear();
 }
 
-
 void TeamingPlanner::clearAgentsProcessedPathOfAgentsBuffer_cp()
 {
     mAgentsProcessedPathOfAgentsMap_cp.clear();

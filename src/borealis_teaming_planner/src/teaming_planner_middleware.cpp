@@ -235,8 +235,17 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
 {
     if (mTeamSize != aNumberOfAgents->data.size())
     {
-        mTeamSize = aNumberOfAgents->data.size();
-        mAgentsInTeam.data = aNumberOfAgents->data;
+        if (aNumberOfAgents->data.size() == 3)
+        {
+            mTeamSize = 2;
+            mAgentsInTeam.data.push_back(1);
+            mAgentsInTeam.data.push_back(2);
+        }
+        else
+        {
+            mTeamSize = aNumberOfAgents->data.size();
+            mAgentsInTeam.data = aNumberOfAgents->data;
+        }
         ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), mTeamSize);
         TeamingPlanner::clearAgentNumberTeamVector();
         for (int agentNumber : mAgentsInTeam.data)
