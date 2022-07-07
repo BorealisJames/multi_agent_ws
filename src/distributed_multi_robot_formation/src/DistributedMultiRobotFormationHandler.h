@@ -32,6 +32,7 @@ public:
         m_goalAlongPosesPosition = m_nh.advertise<visualization_msgs::Marker>("goal_along_poses_position", 1, true);
     }
 
+     std::function<void()>  m_clearPhasesAndTimeRecordOfAgentsBuffer;
     std::function<bool(int32_t& numberOfAgentsInTeam)> m_getNumberOfAgentsInTeam;
     std::function<bool(int32_t& ownAgentID)> m_getOwnAgentID;
 
