@@ -26,6 +26,11 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
 
     if (!mAgentsPhasesAndTimeMap_cp.empty())
     {
+        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime> tmp;
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsPhasesAndTimeMap_cp[agentnumber];
+        }
         // Check if there is any discepency between the agent vector and phaseSyncMap
         // for (auto phase_time : mAgentsPhasesAndTimeMap_cp)
         // {
@@ -48,13 +53,14 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
         // }
         if (mAgentsPhasesAndTimeMap_cp.size() != mTeamSize)
         {
-            ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPoseMap_cp.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, mAgentsPhasesAndTimeMap_cp.size(), mTeamSize);
+            ROS_WARN("[Teaming Planner %d]: discrepency in mAgentsPoseMap_cp.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, tmp.size(), mTeamSize);
             for (auto agent : mAgentsPhasesAndTimeMap_cp)
             {
                 ROS_INFO("mAgentsPhasesAndTimeMap_cp contains agent %d ", agent.first);
             }
         }
-        phasesAndTimeRecordOfAgents = mAgentsPhasesAndTimeMap_cp;
+        // phasesAndTimeRecordOfAgents = mAgentsPhasesAndTimeMap_cp;
+        phasesAndTimeRecordOfAgents = tmp;
     }
     else
     {
@@ -116,16 +122,14 @@ bool TeamingPlanner::pubOwnPoseFunc_cp(const int32_t aAgentId, const Distributed
         ROS_ERROR("[Teaming Planner %d]: Agent ID %d and Source Segment ID %d mismatch\n", mSourceSegmentId, aAgentId, mSourceSegmentId);
     }
     return status;
-
 }
 
 bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose>& agentsPose)
 {
     bool status = true;
-
+    
     if (!mAgentsPoseMap_cp.empty())
     {
-        agentsPose = mAgentsPoseMap_cp;
         if (mAgentsPoseMap_cp.size() != mTeamSize)
         {
             ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPoseMap_cp.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, mAgentsPoseMap_cp.size(), mTeamSize);
@@ -134,6 +138,16 @@ bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlo
                 ROS_WARN("mAgentsPoseMap_cp contains agent %d ", agent.first);
             }
         }
+
+        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose> tmp;
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsPoseMap_cp[agentnumber];
+        }
+
+        // agentsPose = mAgentsPoseMap_cp;
+        agentsPose = tmp;
+
         // Check if there is any discepency between the agent vector and map
         // for (auto pose : mAgentsPoseMap_cp)
         // {
@@ -172,7 +186,13 @@ bool TeamingPlanner::getAgentsPathAndWaypointProgress_cp(std::unordered_map<int3
 
     if (!mAgentsPathAndWaypointProgressMap_cp.empty())
     {
-        agentsGoTherePathAndWaypointProgress = mAgentsPathAndWaypointProgressMap_cp;
+        std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndWaypointProgress>  tmp;
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsPathAndWaypointProgressMap_cp[agentnumber];
+        }
+        // agentsGoTherePathAndWaypointProgress = mAgentsPathAndWaypointProgressMap_cp;
+        agentsGoTherePathAndWaypointProgress = tmp;
     }
     else
     {
@@ -217,7 +237,14 @@ bool TeamingPlanner::getAgentsPlannedPath_cp(std::unordered_map<int32_t, std::ve
 
     if (!mAgentsPlannedPathMap_cp.empty())
     {
-        agentsPlannedPath = mAgentsPlannedPathMap_cp;
+        std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>  tmp;
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsPlannedPathMap_cp[agentnumber];
+        }
+
+        // agentsPlannedPath = mAgentsPlannedPathMap_cp;
+        agentsPlannedPath = tmp;
     }
     else
     {
@@ -259,7 +286,15 @@ bool TeamingPlanner::getAgentsProcessedPathOfAgents_cp(std::unordered_map<int32_
 
     if (!mAgentsProcessedPathOfAgentsMap_cp.empty())
     {
-        agentsProcessedPathOfAgents = mAgentsProcessedPathOfAgentsMap_cp;
+        std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost>>   tmp;
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsProcessedPathOfAgentsMap_cp[agentnumber];
+        }
+
+        // agentsProcessedPathOfAgents = mAgentsProcessedPathOfAgentsMap_cp;
+        agentsProcessedPathOfAgents = tmp;
+
     }
     else
     {
@@ -317,7 +352,13 @@ bool TeamingPlanner::getAgentsBestProcessedPath_cp(std::unordered_map<int32_t, s
 
     if (!mAgentsBestProcessedPath_cp.empty())
     {
-        agentsBestProcessedPath = mAgentsBestProcessedPath_cp;
+        std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>   tmp;
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsBestProcessedPath_cp[agentnumber];
+        }
+        // agentsBestProcessedPath = mAgentsBestProcessedPath_cp;
+        agentsBestProcessedPath = tmp;
     }
     else
     {

@@ -71,12 +71,14 @@ class transform():
                 vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
                 final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
                 self.cmd1 = final_pose_uav1
+                self.cmd1.pose.orientation = self.uav1_ap_uwb.pose.orientation
                 self.recieved_new_ap_callback_uav1 = False
 
             if self.recieved_new_ap_callback_uav2:
                 vector_diff_uav2 = self.pose_diff(self.uav2_pose_uwb, self.uav2_ap_uwb)
                 final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
                 self.cmd2 = final_pose_uav2
+                self.cmd2.pose.orientation = self.uav2_ap_uwb.pose.orientation
                 self.recieved_new_ap_callback_uav2 = False
 
             # diiff refers to uwb_pose and assigned_pose

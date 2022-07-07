@@ -20,9 +20,11 @@ void TeamingPlanner::teamingPlannerMain()
         mHandlerPtr->m_getOwnAgentID = std::bind(&TeamingPlanner::getOwnAgentId, this, std::placeholders::_1);
         mHandlerPtr->m_getOwnAgentLidarPointCloud = std::bind(&TeamingPlanner::getOwnAgentLidarPointCloud, this, std::placeholders::_1);
         mHandlerPtr->m_getPosesForFormationToTrack = std::bind(&TeamingPlanner::getPosesForFormationToTrack_rf, this, std::placeholders::_1); // HIstory of human poses
+
         mHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhaseAndTimeMap_rf, this, std::placeholders::_1);
         mHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubPhaseAndTime_rf, this, std::placeholders::_1, std::placeholders::_2);
         mHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearPoseMap_rf, this);
+        mHandlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer = = std::bind(&TeamingPlanner::clearPhaseAndTimeMap_rf, this);
         mHandlerPtr->m_pubOwnPoseFunc = std::bind(&TeamingPlanner::pubPose_rf, this, std::placeholders::_1, std::placeholders::_2);
         mHandlerPtr->m_getOwnAgentPose = std::bind(&TeamingPlanner::getOwnUAVSystemPose_rf, this, std::placeholders::_1);
         mHandlerPtr->m_getAgentsPose = std::bind(&TeamingPlanner::getPoseMap_rf, this, std::placeholders::_1);
@@ -53,6 +55,9 @@ void TeamingPlanner::teamingPlannerMain()
         mGlobalPathPlannerHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp, this, std::placeholders::_1);
         mGlobalPathPlannerHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubOwnPhaseAndTime_cp, this, std::placeholders::_1, std::placeholders::_2);
         mGlobalPathPlannerHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearAgentsPoseBuffer_cp, this);
+
+        mGlobalPathPlannerHandlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer = std::bind(&TeamingPlanner::clearPhasesAndTime_cp, this);
+
         mGlobalPathPlannerHandlerPtr->m_pubOwnPoseFunc = std::bind(&TeamingPlanner::pubOwnPoseFunc_cp, this, std::placeholders::_1, std::placeholders::_2);
         mGlobalPathPlannerHandlerPtr->m_getOwnAgentPose = std::bind(&TeamingPlanner::getOwnAgentPose_cp, this, std::placeholders::_1);
         mGlobalPathPlannerHandlerPtr->m_getAgentsPose = std::bind(&TeamingPlanner::getAgentsPose_cp, this, std::placeholders::_1);

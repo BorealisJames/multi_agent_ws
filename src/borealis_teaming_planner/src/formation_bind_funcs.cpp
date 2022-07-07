@@ -336,16 +336,24 @@ bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, Distribut
         //     }
         // }
 
-        if (mAgentsPhaseAndTimeMap_rf.size() != mTeamSize)
+        std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime> tmp;
+        for (auto agentnumber : mAgentsInTeamVector)
         {
-            ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPhaseAndTimeMap_rf.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, mAgentsPhaseAndTimeMap_rf.size(), mTeamSize);
+            tmp[agentnumber] = mAgentsPhaseAndTimeMap_rf[agentnumber];
+        }
+
+        if (tmp.size() != mTeamSize)
+        {
+            ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPhaseAndTimeMap_rf.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, tmp.size(), mTeamSize);
             for (auto agent : mAgentsPhaseAndTimeMap_rf)
             {
                 ROS_INFO("mAgentsPhaseAndTimeMap_rf contains agent %d ", agent.first);
             }
         }
 
-        phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
+        // phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
+        phaseAndTimeMap = tmp;
+
     }
     else
     {
@@ -363,7 +371,15 @@ bool TeamingPlanner::getPoseMap_rf(std::unordered_map<int32_t, DistributedFormat
 
     if (!mAgentsPoseMap_rf.empty())
     {
-        poseMap = mAgentsPoseMap_rf;
+        std::unordered_map<int32_t, DistributedFormation::Common::Pose> tmp;
+
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsPoseMap_rf[agentnumber];
+        }
+
+        // poseMap = mAgentsPoseMap_rf;
+        poseMap = tmp;
     }
     else
     {
@@ -381,7 +397,14 @@ bool TeamingPlanner::getDirectionUtilityMap_rf(std::unordered_map<int32_t, Distr
 
     if (!mAgentsDirectionUtilityMap_rf.empty())
     {
-        directionUtilityMap = mAgentsDirectionUtilityMap_rf;
+        std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility> tmp;
+
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsDirectionUtilityMap_rf[agentnumber];
+        }
+        directionUtilityMap = tmp;
+        // directionUtilityMap = mAgentsDirectionUtilityMap_rf;
     }
     else
     {
@@ -399,7 +422,15 @@ bool TeamingPlanner::getConvexRegion2DMap_rf(std::unordered_map<int32_t, Distrib
 
     if (!mAgentsConvexRegion2DMap_rf.empty())
     {
-        convexRegion2DMap = mAgentsConvexRegion2DMap_rf;
+        std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion2D>  tmp;
+
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsConvexRegion2DMap_rf[agentnumber];
+        }
+        // convexRegion2DMap = mAgentsConvexRegion2DMap_rf;
+        convexRegion2DMap = tmp;
+
     }
     else
     {
@@ -417,7 +448,14 @@ bool TeamingPlanner::getConvexRegion3DMap_rf(std::unordered_map<int32_t, Distrib
 
     if (!mAgentsConvexRegion3DMap_rf.empty())
     {
-        convexRegion3DMap = mAgentsConvexRegion3DMap_rf;
+        std::unordered_map<int32_t, DistributedFormation::Common::ConvexRegion3D>  tmp;
+
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsConvexRegion3DMap_rf[agentnumber];
+        }
+        convexRegion3DMap = tmp;
+        // convexRegion3DMap = mAgentsConvexRegion3DMap_rf;
     }
     else
     {
@@ -435,7 +473,15 @@ bool TeamingPlanner::getAssignedVirtualPoseMap_rf(std::unordered_map<int32_t, st
 
     if (!mAgentsAssignedVirtualPoseMap_rf.empty())
     {
-        assignedVirtualPoseMap = mAgentsAssignedVirtualPoseMap_rf;
+        std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedFormation::Common::Pose>> tmp;
+
+        for (auto agentnumber : mAgentsInTeamVector)
+        {
+            tmp[agentnumber] = mAgentsAssignedVirtualPoseMap_rf[agentnumber];
+        }
+        // assignedVirtualPoseMap = mAgentsAssignedVirtualPoseMap_rf;
+        assignedVirtualPoseMap = tmp;
+
     }
     else
     {
