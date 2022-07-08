@@ -341,15 +341,19 @@ bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, Distribut
         {
             tmp[agentnumber] = mAgentsPhaseAndTimeMap_rf[agentnumber];
         }
-
-        if (tmp.size() != mTeamSize)
+        for (auto agent : mAgentsPhaseAndTimeMap_rf)
         {
-            ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPhaseAndTimeMap_rf.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, tmp.size(), mTeamSize);
-            for (auto agent : mAgentsPhaseAndTimeMap_rf)
-            {
-                ROS_INFO("mAgentsPhaseAndTimeMap_rf contains agent %d ", agent.first);
-            }
+            ROS_INFO("Passing into phasesync: mAgentsPhaseAndTimeMap_rf contains agent %d ", agent.first);
         }
+
+        // if (tmp.size() != mTeamSize)
+        // {
+        //     ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPhaseAndTimeMap_rf.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, tmp.size(), mTeamSize);
+        //     for (auto agent : mAgentsPhaseAndTimeMap_rf)
+        //     {
+        //         ROS_INFO("mAgentsPhaseAndTimeMap_rf contains agent %d ", agent.first);
+        //     }
+        // }
 
         // phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
         phaseAndTimeMap = tmp;

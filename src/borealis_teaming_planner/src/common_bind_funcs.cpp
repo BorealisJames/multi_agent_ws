@@ -35,4 +35,3 @@ bool TeamingPlanner::getOwnAgentLidarPointCloud(sensor_msgs::PointCloud& cloud)
     
     return status;
 }
-

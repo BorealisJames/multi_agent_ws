@@ -141,7 +141,14 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         }
         
         // Timers
-        mModuleLoopTimer = mNh.createTimer(ros::Duration(mModulePeriod), &TeamingPlanner::moduleLoopCallback, this);
+        // mModuleLoopTimer = mNh.createTimer(ros::Duration(mModulePeriod), &TeamingPlanner::moduleLoopCallback, this);
+
+        ros::Rate loop_rate(25);
+        while (ros::ok())
+        {
+            teamingPlannerMain();
+            loop_rate.sleep();
+        }
     }
 
 TeamingPlanner::~TeamingPlanner()

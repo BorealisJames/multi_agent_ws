@@ -113,11 +113,13 @@ class transform():
 
     def uav1_ap_uwb_callback(self,data):
         self.uav1_ap_uwb=data
-        self.recieved_new_ap_callback_uav1 = True
+        if (self.uav1_ap_uwb.pose.position.x != data.pose.position.x or self.uav1_ap_uwb.pose.position.y != data.pose.position.y or self.uav1_ap_uwb.pose.position.z != data.pose.position.z):
+            self.recieved_new_ap_callback_uav1 = True
 
     def uav2_ap_uwb_callback(self,data):
         self.uav2_ap_uwb=data
-        self.recieved_new_ap_callback_uav2 = True
+        if (self.uav1_ap_uwb.pose.position.x != data.pose.position.x or self.uav1_ap_uwb.pose.position.y != data.pose.position.y or self.uav1_ap_uwb.pose.position.z != data.pose.position.z):
+            self.recieved_new_ap_callback_uav2 = True
 
     def uav1_callback(self,data):
         self.uav1_pos=data

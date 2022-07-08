@@ -19,48 +19,26 @@ class transform():
     def __init__(self):
 
         # Variables
-        self.cmd1 = PoseStamped()
-        self.cmd2 = PoseStamped()
-        self.uav1_ap_uwb = PoseStamped()
-        self.uav2_ap_uwb = PoseStamped()
-        self.uav1_pos = PoseStamped()
-        self.uav2_pos = PoseStamped()
-        self.uav1_pose_uwb = PoseStamped()
-        self.uav2_pose_uwb = PoseStamped()
+        self.cmd = PoseStamped()
+        self.uav_ap_uwb = PoseStamped()
+        self.uav_mavros_pose = PoseStamped()
+        self.uav_uwb_pose = PoseStamped()
         self.mode = String()
 
-        self.recieved_new_ap_callback_uav1 = False
+        self.recieved_new_ap_callback = False
         self.recieved_new_ap_callback_uav2 = False
 
-        self.drone_number = os.getenv('DRONE_NUMBER')
+        self.drone_name = "/uav" + os.getenv('DRONE_NUMBER')
+        
+        self.ap_uwb_pose_topic = self.drone_name + "/teaming_planner/uwb_assigned_virtual_position"
+        self.mavros_pose_topic = self.drone_name + "/mavros/local_position/pose"
+        self.uwb_pose_topic = "/UAV" + os.getenv('DRONE_NUMBER') + "PoseUWB"
+        self.uav_publish_topic = self.drone_name + "/control_manager/mavros_assigned_virtual_position"
 
-        uav1_ap_uwb_pose_topic = "/uav1/teaming_planner/uwb_assigned_virtual_position"
-        uav2_ap_uwb_pose_topic = "/uav2/teaming_planner/uwb_assigned_virtual_position"
-        uav1_uwb_pose_topic = "/UAV1PoseUWB"
-        uav2_uwb_pose_topic = "/UAV2PoseUWB"
-        uav1_t265_pose_topic = "/uav1/mavros/local_position/pose"
-        uav2_t265_pose_topic = "/uav2/mavros/local_position/pose"
-        uav1_publish_topic = "/uav1/control_manager/mavros_assigned_virtual_position"
-        uav2_publish_topic = "/uav2/control_manager/mavros_assigned_virtual_position"
-
-        # Subscribers
-        if self.drone_number == 1:
-            rospy.Subscriber(uav1_ap_uwb_pose_topic,  PoseStamped, self.uav1_ap_uwb_callback)
-            rospy.Subscriber(uav1_t265_pose_topic,  PoseStamped, self.uav1_callback)
-            rospy.Subscriber(uav1_uwb_pose_topic,  PoseWithCovarianceStamped, self.uav1_callback_uwb)
-            uav1_publisher = rospy.Publisher(uav1_publish_topic , PoseStamped,queue_size=1)
-
-        elif self.drone_number == 2:
-            rospy.Subscriber(uav2_ap_uwb_pose_topic,  PoseStamped, self.uav2_ap_uwb_callback)
-            rospy.Subscriber(uav2_t265_pose_topic,  PoseStamped, self.uav2_callback)
-            rospy.Subscriber(uav2_uwb_pose_topic,  PoseWithCovarianceStamped, self.uav2_callback_uwb)
-            uav2_publisher = rospy.Publisher(uav2_publish_topic , PoseStamped,queue_size=1)
-
-        # Publishers
-        # Publish topic for planner
-
-        # uav1_publish_topic = "/uav1/mavros/setpoint_position/local"
-        # uav2_publish_topic = "/uav2/mavros/setpoint_position/local"
+        rospy.Subscriber(self.ap_uwb_pose_topic,  PoseStamped, self.uav_ap_uwb_callback)
+        rospy.Subscriber(self.mavros_pose_topic,  PoseStamped, self.uav_mavros_callback)
+        rospy.Subscriber(self.uwb_pose_topic,  PoseWithCovarianceStamped, self.uav_uwb_callback)
+        mavros_ap_publisher = rospy.Publisher(self.uav_publish_topic , PoseStamped,queue_size=1)
 
         rate = rospy.Rate(10)
 
@@ -68,70 +46,36 @@ class transform():
 
         while not rospy.is_shutdown():
 
-            final_pose_uav1  = PoseStamped()
-            final_pose_uav2 = PoseStamped()
+            final_pose_uav  = PoseStamped()
+            vector_diff_uav = PoseStamped()
+            self.cmd.header.frame_id = '/odom'
+            self.cmd.pose.position.z = 1
 
-            vector_diff_uav1 = PoseStamped()
-            vector_diff_uav2 = PoseStamped()
+            if self.recieved_new_ap_callback:
+                vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
+                final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
+                self.cmd = final_pose_uav
+                self.recieved_new_ap_callback = False
 
-            self.cmd1.header.frame_id = '/odom'
-            self.cmd2.header.frame_id = '/odom'
-            
-            self.cmd1.pose.position.z = 1.3
-            self.cmd2.pose.position.z = 1.3
-
-            if self.recieved_new_ap_callback_uav1:
-                vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
-                final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
-                self.cmd1 = final_pose_uav1
-                self.recieved_new_ap_callback_uav1 = False
-
-            if self.recieved_new_ap_callback_uav2:
-                vector_diff_uav2 = self.pose_diff(self.uav2_pose_uwb, self.uav2_ap_uwb)
-                final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
-                self.cmd2 = final_pose_uav2
-                self.recieved_new_ap_callback_uav2 = False
-
-            # diiff refers to uwb_pose and assigned_pose
-            if self.drone_number == 1:
-                print("Mode: ", self.mode.data)
-                print("uav1_pose_uwb:",[self.uav1_pose_uwb.pose.position.x, self.uav1_pose_uwb.pose.position.y, self.uav1_pose_uwb.pose.position.z])
-                print("uav1_ap_pose_uwb:",[self.uav1_ap_uwb.pose.position.x, self.uav1_ap_uwb.pose.position.y, self.uav1_ap_uwb.pose.position.z])
-                print("1_diff:",[vector_diff_uav1.pose.position.x, vector_diff_uav1.pose.position.y, vector_diff_uav1.pose.position.z])
-                uav1_publisher.publish(self.cmd1)
-                print("cmd1:",[self.cmd1.pose.position.x, self.cmd1.pose.position.y, self.cmd1.pose.position.z])
-            
-            elif self.drone_number == 2:
-                print("uav2_pose_uwb:",[self.uav2_pose_uwb.pose.position.x, self.uav2_pose_uwb.pose.position.y, self.uav2_pose_uwb.pose.position.z])
-                print("uav2_ap_pose_uwb:",[self.uav2_ap_uwb.pose.position.x, self.uav2_ap_uwb.pose.position.y, self.uav2_ap_uwb.pose.position.z])
-                print("2_diff:",[vector_diff_uav2.pose.position.x, vector_diff_uav2.pose.position.y, vector_diff_uav2.pose.position.z])
-                uav2_publisher.publish(self.cmd2)
-                print("cmd2:",[self.cmd2.pose.position.x, self.cmd2.pose.position.y, self.cmd2.pose.position.z])
+            mavros_ap_publisher.publish(self.cmd)
 
             rate.sleep()
 
-    def uav1_ap_uwb_callback(self,data):
-        self.uav1_ap_uwb=data
-        self.recieved_new_ap_callback_uav1 = True
 
-    def uav2_ap_uwb_callback(self,data):
-        self.uav2_ap_uwb=data
-        self.recieved_new_ap_callback_uav2 = True
+    def uav_ap_uwb_callback(self,data):
+        if (self.uav_ap_uwb.pose.position.x != data.pose.position.x or self.uav_ap_uwb.pose.position.y != data.pose.position.y or self.uav_ap_uwb.pose.position.z != data.pose.position.z):
+            self.recieved_new_ap_callback = True
+            self.uav_ap_uwb=data
+        else:
+            self.recieved_new_ap_callback = False
 
-    def uav1_callback(self,data):
-        self.uav1_pos=data
+    def uav_mavros_callback(self,data):
+        self.uav_mavros_pose=data
     
-    def uav2_callback(self,data):
-        self.uav2_pos=data
+    def uav_uwb_callback(self,data):
+        self.uav_uwb_pose.pose=data.pose.pose
+        self.uav_uwb_pose.header=data.header
 
-    def uav1_callback_uwb(self,data):
-        self.uav1_pose_uwb.pose=data.pose.pose
-        self.uav1_pose_uwb.header=data.header
-    
-    def uav2_callback_uwb(self,data):
-        self.uav2_pose_uwb.pose=data.pose.pose
-        self.uav2_pose_uwb.header=data.header
-    
     # rotation
     # Relative rotation q_r from q_1 to q_2
     # q_2 = q_r*q_1

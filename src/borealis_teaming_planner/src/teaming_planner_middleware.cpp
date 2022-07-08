@@ -170,7 +170,6 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
 
 void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& aInputPose)
 {
-    ROS_INFO("[Teaming Planner %d]: Input pose Received %f\n", mSourceSegmentId, aInputPose->pose.position.x);
     if(mTask.type == Common::Entity::MTTaskEnum::FOLLOW_ME)
     {
         // Add this input pose into its own history of human poses        
@@ -228,7 +227,6 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
             }
         }
     }
-
 }
 
 void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray::ConstPtr& aNumberOfAgents)

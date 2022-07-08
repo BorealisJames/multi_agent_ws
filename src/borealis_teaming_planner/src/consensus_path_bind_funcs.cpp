@@ -51,14 +51,20 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
         //         ROS_WARN("Agent%d CP: mAgentsPhasesAndTimeMap_cp contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
         //     }
         // }
-        if (mAgentsPhasesAndTimeMap_cp.size() != mTeamSize)
+
+        for (auto agent : mAgentsPhasesAndTimeMap_cp)
         {
-            ROS_WARN("[Teaming Planner %d]: discrepency in mAgentsPoseMap_cp.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, tmp.size(), mTeamSize);
-            for (auto agent : mAgentsPhasesAndTimeMap_cp)
-            {
-                ROS_INFO("mAgentsPhasesAndTimeMap_cp contains agent %d ", agent.first);
-            }
+            ROS_INFO("Passing into phasesync: mAgentsPhasesAndTimeMap_cp contains agent %d ", agent.first);
         }
+
+        // if (mAgentsPhasesAndTimeMap_cp.size() != mTeamSize)
+        // {
+        //     ROS_WARN("[Teaming Planner %d]: discrepency in mAgentsPhasesAndTimeMap_cp.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, tmp.size(), mTeamSize);
+        //     for (auto agent : mAgentsPhasesAndTimeMap_cp)
+        //     {
+        //         ROS_INFO("mAgentsPhasesAndTimeMap_cp contains agent %d ", agent.first);
+        //     }
+        // }
         // phasesAndTimeRecordOfAgents = mAgentsPhasesAndTimeMap_cp;
         phasesAndTimeRecordOfAgents = tmp;
     }

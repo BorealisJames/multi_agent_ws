@@ -13,7 +13,7 @@ int main (int argc, char** argv)
 
     //ros::MultiThreadedSpinner spinner(4);
     //spinner.spin();
-    ros::spin();
+    // ros::spin();
 
     return 0;
 }
