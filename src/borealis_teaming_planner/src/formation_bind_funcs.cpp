@@ -388,7 +388,7 @@ bool TeamingPlanner::getPoseMap_rf(std::unordered_map<int32_t, DistributedFormat
     else
     {
         // poseMap.clear();
-
+        poseMap = mAgentsPoseMap_rf;
         ROS_WARN("[Teaming Planner %d]: Agents Position map empty", mSourceSegmentId);
         status = false;
     }
