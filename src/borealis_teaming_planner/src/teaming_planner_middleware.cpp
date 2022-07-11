@@ -142,8 +142,8 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         if (mTask.type != Common::Entity::MTTaskEnum::FOLLOW_ME)
         {
             mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
-            TeamingPlanner::clearOtherAgentsData();
-            TeamingPlanner::clearAgentNumberTeamVector();
+            clearOtherAgentsData();
+            // clearAgentNumberTeamVector();
         }
     }
     else if (str2.compare(aUAVmode->data.c_str()) == 0)
@@ -151,8 +151,8 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         if (mTask.type != Common::Entity::MTTaskEnum::GO_THERE)
         {
             mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
-            TeamingPlanner::clearOtherAgentsData();
-            TeamingPlanner::clearAgentNumberTeamVector();
+            clearOtherAgentsData();
+            // clearAgentNumberTeamVector();
         }
     }
     else 
@@ -232,7 +232,7 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
 
 void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray::ConstPtr& aNumberOfAgents)
 {
-    if (mTeamSize != aNumberOfAgents->data.size())
+    if (mAgentsInTeamVector.size() != aNumberOfAgents->data.size())
     {
         if (aNumberOfAgents->data.size() == 3)
         {
