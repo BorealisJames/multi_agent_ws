@@ -252,6 +252,12 @@ namespace DistributedFormation
     {
         m_handlerPtr->m_getPhasesAndTimeRecordOfAgents(m_phasesAndTimeRecordOfAgents);
 
+        std::cout << "Agent" << m_ownAgentID << ": gets phasesAndTimeRecordOf size " << m_phasesAndTimeRecordOfAgents.size() << std::endl;
+
+        for (auto phaseRecord : m_phasesAndTimeRecordOfAgents)
+        {
+            std::cout << "Agent" << m_ownAgentID << " contains phaseRecord: " << phaseRecord.first << std::endl;
+        }
         auto timeNow = std::chrono::system_clock::now();
         auto timeNowMicroSecs = std::chrono::duration_cast<std::chrono::microseconds>(timeNow.time_since_epoch()).count();
 
@@ -324,6 +330,11 @@ namespace DistributedFormation
 
         //get other agent's position
         m_handlerPtr->m_getAgentsPose(m_agentsPose);
+        std::cout << "Agent" << m_ownAgentID << " get agent pose map size " << m_agentsPose.size() << std::endl;
+        for (auto agentPose : m_agentsPose)
+        {
+            std::cout << "Agent" << m_ownAgentID << " agent pose map contains " << agentPose.first << std::endl;
+        }
         //set own position in team
         m_agentsPose[m_ownAgentID] = m_ownAgentPose;
 
