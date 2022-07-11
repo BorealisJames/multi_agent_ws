@@ -52,9 +52,9 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
         //     }
         // }
 
-        for (auto agent : mAgentsPhasesAndTimeMap_cp)
+        for (auto agent : tmp)
         {
-            ROS_INFO("Passing into phasesync: mAgentsPhasesAndTimeMap_cp contains agent %d ", agent.first);
+            ROS_INFO("Passing into phasesync: tmp mAgentsPhasesAndTimeMap_cp contains agent %d ", agent.first);
         }
 
         // if (mAgentsPhasesAndTimeMap_cp.size() != mTeamSize)
