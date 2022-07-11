@@ -70,8 +70,10 @@ class TeamingPlanner
         double mModulePeriod;
         int mNumOfAgents;
         bool mDebugVerbose;
-        bool mpointcloudCallbackVerbose;
-        bool magentPoseCallbackVerbose;
+        bool mPointcloudCallbackVerbose;
+        bool mAgentPoseCallbackVerbose;
+        bool mSystemPoseCallbackVerbose;
+        bool mPhaseSyncCallbackVerbose;
 
         double mIntervalDistance;
         double mPlanningHorizon;
@@ -95,7 +97,6 @@ class TeamingPlanner
         bool mNewPathPlan;
         std_msgs::Bool mBoolActivatePlanner; 
         geometry_msgs::PoseStamped mInputUAVPoseStamped;
-        geometry_msgs::PoseStamped mPrevInputUAVPoseStamped;
         
         std::string mUAVMode;
         std::vector<int> mAgentsInTeamVector;

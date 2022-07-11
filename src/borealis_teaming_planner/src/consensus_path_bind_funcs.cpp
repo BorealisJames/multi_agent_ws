@@ -411,9 +411,9 @@ bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t aAgentId, const st
     
     geometry_msgs::PoseArray tmp_pose_array;
 
-    ROS_INFO("Trying to publish Processed Go there path and disabling path planner!");
-    ROS_INFO("processedGoTherePath size is %i", processedGoTherePath.size());
+    ROS_INFO("Teaming Planner %d]: processedGoTherePath size is %i", mSourceSegmentId, processedGoTherePath.size());
     mNewPathPlan = false;
+    ROS_INFO("Teaming Planner %d]: Path plan generated, disabling go there path generation algorithm...!", mSourceSegmentId);
 
     for (auto path : processedGoTherePath)
     {

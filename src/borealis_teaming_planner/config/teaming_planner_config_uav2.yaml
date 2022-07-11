@@ -8,6 +8,8 @@
 /uav2/borealis_teaming_planner/debugVerbose: true
 /uav2/borealis_teaming_planner/pointcloudCallbackVerbose: false
 /uav2/borealis_teaming_planner/agentPoseCallbackVerbose: false
+/uav1/borealis_teaming_planner/systemPoseCallbackVerbose: false # Pose that is passed into phase sync
+/uav1/borealis_teaming_planner/phaseSyncCallbackVerbose: false
 
 # pi /2 1.57079632679 
 # pi /4 0.785398163397

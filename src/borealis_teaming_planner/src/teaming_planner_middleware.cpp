@@ -105,7 +105,7 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     {
         ROS_ERROR("%s", ex.what());
     }
-    if (mpointcloudCallbackVerbose)
+    if (mPointcloudCallbackVerbose)
     {
         ROS_INFO("[Teaming Planner %d]: Point Cloud Received", mSourceSegmentId);
     }
@@ -207,10 +207,11 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
     if (mTask.type == Common::Entity::MTTaskEnum::GO_THERE)
     {
         // Check if this incoming input is the same as previous one.
-
-        if (mPrevInputUAVPoseStamped.pose.position.x  != aInputPose->pose.position.x || aInputPose->pose.position.y != aInputPose->pose.position.y || aInputPose->pose.position.z != aInputPose->pose.position.z)
+        if (mInputUAVPoseStamped.pose.position.x  != aInputPose->pose.position.x || mInputUAVPoseStamped.pose.position.y != aInputPose->pose.position.y || mInputUAVPoseStamped.pose.position.z != aInputPose->pose.position.z)
         {
             mNewPathPlan = true;
+            mInputUAVPoseStamped.pose = aInputPose->pose;
+
             // Assign this input pose as a go there path
             std::vector<DistributedGlobalPathPlanner::Common::Pose> tmp_vec;
             DistributedGlobalPathPlanner::Common::Pose tmp;
@@ -275,7 +276,7 @@ void TeamingPlanner::systemPoseCallback_rf(const mt_msgs::pose::ConstPtr& aSyste
 
         mAgentsPoseMap_rf[aSystemPose->sourceSegmentId] = tmp;
 
-        if (magentPoseCallbackVerbose)
+        if (mAgentPoseCallbackVerbose)
         {
             ROS_INFO("[Teaming Planner %d]: RF System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
             for (auto agent : mAgentsInTeamVector)
@@ -295,8 +296,10 @@ void TeamingPlanner::phaseTimeCallback_rf(const mt_msgs::phaseAndTime::ConstPtr&
         tmp.phase = static_cast<DistributedFormation::Common::PHASE>(aPhaseAndTime->phase);
         tmp.timeMicroSecs = aPhaseAndTime->time;
         mAgentsPhaseAndTimeMap_rf[aPhaseAndTime->sourceSegmentId] = tmp;
-
-        ROS_INFO("[Teaming Planner %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
+        if (mPhaseSyncCallbackVerbose)
+        {
+            ROS_INFO("[Teaming Planner %d]: Phase Time Received from Agent: %d\n", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
+        }
     // }
 }
 
@@ -467,7 +470,7 @@ void TeamingPlanner::phaseTimeCallback_cp(const mt_msgs::phaseAndTime::ConstPtr&
         tmp.timeMicroSecs = aPhaseAndTime->time;
         mAgentsPhasesAndTimeMap_cp[aPhaseAndTime->sourceSegmentId] = tmp;
 
-        if (mDebugVerbose)
+        if (mPhaseSyncCallbackVerbose)
         {
             ROS_INFO("[Teaming Planner CP %d]: Phase Time Received from Agent: %d", mSourceSegmentId, aPhaseAndTime->sourceSegmentId);
             mDebugVerbose = false;
@@ -488,7 +491,7 @@ void TeamingPlanner::systemPoseCallback_cp(const mt_msgs::pose::ConstPtr& aSyste
 
         mAgentsPoseMap_cp[aSystemPose->sourceSegmentId] = tmp;
 
-        if (mDebugVerbose)
+        if (mSystemPoseCallbackVerbose)
         {
             ROS_INFO("[Teaming Planner %d]: CP System Pose Received from Agent: %d", mSourceSegmentId, aSystemPose->sourceSegmentId);
             mDebugVerbose = false;

@@ -143,7 +143,7 @@ void TeamingPlanner::teamingPlannerMain()
                     ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
                     // printOutDroneMapVariables();
                     // selfCheckData();
-                    mDistributedFormation.RunDistributedFormation();
+                    // mDistributedFormation.RunDistributedFormation();
                 }
                 break;
             }
