@@ -143,6 +143,7 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         {
             mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
             clearOtherAgentsData();
+            mHistoryOfHumanPoses_rf.clear(); // reset history
             // clearAgentNumberTeamVector();
         }
     }
@@ -247,6 +248,7 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
         }
         ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), mTeamSize);
         TeamingPlanner::clearAgentNumberTeamVector();
+        mHistoryOfHumanPoses_rf.clear(); // reset history
         for (int agentNumber : mAgentsInTeam.data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
