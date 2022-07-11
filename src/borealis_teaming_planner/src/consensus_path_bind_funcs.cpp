@@ -71,6 +71,7 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
     else
     {
         ROS_WARN("Agent%d CP: get mAgentsPhasesAndTimeMap_cp empty!", mSourceSegmentId);
+        phasesAndTimeRecordOfAgents = mAgentsPhasesAndTimeMap_cp;
     }
 
     return status;
@@ -179,6 +180,7 @@ bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlo
     else
     {
         status = false;
+        agentsPose = mAgentsPoseMap_cp;
         ROS_WARN("Agent%d CPH: get mAgentsPoseMap_cp empty!", mSourceSegmentId);
     }
 

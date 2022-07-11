@@ -362,7 +362,7 @@ bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, Distribut
     else
     {
         // phaseAndTimeMap.clear();
-
+        phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
         ROS_WARN("[Teaming Planner %d]: Agents Phase and Time map empty", mSourceSegmentId);
         status = false;
     }
@@ -490,7 +490,7 @@ bool TeamingPlanner::getAssignedVirtualPoseMap_rf(std::unordered_map<int32_t, st
     else
     {
         // assignedVirtualPoseMap.clear();
-
+        assignedVirtualPoseMap = mAgentsAssignedVirtualPoseMap_rf;
         ROS_WARN("[Teaming Planner %d]: Agents Assigned Virtual Pose map empty", mSourceSegmentId);
         status = false;
     }
