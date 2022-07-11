@@ -340,11 +340,14 @@ bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, Distribut
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPhaseAndTimeMap_rf[agentnumber];
+            ROS_INFO("Agents in team vector contains  %d ", agentnumber);
         }
         for (auto agent : tmp)
         {
             ROS_INFO("Passing into phasesync: tmp mAgentsPhaseAndTimeMap_rf contains agent %d ", agent.first);
         }
+        ROS_INFO("tmpmAgentsPhaseAndTimeMap_rf is of size %d ", tmp.size());
+        ROS_INFO("mAgentsInTeamVector is of size %d ", mAgentsInTeamVector.size());
 
         // if (tmp.size() != mTeamSize)
         // {

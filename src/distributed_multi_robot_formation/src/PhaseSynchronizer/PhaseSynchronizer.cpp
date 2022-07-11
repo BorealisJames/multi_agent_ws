@@ -371,7 +371,8 @@ namespace DistributedFormation
         m_transitingPhase = true;
 
         m_poseOfAgentsInTeam.clear();
-
+        m_phasesAndTimeRecordOfAgents.clear();
+        
         m_agentsPose.clear();
         m_agentsAngleIndexUtility.clear();
         m_agents2DConvexRegion.clear();

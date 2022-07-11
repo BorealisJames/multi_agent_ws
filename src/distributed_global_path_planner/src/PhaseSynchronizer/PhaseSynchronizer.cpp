@@ -384,7 +384,8 @@ namespace DistributedGlobalPathPlanner
         m_transitingPhase = true;
 
         m_poseOfAgentsInTeam.clear();
-
+        m_phasesAndTimeRecordOfAgents.clear();
+        
         m_agentsPose.clear();
         m_agentsPlannedPath.clear();
         m_agentsProcessedPathOfAgents.clear();

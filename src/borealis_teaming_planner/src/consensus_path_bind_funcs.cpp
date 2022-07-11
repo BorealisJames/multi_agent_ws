@@ -30,6 +30,7 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPhasesAndTimeMap_cp[agentnumber];
+            ROS_INFO("Agents in team vector contains  %d ", agentnumber);
         }
         // Check if there is any discepency between the agent vector and phaseSyncMap
         // for (auto phase_time : mAgentsPhasesAndTimeMap_cp)
@@ -51,6 +52,9 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
         //         ROS_WARN("Agent%d CP: mAgentsPhasesAndTimeMap_cp contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
         //     }
         // }
+        ROS_INFO("tmpmAgentsPhasesAndTimeMap_cp is of size %d ", tmp.size());
+        ROS_INFO("mAgentsInTeamVector is of size %d ", mAgentsInTeamVector.size());
+
 
         for (auto agent : tmp)
         {
