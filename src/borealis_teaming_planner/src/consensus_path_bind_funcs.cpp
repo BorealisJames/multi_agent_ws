@@ -150,6 +150,7 @@ bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlo
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPoseMap_cp[agentnumber];
+            ROS_WARN("[Teaming Planner %d]: tmpmmAgentsPoseMap_cp contains %d", mSourceSegmentId, agentnumber);
         }
 
         // agentsPose = mAgentsPoseMap_cp;

@@ -414,7 +414,7 @@ namespace DistributedFormation
         std::cout << "Agent" << m_ownAgentID << ": reset in OnEnterPhase1" << std::endl;
 
         ResetPhase();
-        m_handlerPtr->m_clearAgentsPoseBuffer();
+        // m_handlerPtr->m_clearAgentsPoseBuffer();
         // m_handlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer();
     }
 

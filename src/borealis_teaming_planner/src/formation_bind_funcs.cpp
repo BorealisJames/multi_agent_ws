@@ -380,6 +380,7 @@ bool TeamingPlanner::getPoseMap_rf(std::unordered_map<int32_t, DistributedFormat
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPoseMap_rf[agentnumber];
+            ROS_WARN("[Teaming Planner %d]: tmpmAgentsPoseMap_rf contains %d", mSourceSegmentId, agentnumber);
         }
 
         // poseMap = mAgentsPoseMap_rf;
