@@ -147,6 +147,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         while (ros::ok())
         {
             teamingPlannerMain();
+            ros::spinOnce();
             loop_rate.sleep();
         }
     }
