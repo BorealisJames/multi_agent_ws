@@ -408,7 +408,7 @@ namespace DistributedGlobalPathPlanner
 
         ResetPhase();
         m_handlerPtr->m_clearAgentsPoseBuffer();
-        // m_handlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer();
+        m_handlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer();
     }
 
     bool PhaseSynchronizer::TransitingFromPhase1()
