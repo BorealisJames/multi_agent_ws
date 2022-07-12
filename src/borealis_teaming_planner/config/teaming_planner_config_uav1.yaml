@@ -35,7 +35,7 @@
 /uav1/borealis_teaming_planner/priorityPenalty: 1.0
 
 /uav1/borealis_teaming_planner/radius: 0.1
-/uav1/borealis_teaming_planner/cylinderHeight: 0.3
+/uav1/borealis_teaming_planner/cylinderHeight: 0.8
 /uav1/borealis_teaming_planner/mapResolution: 1.0
 /uav1/borealis_teaming_planner/mapMinBoundsX: -150.0
 /uav1/borealis_teaming_planner/mapMaxBoundsX: 150.0
