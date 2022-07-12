@@ -226,8 +226,9 @@ bool TeamingPlanner::pubOwnPathAndWaypointProgress_cp(const int32_t aAgentId, co
         tmp_publish.header.stamp = ros::Time::now();
         tmp_publish.waypointProgress = goTherePathAndWaypointProgress.waypointProgress;
         tmp_publish.sourceSegmentId = aAgentId;
-        std::vector<mt_msgs::pose> pose_tmp_vector;
 
+        // Copy over the poses
+        std::vector<mt_msgs::pose> pose_tmp_vector;
         for (DistributedGlobalPathPlanner::Common::Pose pose : goTherePathAndWaypointProgress.poses)
         {
             mt_msgs::pose tmp;
@@ -329,6 +330,8 @@ bool TeamingPlanner::pubOwnProcessedPathOfAgents_cp(const int32_t aAgentId, cons
         // for each agent, get all the paths and cost
         mt_msgs::pathAndCost path_and_cost_tmp;
         std::vector<mt_msgs::pose> pose_vector_tmp;
+
+        // Copy out the poses
         for (auto position : processedPath.second.positions)
         {
             mt_msgs::pose pose_tmp;
@@ -338,6 +341,7 @@ bool TeamingPlanner::pubOwnProcessedPathOfAgents_cp(const int32_t aAgentId, cons
             pose_vector_tmp.push_back(pose_tmp);
         }
         path_and_cost_tmp.poseVector = pose_vector_tmp;
+        path_and_cost_tmp.cost = processedPath.second.cost;
         path_and_cost_tmp.sourceSegmentId = processedPath.first;
         path_and_cost_vec_tmp.push_back(path_and_cost_tmp);
     }
