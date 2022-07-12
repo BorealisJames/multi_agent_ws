@@ -24,7 +24,7 @@ public:
     DistributedGlobalPathPlannerHandler()
     : m_nh("~")
     {
-        m_processedPointCloud = m_nh.advertise<sensor_msgs::PointCloud>("processed_point_cloud", 1, true);
+        m_processedPointCloud = m_nh.advertise<sensor_msgs::PointCloud>("processed_point_cloud_cp", 1, true);
         m_ownPlannedPath = m_nh.advertise<visualization_msgs::Marker>("planned_path", 1, true);
         m_processedGoTherePath = m_nh.advertise<visualization_msgs::Marker>("processed_go_there_path", 1, true);
 
