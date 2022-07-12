@@ -137,7 +137,7 @@ void TeamingPlanner::teamingPlannerMain()
                     // printOutDroneMapVariables();
                     // selfCheckData();
                     mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
-                    mDistributedFormation.RunDistributedFormation();
+                    // mDistributedFormation.RunDistributedFormation();
                 }
                 else
                 {
