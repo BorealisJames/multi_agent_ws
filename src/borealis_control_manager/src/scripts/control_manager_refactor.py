@@ -28,9 +28,8 @@ class transform():
 
         self.recieved_new_ap_callback = False
         self.recieved_new_ap_callback_uav2 = False
-
         self.drone_name = "/uav" + os.getenv('DRONE_NUMBER')
-        self.ap_uwb_pose_topic = self.drone_name + "/teaming_planner/uwb_assigned_virtual_position"
+        self.ap_uwb_pose_topic = self.drone_name + "/control_manager/input"
         self.mavros_pose_topic = self.drone_name + "/mavros/local_position/pose"
         self.uwb_pose_topic = "/UAV" + os.getenv('DRONE_NUMBER') + "PoseUWB"
         self.uav_publish_topic = self.drone_name + "/control_manager/mavros_assigned_virtual_position"
