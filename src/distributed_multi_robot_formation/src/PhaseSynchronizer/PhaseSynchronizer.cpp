@@ -251,13 +251,6 @@ namespace DistributedFormation
     void PhaseSynchronizer::UpdatePhasesOfAgentsInTeam()
     {
         m_handlerPtr->m_getPhasesAndTimeRecordOfAgents(m_phasesAndTimeRecordOfAgents);
-
-        std::cout << "Agent" << m_ownAgentID << ": gets phasesAndTimeRecordOf size " << m_phasesAndTimeRecordOfAgents.size() << std::endl;
-
-        for (auto phaseRecord : m_phasesAndTimeRecordOfAgents)
-        {
-            std::cout << "Agent" << m_ownAgentID << " contains phaseRecord: " << phaseRecord.first << std::endl;
-        }
         auto timeNow = std::chrono::system_clock::now();
         auto timeNowMicroSecs = std::chrono::duration_cast<std::chrono::microseconds>(timeNow.time_since_epoch()).count();
 
@@ -274,7 +267,7 @@ namespace DistributedFormation
             std::cout << "Agent" << m_ownAgentID << ": Phase and time record is of size " << m_phasesAndTimeRecordOfAgents.size() << " while number of agents" << m_numberOfAgentsInTeam << std::endl;
             for( auto phase : m_phasesAndTimeRecordOfAgents)
             {
-                std::cout << "Agent::contains phases %d" << phase.first << std::endl;
+                std::cout << "Agent " << m_ownAgentID << ":contains phases %d" << phase.first << std::endl;
             }
             ResetPhase();
             return;

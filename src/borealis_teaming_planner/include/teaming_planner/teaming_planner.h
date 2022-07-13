@@ -94,7 +94,6 @@ class TeamingPlanner
         tf::TransformListener mPointCloud2TransformListener;
         bool mHistoryOfHumanPosesReceived;
         bool mUseUWB;
-        bool mNewPathPlan;
         std_msgs::Bool mBoolActivatePlanner; 
         geometry_msgs::PoseStamped mInputUAVPoseStamped;
         
@@ -271,7 +270,6 @@ class TeamingPlanner
 
         // Clear
         void clearAgentsPoseBuffer_cp();
-        void selfCheckData();
         void clearPhasesAndTime_cp();
         void clearAgentsProcessedPathOfAgentsBuffer_cp();
         void clearAgentsPlannedPathBuffer_cp();

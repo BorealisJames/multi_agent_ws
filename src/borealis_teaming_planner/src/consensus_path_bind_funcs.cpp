@@ -9,7 +9,7 @@ bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner:
         std::vector<DistributedGlobalPathPlanner::Common::Pose> tmp_to_send;
         tmp_to_send.push_back(mGoTherePath_cp.front());
         goTherePath = tmp_to_send;
-        ROS_INFO("goTherePath send of size %i, goTherePath x: %f", goTherePath.size(), goTherePath.front().position(0));
+        ROS_INFO("goTherePath of size %i is sent, goTherePath x: %f", goTherePath.size(), goTherePath.front().position(0));
     }
     else
     {
@@ -30,46 +30,7 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPhasesAndTimeMap_cp[agentnumber];
-            ROS_INFO("Agents in team vector contains  %d ", agentnumber);
         }
-        // Check if there is any discepency between the agent vector and phaseSyncMap
-        // for (auto phase_time : mAgentsPhasesAndTimeMap_cp)
-        // {
-        //     bool thisNumberExists = false;
-        //     int number_to_erase; 
-        //     for (auto number : mAgentsInTeamVector)
-        //     {
-        //         number_to_erase = number;
-        //         if (phase_time.first ==  number)
-        //         {
-        //             thisNumberExists = true;
-        //             break;
-        //         }
-        //     }
-        //     if (!thisNumberExists)
-        //     {
-        //         mAgentsPhasesAndTimeMap_cp.erase(number_to_erase);
-        //         ROS_WARN("Agent%d CP: mAgentsPhasesAndTimeMap_cp contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
-        //     }
-        // }
-        ROS_INFO("tmpmAgentsPhasesAndTimeMap_cp is of size %d ", tmp.size());
-        ROS_INFO("mAgentsInTeamVector is of size %d ", mAgentsInTeamVector.size());
-
-
-        for (auto agent : tmp)
-        {
-            ROS_INFO("Passing into phasesync: tmp mAgentsPhasesAndTimeMap_cp contains agent %d ", agent.first);
-        }
-
-        // if (mAgentsPhasesAndTimeMap_cp.size() != mTeamSize)
-        // {
-        //     ROS_WARN("[Teaming Planner %d]: discrepency in mAgentsPhasesAndTimeMap_cp.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, tmp.size(), mTeamSize);
-        //     for (auto agent : mAgentsPhasesAndTimeMap_cp)
-        //     {
-        //         ROS_INFO("mAgentsPhasesAndTimeMap_cp contains agent %d ", agent.first);
-        //     }
-        // }
-        // phasesAndTimeRecordOfAgents = mAgentsPhasesAndTimeMap_cp;
         phasesAndTimeRecordOfAgents = tmp;
     }
     else
@@ -77,7 +38,6 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
         ROS_WARN("Agent%d CP: get mAgentsPhasesAndTimeMap_cp empty!", mSourceSegmentId);
         phasesAndTimeRecordOfAgents = mAgentsPhasesAndTimeMap_cp;
     }
-
     return status;
 }
 
@@ -159,28 +119,6 @@ bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlo
 
         // agentsPose = mAgentsPoseMap_cp;
         agentsPose = tmp;
-
-        // Check if there is any discepency between the agent vector and map
-        // for (auto pose : mAgentsPoseMap_cp)
-        // {
-        //     bool thisNumberExists = false;
-        //     int number_to_erase; 
-
-        //     for (auto number : mAgentsInTeamVector)
-        //     {
-        //         number_to_erase = number;
-        //         if (pose.first ==  number)
-        //         {
-        //             thisNumberExists = true;
-        //             break;
-        //         }
-        //     }
-            // if (!thisNumberExists)
-            // {
-            //     mAgentsPoseMap_cp.erase(number_to_erase);
-            //     ROS_WARN("Agent%d CP: mAgentsPoseMap_cp contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
-            // }
-        // }
     }
     else
     {
@@ -422,9 +360,7 @@ bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t aAgentId, const st
     
     geometry_msgs::PoseArray tmp_pose_array;
 
-    ROS_INFO("Teaming Planner %d]: processedGoTherePath size is %i", mSourceSegmentId, processedGoTherePath.size());
-    mNewPathPlan = true;
-    ROS_INFO("Teaming Planner %d]: Path plan generated, disabling go there path generation algorithm...!", mSourceSegmentId);
+    ROS_INFO("Teaming Planner %d]: Publishing processedGoTherePath size is %i", mSourceSegmentId, processedGoTherePath.size());
 
     for (auto path : processedGoTherePath)
     {

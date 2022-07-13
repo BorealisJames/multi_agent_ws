@@ -20,7 +20,6 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAgentPoseCallbackVerbose(false),
         mSystemPoseCallbackVerbose(false),
         mPhaseSyncCallbackVerbose(false),
-        mNewPathPlan(true),
         mDebugVerbose(true),
         mTeamSize(0),
         mHandlerPtr(std::make_shared<DistributedFormation::DistributedMultiRobotFormationHandler>()),

@@ -119,7 +119,6 @@ void TeamingPlanner::teamingPlannerMain()
                     // printOutDroneMapVariables();
                     mModuleTaskVerbose = true;
                 }
-                // selfCheckData();
                 mDistributedFormation.RunDistributedFormation();
                 break;
             }
@@ -131,21 +130,11 @@ void TeamingPlanner::teamingPlannerMain()
                     // ROS_INFO("Go There\n");
                     mModuleTaskVerbose = true;
                 }
-                if (mNewPathPlan)
-                {
-                    ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
-                    // printOutDroneMapVariables();
-                    // selfCheckData();
-                    mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
-                    mDistributedFormation.RunDistributedFormation();
-                }
-                else
-                {
-                    ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
-                    // printOutDroneMapVariables();
-                    // selfCheckData();
-                    mDistributedFormation.RunDistributedFormation();
-                }
+                // printOutDroneMapVariables();
+                ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
+                mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
+                ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
+                mDistributedFormation.RunDistributedFormation();
                 break;
             }
 

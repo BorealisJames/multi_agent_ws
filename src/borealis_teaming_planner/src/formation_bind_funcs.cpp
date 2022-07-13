@@ -315,52 +315,13 @@ bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, Distribut
 
     if (!mAgentsPhaseAndTimeMap_rf.empty())
     {
-        // Check if there is any discepency between the agent vector and phaseSyncMap
-        // for (auto phase_time : mAgentsPhaseAndTimeMap_rf)
-        // {
-        //     bool thisNumberExists = false;
-        //     int number_to_erase; 
-        //     for (auto number : mAgentsInTeamVector)
-        //     {
-        //         number_to_erase = number;
-        //         if (phase_time.first ==  number)
-        //         {
-        //             thisNumberExists = true;
-        //             break;
-        //         }
-        //     }
-        //     if (!thisNumberExists)
-        //     {
-        //         mAgentsPhaseAndTimeMap_rf.erase(number_to_erase);
-        //         ROS_WARN("Agent%d CP: mAgentsPhaseAndTimeMap_rf contains agent id %d but mAgentsInTeamVector does not! !", mSourceSegmentId, number_to_erase);
-        //     }
-        // }
 
         std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime> tmp;
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPhaseAndTimeMap_rf[agentnumber];
-            ROS_INFO("Agents in team vector contains  %d ", agentnumber);
         }
-        for (auto agent : tmp)
-        {
-            ROS_INFO("Passing into phasesync: tmp mAgentsPhaseAndTimeMap_rf contains agent %d ", agent.first);
-        }
-        ROS_INFO("tmpmAgentsPhaseAndTimeMap_rf is of size %d ", tmp.size());
-        ROS_INFO("mAgentsInTeamVector is of size %d ", mAgentsInTeamVector.size());
-
-        // if (tmp.size() != mTeamSize)
-        // {
-        //     ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPhaseAndTimeMap_rf.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, tmp.size(), mTeamSize);
-        //     for (auto agent : mAgentsPhaseAndTimeMap_rf)
-        //     {
-        //         ROS_INFO("mAgentsPhaseAndTimeMap_rf contains agent %d ", agent.first);
-        //     }
-        // }
-
-        // phaseAndTimeMap = mAgentsPhaseAndTimeMap_rf;
         phaseAndTimeMap = tmp;
-
     }
     else
     {
@@ -416,8 +377,6 @@ bool TeamingPlanner::getDirectionUtilityMap_rf(std::unordered_map<int32_t, Distr
     }
     else
     {
-        // directionUtilityMap.clear();
-
         ROS_WARN("[Teaming Planner %d]: Agents Direction Utility map empty", mSourceSegmentId);
         status = false;
     }
@@ -443,7 +402,6 @@ bool TeamingPlanner::getConvexRegion2DMap_rf(std::unordered_map<int32_t, Distrib
     else
     {
         // convexRegion2DMap.clear();
-
         ROS_WARN("[Teaming Planner %d]: Agents Convex Region 2D map empty", mSourceSegmentId);
         status = false;
     }
@@ -467,8 +425,6 @@ bool TeamingPlanner::getConvexRegion3DMap_rf(std::unordered_map<int32_t, Distrib
     }
     else
     {
-        // convexRegion3DMap.clear();
-
         ROS_WARN("[Teaming Planner %d]: Agents Convex Region 3D map empty", mSourceSegmentId);
         status = false;
     }

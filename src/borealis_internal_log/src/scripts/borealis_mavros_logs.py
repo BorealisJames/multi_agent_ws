@@ -179,7 +179,7 @@ if __name__ == "__main__":
     f.close()
 
     localposition_topic = "/uav" + str(drone_number) + "/mavros/local_position/pose"
-    assignedpose_topic = "/uav" + str(drone_number) + "/teaming_planner/t265assigned_virtual_position"
+    assignedpose_topic = "/uav" + str(drone_number) + "/control_manager/mavros_assigned_virtual_position"
     setpoint_topic = "/uav" + str(drone_number) + "/mavros/setpoint_position/local"
     aloam_topic = "/uav" + str(drone_number) + "/aft_mapped_to_init"
     mavros_vision_topic = "/uav" + str(drone_number) + "/mavros/vision_pose/pose"
