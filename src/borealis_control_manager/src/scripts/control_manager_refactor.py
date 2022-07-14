@@ -52,8 +52,6 @@ class transform():
         while not rospy.is_shutdown():
             final_pose_uav  = PoseStamped()
             vector_diff_uav = PoseStamped()
-            self.cmd.header.frame_id = '/odom'
-            self.cmd.pose.position.z = 1
 
             if self.recieved_new_ap_callback:
                 if self.mode == "Go_There": 
@@ -65,6 +63,8 @@ class transform():
                 self.cmd = final_pose_uav
                 self.recieved_new_ap_callback = False
 
+            self.cmd.pose.position.z = 1
+            self.cmd.header.frame_id = '/odom'
             mavros_ap_publisher.publish(self.cmd)
 
             rate.sleep()
