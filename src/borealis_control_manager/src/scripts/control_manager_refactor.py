@@ -41,7 +41,7 @@ class transform():
         rospy.Subscriber(self.mavros_pose_topic,  PoseStamped, self.uav_mavros_callback)
         rospy.Subscriber(self.uwb_pose_topic,  PoseWithCovarianceStamped, self.uav_uwb_callback)
         rospy.Subscriber(self.uav_mode_topic,  String, self.hri_mode_callback)
-        rospy.Subscriber(self.uav_input_pose_topic,  String, self.uav_input_pose_topic_callback)
+        rospy.Subscriber(self.uav_input_pose_topic,  PoseStamped, self.uav_input_pose_topic_callback)
 
         mavros_ap_publisher = rospy.Publisher(self.uav_publish_topic , PoseStamped,queue_size=1)
 
