@@ -57,7 +57,7 @@ class transform():
                 if self.mode == "Go_There": 
                     # If in go there mode, the assigned pose algo doesn't include orientation of the drone.
                     # So assign orientation to the assigned pose from the raw input pose
-                    self.uav_uwb_pose.pose.orientation = self.input_pose_stamped.pose.orientation
+                    self.uav_ap_uwb.pose.orientation = self.input_pose_stamped.pose.orientation
                 vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
                 final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
                 self.cmd = final_pose_uav
