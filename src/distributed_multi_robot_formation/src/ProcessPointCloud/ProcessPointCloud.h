@@ -16,6 +16,7 @@
 #include <pcl/point_types.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/crop_box.h>
+#include <pcl_ros/transforms.h>
 
 namespace DistributedFormation
 {
@@ -53,6 +54,8 @@ public:
     bool ApplyVoxelFilterAndConvertToPointCloud(const sensor_msgs::PointCloud2& pointCloud2input, 
                                                 sensor_msgs::PointCloud& pointCloud1output);
 
+    bool VectorTransformPointCloud(const sensor_msgs::PointCloud& pointCloudInputROS, sensor_msgs::PointCloud& pointCloudOutputROS,
+                                    geometry_msgs::Transform transform_vector);
 
 private:
     float m_leaf_size_x = 0.4; //

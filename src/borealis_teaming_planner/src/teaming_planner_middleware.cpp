@@ -17,6 +17,7 @@ void TeamingPlanner::selfSystemPoseCallback(const geometry_msgs::PoseStamped::Co
     geometry_msgs::PoseStamped tmp_pose;
     tmp_pose.header = PoseStamped->header;
     tmp_pose.pose = PoseStamped->pose;
+    mSelfSystemPose = tmp_pose;
 
     Common::Entity::Pose tmp(tmp_pose);
     mSelfSystemPose_rf.position.x = tmp.position.x;
@@ -40,6 +41,7 @@ void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCova
     geometry_msgs::PoseStamped tmp_pose;
     tmp_pose.header = PoseStampedCovar->header;
     tmp_pose.pose = PoseStampedCovar->pose.pose;
+    mSelfSystemPose = tmp_pose;
 
     Common::Entity::Pose tmp(tmp_pose);
     mSelfSystemPose_rf.position.x = tmp.position.x;
@@ -48,6 +50,7 @@ void TeamingPlanner::selfSystemPoseCallbackUWB(const geometry_msgs::PoseWithCova
     mSelfSystemPose_rf.headingRad = tmp.yaw;
     mAgentsPoseMap_rf[mSourceSegmentId] = mSelfSystemPose_rf;
     pubPose_rf(mSourceSegmentId, mSelfSystemPose_rf);
+
 
     mOwnAgentPose_cp.position(0) = tmp.position.x;
     mOwnAgentPose_cp.position(1) = tmp.position.y;
@@ -86,25 +89,34 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     DistributedFormation::ProcessPointCloud tmpProcessPointCloud;
 
     sensor_msgs::PointCloud tmp;
-    tmpProcessPointCloud.ApplyVoxelFilterAndConvertToPointCloud(*aSystemPointCloud2, tmp);
+    sensor_msgs::PointCloud tmpPublish;
+    geometry_msgs::Transform transformVector;
+
+    tmpProcessPointCloud.ApplyVoxelFilterAndConvertToPointCloud(*aSystemPointCloud2, tmp);    
     tmp.header.stamp = aSystemPointCloud2->header.stamp; 
     tmp.header.frame_id = aSystemPointCloud2->header.frame_id; 
 
-    mVoxelFilterCloudPublisher_rf.publish(tmp);
+    transformVector.translation.x = mSelfSystemPose.pose.position.x;
+    transformVector.translation.y = mSelfSystemPose.pose.position.y;
+    transformVector.translation.z = mSelfSystemPose.pose.position.z;
+    tmpProcessPointCloud.VectorTransformPointCloud(tmp, tmpPublish, transformVector);
+    mVoxelFilterCloudPublisher_rf.publish(tmpPublish);
 
-    try 
-    {        
-        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(0.5));
-        mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemPointCloud);
-    }
-    catch (tf::TransformException ex)
-    {
-        ROS_ERROR("%s", ex.what());
-    }
-    if (mPointcloudCallbackVerbose)
-    {
-        ROS_INFO("[Teaming Planner %d]: Point Cloud Received", mSourceSegmentId);
-    }
+    // try 
+    // {
+    //     mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(1));
+    //     mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemPointCloud);
+    //     //
+    //     // pcl_ros::transformPointCloud()
+    // }
+    // catch (tf::TransformException ex)
+    // {
+    //     ROS_ERROR("%s", ex.what());
+    // }
+    // if (mPointcloudCallbackVerbose)
+    // {
+    //     ROS_INFO("[Teaming Planner %d]: Point Cloud Received", mSourceSegmentId);
+    // }
 }
 
 void TeamingPlanner::activatePlannerCallback(const std_msgs::Bool::ConstPtr& aBoolActivatePlanner)

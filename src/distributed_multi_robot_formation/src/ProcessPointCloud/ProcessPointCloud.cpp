@@ -18,6 +18,7 @@ namespace DistributedFormation
         pcl::PCLPointCloud2* cloud = new pcl::PCLPointCloud2;
         pcl::PCLPointCloud2ConstPtr cloudPtr(cloud);
         pcl::PCLPointCloud2 cloud_filtered;
+        pcl::PCLPointCloud2 cloud_transformed;
 
         // Convert to PCL data type from ROS sensor_msgs::PointCloud2
         pcl_conversions::toPCL(pointCloud2input, *cloud);
@@ -37,8 +38,10 @@ namespace DistributedFormation
         sor.setLeafSize (m_leaf_size_x, m_leaf_size_y, m_leaf_size_z);
         sor.filter (cloud_filtered);
 
-    
+        geometry_msgs::Transform transform_vector;
+
         // Convert back to ROS data type
+
         sensor_msgs::PointCloud2 output;
         pcl_conversions::moveFromPCL(cloud_filtered, output);
 
@@ -51,6 +54,43 @@ namespace DistributedFormation
             success = false;
         }
         return success;
+    }
+
+    bool ProcessPointCloud::VectorTransformPointCloud(const sensor_msgs::PointCloud& pointCloudInputROS, sensor_msgs::PointCloud& pointCloudOutputROS,
+                                                geometry_msgs::Transform transform_vector)
+    {
+        pcl::PointCloud<pcl::PointXYZ> rawPCLCloud;
+        pcl::PointCloud<pcl::PointXYZ> transformedPCLCloud;
+
+        // Convert to PCL pointcloud
+        pcl_conversions::toPCL(pointCloudInputROS.header, rawPCLCloud.header);
+        for (auto it = pointCloudInputROS.points.begin(); it != pointCloudInputROS.points.end(); ++it)
+        {
+            pcl::PointXYZ p;
+            p.x = it->x;
+            p.y = it->y;
+            p.z = it->z;
+            rawPCLCloud.push_back(p);
+        }
+        rawPCLCloud.height = 1;
+        rawPCLCloud.width = pointCloudInputROS.points.size();
+        rawPCLCloud.is_dense = true;
+
+        // Transform
+        pcl_ros::transformPointCloud(rawPCLCloud, transformedPCLCloud, transform_vector);
+
+        // Transform back to ROS pcl
+        pcl_conversions::fromPCL(rawPCLCloud.header, pointCloudOutputROS.header);
+
+        for (auto it = rawPCLCloud.points.begin(); it != rawPCLCloud.points.end(); ++it)
+        {
+            geometry_msgs::Point32 p;
+            p.x = it->x;
+            p.y = it->y;
+            p.z = it->z;
+
+            pointCloudOutputROS.points.push_back(p);
+        }
     }
 
     void
