@@ -99,7 +99,9 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     transformVector.translation.x = mSelfSystemPose.pose.position.x;
     transformVector.translation.y = mSelfSystemPose.pose.position.y;
     transformVector.translation.z = mSelfSystemPose.pose.position.z;
+
     tmpProcessPointCloud.VectorTransformPointCloud(tmp, tmpPublish, transformVector);
+    mSystemPointCloud = tmpPublish;
     mVoxelFilterCloudPublisher_rf.publish(tmpPublish);
 
     // try 
