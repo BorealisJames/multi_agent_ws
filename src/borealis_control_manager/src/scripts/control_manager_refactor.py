@@ -45,7 +45,7 @@ class transform():
 
         mavros_ap_publisher = rospy.Publisher(self.uav_publish_topic , PoseStamped,queue_size=1)
 
-        rate = rospy.Rate(10)
+        rate = rospy.Rate(5)
 
         # Drone position in UWB
 
