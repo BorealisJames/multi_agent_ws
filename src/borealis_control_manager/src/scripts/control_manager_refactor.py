@@ -58,8 +58,16 @@ class transform():
                     # If in go there mode, the assigned pose algo doesn't include orientation of the drone.
                     # So assign orientation to the assigned pose from the raw input pose
                     self.uav_ap_uwb.pose.orientation = self.input_pose_stamped.pose.orientation
-                vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
-                final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
+                    vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
+                    final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
+                elif self.mode == "Sweep":
+                    # Hard coded fast fix
+                    vector_diff_uav = self.orientation_diff(self.uav_uwb_pose, self.uav_ap_uwb)
+                    final_pose_uav = self.orientation_add(vector_diff_uav, self.uav_mavros_pose)
+                else:
+                    vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
+                    final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
+
                 self.cmd = final_pose_uav
                 self.recieved_new_ap_callback = False
 
@@ -126,6 +134,39 @@ class transform():
 
         return vector_diff
 
+    def orientation_diff(self, pose_stamped_previous, pose_staped_now):
+        q1_inv = np.zeros(4)
+        q2 = np.zeros(4)
+        vector_diff = PoseStamped()
+
+        # position vector diff 
+        vector_diff.pose.position.x = pose_staped_now.pose.position.x
+        vector_diff.pose.position.y = pose_staped_now.pose.position.y
+        vector_diff.pose.position.z = pose_staped_now.pose.position.z
+
+        # print("Pose_stamped_now {} {} {}".format(pose_staped_now.pose.position.x, pose_staped_now.pose.position.y, pose_staped_now.pose.position.z))
+        # print("Pose_stamped_previous  {} {} {}".format(pose_stamped_previous.pose.position.x, pose_stamped_previous.pose.position.y, pose_stamped_previous.pose.position.z))
+        # print("Vector diff {} {} {}".format(vector_diff.pose.position.x, vector_diff.pose.position.y, vector_diff.pose.position.z))
+
+        q1_inv[0] = pose_stamped_previous.pose.orientation.x
+        q1_inv[1] = pose_stamped_previous.pose.orientation.y
+        q1_inv[2] = pose_stamped_previous.pose.orientation.z
+        q1_inv[3] = -pose_stamped_previous.pose.orientation.w # Negate for inverse
+
+        q2[0] = pose_staped_now.pose.orientation.x
+        q2[1] = pose_staped_now.pose.orientation.y
+        q2[2] = pose_staped_now.pose.orientation.z
+        q2[3] = pose_staped_now.pose.orientation.w
+
+        qr = quaternion_multiply(q2, q1_inv)
+
+        vector_diff.pose.orientation.x = qr[0]
+        vector_diff.pose.orientation.y = qr[1]
+        vector_diff.pose.orientation.z = qr[2]
+        vector_diff.pose.orientation.w = qr[3]
+
+        return vector_diff
+
     def pose_addition(self, vector_pose_stamped_to_add, pose_staped_now):
         q_rot = np.zeros(4)
         q_origin = np.zeros(4)
@@ -154,6 +195,40 @@ class transform():
         new_pose_stamped.pose.orientation.w = q_new[3]
 
         return new_pose_stamped
+
+    def orientation_add(self, pose_stamped_previous, pose_staped_now):
+        q1_inv = np.zeros(4)
+        q2 = np.zeros(4)
+        vector_diff = PoseStamped()
+
+        # position vector diff 
+        vector_diff.pose.position.x = pose_stamped_previous.pose.position.x
+        vector_diff.pose.position.y = pose_stamped_previous.pose.position.y
+        vector_diff.pose.position.z = pose_stamped_previous.pose.position.z
+
+        # print("Pose_stamped_now {} {} {}".format(pose_staped_now.pose.position.x, pose_staped_now.pose.position.y, pose_staped_now.pose.position.z))
+        # print("Pose_stamped_previous  {} {} {}".format(pose_stamped_previous.pose.position.x, pose_stamped_previous.pose.position.y, pose_stamped_previous.pose.position.z))
+        # print("Vector diff {} {} {}".format(vector_diff.pose.position.x, vector_diff.pose.position.y, vector_diff.pose.position.z))
+
+        q1_inv[0] = pose_stamped_previous.pose.orientation.x
+        q1_inv[1] = pose_stamped_previous.pose.orientation.y
+        q1_inv[2] = pose_stamped_previous.pose.orientation.z
+        q1_inv[3] = -pose_stamped_previous.pose.orientation.w # Negate for inverse
+
+        q2[0] = pose_staped_now.pose.orientation.x
+        q2[1] = pose_staped_now.pose.orientation.y
+        q2[2] = pose_staped_now.pose.orientation.z
+        q2[3] = pose_staped_now.pose.orientation.w
+
+        qr = quaternion_multiply(q2, q1_inv)
+
+        vector_diff.pose.orientation.x = qr[0]
+        vector_diff.pose.orientation.y = qr[1]
+        vector_diff.pose.orientation.z = qr[2]
+        vector_diff.pose.orientation.w = qr[3]
+
+        return vector_diff
+
 
 if __name__ == '__main__':
     rospy.init_node('Control_Manager')
