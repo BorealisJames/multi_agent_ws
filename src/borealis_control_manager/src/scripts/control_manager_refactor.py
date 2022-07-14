@@ -70,7 +70,7 @@ class transform():
             rate.sleep()
 
     def uav_ap_uwb_callback(self,data):
-        if (self.uav_ap_uwb.pose.position.x != data.pose.position.x or self.uav_ap_uwb.pose.position.y != data.pose.position.y or self.uav_ap_uwb.pose.position.z != data.pose.position.z):
+        if (self.uav_ap_uwb.pose.position.x != data.pose.position.x or self.uav_ap_uwb.pose.position.y != data.pose.position.y or self.uav_ap_uwb.pose.position.z != data.pose.position.z or self.uav_ap_uwb.pose.orientation.x != data.pose.orientation.x or self.uav_ap_uwb.pose.orientation.y != data.pose.orientation.y or self.uav_ap_uwb.pose.orientation.z != data.pose.orientation.z or self.uav_ap_uwb.pose.orientation.w != data.pose.orientation.w):
             self.recieved_new_ap_callback = True
             self.uav_ap_uwb = data
         else:
