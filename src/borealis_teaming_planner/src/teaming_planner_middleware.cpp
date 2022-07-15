@@ -100,13 +100,18 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     transformVector.translation.x = mSelfSystemPose.pose.position.x;
     transformVector.translation.y = mSelfSystemPose.pose.position.y;
     transformVector.translation.z = mSelfSystemPose.pose.position.z;
+    transformVector.rotation.x = 0;
+    transformVector.rotation.y = 0;
+    transformVector.rotation.z = 0;
+    transformVector.rotation.w = 1;
+
     tmpProcessPointCloud.VectorTransformPointCloud(tmp, tmpPublish, transformVector);
     mSystemPointCloud = tmpPublish;
     mVoxelFilterCloudPublisher_rf.publish(tmpPublish);
 
     // try 
     // {
-    //     mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(1));
+        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(1));
     //     mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemPointCloud);
     //     //
     //     // pcl_ros::transformPointCloud()
