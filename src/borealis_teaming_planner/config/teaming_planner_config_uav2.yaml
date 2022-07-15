@@ -22,7 +22,7 @@
 /uav2/borealis_teaming_planner/localBoundingBoxForPathAlongX: 3.0
 /uav2/borealis_teaming_planner/localBoundingBoxForPathAlongY: 3.0
 /uav2/borealis_teaming_planner/localBoundingBoxForPathAlongZ: 2.0
-/uav2/borealis_teaming_planner/pointRemovalRadius: 0.45
+/uav2/borealis_teaming_planner/pointRemovalRadius: 0.3
 /uav2/borealis_teaming_planner/desiredDistanceInTriFormation: 2.5
 /uav2/borealis_teaming_planner/desiredDistanceInLineFormation: 2.5
 /uav2/borealis_teaming_planner/incrementOffsetToFormationYaw: 0.785398163397

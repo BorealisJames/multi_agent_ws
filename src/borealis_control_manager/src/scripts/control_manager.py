@@ -68,17 +68,19 @@ class transform():
             vector_diff_uav2 = PoseStamped()
 
             if self.recieved_new_ap_callback_uav1:
-                vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
-                final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
-                self.cmd1 = final_pose_uav1
+                # vector_diff_uav1 = self.pose_diff(self.uav1_pose_uwb, self.uav1_ap_uwb)
+                # final_pose_uav1 = self.pose_addition(vector_diff_uav1, self.uav1_pos)
+                # self.cmd1 = final_pose_uav1
                 self.cmd1.pose.orientation = self.uav1_ap_uwb.pose.orientation
+                self.cmd1.pose.position = self.uav1_ap_uwb.pose.position
                 self.recieved_new_ap_callback_uav1 = False
 
             if self.recieved_new_ap_callback_uav2:
-                vector_diff_uav2 = self.pose_diff(self.uav2_pose_uwb, self.uav2_ap_uwb)
-                final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
-                self.cmd2 = final_pose_uav2
+                # vector_diff_uav2 = self.pose_diff(self.uav2_pose_uwb, self.uav2_ap_uwb)
+                # final_pose_uav2 = self.pose_addition(vector_diff_uav2, self.uav2_pos)
+                # self.cmd2 = final_pose_uav2
                 self.cmd2.pose.orientation = self.uav2_ap_uwb.pose.orientation
+                self.cmd2.pose.position = self.uav2_ap_uwb.pose.position
                 self.recieved_new_ap_callback_uav2 = False
 
             # diiff refers to uwb_pose and assigned_pose
@@ -104,8 +106,8 @@ class transform():
             uav1_publisher.publish(self.cmd1)
             uav2_publisher.publish(self.cmd2)
 
-            print("cmd1:",[self.cmd1.pose.position.x, self.cmd1.pose.position.y, self.cmd1.pose.position.z])
-            print("cmd2:",[self.cmd2.pose.position.x, self.cmd2.pose.position.y, self.cmd2.pose.position.z])
+            # print("cmd1:",[self.cmd1.pose.position.x, self.cmd1.pose.position.y, self.cmd1.pose.position.z])
+            # print("cmd2:",[self.cmd2.pose.position.x, self.cmd2.pose.position.y, self.cmd2.pose.position.z])
             # print("Yaw values 1: ", self.uav1_go_there_yaw)
             # print("Yaw values 2: ", self.uav2_go_there_yaw)
 
