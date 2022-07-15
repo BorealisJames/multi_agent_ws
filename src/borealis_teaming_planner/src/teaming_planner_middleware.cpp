@@ -107,6 +107,8 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
 
     tmpProcessPointCloud.VectorTransformPointCloud(tmp, tmpPublish, transformVector);
     mSystemPointCloud.points.clear(); // clear the old one
+    mSystemPointCloud.header.frame_id = "/odom";
+    mSystemPointCloud.header.stamp = ros::Time::now();
     mSystemPointCloud = tmpPublish; // assign it to the new one
     mVoxelFilterCloudPublisher_rf.publish(tmpPublish);
 
