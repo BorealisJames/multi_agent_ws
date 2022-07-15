@@ -71,7 +71,7 @@ class transform():
                 self.cmd = final_pose_uav
                 self.recieved_new_ap_callback = False
 
-            self.cmd.pose.position.z = 1
+            self.cmd.pose.position.z = 1.2
             self.cmd.header.frame_id = '/odom'
             mavros_ap_publisher.publish(self.cmd)
 
