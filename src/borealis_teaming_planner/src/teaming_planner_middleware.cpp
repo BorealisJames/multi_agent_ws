@@ -106,12 +106,13 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     transformVector.rotation.w = 1;
 
     tmpProcessPointCloud.VectorTransformPointCloud(tmp, tmpPublish, transformVector);
-    mSystemPointCloud = tmpPublish;
+    mSystemPointCloud.points.clear(); // clear the old one
+    mSystemPointCloud = tmpPublish; // assign it to the new one
     mVoxelFilterCloudPublisher_rf.publish(tmpPublish);
 
     // try 
     // {
-        mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(1));
+    //     mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(1));
     //     mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemPointCloud);
     //     //
     //     // pcl_ros::transformPointCloud()
