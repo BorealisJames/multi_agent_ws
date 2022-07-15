@@ -26,7 +26,7 @@
 /uav2/borealis_teaming_planner/desiredDistanceInTriFormation: 2.5
 /uav2/borealis_teaming_planner/desiredDistanceInLineFormation: 2.5
 /uav2/borealis_teaming_planner/incrementOffsetToFormationYaw: 0.785398163397
-/uav2/borealis_teaming_planner/agentRadius: 0.8
+/uav2/borealis_teaming_planner/agentRadius: 1
 /uav2/borealis_teaming_planner/waypointReachedBoundary: 1.5
 /uav2/borealis_teaming_planner/weightForGoal: 0.3
 /uav2/borealis_teaming_planner/weightForRotation: 0.4
