@@ -256,7 +256,7 @@ namespace DistributedGlobalPathPlanner
         {
             for (int i = 0; i < goTherePath.size(); i++)
             {
-                if (std::abs(goTherePath.at(i).position.norm() - m_goTherePath.at(i).position.norm()) > FLT_EPSILON ||
+                if (std::abs(goTherePath.at(i).position.norm() - m_goTherePath.at(i).position.norm()) > 3 * FLT_EPSILON ||
                     std::abs(goTherePath.at(i).headingRad - m_goTherePath.at(i).headingRad) > FLT_EPSILON)
                 {
                     resetPath = true;
@@ -570,7 +570,7 @@ namespace DistributedGlobalPathPlanner
 
                         for (int i=0; i<agentPath1.second.poses.size(); i++)
                         {
-                            if (std::abs(agentPath1.second.poses.at(i).position.norm() - agentPath2.second.poses.at(i).position.norm()) > FLT_EPSILON ||
+                            if (std::abs(agentPath1.second.poses.at(i).position.norm() - agentPath2.second.poses.at(i).position.norm()) > 3 * FLT_EPSILON ||
                                 std::abs(agentPath1.second.poses.at(i).headingRad - agentPath2.second.poses.at(i).headingRad) > FLT_EPSILON)
                             {
                                 pathIsSimilar = false;
