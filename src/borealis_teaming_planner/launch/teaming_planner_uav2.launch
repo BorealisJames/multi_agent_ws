@@ -27,11 +27,12 @@
       <remap from="/best_processed_path_cp" to="borealis_teaming_planner/best_processed_path_cp"/>
       <remap from="/processed_go_there_path" to="processed_go_there_path"/>
 
+
+      <!-- <remap from="/system_pose" to="/iris1/system_pose"/>
+      <remap from="/pointcloud" to="/uav2/ouster/pointcloud2"/> -->
             <!-- <remap from="/task" to="/task"/>
       <remap from="/control_state" to="control/state"/> -->
       <!-- <remap from= "/human_input_pose" to="/uav_all/follow_me_target_pose"/> -->
-
-
     </node>
   </group>
 </launch>

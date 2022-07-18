@@ -8,7 +8,7 @@ namespace DistributedFormation
 {
 
     bool 
-    ProcessPointCloud::ApplyVoxelFilterAndConvertToPointCloud(const sensor_msgs::PointCloud2& pointCloud2input, sensor_msgs::PointCloud& pointCloud1output)
+    ProcessPointCloud::ApplyVoxelFilterToPCL2(const sensor_msgs::PointCloud2& pointCloud2input, sensor_msgs::PointCloud2& pointCloud1output)
     {
         bool success = false;
 
@@ -44,19 +44,13 @@ namespace DistributedFormation
 
         sensor_msgs::PointCloud2 output;
         pcl_conversions::moveFromPCL(cloud_filtered, output);
-
-        if (sensor_msgs::convertPointCloud2ToPointCloud(output, pointCloud1output))
-        {
-            success = true;
-        }
-        else
-        {
-            success = false;
-        }
+        pointCloud1output = output;
+        success = true;
         return success;
     }
 
-    bool ProcessPointCloud::VectorTransformPointCloud(const sensor_msgs::PointCloud& pointCloudInputROS, sensor_msgs::PointCloud& pointCloudOutputROS,
+    bool
+    ProcessPointCloud::VectorTransformPointCloud(const sensor_msgs::PointCloud& pointCloudInputROS, sensor_msgs::PointCloud& pointCloudOutputROS,
                                                 geometry_msgs::Transform transform_vector)
     {
         pcl::PointCloud<pcl::PointXYZ> rawPCLCloud;

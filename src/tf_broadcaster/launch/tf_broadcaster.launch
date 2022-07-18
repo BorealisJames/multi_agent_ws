@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="system_map2local_odom_topic" default="/gazebo/model_states"/>
+    <arg name="system_map2body_topic" default="ground_truth/state"/>
+    <arg name="local_map2body_topic" default="mavros/local_position/pose"/>
+    <arg name="broadcast_lidar" default="true"/>
+    <arg name="body2lidar_topic" default="ouster/pointcloud"/>
+    <arg name="body2camera_topic" default="camera/depth/points"/>
+    <arg name="systempose_topic" default="system_pose"/>
+
+    <group ns="iris0">
+        <node name="tf_broadcaster" pkg="tf_broadcaster" type="tf_broadcaster_node" output="screen">
+            <remap from="system_map2local_odom_topic" to ="$(arg system_map2local_odom_topic)"/>
+            <remap from="system_map2body_topic" to ="$(arg system_map2body_topic)"/>
+            <remap from="local_map2body_topic" to ="$(arg local_map2body_topic)"/>
+
+            <param name="broadcast_lidar" value="$(arg broadcast_lidar)"/>
+            <remap from="body2lidar_topic" to="$(arg body2lidar_topic)"/>
+            <remap from="body2camera_topic" to="$(arg body2camera_topic)"/>
+            <remap from="systempose_topic" to="$(arg systempose_topic)"/>
+        </node>
+    </group>
+</launch>

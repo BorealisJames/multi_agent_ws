@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+    <group ns="iris0">
+        <node name="tf_broadcaster" pkg="tf_broadcaster" type="tf_broadcaster_node" output="screen">
+            <remap from="system_map2local_odom_topic" to ="/gazebo/model_states"/>
+            <remap from="system_map2body_topic" to ="ground_truth/state"/>
+            <remap from="local_map2body_topic" to ="mavros/local_position/pose"/>
+
+            <param name="broadcast_lidar" value="true"/>
+            <param name="broadcast_camera" value="false"/>
+            <remap from="body2lidar_topic" to="/uav1/ouster/pointcloud2"/>
+            <remap from="body2camera_topic" to="camera/depth/points"/>
+            <remap from="systempose_topic" to="system_pose"/>
+        </node>
+    </group>
+    
+    <group ns="iris1">
+        <node name="tf_broadcaster" pkg="tf_broadcaster" type="tf_broadcaster_node" output="screen">
+            <remap from="system_map2local_odom_topic" to ="/gazebo/model_states"/>
+            <remap from="system_map2body_topic" to ="ground_truth/state"/>
+            <remap from="local_map2body_topic" to ="mavros/local_position/pose"/>
+
+            <param name="broadcast_lidar" value="true"/>
+            <param name="broadcast_camera" value="false"/>
+            <remap from="body2lidar_topic" to="/uav2/ouster/pointcloud2"/>
+            <remap from="body2camera_topic" to="camera/depth/points"/>
+            <remap from="systempose_topic" to="system_pose"/>
+        </node>
+    </group>
+
+    <group ns="human">
+        <node name="tf_broadcaster" pkg="tf_broadcaster" type="tf_broadcaster_node" output="screen">
+            <remap from="system_map2local_odom_topic" to ="/gazebo/model_states"/>
+            <remap from="system_map2body_topic" to ="ground_truth/state"/>
+            <remap from="local_map2body_topic" to ="mavros/local_position/pose"/>
+
+            <param name="broadcast_lidar" value="false"/>
+            <param name="broadcast_camera" value="false"/>
+            <remap from="body2lidar_topic" to="ouster/pointcloud"/>
+            <remap from="body2camera_topic" to="camera/depth/points"/>
+            <remap from="systempose_topic" to="system_pose"/>
+        </node>
+    </group>
+</launch>

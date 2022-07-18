@@ -13,6 +13,7 @@ bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner:
     }
     else
     {
+        goTherePath = mGoTherePath_cp;
         status = false;
         ROS_WARN("Agent%d CPH: get mGoTherePath_cp empty!", mSourceSegmentId);
     }
@@ -114,7 +115,7 @@ bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlo
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPoseMap_cp[agentnumber];
-            ROS_WARN("[Teaming Planner %d]: tmpmmAgentsPoseMap_cp contains %d", mSourceSegmentId, agentnumber);
+            ROS_INFO("[Teaming Planner %d]: tmpmmAgentsPoseMap_cp contains %d", mSourceSegmentId, agentnumber);
         }
 
         // agentsPose = mAgentsPoseMap_cp;

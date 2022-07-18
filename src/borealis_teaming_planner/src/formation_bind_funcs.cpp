@@ -301,8 +301,9 @@ bool TeamingPlanner::getPosesForFormationToTrack_rf(std::vector<DistributedForma
         }
         else
         {
+            posesForFormationToTrack = mProcessedGoTherePath;
             status = false;
-            ROS_ERROR("[Teaming Planner %d]: Agent ID No go there poses for formation to track! \n", mSourceSegmentId);
+            ROS_ERROR("[Teaming Planner %d]: No go there poses for formation to track! \n", mSourceSegmentId);
         }
     }
 
@@ -344,7 +345,7 @@ bool TeamingPlanner::getPoseMap_rf(std::unordered_map<int32_t, DistributedFormat
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPoseMap_rf[agentnumber];
-            ROS_WARN("[Teaming Planner %d]: tmpmAgentsPoseMap_rf contains %d", mSourceSegmentId, agentnumber);
+            ROS_INFO("[Teaming Planner %d]: tmpmAgentsPoseMap_rf contains %d", mSourceSegmentId, agentnumber);
         }
 
         // poseMap = mAgentsPoseMap_rf;

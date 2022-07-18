@@ -10,7 +10,7 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAgentsDirectionUtilityMap_rf(),
         mAgentsConvexRegion2DMap_rf(),
         mAgentsAssignedVirtualPoseMap_rf(),
-        mPointCloudTransformListener(),
+        // mPointCloudTransformListener(),
         mTask(),
         mHistoryOfHumanPoses_rf(),
         mHistoryOfHumanPosesReceived(false),
@@ -33,6 +33,9 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         mAgentsBestProcessedPath_cp()
     {
         // Module Configurable Variables
+
+        mtfListener = new tf2_ros::TransformListener(mtfBuffer); // guess and checked until code compiled xd
+
         mConfigFileReader.getParam(nhPrivate, "sourceSegmentId", mSourceSegmentId, static_cast<uint32_t>(0));
         mConfigFileReader.getParam(nhPrivate, "modulePeriod", mModulePeriod, 1);
         mConfigFileReader.getParam(nhPrivate, "numOfAgents", mNumOfAgents, 3);
@@ -147,6 +150,8 @@ TeamingPlanner::TeamingPlanner(const ros::NodeHandle& nh, const ros::NodeHandle&
         
         // Timers
         // mModuleLoopTimer = mNh.createTimer(ros::Duration(mModulePeriod), &TeamingPlanner::moduleLoopCallback, this);
+
+        ros::Duration(0.5).sleep(); // work around to allow tf buffers to fill up and preven throwing of tf buffer length exception
 
         ros::Rate loop_rate(25);
         while (ros::ok())

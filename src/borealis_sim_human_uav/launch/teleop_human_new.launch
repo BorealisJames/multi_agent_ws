@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="borealis_sim_human_uav" type="sim_teleop_position_borealis_new.py" name="borealis_teleop" output="screen"/>
+
+<!-- <group ns = "human">
+    <node pkg="borealis_sim_human_uav" type="borealis_sim_human_uav_node" name="borealis_sim_human_uav" output="screen"/>
+</group> -->
+
+<!-- <group ns = "iris0">
+    <node pkg="borealis_sim_human_uav" type="borealis_sim_human_uav_node" name="borealis_sim_human_uav" output="screen"/>
+</group>
+
+<group ns = "iris1">
+    <node pkg="borealis_sim_human_uav" type="borealis_sim_human_uav_node" name="borealis_sim_human_uav" output="screen"/>
+</group> -->
+
+</launch>

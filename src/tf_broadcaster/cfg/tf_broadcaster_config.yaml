@@ -1,0 +1,5 @@
+lidar_frame: "iris_$(arg ID)/ousterlidar_link"  # lidar_frame: "uav_0/ousterlidar_link"
+body_frame: "base_link"
+local_frame: "map"
+
+camera_frame: "camera"

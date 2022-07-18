@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-
-## Publishes a topic with the the with/after tf transforms
   
 import rospy
 import os
@@ -12,7 +10,8 @@ import numpy as np
 from tf2_msgs.msg import TFMessage
 from std_msgs.msg import Int32, Float64, String
 
-# Clean up the code
+# Latest control manager code.
+# Doesn't do anymore global to local lookup.
 
 class transform():
 
@@ -47,8 +46,6 @@ class transform():
 
         rate = rospy.Rate(5)
 
-        # Drone position in UWB
-
         while not rospy.is_shutdown():
             final_pose_uav  = PoseStamped()
             vector_diff_uav = PoseStamped()
@@ -58,6 +55,14 @@ class transform():
                     # If in go there mode, the assigned pose algo doesn't include orientation of the drone.
                     # So assign orientation to the assigned pose from the raw input pose
                     self.uav_ap_uwb.pose.orientation = self.input_pose_stamped.pose.orientation
+                    self.cmd = self.uav_ap_uwb
+                if self.mode == "Follow_Me" :
+                    # In Follow me mode, the formation generation algorithm will generate some unstable orientation due to the human orientation
+                    # Being quite unstable, thus the drone should always look forward
+                    self.uav_ap_uwb.pose.orientation.x = 0
+                    self.uav_ap_uwb.pose.orientation.y = 0
+                    self.uav_ap_uwb.pose.orientation.z = 0
+                    self.uav_ap_uwb.pose.orientation.w = 1
                     self.cmd = self.uav_ap_uwb
                 else:
                     self.cmd = self.uav_ap_uwb

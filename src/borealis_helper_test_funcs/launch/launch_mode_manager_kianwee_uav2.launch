@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+        <node pkg="borealis_helper_test_funcs" type="mode_manager_kianwee.py" name="mode_manager_node_uav2" output="screen"/>
+        <param name="/uavnumber" value="2"/>
+        <param name="/dronename" value="uav2"/>
+</launch>

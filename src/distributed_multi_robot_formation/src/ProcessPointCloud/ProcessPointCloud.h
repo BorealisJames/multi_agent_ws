@@ -51,9 +51,9 @@ public:
                                                         const double boundingBoxZ,
                                                         sensor_msgs::PointCloud& cloudOutput);
 
-    bool ApplyVoxelFilterAndConvertToPointCloud(const sensor_msgs::PointCloud2& pointCloud2input, 
-                                                sensor_msgs::PointCloud& pointCloud1output);
-
+    bool ApplyVoxelFilterToPCL2(const sensor_msgs::PointCloud2& pointCloud2input, 
+                                                sensor_msgs::PointCloud2& pointCloud1output);
+                                
     bool VectorTransformPointCloud(const sensor_msgs::PointCloud& pointCloudInputROS, sensor_msgs::PointCloud& pointCloudOutputROS,
                                     geometry_msgs::Transform transform_vector);
 

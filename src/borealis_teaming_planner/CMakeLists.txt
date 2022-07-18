@@ -26,6 +26,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   tf
+  tf2
+  tf2_ros
+  tf2_msgs
+  tf2_sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -56,6 +60,10 @@ catkin_package(
         roscpp
         std_msgs
         tf
+        tf2
+        tf2_ros
+        tf2_msgs
+        tf2_sensor_msgs
 #  DEPENDS system_lib
 )
 

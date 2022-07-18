@@ -88,45 +88,59 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     std::string sourceFrame = "uav" + std::to_string(mSourceSegmentId) + "/os_sensor";
     DistributedFormation::ProcessPointCloud tmpProcessPointCloud;
 
-    sensor_msgs::PointCloud tmp;
-    sensor_msgs::PointCloud tmpPublish;
-    geometry_msgs::Transform transformVector;
+    sensor_msgs::PointCloud2 tmp;
+    sensor_msgs::PointCloud2 tmpTransformed;
+    sensor_msgs::PointCloud tmpToPublish;
 
-    tmpProcessPointCloud.ApplyVoxelFilterAndConvertToPointCloud(*aSystemPointCloud2, tmp);    
+    tmpProcessPointCloud.ApplyVoxelFilterToPCL2(*aSystemPointCloud2, tmp);    
     tmp.header.stamp = aSystemPointCloud2->header.stamp; 
     tmp.header.frame_id = aSystemPointCloud2->header.frame_id; 
+    geometry_msgs::TransformStamped transformStamped;
 
-    // Manually transform the pointcloud
-    transformVector.translation.x = mSelfSystemPose.pose.position.x;
-    transformVector.translation.y = mSelfSystemPose.pose.position.y;
-    transformVector.translation.z = mSelfSystemPose.pose.position.z;
-    transformVector.rotation.x = 0;
-    transformVector.rotation.y = 0;
-    transformVector.rotation.z = 0;
-    transformVector.rotation.w = 1;
+    try
+    {
+        transformStamped = mtfBuffer.lookupTransform("odom", sourceFrame,ros::Time(0));
+        ROS_INFO("Transform stamped: ");
+        std::cout << transformStamped << std::endl;
+        tf2::doTransform(tmp, tmpTransformed, transformStamped);
+    }
+    catch (tf2::TransformException &ex) {
+        ROS_WARN("%s", ex.what());
+        ros::Duration(0.5).sleep();
+    }
+    catch (std::length_error e )
+    {
+        ROS_WARN("End of tf buffer reached! There is more than 10s time desync somewhere in the tree from lidar frame to odom");
+        ROS_WARN("%s", e.what());
+        ros::Duration(0.5).sleep(); 
+        // handle custom exception
+    }
+    catch (std::length_error e )
+    {
+        ROS_WARN("End of tf buffer reached! There is more than 10s time desync somewhere in the tree from lidar frame to odom");
+        ROS_WARN("%s", e.what());
+        ros::Duration(0.5).sleep(); 
+        // handle custom exception
+    }
+    catch (const std::exception& e) {
+        ROS_WARN("%s", e.what());
+        ros::Duration(0.5).sleep(); 
+        // ...
+    } 
+    catch (const std::string& e) {
+        ROS_WARN("%s", e);
+        ros::Duration(0.5).sleep(); 
+        // ...
+    } 
+    catch (...) {
+        ROS_WARN("This should not happen but ..");
+        ros::Duration(0.5).sleep(); 
+        // ...
+}
 
-    tmpProcessPointCloud.VectorTransformPointCloud(tmp, tmpPublish, transformVector);
-    mSystemPointCloud.points.clear(); // clear the old one
-    mSystemPointCloud.header.frame_id = "/odom";
-    mSystemPointCloud.header.stamp = ros::Time::now();
-    mSystemPointCloud = tmpPublish; // assign it to the new one
-    mVoxelFilterCloudPublisher_rf.publish(tmpPublish);
-
-    // try 
-    // {
-    //     mPointCloudTransformListener.waitForTransform(Common::Entity::SYSTEM_FRAME, sourceFrame, tmp.header.stamp, ros::Duration(1));
-    //     mPointCloudTransformListener.transformPointCloud(Common::Entity::SYSTEM_FRAME, tmp, mSystemPointCloud);
-    //     //
-    //     // pcl_ros::transformPointCloud()
-    // }
-    // catch (tf::TransformException ex)
-    // {
-    //     ROS_ERROR("%s", ex.what());
-    // }
-    // if (mPointcloudCallbackVerbose)
-    // {
-    //     ROS_INFO("[Teaming Planner %d]: Point Cloud Received", mSourceSegmentId);
-    // }
+    sensor_msgs::convertPointCloud2ToPointCloud(tmpTransformed, tmpToPublish);
+    mSystemPointCloud = tmpToPublish;
+    mVoxelFilterCloudPublisher_rf.publish(tmpToPublish);
 }
 
 void TeamingPlanner::activatePlannerCallback(const std_msgs::Bool::ConstPtr& aBoolActivatePlanner)
@@ -246,7 +260,7 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
 
 void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray::ConstPtr& aNumberOfAgents)
 {
-    if (mAgentsInTeamVector.size() != aNumberOfAgents->data.size())
+    if (mAgentsInTeam.data.size() != aNumberOfAgents->data.size())
     {
         if (aNumberOfAgents->data.size() == 3)
         {
@@ -261,11 +275,12 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
         }
         ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), mTeamSize);
         TeamingPlanner::clearAgentNumberTeamVector();
+
         mHistoryOfHumanPoses_rf.clear(); // reset history
         for (int agentNumber : mAgentsInTeam.data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
-            ROS_INFO("[Teaming Planner %d: The new agenst are %d", agentNumber);
+            ROS_INFO("[Teaming Planner %d: The new agents are %d", agentNumber);
         }
         clearOtherAgentsData();
     }

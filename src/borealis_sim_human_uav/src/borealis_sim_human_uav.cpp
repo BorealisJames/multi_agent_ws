@@ -102,22 +102,6 @@ bool BorealisFollowMe::pubTask(const Common::Entity::MTTaskBundle aTask)
     return status;
 }
 
-// Might not be neeeded since the planner itself already subscribe to human system pose as the goal
-// bool BorealisFollowMe::pubGoal(DistributedFormation::Common::Pose aGoal)
-// {
-//     bool status = true;
-
-//     mt_msgs::pose tmp;
-//     tmp.header.stamp = ros::Time::now();
-//     tmp.position.x = aGoal.position.x;
-//     tmp.position.y = aGoal.position.y;
-//     tmp.position.z = aGoal.position.z;
-//     tmp.headingRad = aGoal.headingRad;
-
-//     mGoalPublisher.publish(tmp);
-//     return status;
-// }
-
 BorealisFollowMe::~BorealisFollowMe()
 {
     // Destructor
