@@ -34,7 +34,7 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
             tmp[agentnumber] = mAgentsPhasesAndTimeMap_cp[agentnumber];
         }
         phasesAndTimeRecordOfAgents = tmp;
-        ROS_INFO("Passing PhasesAndTime record of size ", phasesAndTimeRecordOfAgents.size())
+        ROS_INFO("Passing PhasesAndTime record of size ", phasesAndTimeRecordOfAgents.size());
     }
     else
     {
