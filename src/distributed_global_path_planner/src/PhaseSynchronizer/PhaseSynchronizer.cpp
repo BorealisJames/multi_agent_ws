@@ -281,6 +281,8 @@ namespace DistributedGlobalPathPlanner
     {
         m_handlerPtr->m_getPhasesAndTimeRecordOfAgents(m_phasesAndTimeRecordOfAgents);
 
+        std::cout << "Agent_cp " << m_ownAgentID << ": Getting m_phasesAndTimeRecordOfAgents" << " The size is " << m_phasesAndTimeRecordOfAgents.size() << std::endl;
+
         auto timeNow = std::chrono::system_clock::now();
         auto timeNowMicroSecs = std::chrono::duration_cast<std::chrono::microseconds>(timeNow.time_since_epoch()).count();
         
@@ -295,7 +297,6 @@ namespace DistributedGlobalPathPlanner
         {
             std::cout << "Agent_cp " << m_ownAgentID << ": reset as expected number of agents do not match" << std::endl;
             std::cout << "Agent_cp " << m_ownAgentID << ": m_phasesAndTimeRecordOfAgents.size: " << m_phasesAndTimeRecordOfAgents.size() << ", m_numberOfAgentsInTeam: " <<  m_numberOfAgentsInTeam << std::endl;
-
             ResetPhase();
             return;
         }

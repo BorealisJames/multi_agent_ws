@@ -100,7 +100,7 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     try
     {
         transformStamped = mtfBuffer.lookupTransform("odom", sourceFrame,ros::Time(0));
-        ROS_INFO("Transform stamped: ");
+        ROS_INFO("Agent ID %d: Transform stamped: ", mSourceSegmentId);
         std::cout << transformStamped << std::endl;
         tf2::doTransform(tmp, tmpTransformed, transformStamped);
     }
@@ -311,7 +311,7 @@ void TeamingPlanner::systemPoseCallback_rf(const mt_msgs::pose::ConstPtr& aSyste
             ROS_INFO("[Teaming Planner %d]: RF System Pose Received from Agent: %d\n", mSourceSegmentId, aSystemPose->sourceSegmentId);
             for (auto agent : mAgentsInTeamVector)
             {
-                std::cout << "Agent number in team : " << agent << std::endl;
+                ROS_INFO("Agent number in team : %d", agent);
             }
         }
     // }

@@ -24,6 +24,7 @@ bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner:
 bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime>& phasesAndTimeRecordOfAgents)
 {
     bool status = true;
+    ROS_WARN("Get PhasesAndTimeRecord of Agents is called!");
 
     if (!mAgentsPhasesAndTimeMap_cp.empty())
     {
@@ -34,7 +35,7 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
             tmp[agentnumber] = mAgentsPhasesAndTimeMap_cp[agentnumber];
         }
         phasesAndTimeRecordOfAgents = tmp;
-        ROS_WARN("Agent%d CP: Passing PhasesAndTime record of size %d", mSourceSegmentId, phasesAndTimeRecordOfAgents.size());
+        ROS_INFO("Agent%d CP: Passing PhasesAndTime record of size %d", mSourceSegmentId, phasesAndTimeRecordOfAgents.size());
     }
     else
     {
