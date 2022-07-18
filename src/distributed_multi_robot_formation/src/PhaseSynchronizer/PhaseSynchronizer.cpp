@@ -122,7 +122,7 @@ namespace DistributedFormation
         {
             case Common::PHASE::PHASE_1:
             {
-                std::cout << "Agent _rf"" << m_ownAgentID << ": Phase1" << std::endl;
+                std::cout << "Agent _rf" << m_ownAgentID << ": Phase1" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -142,7 +142,7 @@ namespace DistributedFormation
             }
             case Common::PHASE::PHASE_2:
             {
-                std::cout << "Agent _rf"" << m_ownAgentID << ": Phase2" << std::endl;
+                std::cout << "Agent _rf" << m_ownAgentID << ": Phase2" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -162,7 +162,7 @@ namespace DistributedFormation
             }
             case Common::PHASE::PHASE_3:
             {
-                std::cout << "Agent _rf"" << m_ownAgentID << ": Phase3" << std::endl;
+                std::cout << "Agent _rf" << m_ownAgentID << ": Phase3" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -182,7 +182,7 @@ namespace DistributedFormation
             }
             case Common::PHASE::PHASE_4:
             {
-                std::cout << "Agent _rf"" << m_ownAgentID << ": Phase4" << std::endl;
+                std::cout << "Agent _rf" << m_ownAgentID << ": Phase4" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -202,7 +202,7 @@ namespace DistributedFormation
             }
             case Common::PHASE::PHASE_5:
             {
-                std::cout << "Agent _rf"" << m_ownAgentID << ": Phase5" << std::endl;
+                std::cout << "Agent _rf" << m_ownAgentID << ": Phase5" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -222,7 +222,7 @@ namespace DistributedFormation
             }
             default:
             {
-                std::cout << "Agent _rf"" << m_ownAgentID << ": switch statement phase do not exist" << std::endl;
+                std::cout << "Agent _rf" << m_ownAgentID << ": switch statement phase do not exist" << std::endl;
                 ResetPhase();
             }
         }
@@ -263,11 +263,11 @@ namespace DistributedFormation
         //reset if team members are not equal to number of expecting agents
         if (m_phasesAndTimeRecordOfAgents.size() != m_numberOfAgentsInTeam)
         {
-            std::cout << "Agent _rf"" << m_ownAgentID << ": reset in phase update of agents" << std::endl;
-            std::cout << "Agent _rf"" << m_ownAgentID << ": Phase and time record is of size " << m_phasesAndTimeRecordOfAgents.size() << " while number of agents" << m_numberOfAgentsInTeam << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": reset in phase update of agents" << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": Phase and time record is of size " << m_phasesAndTimeRecordOfAgents.size() << " while number of agents" << m_numberOfAgentsInTeam << std::endl;
             for( auto phase : m_phasesAndTimeRecordOfAgents)
             {
-                std::cout << "Agent _rf" " << m_ownAgentID << ":contains phases %d" << phase.first << std::endl;
+                std::cout << "Agent _rf " << m_ownAgentID << ":contains phases %d" << phase.first << std::endl;
             }
             ResetPhase();
             return;
@@ -308,7 +308,7 @@ namespace DistributedFormation
             latestAgentsInTeam != lastKnownAgentsInTeam ||
             std::abs(largestPhase - smallestPhase)%(5-1)>=2)
         {
-            std::cout << "Agent _rf"" << m_ownAgentID << ": reset in update due to phase drift" << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": reset in update due to phase drift" << std::endl;
 
             ResetPhase();
             return;
@@ -323,10 +323,10 @@ namespace DistributedFormation
 
         //get other agent's position
         m_handlerPtr->m_getAgentsPose(m_agentsPose);
-        std::cout << "Agent _rf"" << m_ownAgentID << " get agent pose map size " << m_agentsPose.size() << std::endl;
+        std::cout << "Agent _rf" << m_ownAgentID << " get agent pose map size " << m_agentsPose.size() << std::endl;
         for (auto agentPose : m_agentsPose)
         {
-            std::cout << "Agent _rf"" << m_ownAgentID << " agent pose map contains " << agentPose.first << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << " agent pose map contains " << agentPose.first << std::endl;
         }
         //set own position in team
         m_agentsPose[m_ownAgentID] = m_ownAgentPose;
@@ -334,8 +334,8 @@ namespace DistributedFormation
         //reset if team members are not equal to number of expecting agents
         if (m_agentsPose.size() != m_numberOfAgentsInTeam)
         {
-            std::cout << "Agent _rf"" << m_ownAgentID << ": reset in position update of agents" << std::endl;
-            std::cout << "Agent _rf"" << m_ownAgentID << ": m_agentsPose.size() = " << m_agentsPose.size() << " does not match m_numberOfAgentsInTeam = " <<  m_numberOfAgentsInTeam << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": reset in position update of agents" << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": m_agentsPose.size() = " << m_agentsPose.size() << " does not match m_numberOfAgentsInTeam = " <<  m_numberOfAgentsInTeam << std::endl;
 
             ResetPhase();
             return;
@@ -358,7 +358,7 @@ namespace DistributedFormation
 
     void PhaseSynchronizer::ResetPhase()
     {
-        std::cout << "Agent _rf"" << m_ownAgentID << ": ResetPhase" << std::endl;
+        std::cout << "Agent _rf" << m_ownAgentID << ": ResetPhase" << std::endl;
 
         m_phase = Common::PHASE::PHASE_1;
         m_transitingPhase = true;
@@ -405,7 +405,7 @@ namespace DistributedFormation
     /*for phase 1*/
     void PhaseSynchronizer::OnEnterPhase1()
     {
-        std::cout << "Agent _rf"" << m_ownAgentID << ": reset in OnEnterPhase1" << std::endl;
+        std::cout << "Agent _rf" << m_ownAgentID << ": reset in OnEnterPhase1" << std::endl;
 
         ResetPhase();
         m_handlerPtr->m_clearAgentsPoseBuffer();
@@ -523,7 +523,7 @@ namespace DistributedFormation
         std::vector<Common::Pose> posesToTrack;
         if (!m_handlerPtr->m_getPosesForFormationToTrack(posesToTrack))
         {
-            std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to get poses to track" << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to get poses to track" << std::endl;
 
             ResetPhase();
             return;
@@ -547,7 +547,7 @@ namespace DistributedFormation
         int numberOfAgents = m_poseOfAgentsInTeam.size();
         if (numberOfAgents <= 0)
         {
-            std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to get at least 1 agent to form avg of extrema" << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to get at least 1 agent to form avg of extrema" << std::endl;
 
             ResetPhase();
             return;
@@ -583,7 +583,7 @@ namespace DistributedFormation
         if (!m_followMeGoalGenerator.GetGoalFromPosesToTrackAndAvgOfExtremaPose(posesToTrack, m_avgOfExtremaPose,
                                                                                 m_goal))
         {
-            std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to get goal for formation to move to" << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to get goal for formation to move to" << std::endl;
 
             ResetPhase();
             return;
@@ -701,7 +701,7 @@ namespace DistributedFormation
                 if (!m_directionOfMotion.ConsensusOnDirection(m_agentsAngleIndexUtility,
                                                               m_desiredExpansionAzimuthAngleRad, m_desiredExpansionElevationAngleRad))
                 {
-                    std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause consensus on 2D direction failed" << std::endl;
+                    std::cout << "Agent _rf" << m_ownAgentID << ": reset cause consensus on 2D direction failed" << std::endl;
 
                     ResetPhase();
                     return;
@@ -731,7 +731,7 @@ namespace DistributedFormation
         if (!m_handlerPtr->m_getOwnAgentLidarPointCloud(lidarPointCloud) &&
             !m_handlerPtr->m_getOwnAgentCameraPointCloud(cameraPointCloud))
         {
-            std::cout << "Agent _rf"" << m_ownAgentID << ": unable to get both lidar and camera point cloud" << std::endl;
+            std::cout << "Agent _rf" << m_ownAgentID << ": unable to get both lidar and camera point cloud" << std::endl;
 
             ResetPhase();
             return;
@@ -900,7 +900,7 @@ namespace DistributedFormation
             if (!m_generateConvexRegions.Intersect2DConvexRegion(AVec, bVec,
                                                                  AReduced, bReduced))
             {
-                std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to find intersection region" << std::endl;
+                std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to find intersection region" << std::endl;
 
                 ResetPhase();
                 return;
@@ -958,7 +958,7 @@ namespace DistributedFormation
             if (!m_generateConvexRegions.Intersect3DConvexRegion(AVec, bVec,
                                                                  AReduced, bReduced))
             {
-                std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to find intersection region" << std::endl;
+                std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to find intersection region" << std::endl;
 
                 ResetPhase();
                 return;
@@ -1035,7 +1035,7 @@ namespace DistributedFormation
                     if (!m_generateConvexRegions.Intersect2DConvexRegion(AVec, bVec,
                                                                          AReduced, bReduced))
                     {
-                        std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to find intersection region" << std::endl;
+                        std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to find intersection region" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1043,7 +1043,7 @@ namespace DistributedFormation
 
                     if (!m_generateConvexRegions.Normlize2DHalfSpace(AReduced, bReduced))
                     {
-                        std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to norm half space" << std::endl;
+                        std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to norm half space" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1103,7 +1103,7 @@ namespace DistributedFormation
 
                     if (!optSuccess)
                     {
-                        std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause no feasible formation found after optimization" << std::endl;
+                        std::cout << "Agent _rf" << m_ownAgentID << ": reset cause no feasible formation found after optimization" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1174,7 +1174,7 @@ namespace DistributedFormation
                     if (!m_generateConvexRegions.Intersect3DConvexRegion(AVec, bVec,
                                                                          AReduced, bReduced))
                     {
-                        std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to find intersection region" << std::endl;
+                        std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to find intersection region" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1182,7 +1182,7 @@ namespace DistributedFormation
 
                     if (!m_generateConvexRegions.Normlize3DHalfSpace(AReduced, bReduced))
                     {
-                        std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause unable to norm half space" << std::endl;
+                        std::cout << "Agent _rf" << m_ownAgentID << ": reset cause unable to norm half space" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1227,7 +1227,7 @@ namespace DistributedFormation
 
                     if(!optSuccess)
                     {
-                        std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause no feasible formation found after optimization" << std::endl;
+                        std::cout << "Agent _rf" << m_ownAgentID << ": reset cause no feasible formation found after optimization" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1236,7 +1236,7 @@ namespace DistributedFormation
                         optVirtualPositions.empty() ||
                         m_poseOfAgentsInTeam.empty())
                     {
-                        std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause no number of virtual position and agent poses do not match" << std::endl;
+                        std::cout << "Agent _rf" << m_ownAgentID << ": reset cause no number of virtual position and agent poses do not match" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1381,14 +1381,14 @@ namespace DistributedFormation
 
                 if (!taskAssignmentsVerified)
                 {
-                    std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause task assignments do not match" << std::endl;
+                    std::cout << "Agent _rf" << m_ownAgentID << ": reset cause task assignments do not match" << std::endl;
 
                     ResetPhase();
                     return;
                 }
                 else if (m_ownTaskAssignments.find(m_ownAgentID) == m_ownTaskAssignments.end())
                 {
-                    std::cout << "Agent _rf"" << m_ownAgentID << ": reset cause could not find own task assignments" << std::endl;
+                    std::cout << "Agent _rf" << m_ownAgentID << ": reset cause could not find own task assignments" << std::endl;
 
                     ResetPhase();
                     return;
