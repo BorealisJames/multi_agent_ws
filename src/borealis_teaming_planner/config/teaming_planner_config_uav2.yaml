@@ -19,8 +19,8 @@
 /uav2/borealis_teaming_planner/numberOfElevationDiscreteAnglesOnASide: 0
 /uav2/borealis_teaming_planner/resolutionElevationAngleRad: 0.0
 /uav2/borealis_teaming_planner/distanceToFollowBehind: 0.0
-/uav2/borealis_teaming_planner/localBoundingBoxForPathAlongX: 3.0
-/uav2/borealis_teaming_planner/localBoundingBoxForPathAlongY: 3.0
+/uav2/borealis_teaming_planner/localBoundingBoxForPathAlongX: 6.0
+/uav2/borealis_teaming_planner/localBoundingBoxForPathAlongY: 6.0
 /uav2/borealis_teaming_planner/localBoundingBoxForPathAlongZ: 2.0
 /uav2/borealis_teaming_planner/pointRemovalRadius: 0.3
 /uav2/borealis_teaming_planner/desiredDistanceInTriFormation: 2.5
@@ -34,6 +34,7 @@
 /uav2/borealis_teaming_planner/desiredHeight: 2.0
 /uav2/borealis_teaming_planner/priorityPenalty: 1.0
 
+# Path planner algos
 /uav2/borealis_teaming_planner/radius: 0.1
 /uav2/borealis_teaming_planner/cylinderHeight: 0.8
 /uav2/borealis_teaming_planner/mapResolution: 1.0

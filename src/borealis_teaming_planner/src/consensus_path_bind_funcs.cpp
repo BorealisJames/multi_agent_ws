@@ -28,11 +28,13 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
     if (!mAgentsPhasesAndTimeMap_cp.empty())
     {
         std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime> tmp;
+        ROS_INFO("mAgentsInTeamVector is of size ", mAgentsInTeamVector.size());
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPhasesAndTimeMap_cp[agentnumber];
         }
         phasesAndTimeRecordOfAgents = tmp;
+        ROS_INFO("Passing PhasesAndTime record of size ", phasesAndTimeRecordOfAgents.size())
     }
     else
     {
