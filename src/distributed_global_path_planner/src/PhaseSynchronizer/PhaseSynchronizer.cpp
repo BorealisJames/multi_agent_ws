@@ -121,7 +121,7 @@ namespace DistributedGlobalPathPlanner
         {
             case Common::PHASE::PHASE_1:
             {
-                std::cout << "Agent _cp" << m_ownAgentID << ": Phase1" << std::endl;
+                std::cout << "Agent_cp " << m_ownAgentID << ": Phase1" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -141,7 +141,7 @@ namespace DistributedGlobalPathPlanner
             }
             case Common::PHASE::PHASE_2:
             {
-                std::cout << "Agent _cp" << m_ownAgentID << ": Phase2" << std::endl;
+                std::cout << "Agent_cp " << m_ownAgentID << ": Phase2" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -161,7 +161,7 @@ namespace DistributedGlobalPathPlanner
             }
             case Common::PHASE::PHASE_3:
             {
-                std::cout << "Agent _cp" << m_ownAgentID << ": Phase3" << std::endl;
+                std::cout << "Agent_cp " << m_ownAgentID << ": Phase3" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -181,7 +181,7 @@ namespace DistributedGlobalPathPlanner
             }
             case Common::PHASE::PHASE_4:
             {
-                std::cout << "Agent _cp" << m_ownAgentID << ": Phase4" << std::endl;
+                std::cout << "Agent_cp " << m_ownAgentID << ": Phase4" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -201,7 +201,7 @@ namespace DistributedGlobalPathPlanner
             }
             case Common::PHASE::PHASE_5:
             {
-                std::cout << "Agent _cp" << m_ownAgentID << ": Phase5" << std::endl;
+                std::cout << "Agent_cp " << m_ownAgentID << ": Phase5" << std::endl;
 
                 if (m_transitingPhase)          // transiting in
                 {
@@ -222,7 +222,7 @@ namespace DistributedGlobalPathPlanner
 
             default:
             {
-                std::cout << "Agent _cp" << m_ownAgentID << ": switch statement phase do not exist" << std::endl;
+                std::cout << "Agent_cp " << m_ownAgentID << ": switch statement phase do not exist" << std::endl;
                 ResetPhase();
             }
         }
@@ -240,7 +240,7 @@ namespace DistributedGlobalPathPlanner
 
         if (goTherePath.size() < 1)
         {
-            std::cout << "Agent _cp" << m_ownAgentID << ": reset as go there path has less than 1 points" << std::endl;
+            std::cout << "Agent_cp " << m_ownAgentID << ": reset as go there path has less than 1 points" << std::endl;
 
             ResetPhase();
             return;
@@ -270,7 +270,7 @@ namespace DistributedGlobalPathPlanner
             m_goTherePath = goTherePath;
             m_goTherePathTracker.InitPathToTrack(m_goTherePath);
 
-            std::cout << "Agent _cp" << m_ownAgentID << ": reset as path has changed" << std::endl;
+            std::cout << "Agent_cp " << m_ownAgentID << ": reset as path has changed" << std::endl;
 
             ResetPhase();
             return;
@@ -293,8 +293,8 @@ namespace DistributedGlobalPathPlanner
         //reset if team members are not equal to number of expecting agents
         if (m_phasesAndTimeRecordOfAgents.size() != m_numberOfAgentsInTeam)
         {
-            std::cout << "Agent _cp" << m_ownAgentID << ": reset as expected number of agents do not match" << std::endl;
-            std::cout << "Agent _cp" << m_ownAgentID << ": m_phasesAndTimeRecordOfAgents.size: " << m_phasesAndTimeRecordOfAgents.size() << ", m_numberOfAgentsInTeam: " <<  m_numberOfAgentsInTeam << std::endl;
+            std::cout << "Agent_cp " << m_ownAgentID << ": reset as expected number of agents do not match" << std::endl;
+            std::cout << "Agent_cp " << m_ownAgentID << ": m_phasesAndTimeRecordOfAgents.size: " << m_phasesAndTimeRecordOfAgents.size() << ", m_numberOfAgentsInTeam: " <<  m_numberOfAgentsInTeam << std::endl;
 
             ResetPhase();
             return;
@@ -335,7 +335,7 @@ namespace DistributedGlobalPathPlanner
             latestAgentsInTeam != lastKnownAgentsInTeam ||
             std::abs(largestPhase - smallestPhase)%(5-1)>=2)
         {
-            std::cout << "Agent _cp" << m_ownAgentID << ": reset as phases are not in sync" << std::endl;
+            std::cout << "Agent_cp " << m_ownAgentID << ": reset as phases are not in sync" << std::endl;
 
             ResetPhase();
             return;
@@ -353,7 +353,7 @@ namespace DistributedGlobalPathPlanner
         std::cout << "Agent get" << m_ownAgentID << " agent pose map size " << m_agentsPose.size() << std::endl;
         for (auto agentPose : m_agentsPose)
         {
-            std::cout << "Agent _cp" << m_ownAgentID << " agent pose map contains " << agentPose.first << std::endl;
+            std::cout << "Agent_cp " << m_ownAgentID << " agent pose map contains " << agentPose.first << std::endl;
         }
 
         //set own position in team
@@ -371,7 +371,7 @@ namespace DistributedGlobalPathPlanner
 
     void PhaseSynchronizer::ResetPhase()
     {
-        std::cout << "Agent _cp" << m_ownAgentID << ": ResetPhase" << std::endl;
+        std::cout << "Agent_cp " << m_ownAgentID << ": ResetPhase" << std::endl;
 
         m_phase = Common::PHASE::PHASE_1;
         m_transitingPhase = true;
@@ -411,7 +411,7 @@ namespace DistributedGlobalPathPlanner
     /*for phase 1*/
     void PhaseSynchronizer::OnEnterPhase1()
     {
-        std::cout << "Agent _cp" << m_ownAgentID << ": reset in OnEnterPhase1" << std::endl;
+        std::cout << "Agent_cp " << m_ownAgentID << ": reset in OnEnterPhase1" << std::endl;
 
         ResetPhase();
         m_handlerPtr->m_clearAgentsPoseBuffer();
@@ -461,7 +461,7 @@ namespace DistributedGlobalPathPlanner
             int numberOfAgents = m_poseOfAgentsInTeam.size();
             if (numberOfAgents <= 0)
             {
-                std::cout << "Agent _cp" << m_ownAgentID << ": reset cause unable to get at least 1 agent to form avg of extrema" << std::endl;
+                std::cout << "Agent_cp " << m_ownAgentID << ": reset cause unable to get at least 1 agent to form avg of extrema" << std::endl;
 
                 ResetPhase();
                 return;
@@ -581,7 +581,7 @@ namespace DistributedGlobalPathPlanner
 
                 if (!pathIsSimilar)
                 {
-                    std::cout << "Agent _cp" << m_ownAgentID << ": best path from agents are not in consensus" << std::endl;
+                    std::cout << "Agent_cp " << m_ownAgentID << ": best path from agents are not in consensus" << std::endl;
 
                     ResetPhase();
                     return;
@@ -609,7 +609,7 @@ namespace DistributedGlobalPathPlanner
         m_goTherePathTracker.GetUpdatedPath(m_avgOfExtremaPose, updatedPath);
         if (updatedPath.empty())
         {
-            std::cout << "Agent _cp" << m_ownAgentID << ": global path is empty" << std::endl;
+            std::cout << "Agent_cp " << m_ownAgentID << ": global path is empty" << std::endl;
 
             ResetPhase();
             return;
@@ -625,7 +625,7 @@ namespace DistributedGlobalPathPlanner
         m_ownPointCloud.channels.clear();
         if (!m_handlerPtr->m_getOwnAgentLidarPointCloud(m_ownPointCloud))
         {
-            std::cout << "Agent _cp" << m_ownAgentID << ": unable to get both lidar point cloud" << std::endl;
+            std::cout << "Agent_cp " << m_ownAgentID << ": unable to get both lidar point cloud" << std::endl;
 
             ResetPhase();
             return;
@@ -917,7 +917,7 @@ namespace DistributedGlobalPathPlanner
                             }
                             else
                             {
-                                std::cout << "Agent _cp" << m_ownAgentID << ": unable to match agents id" << std::endl;
+                                std::cout << "Agent_cp " << m_ownAgentID << ": unable to match agents id" << std::endl;
 
                                 ResetPhase();
                                 return;
@@ -926,7 +926,7 @@ namespace DistributedGlobalPathPlanner
                     }
                     else
                     {
-                        std::cout << "Agent _cp" << m_ownAgentID << ": unable to match agents id" << std::endl;
+                        std::cout << "Agent_cp " << m_ownAgentID << ": unable to match agents id" << std::endl;
 
                         ResetPhase();
                         return;
@@ -1040,7 +1040,7 @@ namespace DistributedGlobalPathPlanner
 
                 if (!pathIsSimilar)
                 {
-                    std::cout << "Agent _cp" << m_ownAgentID << ": best path from agents are not in consensus" << std::endl;
+                    std::cout << "Agent_cp " << m_ownAgentID << ": best path from agents are not in consensus" << std::endl;
 
                     ResetPhase();
                     return;
