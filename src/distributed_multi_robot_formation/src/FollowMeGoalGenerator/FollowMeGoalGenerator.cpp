@@ -54,12 +54,12 @@ namespace DistributedFormation
         m_goalExist = false;
         m_goal = centroidPose;
 
-        if(m_posesToTrack.size() == 1)
-        {
-            m_goalExist = true;
-            m_goal = m_posesToTrack.at(0);
-            return;
-        }
+        // if(m_posesToTrack.size() == 1)
+        // {
+        //     m_goalExist = true;
+        //     m_goal = m_posesToTrack.at(0);
+        //     return;
+        // }
 
         if (m_posesToTrack.size() >= 2)
         {
