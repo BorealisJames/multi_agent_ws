@@ -32,7 +32,7 @@ class transform():
         self.mavros_pose_topic = self.drone_name + "/mavros/local_position/pose"
         self.uwb_pose_topic = "/UAV" + os.getenv('DRONE_NUMBER') + "PoseUWB"
         self.uav_publish_topic = self.drone_name + "/control_manager/mavros_assigned_virtual_position"
-        self.uav_publish_topic = self.drone_name + "/mavros/setpoint_position/local"
+        # self.uav_publish_topic = self.drone_name + "/mavros/setpoint_position/local"
         self.uav_mode_topic = "/uav" + os.getenv('DRONE_NUMBER') + "/hri_mode"
         self.uav_input_pose_topic = "/uav" + os.getenv('DRONE_NUMBER') + "/input_pose_stamped"
 

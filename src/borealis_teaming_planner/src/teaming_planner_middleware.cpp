@@ -622,7 +622,7 @@ void TeamingPlanner::ProcessedGoTherePathCallback(const geometry_msgs::PoseArray
         tmp_pose.position.x = pose.position.x;
         tmp_pose.position.y = pose.position.y;
         tmp_pose.position.z = pose.position.z;
-        tmp_pose.headingRad = 0; 
+        tmp_pose.headingRad = 0;
         tmp_vec.push_back(tmp_pose);
     }
     mProcessedGoTherePath = tmp_vec;
