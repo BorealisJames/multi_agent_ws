@@ -212,10 +212,10 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
         mHumanSystemPose_rf.position.z = tmp.position.z;
         mHumanSystemPose_rf.headingRad = tmp.yaw;
 
-        while(mHistoryOfHumanPoses_rf.size() > (mPlanningHorizon/mIntervalDistance) - 1)
-        {
-            mHistoryOfHumanPoses_rf.erase(mHistoryOfHumanPoses_rf.begin());    
-        }
+        // while(mHistoryOfHumanPoses_rf.size() > (mPlanningHorizon/mIntervalDistance) - 1)
+        // {
+        //     mHistoryOfHumanPoses_rf.erase(mHistoryOfHumanPoses_rf.begin());    
+        // }
 
         DistributedFormation::Common::Pose tPose;
         tPose.position.x = tmp.position.x;
@@ -223,10 +223,13 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
         tPose.position.z = tmp.position.z;
         tPose.headingRad = tmp.yaw;
 
-        if (checkAndAddHumanSystemPose(mHistoryOfHumanPoses_rf, tPose))
-        {
-            mHistoryOfHumanPosesReceived = true;
-        }
+        mHistoryOfHumanPoses_rf.clear(); 
+        mHistoryOfHumanPoses_rf.push_back(tPose); // to send only 1 lmao
+
+        // if (checkAndAddHumanSystemPose(mHistoryOfHumanPoses_rf, tPose))
+        // {
+        //     mHistoryOfHumanPosesReceived = true;
+        // }
         
         if (mDebugVerbose)
         {
