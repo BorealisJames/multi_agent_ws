@@ -234,7 +234,7 @@ void TeamingPlanner::readParameters()
     mConfigFileReader.getParam(mNhPrivate, "distanceToFollowBehind", mRobotFormationParameters.distanceToFollowBehind, -1.0);
     mConfigFileReader.getParam(mNhPrivate, "localBoundingBoxForPathAlongX", mRobotFormationParameters.localBoundingBoxForPathAlongX, 3.0);
     mConfigFileReader.getParam(mNhPrivate, "localBoundingBoxForPathAlongY", mRobotFormationParameters.localBoundingBoxForPathAlongY, 3.0);
-    mConfigFileReader.getParam(mNhPrivate, "localBoundingBoxForPathAlongZ", mRobotFormationParameters.localBoundingBoxForPathAlongY, 2.0);
+    mConfigFileReader.getParam(mNhPrivate, "localBoundingBoxForPathAlongZ", mRobotFormationParameters.localBoundingBoxForPathAlongZ, 2.0);
     mConfigFileReader.getParam(mNhPrivate, "pointRemovalRadius", mRobotFormationParameters.pointRemovalRadius, 0.45);
     mConfigFileReader.getParam(mNhPrivate, "desiredDistanceInTriFormation", mRobotFormationParameters.desiredDistanceInTriFormation, 2.5);
     mConfigFileReader.getParam(mNhPrivate, "desiredDistanceInLineFormation", mRobotFormationParameters.pointRemovalRadius, 1.25);
