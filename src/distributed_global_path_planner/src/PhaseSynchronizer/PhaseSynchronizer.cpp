@@ -540,7 +540,7 @@ namespace DistributedGlobalPathPlanner
                 std::cout << "Agent_cp " << m_ownAgentID << ": Agent ID: "  << pathWayPoint.first << std::endl;
                 for ( auto point : pathWayPoint.second.poses)
                 {
-                    std::cout << "Agent_cp: " << " Poses are  x: " << point.position.x() << " y: " << point.position.y() << " z: " << point.position.z() << std::endl;
+                    std::cout << "The Poses are  x: " << point.position.x() << " y: " << point.position.y() << " z: " << point.position.z() << std::endl;
                 }
             }
 
