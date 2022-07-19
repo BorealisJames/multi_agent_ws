@@ -14,10 +14,6 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/PointCloud.h>
 
-#include "../../../distributed_multi_robot_formation/src/ProcessPointCloud/ProcessPointCloud.h"
-
-// Common
-#include "../../../Common/ConstantsEnum.h"
 
 #include <tf2_ros/transform_listener.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -25,7 +21,7 @@
 #include <tf2_ros/buffer.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2_sensor_msgs/tf2_sensor_msgs.h>
-
+#include <string>
 /*
     Replace UWB frames with mavros frames
 */
@@ -42,19 +38,24 @@ class TfBroadcaster
 
         // ROS Subscribers
         ros::Subscriber mSystemPoseSub;
+        ros::Subscriber mSystemPoseSub2;
 
         // Cache of frame link messages
         geometry_msgs::PoseStamped mSystemPose;
-        
+        geometry_msgs::PoseStamped mSystemPose2;
+
         // TF Publishers
         tf::TransformBroadcaster mSystemMap2BodyBroadcaster;
         tf::Pose mSystemBody_tfPose;
+        tf::Pose mSystemBody_tfPose2;
 
         // ROS Publisher Functions
         void pubSystemMap2BodyTransform();
-        
+        void pubSystemMap2BodyTransform2();
+
         // ROS Subscriber Functions
         void systemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
+        void systemPoseCallback2(const geometry_msgs::PoseStamped::ConstPtr& msg);
 
 
     public:

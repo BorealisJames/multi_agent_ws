@@ -148,10 +148,22 @@ bool TeamingPlanner::getAgentsPathAndWaypointProgress_cp(std::unordered_map<int3
         }
         // agentsGoTherePathAndWaypointProgress = mAgentsPathAndWaypointProgressMap_cp;
         agentsGoTherePathAndWaypointProgress = tmp;
+
+        for ( auto pathWayPoint : agentsGoTherePathAndWaypointProgress)
+        {
+            std::cout << "[Teaming Planner " << mSourceSegmentId << "] Agent ID path: "  << pathWayPoint.first << std::endl;
+            for ( auto point : pathWayPoint.second.poses)
+            {
+                std::cout << "Path: " << " Poses are  x: " << point.position.x() << " y: " << point.position.y() << " z: " << point.position.z() << std::endl;
+            }
+        }
+
+        
     }
     else
     {
         status = false;
+        agentsGoTherePathAndWaypointProgress = mAgentsPathAndWaypointProgressMap_cp;
         ROS_WARN("Agent%d CPH: get mAgentsPathAndWaypointProgressMap_cp empty!", mSourceSegmentId);
     }
 

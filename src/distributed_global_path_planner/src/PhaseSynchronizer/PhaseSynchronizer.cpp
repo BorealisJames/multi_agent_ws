@@ -533,11 +533,11 @@ namespace DistributedGlobalPathPlanner
             m_handlerPtr->m_getAgentsPathAndWaypointProgress(m_agentsPathAndWaypointProgress);
             m_agentsPathAndWaypointProgress[m_ownAgentID] = m_ownAgentPathAndWaypointProgress;
 
-            std::cout << "Agent_cp: " << m_ownAgentID << " getting m_agentsPathAndWaypointProgress of size: " << m_agentsPathAndWaypointProgress.size() << std::endl;
+            std::cout << "Agent_cp" << m_ownAgentID << ": getting m_agentsPathAndWaypointProgress of size: " << m_agentsPathAndWaypointProgress.size() << std::endl;
 
             for ( auto pathWayPoint : m_agentsPathAndWaypointProgress)
             {
-                std::cout << "Agent_cp: " << " Agent ID: " << m_ownAgentID  << pathWayPoint.first << std::endl;
+                std::cout << "Agent_cp " << m_ownAgentID << ": Agent ID: "  << pathWayPoint.first << std::endl;
                 for ( auto point : pathWayPoint.second.poses)
                 {
                     std::cout << "Agent_cp: " << " Poses are  x: " << point.position.x() << " y: " << point.position.y() << " z: " << point.position.z() << std::endl;

@@ -8,7 +8,8 @@ TfBroadcaster::TfBroadcaster(const ros::NodeHandlePtr& nh, const ros::NodeHandle
     mNhPrivate(nhPrivate)
 {
     mSystemPoseSub = mNh->subscribe<geometry_msgs::PoseStamped>("system_pose_topic", 10, &TfBroadcaster::systemPoseCallback, this);
-    mNhPrivate->param<std::string>("body_frame",mBodyFrame, "body_frame");
+    mSystemPoseSub2 = mNh->subscribe<geometry_msgs::PoseStamped>("system_pose_topic2", 10, &TfBroadcaster::systemPoseCallback2, this);
+
 }
 
 TfBroadcaster::~TfBroadcaster()
