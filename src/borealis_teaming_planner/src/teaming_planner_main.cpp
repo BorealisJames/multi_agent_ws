@@ -237,7 +237,7 @@ void TeamingPlanner::readParameters()
     mConfigFileReader.getParam(mNhPrivate, "localBoundingBoxForPathAlongZ", mRobotFormationParameters.localBoundingBoxForPathAlongZ, 2.0);
     mConfigFileReader.getParam(mNhPrivate, "pointRemovalRadius", mRobotFormationParameters.pointRemovalRadius, 0.45);
     mConfigFileReader.getParam(mNhPrivate, "desiredDistanceInTriFormation", mRobotFormationParameters.desiredDistanceInTriFormation, 2.5);
-    mConfigFileReader.getParam(mNhPrivate, "desiredDistanceInLineFormation", mRobotFormationParameters.pointRemovalRadius, 1.25);
+    mConfigFileReader.getParam(mNhPrivate, "desiredDistanceInLineFormation", mRobotFormationParameters.desiredDistanceInLineFormation, 1.25);
     mConfigFileReader.getParam(mNhPrivate, "incrementOffsetToFormationYaw", mRobotFormationParameters.incrementOffsetToFormationYaw, 0.0);
     mConfigFileReader.getParam(mNhPrivate, "agentRadius", mRobotFormationParameters.agentRadius, 0.3);
     mConfigFileReader.getParam(mNhPrivate, "waypointReachedBoundary", mRobotFormationParameters.waypointReachedBoundary, 1.5);
@@ -245,7 +245,7 @@ void TeamingPlanner::readParameters()
     mConfigFileReader.getParam(mNhPrivate, "weightForRotation", mRobotFormationParameters.weightForRotation, 0.40);
     mConfigFileReader.getParam(mNhPrivate, "weightForSize", mRobotFormationParameters.weightForSize, 0.40);
     mConfigFileReader.getParam(mNhPrivate, "desiredHeight", mRobotFormationParameters.desiredHeight, 2.0);
-    mConfigFileReader.getParam(mNhPrivate, "priorityPenalty", mRobotFormationParameters.pointRemovalRadius, 1.0);
+    mConfigFileReader.getParam(mNhPrivate, "priorityPenalty", mRobotFormationParameters.priorityPenalty, 1.0);
 
     // Common::DIMENSION dimension;
     // int64_t expiryDurationMicroSec;
