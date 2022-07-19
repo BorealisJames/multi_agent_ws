@@ -201,7 +201,7 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
 {
     if(mTask.type == Common::Entity::MTTaskEnum::FOLLOW_ME)
     {
-        // Add this input pose into its own history of human poses        
+        // Add this input pose into its own history of human poses
         geometry_msgs::PoseStamped tmp_pose; 
         tmp_pose.header =  aInputPose->header;
         tmp_pose.pose =  aInputPose->pose;
