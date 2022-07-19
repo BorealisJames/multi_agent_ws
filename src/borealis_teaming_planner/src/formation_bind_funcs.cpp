@@ -313,6 +313,7 @@ bool TeamingPlanner::getPosesForFormationToTrack_rf(std::vector<DistributedForma
 bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime>& phaseAndTimeMap)
 {
     bool status = true;
+    ROS_WARN("Get getPhaseAndTimeMap_rf of Agents CP is called!");
 
     if (!mAgentsPhaseAndTimeMap_rf.empty())
     {

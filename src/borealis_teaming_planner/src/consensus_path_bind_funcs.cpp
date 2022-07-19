@@ -24,7 +24,7 @@ bool TeamingPlanner::getGoTherePath_cp(std::vector<DistributedGlobalPathPlanner:
 bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime>& phasesAndTimeRecordOfAgents)
 {
     bool status = true;
-    ROS_WARN("Get PhasesAndTimeRecord of Agents is called!");
+    ROS_WARN("Get PhasesAndTimeRecord of Agents CP is called!");
 
     if (!mAgentsPhasesAndTimeMap_cp.empty())
     {

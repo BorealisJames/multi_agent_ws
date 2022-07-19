@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+    <group ns="uav1">
+        <node name="tf_broadcaster" pkg="tf_broadcaster" type="tf_broadcaster_node" output="screen">
+            <remap from="system_pose_topic" to="mavros/local_position/pose"/>
+        </node>
+    </group>
+    
+    <group ns="uav2">
+        <node name="tf_broadcaster" pkg="tf_broadcaster" type="tf_broadcaster_node" output="screen">
+            <remap from="system_pose_topic" to="mavros/local_position/pose"/>
+        </node>
+    </group>
+
+</launch>
