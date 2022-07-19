@@ -227,6 +227,7 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
         {
             mHistoryOfHumanPosesReceived = true;
         }
+        
         if (mDebugVerbose)
         {
             ROS_INFO("[Teaming Planner %d]: Follow Me Input pose Received\n", mSourceSegmentId);
