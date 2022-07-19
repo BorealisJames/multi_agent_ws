@@ -288,7 +288,6 @@ bool TeamingPlanner::getPosesForFormationToTrack_rf(std::vector<DistributedForma
             {
                 ROS_INFO("[Teaming Planner %d] = x: %d , y: %d, z= %d", mSourceSegmentId, pose.position.x, pose.position.y, pose.position.z);
             }
-            mHistoryOfHumanPoses_rf
         }
         else
         {
