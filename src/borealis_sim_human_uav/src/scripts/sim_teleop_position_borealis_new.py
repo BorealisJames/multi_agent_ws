@@ -153,7 +153,7 @@ if __name__=="__main__":
             borealis_hri_output_msg = Borealis_HRI_Output()
             borealis_hri_output_msg.uav_pose_array.poses = pose_array.poses
 
-            output_state_list = ["Go_There", "Go_There", "Nil"]
+            output_state_list = ["Follow_Me", "Follow_Me", "Nil"]
             output_yaw_list = [yaw, yaw, yaw]
 
             borealis_hri_output_msg.uav_state_list = output_state_list
