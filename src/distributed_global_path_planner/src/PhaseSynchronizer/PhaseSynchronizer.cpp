@@ -619,6 +619,7 @@ namespace DistributedGlobalPathPlanner
         //get path to track
         std::vector<Common::Pose> updatedPath;
         m_goTherePathTracker.GetUpdatedPath(m_avgOfExtremaPose, updatedPath);
+        
         if (updatedPath.empty())
         {
             std::cout << "Agent_cp " << m_ownAgentID << ": global path is empty" << std::endl;
@@ -626,6 +627,7 @@ namespace DistributedGlobalPathPlanner
             ResetPhase();
             return;
         }
+
         else if (updatedPath.size() == 1)
         {
             updatedPath.insert(updatedPath.begin(), m_avgOfExtremaPose);
