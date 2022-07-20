@@ -54,16 +54,16 @@ if __name__ == '__main__':
         go_there_poses1 = Pose()
         go_there_poses2 = Pose()
 
-        go_there_poses.position.x = 12.3
-        go_there_poses.position.y = 0
+        go_there_poses.position.x = 14.4
+        go_there_poses.position.y = 3
         go_there_poses.position.z = 1
         go_there_poses.orientation.x = 0
         go_there_poses.orientation.y = 0
         go_there_poses.orientation.z = 0
         go_there_poses.orientation.w = 1
 
-        go_there_poses1.position.x = 12.3
-        go_there_poses1.position.y = 0
+        go_there_poses1.position.x = 14.4
+        go_there_poses1.position.y = -3
         go_there_poses1.position.z = 1
         go_there_poses1.orientation.x = 0
         go_there_poses1.orientation.y = 0

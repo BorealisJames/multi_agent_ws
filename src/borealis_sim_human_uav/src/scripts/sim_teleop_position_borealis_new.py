@@ -102,8 +102,8 @@ if __name__=="__main__":
                 direction_x = moveBindings[key][0]
                 direction_y = moveBindings[key][1]
                 direction_z = moveBindings[key][2]
-
-                x += speed * direction_x
+                
+                x += (speed * direction_x) 
                 y += speed * direction_y
                 z += speed * direction_z
                 print_pos_speed(speed, x, y, z, yaw)
@@ -129,9 +129,9 @@ if __name__=="__main__":
                     print("Stopping teleop!")
                     break
 
-            pose_stamped.pose.position.x = x
-            pose_stamped.pose.position.y = y
-            pose_stamped.pose.position.z = z
+            pose_stamped.pose.position.x = x + 14.4
+            pose_stamped.pose.position.y = y 
+            pose_stamped.pose.position.z = z + 1
             
             quaternion = tf.transformations.quaternion_from_euler(roll, pitch, np.deg2rad(yaw))
             #type(pose) = geometry_msgs.msg.Pose
