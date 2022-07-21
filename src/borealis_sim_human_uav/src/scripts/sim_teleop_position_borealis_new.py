@@ -129,9 +129,9 @@ if __name__=="__main__":
                     print("Stopping teleop!")
                     break
 
-            pose_stamped.pose.position.x = x + 14.4
+            pose_stamped.pose.position.x = x 
             pose_stamped.pose.position.y = y 
-            pose_stamped.pose.position.z = z + 1
+            pose_stamped.pose.position.z = z
             
             quaternion = tf.transformations.quaternion_from_euler(roll, pitch, np.deg2rad(yaw))
             #type(pose) = geometry_msgs.msg.Pose
@@ -153,7 +153,7 @@ if __name__=="__main__":
             borealis_hri_output_msg = Borealis_HRI_Output()
             borealis_hri_output_msg.uav_pose_array.poses = pose_array.poses
 
-            output_state_list = ["Follow_Me", "Nil", "Nil"]
+            output_state_list = ["Follow_Me", "Follow_Me", "Nil"]
             output_yaw_list = [yaw, yaw, yaw]
 
             borealis_hri_output_msg.uav_state_list = output_state_list
