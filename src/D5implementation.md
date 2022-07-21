@@ -1,5 +1,8 @@
-1) Figuring out how does the path generator relates back to the multi robot formation
-2) Attach the path planner and stuff
+# class globalPathPlannerVariables
+# All the variables
 
-for both global path planner and robot formation, getting and pubbbing of agents pose could be 
-of the same function / topic
+# Get necessary variable
+
+# Get variable without any parameters 
+
+# Print out variable content
