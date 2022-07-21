@@ -9,7 +9,7 @@ namespace DistributedGlobalPathPlanner
 
 
 GoTherePathTracker::GoTherePathTracker()
-: k_radiusForLastWP(2.0)
+: k_radiusForLastWP(0.5)
 , m_pathToTrack()
 , m_wpIndex(0)
 , m_pathCompleted(false)
