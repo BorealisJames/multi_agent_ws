@@ -4,7 +4,7 @@
 /uav2/borealis_teaming_planner/intervalDistance: 0.5
 /uav2/borealis_teaming_planner/planningHorizon: 25
 /uav2/borealis_teaming_planner/desiredHeight: 1.2
-/uav2/borealis_teaming_planner/useUWB: false
+/uav2/borealis_teaming_planner/useUWB: true
 /uav2/borealis_teaming_planner/debugVerbose: true
 /uav2/borealis_teaming_planner/pointcloudCallbackVerbose: false
 /uav2/borealis_teaming_planner/agentPoseCallbackVerbose: false
@@ -24,7 +24,7 @@
 /uav2/borealis_teaming_planner/localBoundingBoxForPathAlongZ: 2.0
 /uav2/borealis_teaming_planner/pointRemovalRadius: 0.80
 /uav2/borealis_teaming_planner/desiredDistanceInTriFormation: 2.5
-/uav2/borealis_teaming_planner/desiredDistanceInLineFormation: 2.5
+/uav2/borealis_teaming_planner/desiredDistanceInLineFormation: 2.2
 /uav2/borealis_teaming_planner/incrementOffsetToFormationYaw: 0.785398163397
 /uav2/borealis_teaming_planner/agentRadius: 0.60
 /uav2/borealis_teaming_planner/waypointReachedBoundary: 1.5
