@@ -754,10 +754,10 @@ namespace DistributedFormation
                                                                                                tmpOutputPointCloud);
                 m_ownPointCloud = tmpOutputPointCloud;
             }
-            m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
-                                                                                           m_humanPose.position,
-                                                                                           m_pointRemovalRadius,
-                                                                                           tmpOutputPointCloud);
+            // m_processPointCloud.RemovePointsWithinARadiusAndFromGroundFromPointCloud2D(m_ownPointCloud,
+            //                                                                                m_humanPose.position,
+            //                                                                                m_pointRemovalRadius,
+            //                                                                                tmpOutputPointCloud);
             m_ownPointCloud = tmpOutputPointCloud;
         }
         else if (m_dimension == Common::DIMENSION::DIM_3)
