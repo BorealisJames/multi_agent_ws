@@ -23,7 +23,7 @@
 #include <tf2_sensor_msgs/tf2_sensor_msgs.h>
 #include <string>
 /*
-    Replace UWB frames with mavros frames
+    Quick and dirty script to Replace UWB frames with mavros frames
 */
 
 namespace TF
@@ -34,29 +34,31 @@ class TfBroadcaster
         ros::NodeHandlePtr mNh;
         ros::NodeHandlePtr mNhPrivate;
 
-        std::string mBodyFrame;
-
         // ROS Subscribers
         ros::Subscriber mSystemPoseSub;
         ros::Subscriber mSystemPoseSub2;
+        ros::Subscriber mSystemPoseSub3;
 
         // Cache of frame link messages
         geometry_msgs::PoseStamped mSystemPose;
         geometry_msgs::PoseStamped mSystemPose2;
+        geometry_msgs::PoseStamped mSystemPose3;
 
         // TF Publishers
         tf::TransformBroadcaster mSystemMap2BodyBroadcaster;
         tf::Pose mSystemBody_tfPose;
         tf::Pose mSystemBody_tfPose2;
+        tf::Pose mSystemBody_tfPose3;
 
         // ROS Publisher Functions
         void pubSystemMap2BodyTransform();
         void pubSystemMap2BodyTransform2();
+        void pubSystemMap2BodyTransform3();
 
         // ROS Subscriber Functions
         void systemPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
         void systemPoseCallback2(const geometry_msgs::PoseStamped::ConstPtr& msg);
-
+        void systemPoseCallback3(const geometry_msgs::PoseStamped::ConstPtr& msg);
 
     public:
         TfBroadcaster(const ros::NodeHandlePtr& nh, const ros::NodeHandlePtr& nhPrivate);

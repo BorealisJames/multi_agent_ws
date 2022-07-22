@@ -3,5 +3,6 @@
     <node name="tf_broadcaster" pkg="borealis_tf_broadcaster" type="borealis_tf_broadcaster_node" output="screen">
         <remap from="system_pose_topic" to="/uav1/mavros/local_position/pose"/>
         <remap from="system_pose_topic2" to="/uav2/mavros/local_position/pose"/>
+        <remap from="system_pose_topic3" to="/uav3/mavros/local_position/pose"/>
     </node>
 </launch>
