@@ -53,13 +53,10 @@ class transform():
 
             if self.recieved_new_ap_callback:
                 if self.mode == "Go_There": 
-                    # If in go there mode, the assigned pose algo doesn't include orientation of the drone.
-                    # So assign orientation to the assigned pose from the raw input pose
                     vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
                     final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
                     self.cmd = final_pose_uav
-                    self.uav_ap_uwb.pose.orientation = self.input_pose_stamped.pose.orientation
-                    self.cmd = self.uav_ap_uwb
+                    self.cmd.pose.orientation = self.uav_ap_uwb.pose.orientation
                     
                 if self.mode == "Follow_Me" :
                     # In Follow me mode, the formation generation algorithm will generate some unstable orientation due to the human orientation
@@ -67,13 +64,10 @@ class transform():
                     vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
                     final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
                     self.cmd = final_pose_uav
-                    self.uav_ap_uwb.pose.orientation.x = 0
-                    self.uav_ap_uwb.pose.orientation.y = 0
-                    self.uav_ap_uwb.pose.orientation.z = 0
-                    self.uav_ap_uwb.pose.orientation.w = 1
-                    self.cmd = self.uav_ap_uwb
-                else:
-                    self.cmd = self.uav_ap_uwb
+                    self.cmd.pose.orientation.x = 0
+                    self.cmd.pose.orientation.y = 0
+                    self.cmd.pose.orientation.z = 0
+                    self.cmd.pose.orientation.w = 1
                 self.recieved_new_ap_callback = False
 
             self.cmd.pose.position.z = 1.2
@@ -132,10 +126,10 @@ class transform():
 
         qr = quaternion_multiply(q2, q1_inv)
 
-        vector_diff.pose.orientation.x = qr[0]
-        vector_diff.pose.orientation.y = qr[1]
-        vector_diff.pose.orientation.z = qr[2]
-        vector_diff.pose.orientation.w = qr[3]
+        # vector_diff.pose.orientation.x = qr[0]
+        # vector_diff.pose.orientation.y = qr[1]
+        # vector_diff.pose.orientation.z = qr[2]
+        # vector_diff.pose.orientation.w = qr[3]
 
         return vector_diff
 
@@ -194,10 +188,10 @@ class transform():
 
         q_new = quaternion_multiply(q_rot, q_origin)
 
-        new_pose_stamped.pose.orientation.x = q_new[0]
-        new_pose_stamped.pose.orientation.y = q_new[1]
-        new_pose_stamped.pose.orientation.z = q_new[2]
-        new_pose_stamped.pose.orientation.w = q_new[3]
+        # new_pose_stamped.pose.orientation.x = q_new[0]
+        # new_pose_stamped.pose.orientation.y = q_new[1]
+        # new_pose_stamped.pose.orientation.z = q_new[2]
+        # new_pose_stamped.pose.orientation.w = q_new[3]
 
         return new_pose_stamped
 
