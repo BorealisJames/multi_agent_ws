@@ -11,7 +11,7 @@ namespace DistributedFormation
     , m_transitingPhase(true)
     , m_handlerPtr(std::make_shared<DistributedMultiRobotFormationHandler>())
 
-    , m_workspace(Common::WORKSPACE::DIM_3_WITH_ONLY_YAW)
+    , m_workspace(Common::WORKSPACE::DIM_2_WITH_YAW)
     , m_expiryDurationMicroSec(15*1000000)
     , m_numberOfAzimuthDiscreteAnglesOnASide(0)
     , m_resolutionAzimuthAngleRad(0.0)

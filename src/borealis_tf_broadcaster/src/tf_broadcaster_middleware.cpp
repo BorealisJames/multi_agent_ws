@@ -23,7 +23,7 @@ void TfBroadcaster::pubSystemMap2BodyTransform2()
 
 void TfBroadcaster::pubSystemMap2BodyTransform3()
 {
-    tf::poseMsgToTF(mSystemPose2.pose, mSystemBody_tfPose2);
+    tf::poseMsgToTF(mSystemPose3.pose, mSystemBody_tfPose3);
     mSystemMap2BodyBroadcaster.sendTransform(tf::StampedTransform(mSystemBody_tfPose3,
                                                                   mSystemPose3.header.stamp,
                                                                   "odom", "uav3UWB"));
