@@ -266,21 +266,13 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
 {
     if (mAgentsInTeam.data.size() != aNumberOfAgents->data.size())
     {
-        if (aNumberOfAgents->data.size() == 3)
-        {
-            mTeamSize = 2;
-            mAgentsInTeam.data.push_back(1);
-            mAgentsInTeam.data.push_back(2);
-        }
-        else
-        {
-            mTeamSize = aNumberOfAgents->data.size();
-            mAgentsInTeam.data = aNumberOfAgents->data;
-        }
+        mTeamSize = aNumberOfAgents->data.size();
+        mAgentsInTeam.data = aNumberOfAgents->data;
+        
         ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), mTeamSize);
-        TeamingPlanner::clearAgentNumberTeamVector();
 
         mHistoryOfHumanPoses_rf.clear(); // reset history
+        TeamingPlanner::clearAgentNumberTeamVector(); // reset the vector
         for (int agentNumber : mAgentsInTeam.data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
