@@ -352,10 +352,11 @@ bool TeamingPlanner::getPoseMap_rf(std::unordered_map<int32_t, DistributedFormat
     {
         std::unordered_map<int32_t, DistributedFormation::Common::Pose> tmp;
 
+        ROS_INFO("[Teaming Planner %d]: passing Pose map into phase sync", mSourceSegmentId);
         for (auto agentnumber : mAgentsInTeamVector)
         {
             tmp[agentnumber] = mAgentsPoseMap_rf[agentnumber];
-            ROS_INFO("[Teaming Planner %d]: tmpmAgentsPoseMap_rf contains %d", mSourceSegmentId, agentnumber);
+            std::cout << "Pose map contains agent " << agentnumber << std::endl;
         }
 
         // poseMap = mAgentsPoseMap_rf;

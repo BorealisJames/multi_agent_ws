@@ -276,7 +276,8 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
         for (int agentNumber : mAgentsInTeam.data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
-            ROS_INFO("[Teaming Planner %d: The new agents are %d", agentNumber);
+            std::cout << "The new agents are " << agentNumber << std::endl;
+             
         }
         clearOtherAgentsData();
     }
