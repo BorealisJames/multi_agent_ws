@@ -1,44 +1,52 @@
+2 drones settings
 
-    // std::function<bool(const int32_t, const Common::PhaseAndTime& ownAgentPhaseAndTime)>  m_pubOwnPhaseAndTime;
-    // std::function<bool(const int32_t ownAgentID, const Common::Pose& ownAgentPose)>  m_pubOwnPoseFunc;
-    // std::function<bool(Common::Pose& ownAgentPose)>  m_getOwnAgentPose;
-    // std::function<bool(std::unordered_map<int32_t, Common::Pose>& agentsPose)>  m_getAgentsPose;
+/uav1/borealis_teaming_planner/sourceSegmentId: 1
+/uav1/borealis_teaming_planner/modulePeriod: 0.025
+/uav1/borealis_teaming_planner/numOfAgents: 2
+/uav1/borealis_teaming_planner/intervalDistance: 0.5
+/uav1/borealis_teaming_planner/planningHorizon: 25
+/uav1/borealis_teaming_planner/desiredHeight: 1.2
+/uav1/borealis_teaming_planner/useUWB: false
+/uav1/borealis_teaming_planner/debugVerbose: true
+/uav1/borealis_teaming_planner/pointcloudCallbackVerbose: false
+/uav1/borealis_teaming_planner/agentPoseCallbackVerbose: false
+/uav1/borealis_teaming_planner/systemPoseCallbackVerbose: false # Pose that is passed into phase sync
+/uav1/borealis_teaming_planner/phaseSyncCallbackVerbose: false
 
-    // std::function<bool(std::unordered_map<int32_t, Common::PathAndWaypointProgress>& agentsGoTherePathAndWaypointProgress)> m_getAgentsPathAndWaypointProgress;
-    // std::function<bool(const int32_t, const Common::PathAndWaypointProgress& goTherePathAndWaypointProgress)> m_pubOwnPathAndWaypointProgress;
+# pi /2 1.57079632679 
+# pi /4 0.785398163397
+/uav1/borealis_teaming_planner/expiryDurationMicroSec: 15*1000000
+/uav1/borealis_teaming_planner/numberOfAzimuthDiscreteAnglesOnASide: 0
+/uav1/borealis_teaming_planner/resolutionAzimuthAngleRad: 0.0
+/uav1/borealis_teaming_planner/numberOfElevationDiscreteAnglesOnASide: 0
+/uav1/borealis_teaming_planner/resolutionElevationAngleRad: 0.0
+/uav1/borealis_teaming_planner/distanceToFollowBehind: 0.0
+/uav1/borealis_teaming_planner/localBoundingBoxForPathAlongX: 5.0
+/uav1/borealis_teaming_planner/localBoundingBoxForPathAlongY: 5.0
+/uav1/borealis_teaming_planner/localBoundingBoxForPathAlongZ: 2.0
+/uav1/borealis_teaming_planner/pointRemovalRadius: 0.70
+/uav1/borealis_teaming_planner/desiredDistanceInTriFormation: 2.5
+/uav1/borealis_teaming_planner/desiredDistanceInLineFormation: 2.2
+/uav1/borealis_teaming_planner/incrementOffsetToFormationYaw: 0.785398163397
+/uav1/borealis_teaming_planner/agentRadius: 0.60
+/uav1/borealis_teaming_planner/waypointReachedBoundary: 1.5
+/uav1/borealis_teaming_planner/weightForGoal: 0.3
+/uav1/borealis_teaming_planner/weightForRotation: 0.4
+/uav1/borealis_teaming_planner/weightForSize: 0.4
+/uav1/borealis_teaming_planner/desiredHeight: 2.0
+/uav1/borealis_teaming_planner/priorityPenalty: 1.0
 
-    // std::function<bool(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsPlannedPath)> m_getAgentsPlannedPath;
-    // std::function<bool(const int32_t, const std::vector<Eigen::Vector3d>& ownPlannedPath)> m_pubOwnPlannedPath;
-
-    // std::function<bool(std::unordered_map<int32_t, std::unordered_map<int32_t, Common::PathAndCost>>& agentsProcessedPathOfAgents)> m_getAgentsProcessedPathOfAgents;
-    // std::function<bool(const int32_t, const std::unordered_map<int32_t, Common::PathAndCost>& ownProcessedPathOfAgents)> m_pubOwnProcessedPathOfAgents;
-    // std::function<void()> m_clearAgentsBestProcessedPathBuffer;
-    // std::function<bool(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsBestProcessedPath)> m_getAgentsBestProcessedPath;
-    // std::function<bool(const int32_t, const std::vector<Eigen::Vector3d>& ownBestProcessedPath)> m_pubOwnBestProcessedPath;
-    // std::function<bool(const int32_t, const std::vector<Common::Pose>& processedGoTherePath)>  m_pubProcessedGoTherePath;
-
-    // std::function<void()>  m_clearAgentsPoseBuffer;
-    // std::function<void()>  m_clearAgentsProcessedPathOfAgentsBuffer;
-    // std::function<void()>  m_clearAgentsPlannedPathBuffer;
-    // std::function<void()>m_clearAgentsPathAndWaypointProgressBuffer;
-
-bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PhaseAndTime>& phasesAndTimeRecordOfAgents)
-bool TeamingPlanner::pubOwnPhaseAndTime_cp(const int32_t, const DistributedGlobalPathPlanner::Common::PhaseAndTime& ownAgentPhaseAndTime)
-bool TeamingPlanner::pubOwnPoseFunc_cp(const int32_t ownAgentID, const DistributedGlobalPathPlanner::Common::Pose& ownAgentPose)
-
-bool TeamingPlanner::getOwnAgentPose_cp(DistributedGlobalPathPlanner::DistributedGlobalPathPlanner::Common::Pose& ownAgentPose)
-bool TeamingPlanner::getAgentPoseCPH(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose>& agentsPose)
-bool TeamingPlanner::getAgentsPathAndWaypointProgress_cp(std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndWaypointProgress>& agentsGoTherePathAndWaypointProgress)
-bool TeamingPlanner::pubOwnPathAndWaypointProgress_cp(const int32_t, const DistributedGlobalPathPlanner::Common::PathAndWaypointProgress& goTherePathAndWaypointProgress)
-bool TeamingPlanner::getAgentsPlannedPath_cp(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsPlannedPath)
-bool TeamingPlanner::pubOwnPlannedPath_cp(const int32_t, const std::vector<Eigen::Vector3d>& ownPlannedPath)
-bool TeamingPlanner::getAgentsProcessedPathOfAgents_cp(std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost>>& agentsProcessedPathOfAgents)
-bool TeamingPlanner::pubOwnProcessedPathOfAgents_cp(const int32_t, const std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost>& ownProcessedPathOfAgents)
-bool TeamingPlanner::getAgentsBestProcessedPath_cp(std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>& agentsBestProcessedPath)
-bool TeamingPlanner::pubOwnBestProcessedPath_cp(const int32_t, const std::vector<Eigen::Vector3d>& ownBestProcessedPath)
-bool TeamingPlanner::pubProcessedGoTherePath_cp(const int32_t, const std::vector<DistributedGlobalPathPlanner::Common::Pose>& processedGoTherePath)
-void TeamingPlanner::clearAgentsPoseBuffer_cp()
-void TeamingPlanner::clearAgentsProcessedPathOfAgentsBuffer_cp()
-void TeamingPlanner::clearAgentsPlannedPathBuffer_cp()
-void TeamingPlanner::clearAgentsPathAndWaypointProgressBuffer_cp()
-
+# Path planner algos
+/uav1/borealis_teaming_planner/radius: 0.1
+/uav1/borealis_teaming_planner/cylinderHeight: 0.8
+/uav1/borealis_teaming_planner/mapResolution: 1.0
+/uav1/borealis_teaming_planner/mapMinBoundsX: -150.0
+/uav1/borealis_teaming_planner/mapMaxBoundsX: 150.0
+/uav1/borealis_teaming_planner/mapMinBoundsY: -150.0
+/uav1/borealis_teaming_planner/mapMaxBoundsY: 150.0
+/uav1/borealis_teaming_planner/mapMinBoundsZ: 1.0
+/uav1/borealis_teaming_planner/mapMaxBoundsZ: 2.0
+/uav1/borealis_teaming_planner/hCostWeight: 1.0
+/uav1/borealis_teaming_planner/potentialRadius: 3.0
+/uav1/borealis_teaming_planner/searchRadius: 1.5
+/uav1/borealis_teaming_planner/performJPS: true

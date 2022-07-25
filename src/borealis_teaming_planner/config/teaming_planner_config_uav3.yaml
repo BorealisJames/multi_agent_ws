@@ -1,10 +1,10 @@
-/uav3/borealis_teaming_planner/sourceSegmentId: 2
+/uav3/borealis_teaming_planner/sourceSegmentId: 3
 /uav3/borealis_teaming_planner/modulePeriod: 0.025
-/uav3/borealis_teaming_planner/numOfAgents: 2
+/uav3/borealis_teaming_planner/numOfAgents: 3
 /uav3/borealis_teaming_planner/intervalDistance: 0.5
 /uav3/borealis_teaming_planner/planningHorizon: 25
 /uav3/borealis_teaming_planner/desiredHeight: 1.2
-/uav3/borealis_teaming_planner/useUWB: true
+/uav3/borealis_teaming_planner/useUWB: false
 /uav3/borealis_teaming_planner/debugVerbose: true
 /uav3/borealis_teaming_planner/pointcloudCallbackVerbose: false
 /uav3/borealis_teaming_planner/agentPoseCallbackVerbose: false
