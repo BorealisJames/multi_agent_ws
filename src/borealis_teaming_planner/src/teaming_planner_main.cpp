@@ -109,9 +109,13 @@ void TeamingPlanner::teamingPlannerMain()
             // printOutDroneMapVariables();
             mModuleStateVerbose = true;
         }
-        // std::cout << "/////////////////////" << std::endl;
-        // std::cout << "Team size is " << mTeamSize << std::endl;
-        // std::cout << "/////////////////////" << std::endl;
+        std::cout << "/////////////////////" << std::endl;
+        std::cout << "Team size is " << mTeamSize << std::endl;
+        for (auto agent_number: mAgentsInTeamVector)
+        {
+            std::cout << "The team contains " << agent_number << std::endl;
+        }
+        std::cout << "/////////////////////" << std::endl;
 
         switch (mTask.type)
         {

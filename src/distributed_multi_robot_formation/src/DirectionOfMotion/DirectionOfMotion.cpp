@@ -38,15 +38,25 @@ namespace DistributedFormation
     DirectionOfMotion::ConsensusOnDirection (const std::unordered_map<int32_t, Common::DirectionUtility>& inputDirectionUtility,
                                              double& outputAzimuthAngleRad, double& outputElevationAngleRad)
     {
+        std::cout << "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
         for (auto&& directionUtilityInstance : inputDirectionUtility)
         {
+
             if (directionUtilityInstance.second.angleIndexAndUtility.size() != m_numberOfDiscretizedAngles)
             {
+                std::cout <<  "From UAV id: " << directionUtilityInstance.first << std::endl;
+                for (auto directionUtility : directionUtilityInstance.second.angleIndexAndUtility)
+                {
+                    std::cout <<  "Angle and index utility value is " << directionUtility << std::endl;
+                }
+                std::cout <<  "m_numberOfDiscretizedAngles is " << m_numberOfDiscretizedAngles << std::endl;
                 return false;
             }
         }
+        std::cout << "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
 
         std::vector<double> minDirectionUtility;
+
         for (int i = 0; i < m_numberOfDiscretizedAngles; i++)
         {
             double minUtility = DBL_MAX;
