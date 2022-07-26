@@ -109,9 +109,9 @@ void TeamingPlanner::teamingPlannerMain()
             // printOutDroneMapVariables();
             mModuleStateVerbose = true;
         }
-        std::cout << "/////////////////////" << std::endl;
-        std::cout << "Team size is " << mTeamSize << std::endl;
-        std::cout << "/////////////////////" << std::endl;
+        // std::cout << "/////////////////////" << std::endl;
+        // std::cout << "Team size is " << mTeamSize << std::endl;
+        // std::cout << "/////////////////////" << std::endl;
 
         switch (mTask.type)
         {

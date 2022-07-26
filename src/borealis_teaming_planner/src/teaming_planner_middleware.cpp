@@ -100,8 +100,13 @@ void TeamingPlanner::systemPointCloud2Callback(const sensor_msgs::PointCloud2::C
     try
     {
         transformStamped = mtfBuffer.lookupTransform("odom", sourceFrame,ros::Time(0));
-        ROS_INFO("Agent ID %d: Transform stamped: ", mSourceSegmentId);
-        std::cout << transformStamped << std::endl;
+
+        if (mPointcloudCallbackVerbose)
+        {
+            ROS_INFO("Agent ID %d: Transform stamped: ", mSourceSegmentId);
+            std::cout << transformStamped << std::endl;
+        }
+
         tf2::doTransform(tmp, tmpTransformed, transformStamped);
     }
     catch (tf2::TransformException &ex) {
@@ -264,16 +269,15 @@ void TeamingPlanner::UAVInputPoseStampedCallback(const geometry_msgs::PoseStampe
 
 void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray::ConstPtr& aNumberOfAgents)
 {
-    if (mAgentsInTeam.data.size() != aNumberOfAgents->data.size())
+    mAgentsInTeam.data = aNumberOfAgents->data;
+    if (mTeamSize != aNumberOfAgents->data.size()) // Check size
     {
         mTeamSize = aNumberOfAgents->data.size();
-        mAgentsInTeam.data = aNumberOfAgents->data;
-        
-        ROS_INFO("[Teaming Planner %d: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), mTeamSize);
+        ROS_INFO("[Teaming Planner %d]: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), mTeamSize);
 
         mHistoryOfHumanPoses_rf.clear(); // reset history
         TeamingPlanner::clearAgentNumberTeamVector(); // reset the vector
-        for (int agentNumber : mAgentsInTeam.data)
+        for (int agentNumber : aNumberOfAgents->data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
             std::cout << "The new agents are " << agentNumber << std::endl;
@@ -281,12 +285,33 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
         }
         clearOtherAgentsData();
     }
+    else // Same size now check the elements
+    {
+        std::vector<int> aNumberOfAgentsVector;
+        for (int agentNumber : aNumberOfAgents->data)
+        {
+            aNumberOfAgentsVector.push_back(agentNumber);
+        }
+
+        sort(aNumberOfAgentsVector.begin(), aNumberOfAgentsVector.end());    
+        sort(mAgentsInTeamVector.begin(), mAgentsInTeamVector.end());
+
+        if (aNumberOfAgentsVector != mAgentsInTeamVector)    
+        {    
+            ROS_INFO("[Teaming Planner %d: New team detected! With different elements ", mSourceSegmentId);
+            TeamingPlanner::clearAgentNumberTeamVector(); // reset the vector
+            for (int agentNumber : aNumberOfAgents->data)
+            {
+                mAgentsInTeamVector.push_back(agentNumber);
+                std::cout << "The new agents are " << agentNumber << std::endl;
+            }
+        }
+    }
 
     if (mDebugVerbose)
     {
         ROS_INFO("[Teaming Planner %d]: numberOfAgentsInTeamCallback: %d  mTeamSize: %d\n", mSourceSegmentId, aNumberOfAgents->data.size(), mTeamSize);
     }
-
 }
 
 /* Callbacks used by robot formation */
