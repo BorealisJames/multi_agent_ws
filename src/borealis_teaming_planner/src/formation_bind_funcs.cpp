@@ -286,7 +286,6 @@ bool TeamingPlanner::getPosesForFormationToTrack_rf(std::vector<DistributedForma
             ROS_INFO("///////////////////////////////////////////////////////////////////////////////////////////////////");
             for (auto pose : mHistoryOfHumanPoses_rf)
             {
-
                 ROS_INFO("[Teaming Planner %d]", mSourceSegmentId);
                 std::cout << "pose x: " << pose.position.x << " pose y: " << pose.position.y << " pose z: " << pose.position.z << std::endl;
             }
@@ -330,7 +329,10 @@ bool TeamingPlanner::getPhaseAndTimeMap_rf(std::unordered_map<int32_t, Distribut
         std::unordered_map<int32_t, DistributedFormation::Common::PhaseAndTime> tmp;
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsPhaseAndTimeMap_rf[agentnumber];
+            if (mAgentsPhaseAndTimeMap_rf.find(agentnumber) != mAgentsPhaseAndTimeMap_rf.end())
+            {
+                tmp[agentnumber] = mAgentsPhaseAndTimeMap_rf[agentnumber];
+            }
         }
         phaseAndTimeMap = tmp;
     }
@@ -355,7 +357,10 @@ bool TeamingPlanner::getPoseMap_rf(std::unordered_map<int32_t, DistributedFormat
         ROS_INFO("[Teaming Planner %d]: passing Pose map into phase sync", mSourceSegmentId);
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsPoseMap_rf[agentnumber];
+            if (mAgentsPoseMap_rf.find(agentnumber) != mAgentsPoseMap_rf.end())
+            {
+                tmp[agentnumber] = mAgentsPoseMap_rf[agentnumber];
+            }
             std::cout << "Pose map contains agent " << agentnumber << std::endl;
         }
 
@@ -380,9 +385,16 @@ bool TeamingPlanner::getDirectionUtilityMap_rf(std::unordered_map<int32_t, Distr
     {
         std::unordered_map<int32_t, DistributedFormation::Common::DirectionUtility> tmp;
 
+        // mAgentsDirectionUtilityMap_rf this guy could only have 2 and 3
+        // if mAgentsInTeamVector contains 1 2 3
+        // tmp[1] = mAgentsDirectionUtilityMap_rf[1]; <-- causes garbage value in tmp[1]
+
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsDirectionUtilityMap_rf[agentnumber];
+            if (mAgentsDirectionUtilityMap_rf.find(agentnumber) != mAgentsDirectionUtilityMap_rf.end())
+            {
+                tmp[agentnumber] = mAgentsDirectionUtilityMap_rf[agentnumber];
+            }
         }
         directionUtilityMap = tmp;
         // directionUtilityMap = mAgentsDirectionUtilityMap_rf;
@@ -405,7 +417,11 @@ bool TeamingPlanner::getConvexRegion2DMap_rf(std::unordered_map<int32_t, Distrib
 
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsConvexRegion2DMap_rf[agentnumber];
+            if (mAgentsConvexRegion2DMap_rf.find(agentnumber) != mAgentsConvexRegion2DMap_rf.end())
+            {
+                tmp[agentnumber] = mAgentsConvexRegion2DMap_rf[agentnumber];
+
+            }
         }
         // convexRegion2DMap = mAgentsConvexRegion2DMap_rf;
         convexRegion2DMap = tmp;
@@ -430,7 +446,10 @@ bool TeamingPlanner::getConvexRegion3DMap_rf(std::unordered_map<int32_t, Distrib
 
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsConvexRegion3DMap_rf[agentnumber];
+            if (mAgentsConvexRegion3DMap_rf.find(agentnumber) != mAgentsConvexRegion3DMap_rf.end())
+            {
+                tmp[agentnumber] = mAgentsConvexRegion3DMap_rf[agentnumber];
+            }
         }
         convexRegion3DMap = tmp;
         // convexRegion3DMap = mAgentsConvexRegion3DMap_rf;
@@ -453,11 +472,13 @@ bool TeamingPlanner::getAssignedVirtualPoseMap_rf(std::unordered_map<int32_t, st
 
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsAssignedVirtualPoseMap_rf[agentnumber];
+            if (mAgentsAssignedVirtualPoseMap_rf.find(agentnumber) != mAgentsAssignedVirtualPoseMap_rf.end())
+            {
+                tmp[agentnumber] = mAgentsAssignedVirtualPoseMap_rf[agentnumber];
+            }
         }
         // assignedVirtualPoseMap = mAgentsAssignedVirtualPoseMap_rf;
         assignedVirtualPoseMap = tmp;
-
     }
     else
     {

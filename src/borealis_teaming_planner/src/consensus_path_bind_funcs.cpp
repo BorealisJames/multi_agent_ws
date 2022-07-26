@@ -32,7 +32,10 @@ bool TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp(std::unordered_map<int32_
         ROS_INFO("Agent%d CP: mAgentsInTeamVector is of size %d", mSourceSegmentId, mAgentsInTeamVector.size());
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsPhasesAndTimeMap_cp[agentnumber];
+            if (mAgentsPhasesAndTimeMap_cp.find(agentnumber) != mAgentsPhasesAndTimeMap_cp.end())
+            {   
+                tmp[agentnumber] = mAgentsPhasesAndTimeMap_cp[agentnumber];
+            }
         }
         phasesAndTimeRecordOfAgents = tmp;
         ROS_INFO("Agent%d CP: Passing PhasesAndTime record of size %d", mSourceSegmentId, phasesAndTimeRecordOfAgents.size());
@@ -105,19 +108,13 @@ bool TeamingPlanner::getAgentsPose_cp(std::unordered_map<int32_t, DistributedGlo
     
     if (!mAgentsPoseMap_cp.empty())
     {
-        if (mAgentsPoseMap_cp.size() != mTeamSize)
-        {
-            ROS_WARN("[Teaming Planner]: Agent ID %d discrepency in mAgentsPoseMap_cp.size() = %d and  mTeamSize = %d detected!", mSourceSegmentId, mAgentsPoseMap_cp.size(), mTeamSize);
-            for (auto agent : mAgentsPoseMap_cp)
-            {
-                ROS_WARN("mAgentsPoseMap_cp contains agent %d ", agent.first);
-            }
-        }
-
         std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::Pose> tmp;
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsPoseMap_cp[agentnumber];
+            if (mAgentsPoseMap_cp.find(agentnumber) != mAgentsPoseMap_cp.end())
+            {   
+                tmp[agentnumber] = mAgentsPoseMap_cp[agentnumber];
+            }
             ROS_INFO("[Teaming Planner %d]: tmpmmAgentsPoseMap_cp contains %d", mSourceSegmentId, agentnumber);
         }
 
@@ -144,7 +141,10 @@ bool TeamingPlanner::getAgentsPathAndWaypointProgress_cp(std::unordered_map<int3
         std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndWaypointProgress>  tmp;
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsPathAndWaypointProgressMap_cp[agentnumber];
+            if (mAgentsPathAndWaypointProgressMap_cp.find(agentnumber) != mAgentsPathAndWaypointProgressMap_cp.end())
+            {
+                tmp[agentnumber] = mAgentsPathAndWaypointProgressMap_cp[agentnumber];
+            }
         }
         // agentsGoTherePathAndWaypointProgress = mAgentsPathAndWaypointProgressMap_cp;
         agentsGoTherePathAndWaypointProgress = tmp;
@@ -208,7 +208,10 @@ bool TeamingPlanner::getAgentsPlannedPath_cp(std::unordered_map<int32_t, std::ve
         std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>  tmp;
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsPlannedPathMap_cp[agentnumber];
+            if (mAgentsPlannedPathMap_cp.find(agentnumber) != mAgentsPlannedPathMap_cp.end())
+            {
+                tmp[agentnumber] = mAgentsPlannedPathMap_cp[agentnumber];
+            }
         }
 
         // agentsPlannedPath = mAgentsPlannedPathMap_cp;
@@ -257,7 +260,10 @@ bool TeamingPlanner::getAgentsProcessedPathOfAgents_cp(std::unordered_map<int32_
         std::unordered_map<int32_t, std::unordered_map<int32_t, DistributedGlobalPathPlanner::Common::PathAndCost>>   tmp;
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsProcessedPathOfAgentsMap_cp[agentnumber];
+            if (mAgentsProcessedPathOfAgentsMap_cp.find(agentnumber) != mAgentsProcessedPathOfAgentsMap_cp.end())
+            {
+                tmp[agentnumber] = mAgentsProcessedPathOfAgentsMap_cp[agentnumber];
+            }
         }
 
         // agentsProcessedPathOfAgents = mAgentsProcessedPathOfAgentsMap_cp;
@@ -324,9 +330,13 @@ bool TeamingPlanner::getAgentsBestProcessedPath_cp(std::unordered_map<int32_t, s
     if (!mAgentsBestProcessedPath_cp.empty())
     {
         std::unordered_map<int32_t, std::vector<Eigen::Vector3d>>   tmp;
+
         for (auto agentnumber : mAgentsInTeamVector)
         {
-            tmp[agentnumber] = mAgentsBestProcessedPath_cp[agentnumber];
+            if (mAgentsBestProcessedPath_cp.find(agentnumber) != mAgentsBestProcessedPath_cp.end())
+            {
+                tmp[agentnumber] = mAgentsBestProcessedPath_cp[agentnumber];
+            }
         }
         // agentsBestProcessedPath = mAgentsBestProcessedPath_cp;
         agentsBestProcessedPath = tmp;
