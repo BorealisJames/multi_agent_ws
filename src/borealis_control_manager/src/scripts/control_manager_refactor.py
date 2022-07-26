@@ -53,17 +53,18 @@ class transform():
 
             if self.recieved_new_ap_callback:
                 if self.mode == "Go_There": 
-                    vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
-                    final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
-                    self.cmd = final_pose_uav
-                    self.cmd.pose.orientation = self.uav_ap_uwb.pose.orientation
+                    # vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
+                    # final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
+                    self.cmd = self.final_pose_uav
+                    self.cmd = self.uav_ap_uwb
+                    # self.cmd.pose.orientation = self.uav_ap_uwb.pose.orientation
                     
                 if self.mode == "Follow_Me" :
                     # In Follow me mode, the formation generation algorithm will generate some unstable orientation due to the human orientation
                     # Being quite unstable, thus the drone should always look forward
                     vector_diff_uav = self.pose_diff(self.uav_uwb_pose, self.uav_ap_uwb)
                     final_pose_uav = self.pose_addition(vector_diff_uav, self.uav_mavros_pose)
-                    self.cmd = final_pose_uav
+                    self.cmd = self.uav_ap_uwb
                     self.cmd.pose.orientation.x = 0
                     self.cmd.pose.orientation.y = 0
                     self.cmd.pose.orientation.z = 0
