@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Pose
 from geometry_msgs.msg import PoseWithCovarianceStamped, PoseArray
 
 import sys, select, termios, tty
@@ -145,8 +145,22 @@ if __name__=="__main__":
             
             # Make a Pose array that contain these 3 poses 
             pose_array = PoseArray()
+            pose_stamped.pose.position.y = pose_stamped.pose.position.y - 2
             pose_array.poses.append(pose_stamped.pose)
+
+            pose_stamped_2 = PoseStamped()
+            pose_stamped_2.pose.position.y = pose_stamped.pose.position.y + 2
+            pose_stamped_2.pose.position.x = pose_stamped.pose.position.x
+            pose_stamped_2.pose.position.z = pose_stamped.pose.position.z
+            pose_stamped_2.pose.orientation = pose_stamped.pose.orientation
+
             pose_array.poses.append(pose_stamped.pose)
+
+            pose_stamped_3 = PoseStamped()
+            pose_stamped_3.pose.position.y = pose_stamped.pose.position.y + 4
+            pose_stamped_3.pose.position.x = pose_stamped.pose.position.x
+            pose_stamped_3.pose.position.z = pose_stamped.pose.position.z
+            pose_stamped_3.pose.orientation = pose_stamped.pose.orientation
             pose_array.poses.append(pose_stamped.pose)
 
             # Now append this to the hri output
