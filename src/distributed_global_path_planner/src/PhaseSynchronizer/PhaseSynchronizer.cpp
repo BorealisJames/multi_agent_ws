@@ -415,8 +415,8 @@ namespace DistributedGlobalPathPlanner
         std::cout << "Agent_cp " << m_ownAgentID << ": reset in OnEnterPhase1" << std::endl;
 
         ResetPhase();
-        m_handlerPtr->m_clearAgentsPoseBuffer();
-        m_handlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer();
+        // m_handlerPtr->m_clearAgentsPoseBuffer();
+        // m_handlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer();
     }
 
     bool PhaseSynchronizer::TransitingFromPhase1()
