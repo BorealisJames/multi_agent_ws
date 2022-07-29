@@ -273,17 +273,36 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
     if (mTeamSize != aNumberOfAgents->data.size()) // Check size
     {
         mTeamSize = aNumberOfAgents->data.size();
+
+        ROS_INFO("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NEW TEAM DETECTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         ROS_INFO("[Teaming Planner %d]: New team detected!, from %d to %d ", mSourceSegmentId, mAgentsInTeamVector.size(), mTeamSize);
 
         mHistoryOfHumanPoses_rf.clear(); // reset history
-        TeamingPlanner::clearAgentNumberTeamVector(); // reset the vector
+        TeamingPlanner::clearAgentNumberTeamVector(); // reset the Agent number vector
+        clearOtherAgentsData();
+
+
+        // I am going to hell but whatever
+        delete mGlobalPathPlannerPtr;
+        mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
+        // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
+        mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
+        mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+
+        // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
+
+        // // Works for distributed formation 
+        mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
+        mDistributedFormation.AttachHandler(mHandlerPtr);
+        mDistributedFormation.SetParameters(mRobotFormationParameters);
+
+        
         for (int agentNumber : aNumberOfAgents->data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
             std::cout << "The new agents are " << agentNumber << std::endl;
              
         }
-        clearOtherAgentsData();
     }
     else // Same size now check the elements
     {

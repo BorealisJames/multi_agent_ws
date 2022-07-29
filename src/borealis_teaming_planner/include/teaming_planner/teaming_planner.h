@@ -63,11 +63,16 @@ class TeamingPlanner
         ros::NodeHandle mNh;
         ros::NodeHandle mNhPrivate;
         Common::Utils::ConfigFileReader mConfigFileReader;
+
         DistributedFormation::DistributedMultiRobotFormationHandler::Ptr mHandlerPtr;
         DistributedFormation::DistributedMultiRobotFormation mDistributedFormation;
         
         DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler::Ptr mGlobalPathPlannerHandlerPtr;
-        DistributedGlobalPathPlanner::DistributedGlobalPathPlanner mGlobalPathPlanner;
+        // DistributedGlobalPathPlanner::DistributedGlobalPathPlanner mGlobalPathPlanner;
+        
+        // std::unique_ptr<DistributedGlobalPathPlanner::DistributedGlobalPathPlanner> mGlobalPathPlannerPtr(new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner());
+        DistributedGlobalPathPlanner::DistributedGlobalPathPlanner* mGlobalPathPlannerPtr;
+
 
         // Configurable Variables
         uint32_t mSourceSegmentId;

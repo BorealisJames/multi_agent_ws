@@ -23,8 +23,8 @@ void TeamingPlanner::teamingPlannerMain()
 
         mHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhaseAndTimeMap_rf, this, std::placeholders::_1);
         mHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubPhaseAndTime_rf, this, std::placeholders::_1, std::placeholders::_2);
-        mHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearPoseMap_rf, this);
-        mHandlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer = std::bind(&TeamingPlanner::clearPhaseAndTimeMap_rf, this);
+        // mHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearPoseMap_rf, this);
+        // mHandlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer = std::bind(&TeamingPlanner::clearPhaseAndTimeMap_rf, this);
         mHandlerPtr->m_pubOwnPoseFunc = std::bind(&TeamingPlanner::pubPose_rf, this, std::placeholders::_1, std::placeholders::_2);
         mHandlerPtr->m_getOwnAgentPose = std::bind(&TeamingPlanner::getOwnUAVSystemPose_rf, this, std::placeholders::_1);
         mHandlerPtr->m_getAgentsPose = std::bind(&TeamingPlanner::getPoseMap_rf, this, std::placeholders::_1);
@@ -54,9 +54,9 @@ void TeamingPlanner::teamingPlannerMain()
         mGlobalPathPlannerHandlerPtr->m_getGoTherePath = std::bind(&TeamingPlanner::getGoTherePath_cp, this, std::placeholders::_1);
         mGlobalPathPlannerHandlerPtr->m_getPhasesAndTimeRecordOfAgents = std::bind(&TeamingPlanner::getPhasesAndTimeRecordOfAgents_cp, this, std::placeholders::_1);
         mGlobalPathPlannerHandlerPtr->m_pubOwnPhaseAndTime = std::bind(&TeamingPlanner::pubOwnPhaseAndTime_cp, this, std::placeholders::_1, std::placeholders::_2);
-        mGlobalPathPlannerHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearAgentsPoseBuffer_cp, this);
+        // mGlobalPathPlannerHandlerPtr->m_clearAgentsPoseBuffer = std::bind(&TeamingPlanner::clearAgentsPoseBuffer_cp, this);
 
-        mGlobalPathPlannerHandlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer = std::bind(&TeamingPlanner::clearPhasesAndTime_cp, this);
+        // mGlobalPathPlannerHandlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer = std::bind(&TeamingPlanner::clearPhasesAndTime_cp, this);
 
         mGlobalPathPlannerHandlerPtr->m_pubOwnPoseFunc = std::bind(&TeamingPlanner::pubOwnPoseFunc_cp, this, std::placeholders::_1, std::placeholders::_2);
         mGlobalPathPlannerHandlerPtr->m_getOwnAgentPose = std::bind(&TeamingPlanner::getOwnAgentPose_cp, this, std::placeholders::_1);
@@ -75,14 +75,16 @@ void TeamingPlanner::teamingPlannerMain()
         mGlobalPathPlannerHandlerPtr->m_pubOwnBestProcessedPath = std::bind(&TeamingPlanner::pubOwnBestProcessedPath_cp, this, std::placeholders::_1, std::placeholders::_2);
         mGlobalPathPlannerHandlerPtr->m_pubProcessedGoTherePath = std::bind(&TeamingPlanner::pubProcessedGoTherePath_cp, this, std::placeholders::_1, std::placeholders::_2);
 
-        mGlobalPathPlanner.AttachHandler(mGlobalPathPlannerHandlerPtr);
-
+        // mGlobalPathPlanner.AttachHandler(mGlobalPathPlannerHandlerPtr);
+        mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
         ROS_INFO("Finished binding global path planner ");
         // Set parameters
         ROS_INFO("Reading and setting parameters");
         readParameters();
         mDistributedFormation.SetParameters(mRobotFormationParameters);
-        mGlobalPathPlanner.SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+        // mGlobalPathPlanner.SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+        mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+
         ROS_INFO("Finished reading and setting parameters");
 
         // Finished init
@@ -140,7 +142,7 @@ void TeamingPlanner::teamingPlannerMain()
                 }
                 // printOutDroneMapVariables();
                 ROS_INFO("[Teaming Planner %d]: Go there! Generating Path", mSourceSegmentId);
-                mGlobalPathPlanner.RunDistributedGlobalPathPlanner();
+                mGlobalPathPlannerPtr->RunDistributedGlobalPathPlanner();
                 ROS_INFO("[Teaming Planner %d]: Go there! Generating Formation", mSourceSegmentId);
                 mDistributedFormation.RunDistributedFormation();
                 break;

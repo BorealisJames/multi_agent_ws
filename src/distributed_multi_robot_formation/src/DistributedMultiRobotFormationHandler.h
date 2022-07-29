@@ -32,7 +32,7 @@ public:
         m_goalAlongPosesPosition = m_nh.advertise<visualization_msgs::Marker>("goal_along_poses_position", 1, true);
     }
 
-     std::function<void()>  m_clearPhasesAndTimeRecordOfAgentsBuffer;
+    //  std::function<void()>  m_clearPhasesAndTimeRecordOfAgentsBuffer;
     std::function<bool(int32_t& numberOfAgentsInTeam)> m_getNumberOfAgentsInTeam;
     std::function<bool(int32_t& ownAgentID)> m_getOwnAgentID;
 
@@ -40,7 +40,7 @@ public:
     std::function<bool(std::unordered_map<int32_t, Common::PhaseAndTime>& phasesAndTimeRecordOfAgents)>  m_getPhasesAndTimeRecordOfAgents;
     std::function<bool(const int32_t, const Common::PhaseAndTime& ownAgentPhaseAndTime)>  m_pubOwnPhaseAndTime;
 
-    std::function<void()>  m_clearAgentsPoseBuffer;
+    // std::function<void()>  m_clearAgentsPoseBuffer;
     std::function<bool(const int32_t ownAgentID, const Common::Pose& ownAgentPose)>  m_pubOwnPoseFunc;
     std::function<bool(Common::Pose& ownAgentPose)>  m_getOwnAgentPose;
     std::function<bool(std::unordered_map<int32_t, Common::Pose>& agentsPose)>  m_getAgentsPose;
