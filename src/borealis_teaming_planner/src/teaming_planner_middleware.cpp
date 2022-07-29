@@ -181,6 +181,21 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
             mTask.type = Common::Entity::MTTaskEnum::FOLLOW_ME;
             clearOtherAgentsData();
             mHistoryOfHumanPoses_rf.clear(); // reset history
+
+            // I am going to hell but whatever
+            delete mGlobalPathPlannerPtr;
+            mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
+            // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
+            mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
+            mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+
+            // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
+
+            // // Works for distributed formation 
+            mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
+            mDistributedFormation.AttachHandler(mHandlerPtr);
+            mDistributedFormation.SetParameters(mRobotFormationParameters);
+
         }
     }
     else if (str2.compare(aUAVmode->data.c_str()) == 0)
@@ -189,6 +204,21 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
         {
             mTask.type = Common::Entity::MTTaskEnum::GO_THERE;
             clearOtherAgentsData();
+
+            // I am going to hell but whatever
+            delete mGlobalPathPlannerPtr;
+            mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
+            // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
+            mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
+            mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+
+            // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
+
+            // // Works for distributed formation 
+            mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
+            mDistributedFormation.AttachHandler(mHandlerPtr);
+            mDistributedFormation.SetParameters(mRobotFormationParameters);
+
         }
     }
     else 
@@ -319,6 +349,21 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
         {    
             ROS_INFO("[Teaming Planner %d: New team detected! With different elements ", mSourceSegmentId);
             TeamingPlanner::clearAgentNumberTeamVector(); // reset the vector
+
+            // I am going to hell but whatever
+            delete mGlobalPathPlannerPtr;
+            mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
+            // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
+            mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
+            mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+
+            // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
+
+            // // Works for distributed formation 
+            mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
+            mDistributedFormation.AttachHandler(mHandlerPtr);
+            mDistributedFormation.SetParameters(mRobotFormationParameters);
+
             for (int agentNumber : aNumberOfAgents->data)
             {
                 mAgentsInTeamVector.push_back(agentNumber);
