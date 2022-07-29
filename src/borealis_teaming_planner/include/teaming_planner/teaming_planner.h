@@ -68,10 +68,10 @@ class TeamingPlanner
         DistributedFormation::DistributedMultiRobotFormation mDistributedFormation;
         
         DistributedGlobalPathPlanner::DistributedGlobalPathPlannerHandler::Ptr mGlobalPathPlannerHandlerPtr;
-        // DistributedGlobalPathPlanner::DistributedGlobalPathPlanner mGlobalPathPlanner;
+        DistributedGlobalPathPlanner::DistributedGlobalPathPlanner mGlobalPathPlanner;
         
         // std::unique_ptr<DistributedGlobalPathPlanner::DistributedGlobalPathPlanner> mGlobalPathPlannerPtr(new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner());
-        DistributedGlobalPathPlanner::DistributedGlobalPathPlanner* mGlobalPathPlannerPtr;
+        // DistributedGlobalPathPlanner::DistributedGlobalPathPlanner* mGlobalPathPlannerPtr;
 
 
         // Configurable Variables

@@ -183,18 +183,20 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
             mHistoryOfHumanPoses_rf.clear(); // reset history
 
             // I am going to hell but whatever
-            delete mGlobalPathPlannerPtr;
-            mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
-            // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
-            mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
-            mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+            // delete mGlobalPathPlannerPtr;
+            // mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
+            // // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
+            // mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
+            // mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
 
-            // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
+            // mGlobalPathPlanner.AttachHandler(mGlobalPathPlannerHandlerPtr);
+            // mGlobalPathPlanner.SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+            // // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
 
-            // // Works for distributed formation 
-            mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
-            mDistributedFormation.AttachHandler(mHandlerPtr);
-            mDistributedFormation.SetParameters(mRobotFormationParameters);
+            // // // Works for distributed formation 
+            // mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
+            // mDistributedFormation.AttachHandler(mHandlerPtr);
+            // mDistributedFormation.SetParameters(mRobotFormationParameters);
 
         }
     }
@@ -206,18 +208,18 @@ void TeamingPlanner::UAVModeCallback(const std_msgs::String::ConstPtr& aUAVmode)
             clearOtherAgentsData();
 
             // I am going to hell but whatever
-            delete mGlobalPathPlannerPtr;
-            mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
-            // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
-            mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
-            mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+            // delete mGlobalPathPlannerPtr;
+            // mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
+            // // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
+            // mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
+            // mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
 
             // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
 
             // // Works for distributed formation 
-            mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
-            mDistributedFormation.AttachHandler(mHandlerPtr);
-            mDistributedFormation.SetParameters(mRobotFormationParameters);
+            // mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
+            // mDistributedFormation.AttachHandler(mHandlerPtr);
+            // mDistributedFormation.SetParameters(mRobotFormationParameters);
 
         }
     }
@@ -311,22 +313,20 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
         TeamingPlanner::clearAgentNumberTeamVector(); // reset the Agent number vector
         clearOtherAgentsData();
 
-
         // I am going to hell but whatever
-        delete mGlobalPathPlannerPtr;
-        mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
-        // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
-        mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
-        mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+        // delete mGlobalPathPlannerPtr;
+        // mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
+        // // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
+        // mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
+        // mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
 
-        // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
+        // // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
 
-        // // Works for distributed formation 
-        mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
-        mDistributedFormation.AttachHandler(mHandlerPtr);
-        mDistributedFormation.SetParameters(mRobotFormationParameters);
+        // // // Works for distributed formation 
+        // mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
+        // mDistributedFormation.AttachHandler(mHandlerPtr);
+        // mDistributedFormation.SetParameters(mRobotFormationParameters);
 
-        
         for (int agentNumber : aNumberOfAgents->data)
         {
             mAgentsInTeamVector.push_back(agentNumber);
@@ -351,18 +351,18 @@ void TeamingPlanner::numberOfAgentsInTeamCallback(const std_msgs::Int8MultiArray
             TeamingPlanner::clearAgentNumberTeamVector(); // reset the vector
 
             // I am going to hell but whatever
-            delete mGlobalPathPlannerPtr;
-            mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
-            // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
-            mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
-            mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
+            // delete mGlobalPathPlannerPtr;
+            // mGlobalPathPlannerPtr = new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner();
+            // // mGlobalPathPlannerPtr.reset(new new DistributedGlobalPathPlanner::DistributedGlobalPathPlanner())
+            // mGlobalPathPlannerPtr->AttachHandler(mGlobalPathPlannerHandlerPtr);
+            // mGlobalPathPlannerPtr->SetParameters(mGlobalPathPlanParameters, mPathPlanningParameters);
 
-            // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
+            // // mGlobalPathPlanner = DistributedGlobalPathPlanner::DistributedGlobalPathPlanner(); // doesnt work
 
-            // // Works for distributed formation 
-            mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
-            mDistributedFormation.AttachHandler(mHandlerPtr);
-            mDistributedFormation.SetParameters(mRobotFormationParameters);
+            // // // Works for distributed formation 
+            // mDistributedFormation =  DistributedFormation::DistributedMultiRobotFormation();
+            // mDistributedFormation.AttachHandler(mHandlerPtr);
+            // mDistributedFormation.SetParameters(mRobotFormationParameters);
 
             for (int agentNumber : aNumberOfAgents->data)
             {
