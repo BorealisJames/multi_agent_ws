@@ -290,6 +290,8 @@ class TeamingPlanner
         void clearAgentNumberTeamVector();
         /*Functions to be binded by consensus path planner CPH means consensus path handler */
 
+        void resetData();
+
         // Functions 
         void clearOtherAgentsData();
         void teamingPlannerMain();

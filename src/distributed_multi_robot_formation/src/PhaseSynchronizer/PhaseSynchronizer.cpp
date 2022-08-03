@@ -228,6 +228,13 @@ namespace DistributedFormation
         }
     }
 
+    void PhaseSynchronizer::ResetAndClearTeamAgentsPoseAndPhases()
+    {
+        ResetPhase();
+        m_handlerPtr->m_clearAgentsPoseBuffer();
+        m_handlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer();
+    }
+
     void PhaseSynchronizer::UpdateWorkspaceDimension()
     {
         if (m_workspace == Common::WORKSPACE::DIM_2_WITH_YAW ||

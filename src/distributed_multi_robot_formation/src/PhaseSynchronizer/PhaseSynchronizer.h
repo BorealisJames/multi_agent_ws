@@ -45,6 +45,7 @@ public:
 
     void SyncPhasesOfAgents();
 
+    void ResetAndClearTeamAgentsPoseAndPhases();
 private:
     DistributedMultiRobotFormationHandler::Ptr m_handlerPtr;
 

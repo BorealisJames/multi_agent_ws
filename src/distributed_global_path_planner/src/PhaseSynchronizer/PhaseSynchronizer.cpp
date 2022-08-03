@@ -228,6 +228,13 @@ namespace DistributedGlobalPathPlanner
         }
     }
 
+    void PhaseSynchronizer::ResetAndClearTeamAgentsPoseAndPhases()
+    {
+        ResetPhase();
+        m_handlerPtr->m_clearAgentsPoseBuffer();
+        m_handlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer();
+    }
+
     void PhaseSynchronizer::UpdateNumberOfAgentsInTeam()
     {
         m_handlerPtr->m_getNumberOfAgentsInTeam(m_numberOfAgentsInTeam);
@@ -415,6 +422,7 @@ namespace DistributedGlobalPathPlanner
         std::cout << "Agent_cp " << m_ownAgentID << ": reset in OnEnterPhase1" << std::endl;
 
         ResetPhase();
+        // Investigate this combination, clear or not clear effects.
         // m_handlerPtr->m_clearAgentsPoseBuffer();
         // m_handlerPtr->m_clearPhasesAndTimeRecordOfAgentsBuffer();
     }

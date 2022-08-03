@@ -41,6 +41,8 @@ public:
 
     void SyncPhasesOfAgents();
 
+    void ResetAndClearTeamAgentsPoseAndPhases();
+
 private:
     DistributedGlobalPathPlannerHandler::Ptr m_handlerPtr;
 
